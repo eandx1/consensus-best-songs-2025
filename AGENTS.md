@@ -37,15 +37,15 @@ Users can adjust source weights and two ranking function parameters to dynamical
 
 The primary focus is a ranked list of song cards showing:
 
-- Consensus rank (calculated)
 - Song title
 - Artist list
 - List of source review sites citing it and their ranks in Site#Rank format with links
 - One or more of Spotify, YouTube, Bandcamp, or Other link
 - Song thumbnail facade and link to play song (when data available)
 - Optional: Archetype badge
+- A faint info icon in the top right that opens up a modal with stats about the ranking 
 
-By default, the top 100 are shown, but the user can expand to the top 200 and then all.
+By default, the top 25 are shown, but the user can expand to the top 100, top 200, and then all.
 
 ## Interactivity
 

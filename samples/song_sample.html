@@ -1,353 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-style="fjord">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Song Card Component (Fjord Theme)</title>
+  <title>Song Card - Editorial Layout</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.css" />
-  <script src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
 
   <style>
-    /* =========================================
-       THEME: FJORD
-       ========================================= */
-    [data-theme="fjord"] {
-        --font-main: "JetBrains Mono", ui-monospace, monospace;
-        --color-primary: #9ca3af;
-        --color-primary-hover: #d1d5db;
-        
-        --color-bg: #0a0b0d;
-        --color-card-bg: #111214;
-        --color-text: #d1d5db;
-        --color-muted: #6b7280;
-        --color-border: rgba(156, 163, 175, 0.15);
-        
-        --radius: 2px;
-
-        /* Pico Overrides */
-        --pico-font-family: var(--font-main);
-        --pico-border-radius: var(--radius);
-        --pico-background-color: var(--color-bg);
-        --pico-card-background-color: var(--color-card-bg);
-        --pico-color: var(--color-text);
-        --pico-muted-color: var(--color-muted);
-        --pico-primary: var(--color-primary);
-        --pico-primary-hover: var(--color-primary-hover);
-        --pico-primary-background: var(--color-primary);
-        --pico-primary-inverse: var(--color-bg);
-        --pico-muted-border-color: var(--color-border);
+    /* FJORD THEME REFRESH */
+    [data-style="fjord"] {
+        --pico-font-family: "JetBrains Mono", monospace;
+        --pico-background-color: #0a0b0d;
+        --pico-card-background-color: #111214;
+        --pico-primary: #9ca3af;
+        --pico-color: #d1d5db;
+        --pico-muted-color: #6b7280;
+        --pico-muted-border-color: rgba(156, 163, 175, 0.15);
+        --pico-border-radius: 2px;
     }
 
-    body { letter-spacing: -0.02em; }
-    
-    /* Global Modal Tweaks */
-    dialog article {
-      border: 1px solid var(--pico-muted-border-color);
-      box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    }
-
-    /* =========================================
-       COMPONENT: SONG CARD
-       ========================================= */
     .song-card {
       margin-bottom: 2rem;
       padding: 0;
       border: 1px solid var(--pico-muted-border-color);
-      background-color: var(--pico-card-background-color);
-      transition: border-color 0.3s ease;
-    }
-    
-    .song-card:hover {
-      border-color: var(--pico-muted-color);
+      position: relative; /* For the floating icon */
     }
 
-    /* GRID LAYOUT */
+    /* UPDATED GRID: Larger video, smaller gap */
     .card-grid {
-      display: grid;
-      /* Rank | Video (Larger) | Info (Fills space) | Score */
-      grid-template-columns: 80px 260px 1fr 100px; 
-      gap: 1.5rem;
-      padding: 1.5rem;
+        display: grid;
+        /* Increased video column to 320px for better presence */
+        grid-template-columns: 80px 320px 1fr; 
+        gap: 1.25rem; 
+        padding: 1.25rem;
+        align-items: stretch; /* Forces children to take full height */
     }
 
-    /* 1. RANK */
-    .col-rank {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* FLOATING STATS ICON */
+    .stats-trigger {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      color: var(--pico-muted-color);
+      opacity: 0.4;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: opacity 0.2s;
+      line-height: 1;
     }
+    .stats-trigger:hover {
+      opacity: 1;
+      color: var(--pico-primary);
+    }
+
     .rank-number {
       font-size: 3rem;
       font-weight: 700;
-      color: var(--pico-color);
-      opacity: 0.3;
-      line-height: 1;
+      opacity: 0.2;
     }
 
-    /* 2. VIDEO */
-    .col-player {
-      display: flex;
-      align-items: center;
-    }
-    .col-player lite-youtube {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: var(--pico-border-radius);
-      border: 1px solid var(--pico-muted-border-color);
-      background-color: #000;
-    }
+    .header-group h3 { margin-bottom: 0; font-size: 1.7rem; }
+    .header-group h4 { margin-bottom: 0.4rem; font-size: 0.9rem; }    
 
-    /* 3. INFO COLUMN */
-    .col-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-      min-width: 0; 
-    }
-
-    .header-group h3 {
-      margin-bottom: 0.2rem;
-      font-size: 1.4rem;
-      line-height: 1.1;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .header-group h4 {
-      font-size: 1rem;
-      color: var(--pico-muted-color);
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Archetype Badge */
+    /* ARCHETYPE: Smaller & more subtle */
     .archetype-badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--pico-primary);
-      border: 1px solid var(--pico-muted-border-color);
-      padding: 2px 6px;
-      border-radius: 4px;
-      width: fit-content;
-      margin-bottom: 0.75rem;
-      cursor: help;
-    }
-
-    /* Sources List */
-    .sources-wrapper { margin-bottom: 1rem; }
-    .sources-list { display: flex; flex-wrap: wrap; gap: 6px; }
+        display: inline-block;
+        font-size: 0.6rem; /* Reduced from 0.65 or 0.7 */
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 1px 6px; /* Tightened padding */
+        margin-bottom: 0.5rem;
+        color: var(--pico-muted-color); /* Muted by default */
+    }    
+    .sources-list { margin-bottom: 0.6rem; }
     
-    /* Dynamic Modal Trigger */
     .source-pill {
-      font-size: 0.65rem;
-      color: var(--pico-muted-color);
+      font-size: 0.7rem;
       background: rgba(255, 255, 255, 0.03);
-      padding: 1px 6px;
-      border-radius: 4px;
-      border: 1px solid transparent;
-      text-decoration: none;
-      transition: all 0.2s;
-      white-space: nowrap;
+      border: 1px solid var(--pico-muted-border-color);
+      padding: 2px 8px;
       cursor: pointer;
     }
-    
-    /* FIX: Force visited links to stay grey */
-    .source-pill:visited { color: var(--pico-muted-color); }
 
-    .source-pill:hover {
-      color: var(--pico-primary);
-      background: rgba(255, 255, 255, 0.08);
-      border-color: var(--pico-muted-border-color);
+    /* STATS TABLE IN MODAL */
+    .stats-table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+      font-size: 0.9rem;
     }
-    .source-pill.top-tier {
-      color: var(--pico-color);
-      border-bottom: 1px solid var(--pico-muted-border-color);
-    }
+    .stats-table td { padding: 0.5rem 0; border-bottom: 1px solid var(--pico-muted-border-color); }
+    .stats-table .label { color: var(--pico-muted-color); }
+    .stats-table .value { text-align: right; font-weight: bold; color: var(--pico-primary); }
 
-    /* Listen Links */
-    .listen-footer {
-      font-size: 0.7rem;
-      color: var(--pico-muted-color);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: auto;
-    }
-    .listen-link {
-      color: var(--pico-muted-color);
-      text-decoration: none;
-      font-weight: 700;
-      text-transform: uppercase;
-      position: relative;
-    }
-    
-    /* FIX: Force visited links to stay grey */
-    .listen-link:visited { color: var(--pico-muted-color); }
-
-    .listen-link:hover { color: var(--pico-primary); }
-    .listen-link::before { content: '['; margin-right: 2px; opacity: 0.5; }
-    .listen-link::after { content: ']'; margin-left: 2px; opacity: 0.5; }
-
-    /* 4. SCORE */
-    .col-score {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .score-box { text-align: right; cursor: help; }
-    .score-val { display: block; font-size: 1.5rem; font-weight: 700; color: var(--pico-primary); }
-    .score-label { font-size: 0.6rem; text-transform: uppercase; color: var(--pico-muted-color); display: block; }
-
-    /* MOBILE BREAKPOINT */
     @media (max-width: 900px) {
-      .card-grid {
-        grid-template-columns: 60px 1fr;
-        grid-template-areas: 
-          "rank header"
-          "player player"
-          "info info"
-          "score score";
-        gap: 1rem;
-      }
-      .col-rank { grid-area: rank; justify-content: flex-start; }
-      .header-group { grid-area: header; display: flex; flex-direction: column; justify-content: center; }
-      .col-player { grid-area: player; }
-      .col-info { grid-area: info; }
-      .col-score { grid-area: score; justify-content: flex-start; border-top: 1px solid var(--pico-muted-border-color); padding-top: 1rem;}
-      
-      .score-box { text-align: left; display: flex; align-items: baseline; gap: 1rem; }
-      .header-group h3 { white-space: normal; }
+      .card-grid { grid-template-columns: 60px 1fr; }
+      .stats-trigger { top: 0.5rem; right: 0.5rem; }
     }
+
+    /* VIDEO COLUMN */
+    .col-player {
+        display: flex;
+        align-items: center; /* Vertically centers the video against the text */
+        justify-content: center;
+    }
+
+    /* VIDEO COLUMN: Scale to fill */
+    .col-player lite-youtube {
+        width: 100%;
+        height: 100%; /* Fill the container height */
+        aspect-ratio: 16 / 9;
+        border-radius: var(--pico-border-radius);
+        border: 1px solid var(--pico-muted-border-color);
+    }
+
+    /* INFO COLUMN: Tightened spacing */
+    .col-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Spreads content top-to-bottom */
+        padding: 0.1rem 0; /* Minimal padding */
+    }
+
+    /* LISTEN LINKS: De-emphasized footer */
+    .listen-footer {
+        font-size: 0.6rem; /* Smallest text on the card */
+        color: var(--pico-muted-color);
+        opacity: 0.5; /* Fade it out until hover */
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: auto; /* Pushes to the very bottom of the col-info */
+        transition: opacity 0.2s;
+    }
+
+    .listen-footer:hover {
+        opacity: 1; /* Pop back in when the user is interested */
+    }    
+
+    .listen-link {
+        text-transform: uppercase;
+        font-weight: 700;
+        text-decoration: none;
+        color: inherit;
+    }    
   </style>
 </head>
+<body data-style="fjord">
 
-<body data-theme="fjord">
   <main class="container">
-
     <article class="song-card">
+      <button class="stats-trigger" 
+              onclick="openStats('Illegal', 1.00, 7.245, 1.15, 9)" 
+              aria-label="View Ranking Math">
+        ⓘ
+      </button>
+
       <div class="card-grid">
-        
         <div class="col-rank">
           <span class="rank-number">#1</span>
         </div>
 
         <div class="col-player">
-          <lite-youtube videoid="dQw4w9WgXcQ" playlabel="Play Video"></lite-youtube>
+          <lite-youtube videoid="TFWXqLSr4ZM" playlabel="Play"></lite-youtube>
         </div>
 
         <div class="col-info">
-          
           <div class="header-group">
             <h3>Illegal</h3>
             <h4>PinkPantheress</h4>
           </div>
 
-          <div class="archetype-badge" data-tooltip="Appears on 4+ lists">
+          <div class="archetype-badge">
             🌊 Mainstream Consensus
           </div>
 
-          <div class="sources-wrapper">
-            <div class="sources-list">
-              <button class="source-pill top-tier" 
-                 onclick="openReview('Rolling Stone', '#1', 'A return to form for the pop artist...', 'https://rollingstone.com')">
-                 Rolling Stone #1
-              </button>
-              
-              <button class="source-pill top-tier" 
-                 onclick="openReview('Billboard', '#2', 'The defining track of the summer.', 'https://billboard.com')">
-                 Billboard #2
-              </button>
-
-              <button class="source-pill" 
-                 onclick="openReview('Pitchfork', '#29', 'Glossy, rapid-fire drum and bass.', 'https://pitchfork.com')">
-                 Pitchfork #29
-              </button>
+          <div class="sources-list">
+            <button class="source-pill">NME #1</button>
+            <button class="source-pill">The Guardian #2</button>
+            <button class="source-pill">Pitchfork #6</button>
             </div>
-          </div>
 
-          <div class="listen-footer">
-            <span>Listen on:</span>
-            <a href="#" class="listen-link">Spotify</a>
-            <a href="#" class="listen-link">YouTube</a>
-            <a href="#" class="listen-link">Bandcamp</a>
-          </div>
-
-        </div>
-
-        <div class="col-score">
-          <div class="score-box" data-tooltip="Raw Points: 7.2 | Lists: 9">
-            <span class="score-val">1.00</span>
-            <span class="score-label">Score</span>
+          <div class="listen-footer" style="font-size: 0.7rem; opacity: 0.6;">
+            LISTEN: [SPOTIFY] [YOUTUBE] [BANDCAMP]
           </div>
         </div>
-
       </div>
     </article>
-    <dialog id="review-modal">
+
+    <dialog id="stats-modal">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" onclick="closeReview()"></button>
-          <h3 id="modal-source-title">Source Name</h3>
+          <button aria-label="Close" rel="prev" onclick="closeStats()"></button>
+          <p><strong>Ranking Math: <span id="stats-song-title">Song</span></strong></p>
         </header>
         
-        <blockquote id="modal-quote" style="margin-top: 1rem; font-size: 1.1rem; border-left-color: var(--pico-primary);">
-          "The quote will appear here..."
-        </blockquote>
+        <table class="stats-table">
+          <tr>
+            <td class="label">Consensus Score (Normalized)</td>
+            <td class="value" id="stat-norm">1.00</td>
+          </tr>
+          <tr>
+            <td class="label">Raw Points (Weighted Decay)</td>
+            <td class="value" id="stat-raw">7.245</td>
+          </tr>
+          <tr>
+            <td class="label">Consensus Multiplier</td>
+            <td class="value" id="stat-mult">1.15x</td>
+          </tr>
+          <tr>
+            <td class="label">Critical List Count</td>
+            <td class="value" id="stat-count">9</td>
+          </tr>
+        </table>
         
-        <footer>
-          <a href="#" id="modal-link" role="button" target="_blank" class="outline">
-            Read Full Review ↗
-          </a>
+        <footer style="margin-top: 1rem;">
+          <small style="color: var(--pico-muted-color); font-style: italic;">
+            Score = Raw Points × (1 + (Consensus Bonus × ln(List Count)))
+          </small>
         </footer>
       </article>
     </dialog>
-
   </main>
 
   <script>
-    const modal = document.getElementById('review-modal');
-    const modalTitle = document.getElementById('modal-source-title');
-    const modalQuote = document.getElementById('modal-quote');
-    const modalLink = document.getElementById('modal-link');
-    const html = document.querySelector('html');
-
-    function openReview(source, rank, quote, url) {
-      // 1. Populate Data
-      modalTitle.innerText = `${source} (Ranked ${rank})`;
-      modalQuote.innerText = `"${quote}"`; // Add quotes for styling
-      modalLink.href = url;
+    const statsModal = document.getElementById('stats-modal');
+    
+    function openStats(title, norm, raw, mult, count) {
+      document.getElementById('stats-song-title').innerText = title;
+      document.getElementById('stat-norm').innerText = norm.toFixed(3);
+      document.getElementById('stat-raw').innerText = raw.toFixed(3);
+      document.getElementById('stat-mult').innerText = mult.toFixed(2) + 'x';
+      document.getElementById('stat-count').innerText = count;
       
-      // 2. Open Modal
-      html.classList.add('modal-is-open');
-      modal.showModal();
+      document.querySelector('html').classList.add('modal-is-open');
+      statsModal.showModal();
     }
 
-    function closeReview() {
-      html.classList.remove('modal-is-open');
-      modal.close();
+    function closeStats() {
+      document.querySelector('html').classList.remove('modal-is-open');
+      statsModal.close();
     }
 
     // Close on click outside
-    modal.addEventListener('click', (event) => {
-      if (event.target === modal) {
-        closeReview();
-      }
-    });
+    statsModal.addEventListener('click', (e) => { if (e.target === statsModal) closeStats(); });
   </script>
-
 </body>
 </html>

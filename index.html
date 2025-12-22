@@ -3,124 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consensus Best Songs of 2025</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
+    <title>Consensus 2025</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
     <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
-
     <style>
-        /* FJORD Theme Implementation for Pico v2 */
         [data-style="fjord"] {
-            --pico-font-family: "JetBrains Mono", ui-monospace, monospace;
-            --pico-headings-font-family: "JetBrains Mono", ui-monospace, monospace;
-
-            /* Colors mapped to Pico v2 variables */
-            --pico-primary: #9ca3af;
-            --pico-primary-hover: #d1d5db;
-            --pico-primary-underline: rgba(156, 163, 175, 0.5);
-            --pico-primary-focus: rgba(156, 163, 175, 0.25);
-
+            --pico-font-family: "JetBrains Mono", monospace;
             --pico-background-color: #0a0b0d;
             --pico-card-background-color: #111214;
-
+            --pico-primary: #9ca3af;
             --pico-color: #d1d5db;
             --pico-muted-color: #6b7280;
-            --pico-muted-border-color: rgba(156, 163, 175, 0.1);
-
+            --pico-muted-border-color: rgba(156, 163, 175, 0.15);
             --pico-border-radius: 2px;
         }
 
-        /* Logic-specific styling */
-        .consensus-rank {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--pico-primary);
-            line-height: 1;
+        .song-card { margin-bottom: 2rem; border: 1px solid var(--pico-muted-border-color); position: relative; }
+        .card-grid { 
+            display: grid; 
+            grid-template-columns: 80px 320px 1fr; 
+            gap: 1.25rem; 
+            padding: 1.25rem; 
+            align-items: stretch;
         }
 
-        /* Style for the 'delta' rank changes we discussed */
-        .rank-delta {
-            font-size: 0.9rem;
-            margin-left: 0.5rem;
-        }
-        .rank-up { color: #10b981; } /* Green */
-        .rank-down { color: #ef4444; } /* Red */
+        .stats-trigger { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--pico-muted-color); opacity: 0.4; cursor: pointer; font-size: 1.2rem; }
+        .stats-trigger:hover { opacity: 1; color: var(--pico-primary); }
 
-        /* Responsive song card layout */
-        .song-card {
-            border: 1px solid var(--pico-muted-border-color);
-            transition: border-color 0.2s ease;
-        }
-        .song-card:hover {
-            border-color: var(--pico-primary);
-        }
+        .rank-number { font-size: 3rem; font-weight: 700; opacity: 0.2; display: flex; align-items: center; justify-content: center; height: 100%; }
+        
+        .col-info { display: flex; flex-direction: column; justify-content: space-between; padding: 0.1rem 0; }
+        .header-group h3 { margin-bottom: 0; font-size: 1.7rem; color: #fff; }
+        .header-group h4 { margin-bottom: 0.4rem; font-size: 0.9rem; font-weight: 400; text-transform: uppercase; color: var(--pico-muted-color); }
+
+        .archetype-badge { font-size: 0.6rem; font-weight: 700; border: 1px solid var(--pico-muted-border-color); padding: 1px 6px; margin-bottom: 0.5rem; text-transform: uppercase; width: fit-content; }
+        
+        .sources-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.6rem; }
+        .source-pill { font-size: 0.65rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--pico-muted-border-color); padding: 1px 6px; cursor: pointer; }
+
+        .listen-footer { font-size: 0.6rem; opacity: 0.5; transition: opacity 0.2s; margin-top: auto; }
+        .listen-footer:hover { opacity: 1; }
+
+        @media (max-width: 900px) { .card-grid { grid-template-columns: 60px 1fr; } .col-player { grid-column: span 2; } }
     </style>
 </head>
-<body>
-
+<body data-style="fjord">
     <header class="container">
         <nav>
+            <ul><li><strong>Consensus 2025</strong></li></ul>
             <ul>
-                <li><strong>Consensus 2025</strong></li>
-            </ul>
-            <ul>
-                <li><button class="outline secondary" id="config-btn">⚙️ Settings</button></li>
-                <li><a href="#about" class="secondary">About</a></li>
+                <li><button class="outline secondary" id="config-btn" style="font-size: 0.8rem; padding: 4px 12px;">Settings</button></li>
+                <li><a href="#about" class="secondary" style="font-size: 0.8rem;">About</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container">
-        <div id="song-list-container">
-            <article aria-busy="true" id="loading-state">
-                Calculating consensus rankings...
-            </article>
-        </div>
+    <main class="container" id="song-list-container">
+        </main>
 
-        <div style="display: flex; justify-content: center; padding: 2rem 0;">
-            <button id="load-more" class="outline">Load More</button>
-        </div>
-    </main>
-
-    <dialog id="config-dialog">
+    <dialog id="stats-modal">
         <article>
             <header>
-                <button aria-label="Close" rel="prev" id="close-config"></button>
-                <p><strong>Refine Your Consensus</strong></p>
+                <button aria-label="Close" rel="prev" onclick="closeStats()"></button>
+                <p><strong>Ranking Math: <span id="stats-song-title"></span></strong></p>
             </header>
-            <form id="config-form">
-                <fieldset>
-                    <label for="rank-sensitivity">
-                        Decay Sensitivity: <span id="val-sensitivity">25</span>
-                        <input type="range" id="rank-sensitivity" min="0" max="50" step="1">
-                    </label>
-                    <label for="consensus-bonus">
-                        Consensus Bonus: <span id="val-bonus">5</span>%
-                        <input type="range" id="consensus-bonus" min="0" max="0.1" step="0.01">
-                    </label>
-                </fieldset>
-                <hr>
-                <div id="source-weights-container"></div>
-            </form>
-            <footer>
-                <button class="secondary outline" id="reset-config">Reset</button>
-                <button id="apply-config">Update Rankings</button>
-            </footer>
+            <table style="width: 100%; font-size: 0.8rem;">
+                <tr><td>Normalized Score</td><td id="stat-norm" style="text-align: right; font-weight: bold;"></td></tr>
+                <tr><td>Raw Points</td><td id="stat-raw" style="text-align: right;"></td></tr>
+                <tr><td>Consensus Multiplier</td><td id="stat-mult" style="text-align: right;"></td></tr>
+                <tr><td>List Count</td><td id="stat-count" style="text-align: right;"></td></tr>
+            </table>
         </article>
     </dialog>
-
-    <footer class="container">
-        <small id="about">
-            A dynamic music aggregator. All rankings are recalculated locally in your browser.
-        </small>
-    </footer>
 
     <script src="script.js"></script>
 </body>
 </html>
-ls
