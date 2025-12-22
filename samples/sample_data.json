@@ -1,8 +1,8 @@
 {
     "config": {
-        "shadow_ranks": {
-            "NPR_TOP_25_SHADOW_RANK": 13.0,
-            "NPR_BOTTOM_100_SHADOW_RANK": 75.5
+        "ranking": {
+            "rank_sensitivity": 25,
+            "consensus_bonus": 0.05
         },
         "sources": {
             "Billboard (Staff Picks)": {
@@ -35,11 +35,11 @@
             },
             "NPR Top 25": {
                 "url": "https://www.npr.org/nx-s1-5616663",
-                "shadow_rank_key": "NPR_TOP_25_SHADOW_RANK"
+                "weight": 0.95
             },
             "NPR Top 125": {
                 "url": "https://www.npr.org/nx-s1-5619849",
-                "shadow_rank_key": "NPR_BOTTOM_100_SHADOW_RANK"
+                "weight": 0.95
             },
             "The Quietus": {
                 "url": "https://thequietus.com/tq-charts/tracks-of-the-year/the-quietus-tracks-of-the-year-2025/",
@@ -81,115 +81,158 @@
     },
     "songs": [
         {
-            "id": "UKQNV2500087",
-            "artist": "Dean Blunt & Elias R\u00f8nnenfelt",
-            "name": "tears on his rings and chains",
+            "id": "USMTD2400372",
+            "artist": "Perfume Genius",
+            "name": "It's a Mirror",
             "sources": [
                 {
-                    "name": "Crack",
-                    "rank": 4,
-                    "quote": "feels like slipping into sleep ... lulling the listener into a place of safety"
+                    "name": "Consequence",
+                    "rank": 5,
+                    "quote": "transform that heavy pain into something luminous and vital"
+                },
+                {
+                    "name": "New York Times (Lindsay Zoladz)",
+                    "rank": 11,
+                    "quote": "embraces the grain of guitars on this sumptuous, ever-escalating single ... confronting a swirling maelstrom of fears with a self-assured swagger"
+                },
+                {
+                    "name": "The Quietus",
+                    "rank": 22
                 },
                 {
                     "name": "Pitchfork",
-                    "rank": 42,
-                    "quote": "a disarmingly tender Bluntian guitar ballad ... a gutting tearjerker by men with nothing left to hide"
+                    "rank": 30,
+                    "quote": "The song sprawls at a magnificent scale, all crashing drums, rolling guitars, and weighted silences"
+                },
+                {
+                    "name": "NPR Top 125",
+                    "rank": 75.5,
+                    "quote": "self-isolating loops, retreating into dark thoughts ... the loop becomes an ouroboros"
                 }
             ],
-            "list_count": 2,
+            "list_count": 5,
             "media": {
                 "youtube": {
-                    "music_id": "13uFAzc5Lvc",
-                    "video_id": "13uFAzc5Lvc"
+                    "music_id": "-hqqLEhWq9M",
+                    "video_id": "hx2_NGaDPrk"
                 },
                 "spotify": {
-                    "id": "7DigNxE6prVBzj4sPJopkT"
+                    "id": "2UYuux157cn498H23UfHQf"
                 }
             },
-            "archetype": "Indie Rock Hero \ud83c\udfb8"
+            "archetype": "Critical Darling \ud83e\udde0"
         },
         {
-            "id": "USJ5G2542802",
-            "artist": "Wednesday",
-            "name": "Townies",
+            "id": "GBAYE2500026",
+            "artist": "PinkPantheress",
+            "name": "Illegal",
             "sources": [
                 {
-                    "name": "Stereogum",
+                    "name": "NME",
                     "rank": 1,
-                    "quote": "she captures the tumultuous experience of girlhood in the most searingly straightforward way possible"
+                    "quote": "[It] hits like a storm gale, distilling '90s rave energy and smouldering dance-pop lyricism into a young, fun banger"
+                },
+                {
+                    "name": "The Guardian",
+                    "rank": 2,
+                    "quote": "a sped-up sample of the floodlit synths ... that throbs with all the disorientation and delight of a THC-addled brain"
+                },
+                {
+                    "name": "The FADER",
+                    "rank": 3,
+                    "quote": "dreamy jungle-pop track ... introducing the TikTok generation to a rave staple heard everywhere from sweat-soaked scenes in \"Trainspotting\" to the London Olympics Opening Ceremony"
                 },
                 {
                     "name": "Pitchfork",
+                    "rank": 6,
+                    "quote": "UK garage maximalism at its most indulgent"
+                },
+                {
+                    "name": "The Quietus",
+                    "rank": 6,
+                    "quote": "it's impossible not to be swept up by the intoxicating sugar rush of 'Illegal', with its dazzling Underworld-sampling synth melodies and shuffling 2-step UK garage rhythms"
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 6,
+                    "quote": "a giddy, stoned flirtation ... hinting at a nervous longing just beneath the surface"
+                },
+                {
+                    "name": "Billboard (Staff Picks)",
                     "rank": 7,
-                    "quote": "Can I still be pissed at the guy who shared my nudes if he's dead now?"
+                    "quote": "PinkPantheress suddenly arrives as an unabashed artist, fully formed, with a hook that can't be ignored"
+                },
+                {
+                    "name": "Complex",
+                    "rank": 12,
+                    "quote": "sticky melodies, bathed in a melancholic longing ... hints at other acts of youthful rebellion"
                 },
                 {
                     "name": "Consequence",
-                    "rank": 9,
-                    "quote": "one of the best examples of their countrygaze stylings"
+                    "rank": 25,
+                    "quote": "contains a near-instant dopamine rush ... buoyed by a now-iconic opening sequence"
+                }
+            ],
+            "list_count": 9,
+            "media": {
+                "youtube": {
+                    "music_id": "XuKq7zT_0nM",
+                    "video_id": "TFWXqLSr4ZM"
                 },
+                "spotify": {
+                    "id": "1WmBVbFmLt0w6zPP37TeCG"
+                }
+            }
+        },
+        {
+            "id": "GBCVZ2500003",
+            "artist": "Pulp",
+            "name": "Spike Island",
+            "sources": [
                 {
-                    "name": "NPR Top 25",
-                    "rank": 13.0,
-                    "quote": "catchy, country-influenced storytelling and the rock-star ability to stretch the word \"died\" into nine syllables"
-                },
-                {
-                    "name": "Paste",
-                    "rank": 21,
-                    "quote": "capable of locating her anger for complicit parties while holding space for forgiveness"
+                    "name": "The Guardian",
+                    "rank": 7,
+                    "quote": "it has a disco rhythm that's done with real affection rather than ironic affectation"
                 },
                 {
                     "name": "NME",
-                    "rank": 42,
-                    "quote": "excavating the pains of the past helps with closure ... exorcising ghosts through a redlined cut of cathartic grunge riffage"
+                    "rank": 9,
+                    "quote": "charm and delight with the kind of nuanced, uber-entertaining art-pop"
+                },
+                {
+                    "name": "The Quietus",
+                    "rank": 26
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 28,
+                    "quote": "he locks right back into his lounge-disco shimmy-strut"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 59,
+                    "quote": "rummaging through the cultural remains, wondering what it all meant"
+                },
+                {
+                    "name": "Billboard (Staff Picks)",
+                    "rank": 78,
+                    "quote": "a fist-pumping-and-hip-swinging return to form for Britpop greats Pulp"
                 }
             ],
             "list_count": 6,
             "media": {
                 "youtube": {
-                    "music_id": "mHEiyObNciA",
-                    "video_id": "E8cKoQqdtwA"
+                    "music_id": "DAeuKVWSm8w",
+                    "video_id": "-27a1ugJX8U"
                 },
                 "spotify": {
-                    "id": "2deA4WXDrTa7jAZuaIAeqo"
+                    "id": "1c66APUihMSvbniRdka1Er"
                 },
                 "bandcamp": {
-                    "url": "https://wednesdayband.bandcamp.com/track/townies"
+                    "url": "https://pulpmusic.bandcamp.com/track/spike-island"
                 }
             },
-            "archetype": "Indie Rock Hero \ud83c\udfb8"
-        },
-        {
-            "id": "USA2P2520537",
-            "artist": "Ryan Davis & the Roadhouse Band",
-            "name": "New Threats From The Soul",
-            "sources": [
-                {
-                    "name": "Paste",
-                    "rank": 2,
-                    "quote": "the loudmouth tempo of Jerry Jeff Walker, the literary devastation of David Berman, and the oddball charm of a John Prine verse ... blends them all into a potent, drunken recital of strangeness"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 5,
-                    "quote": "the lyrics, so full of humor and personality that you want him to keep going for another nine-and-a-half minutes"
-                },
-                {
-                    "name": "Rolling Stone",
-                    "rank": 11,
-                    "quote": "distilling all that's complex and confounding about life into clarifying gems"
-                }
-            ],
-            "list_count": 3,
-            "media": {
-                "youtube": {
-                    "music_id": "t_GCZgqElQY",
-                    "video_id": "TuvUY9adrQ8"
-                },
-                "spotify": {
-                    "id": "1IXWSLygPDS5LQDQZH0NAz"
-                }
-            }
+            "archetype": "High-Heat Sniper \ud83c\udfaf"
         }
     ]
 }
