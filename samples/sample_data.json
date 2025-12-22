@@ -1,0 +1,195 @@
+{
+    "config": {
+        "shadow_ranks": {
+            "NPR_TOP_25_SHADOW_RANK": 13.0,
+            "NPR_BOTTOM_100_SHADOW_RANK": 75.5
+        },
+        "sources": {
+            "Billboard (Staff Picks)": {
+                "url": "https://www.billboard.com/lists/best-songs-2025",
+                "weight": 1.5
+            },
+            "Rolling Stone": {
+                "url": "https://www.rollingstone.com/music/music-lists/best-songs-of-2025-1235468614",
+                "weight": 1.5
+            },
+            "Pitchfork": {
+                "url": "https://pitchfork.com/features/lists-and-guides/best-songs-2025/",
+                "weight": 1.2
+            },
+            "The Guardian": {
+                "url": "https://www.theguardian.com/music/ng-interactive/2025/dec/03/the-20-best-songs-of-2025",
+                "weight": 1.0
+            },
+            "New York Times (Jon Caramanica)": {
+                "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
+                "weight": 0.9
+            },
+            "New York Times (Lindsay Zoladz)": {
+                "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
+                "weight": 0.9
+            },
+            "Vulture": {
+                "url": "https://www.vulture.com/article/best-songs-2025.html",
+                "weight": 1.0
+            },
+            "NPR Top 25": {
+                "url": "https://www.npr.org/nx-s1-5616663",
+                "shadow_rank_key": "NPR_TOP_25_SHADOW_RANK"
+            },
+            "NPR Top 125": {
+                "url": "https://www.npr.org/nx-s1-5619849",
+                "shadow_rank_key": "NPR_BOTTOM_100_SHADOW_RANK"
+            },
+            "The Quietus": {
+                "url": "https://thequietus.com/tq-charts/tracks-of-the-year/the-quietus-tracks-of-the-year-2025/",
+                "weight": 0.9
+            },
+            "Gorilla vs. Bear": {
+                "url": "https://www.gorillavsbear.net/gorilla-vs-bears-songs-of-2025/",
+                "weight": 0.9
+            },
+            "The FADER": {
+                "url": "https://www.thefader.com/2025/12/09/best-songs-2025",
+                "weight": 0.9
+            },
+            "Complex": {
+                "url": "https://www.complex.com/music/a/dimassanfiorenzo/best-songs-2025",
+                "weight": 0.9
+            },
+            "Stereogum": {
+                "url": "https://stereogum.com/2480811/the-50-best-songs-of-2025/lists/year-in-review/2025-in-review",
+                "weight": 0.85
+            },
+            "Crack": {
+                "url": "http://crackmagazine.net/article/list-article/best-tracks-2025/",
+                "weight": 0.85
+            },
+            "Consequence": {
+                "url": "https://consequence.net/list/200-best-songs-of-2025-annual-report/",
+                "weight": 0.75
+            },
+            "Paste": {
+                "url": "https://www.pastemagazine.com/music/best-songs/the-100-best-songs-of-2025",
+                "weight": 0.75
+            },
+            "NME": {
+                "url": "https://www.nme.com/lists/end-of-year/best-songs-2025-3912937",
+                "weight": 0.75
+            }
+        }
+    },
+    "songs": [
+        {
+            "id": "UKQNV2500087",
+            "artist": "Dean Blunt & Elias R\u00f8nnenfelt",
+            "name": "tears on his rings and chains",
+            "sources": [
+                {
+                    "name": "Crack",
+                    "rank": 4,
+                    "quote": "feels like slipping into sleep ... lulling the listener into a place of safety"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 42,
+                    "quote": "a disarmingly tender Bluntian guitar ballad ... a gutting tearjerker by men with nothing left to hide"
+                }
+            ],
+            "list_count": 2,
+            "media": {
+                "youtube": {
+                    "music_id": "13uFAzc5Lvc",
+                    "video_id": "13uFAzc5Lvc"
+                },
+                "spotify": {
+                    "id": "7DigNxE6prVBzj4sPJopkT"
+                }
+            },
+            "archetype": "Indie Rock Hero \ud83c\udfb8"
+        },
+        {
+            "id": "USJ5G2542802",
+            "artist": "Wednesday",
+            "name": "Townies",
+            "sources": [
+                {
+                    "name": "Stereogum",
+                    "rank": 1,
+                    "quote": "she captures the tumultuous experience of girlhood in the most searingly straightforward way possible"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 7,
+                    "quote": "Can I still be pissed at the guy who shared my nudes if he's dead now?"
+                },
+                {
+                    "name": "Consequence",
+                    "rank": 9,
+                    "quote": "one of the best examples of their countrygaze stylings"
+                },
+                {
+                    "name": "NPR Top 25",
+                    "rank": 13.0,
+                    "quote": "catchy, country-influenced storytelling and the rock-star ability to stretch the word \"died\" into nine syllables"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 21,
+                    "quote": "capable of locating her anger for complicit parties while holding space for forgiveness"
+                },
+                {
+                    "name": "NME",
+                    "rank": 42,
+                    "quote": "excavating the pains of the past helps with closure ... exorcising ghosts through a redlined cut of cathartic grunge riffage"
+                }
+            ],
+            "list_count": 6,
+            "media": {
+                "youtube": {
+                    "music_id": "mHEiyObNciA",
+                    "video_id": "E8cKoQqdtwA"
+                },
+                "spotify": {
+                    "id": "2deA4WXDrTa7jAZuaIAeqo"
+                },
+                "bandcamp": {
+                    "url": "https://wednesdayband.bandcamp.com/track/townies"
+                }
+            },
+            "archetype": "Indie Rock Hero \ud83c\udfb8"
+        },
+        {
+            "id": "USA2P2520537",
+            "artist": "Ryan Davis & the Roadhouse Band",
+            "name": "New Threats From The Soul",
+            "sources": [
+                {
+                    "name": "Paste",
+                    "rank": 2,
+                    "quote": "the loudmouth tempo of Jerry Jeff Walker, the literary devastation of David Berman, and the oddball charm of a John Prine verse ... blends them all into a potent, drunken recital of strangeness"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 5,
+                    "quote": "the lyrics, so full of humor and personality that you want him to keep going for another nine-and-a-half minutes"
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 11,
+                    "quote": "distilling all that's complex and confounding about life into clarifying gems"
+                }
+            ],
+            "list_count": 3,
+            "media": {
+                "youtube": {
+                    "music_id": "t_GCZgqElQY",
+                    "video_id": "TuvUY9adrQ8"
+                },
+                "spotify": {
+                    "id": "1IXWSLygPDS5LQDQZH0NAz"
+                }
+            }
+        }
+    ]
+}

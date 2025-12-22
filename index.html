@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-style="fjord">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consensus Best Songs of 2025</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
+
+    <style>
+        /* FJORD Theme Implementation for Pico v2 */
+        [data-style="fjord"] {
+            --pico-font-family: "JetBrains Mono", ui-monospace, monospace;
+            --pico-headings-font-family: "JetBrains Mono", ui-monospace, monospace;
+
+            /* Colors mapped to Pico v2 variables */
+            --pico-primary: #9ca3af;
+            --pico-primary-hover: #d1d5db;
+            --pico-primary-underline: rgba(156, 163, 175, 0.5);
+            --pico-primary-focus: rgba(156, 163, 175, 0.25);
+
+            --pico-background-color: #0a0b0d;
+            --pico-card-background-color: #111214;
+
+            --pico-color: #d1d5db;
+            --pico-muted-color: #6b7280;
+            --pico-muted-border-color: rgba(156, 163, 175, 0.1);
+
+            --pico-border-radius: 2px;
+        }
+
+        /* Logic-specific styling */
+        .consensus-rank {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--pico-primary);
+            line-height: 1;
+        }
+
+        /* Style for the 'delta' rank changes we discussed */
+        .rank-delta {
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        .rank-up { color: #10b981; } /* Green */
+        .rank-down { color: #ef4444; } /* Red */
+
+        /* Responsive song card layout */
+        .song-card {
+            border: 1px solid var(--pico-muted-border-color);
+            transition: border-color 0.2s ease;
+        }
+        .song-card:hover {
+            border-color: var(--pico-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>Consensus 2025</strong></li>
+            </ul>
+            <ul>
+                <li><button class="outline secondary" id="config-btn">⚙️ Settings</button></li>
+                <li><a href="#about" class="secondary">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="song-list-container">
+            <article aria-busy="true" id="loading-state">
+                Calculating consensus rankings...
+            </article>
+        </div>
+
+        <div style="display: flex; justify-content: center; padding: 2rem 0;">
+            <button id="load-more" class="outline">Load More</button>
+        </div>
+    </main>
+
+    <dialog id="config-dialog">
+        <article>
+            <header>
+                <button aria-label="Close" rel="prev" id="close-config"></button>
+                <p><strong>Refine Your Consensus</strong></p>
+            </header>
+            <form id="config-form">
+                <fieldset>
+                    <label for="rank-sensitivity">
+                        Decay Sensitivity: <span id="val-sensitivity">25</span>
+                        <input type="range" id="rank-sensitivity" min="0" max="50" step="1">
+                    </label>
+                    <label for="consensus-bonus">
+                        Consensus Bonus: <span id="val-bonus">5</span>%
+                        <input type="range" id="consensus-bonus" min="0" max="0.1" step="0.01">
+                    </label>
+                </fieldset>
+                <hr>
+                <div id="source-weights-container"></div>
+            </form>
+            <footer>
+                <button class="secondary outline" id="reset-config">Reset</button>
+                <button id="apply-config">Update Rankings</button>
+            </footer>
+        </article>
+    </dialog>
+
+    <footer class="container">
+        <small id="about">
+            A dynamic music aggregator. All rankings are recalculated locally in your browser.
+        </small>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+ls
