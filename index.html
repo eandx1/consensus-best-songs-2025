@@ -232,16 +232,22 @@
         <article>
             <header>
                 <button aria-label="Close" rel="prev" onclick="document.getElementById('stats-modal').close()"></button>
-                <p><strong>Ranking Math: <span id="stats-song-title"></span></strong></p>
+                <p><strong>Ranking: <span id="stats-song-title"></span></strong></p>
             </header>
             <table class="stats-table">
                 <tr><td>Normalized Score</td><td id="stat-norm" class="val"></td></tr>
-                <tr><td>Raw Points (Weighted Decay)</td><td id="stat-raw" class="val"></td></tr>
+                <tr><td>Review List Count</td><td id="stat-count" class="val"></td></tr>
                 <tr><td>Consensus Multiplier</td><td id="stat-mult" class="val"></td></tr>
-                <tr><td>Critical List Count</td><td id="stat-count" class="val"></td></tr>
+                <tr><td>Raw Score</td><td id="stat-raw" class="val"></td></tr>
             </table>
+            <div id="source-contributions" style="margin-top: 1.5rem; max-height: 300px; overflow-y: auto;">
+                <h6 style="margin-bottom: 0.5rem; font-size: 0.9rem;">Source Contributions</h6>
+                <table style="font-size: 0.85rem;">
+                    <tbody id="contributions-list"></tbody>
+                </table>
+            </div>
             <footer style="margin-top: 1rem; font-size: 0.7rem; color: var(--pico-muted-color);">
-                Score = Raw Points × (1 + (Bonus × ln(Count)))
+                Score = Raw Score × Consensus Multiplier
             </footer>
         </article>
     </dialog>

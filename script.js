@@ -162,7 +162,7 @@ function renderList() {
         const statsBtn = article.querySelector('.stats-trigger');
         if (statsBtn) {
             statsBtn.addEventListener('click', () => {
-                openStats(song.name, song.normalizedScore, song.rawScore, song.multiplier, song.list_count);
+                openStats(song);
             });
         }
         
@@ -223,12 +223,42 @@ function escapeHtml(text) {
 }
 
 // 4. MODAL & INTERACTION HANDLERS
-window.openStats = function(title, norm, raw, mult, count) {
-    document.getElementById('stats-song-title').innerText = title;
-    document.getElementById('stat-norm').innerText = norm.toFixed(3);
-    document.getElementById('stat-raw').innerText = raw.toFixed(3);
-    document.getElementById('stat-mult').innerText = mult.toFixed(2) + 'x';
-    document.getElementById('stat-count').innerText = count;
+window.openStats = function(song) {
+    document.getElementById('stats-song-title').innerText = song.name;
+    document.getElementById('stat-norm').innerText = song.normalizedScore.toFixed(3);
+    document.getElementById('stat-count').innerText = song.list_count;
+    document.getElementById('stat-mult').innerText = song.multiplier.toFixed(2) + 'x';
+    document.getElementById('stat-raw').innerText = song.rawScore.toFixed(3);
+    
+    // Build source contributions list
+    const contributionsList = document.getElementById('contributions-list');
+    contributionsList.innerHTML = '';
+    
+    // Calculate each source's contribution
+    const contributions = song.sources.map(src => {
+        const weight = userWeights[src.name] || 1.0;
+        const contribution = weight / (src.rank + rankSensitivity);
+        return {
+            name: src.name,
+            rank: src.rank,
+            weight: weight,
+            contribution: contribution
+        };
+    });
+    
+    // Sort by contribution (highest first)
+    contributions.sort((a, b) => b.contribution - a.contribution);
+    
+    // Render each contribution
+    contributions.forEach(contrib => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="padding: 0.25rem 0.5rem;">${escapeHtml(contrib.name)} #${contrib.rank}</td>
+            <td style="padding: 0.25rem 0.5rem; text-align: right; font-family: monospace;">${contrib.contribution.toFixed(4)}</td>
+        `;
+        contributionsList.appendChild(row);
+    });
+    
     document.getElementById('stats-modal').showModal();
 };
 
