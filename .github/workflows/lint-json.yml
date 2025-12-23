@@ -1,0 +1,15 @@
+name: Validate Data JSON
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate JSON Syntax
+        run: |
+          # Uses the built-in python json tool to check for syntax errors
+          cat data.json | python3 -m json.tool > /dev/null
+
