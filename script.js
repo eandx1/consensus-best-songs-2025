@@ -234,7 +234,7 @@ window.openStats = function(title, norm, raw, mult, count) {
 
 window.openReview = function(name, quote, url) {
     document.getElementById('review-source-name').innerText = name;
-    document.getElementById('review-quote').innerText = quote || "No snippet available for this review.";
+    document.getElementById('review-quote').innerText = quote ? `"${quote}"` : "No snippet available for this review.";
     document.getElementById('review-link').href = url;
     document.getElementById('review-modal').showModal();
 };
