@@ -205,11 +205,15 @@
                 <fieldset>
                     <label for="rank-sensitivity">
                         Rank Sensitivity: <span id="val-sensitivity">25</span>
-                        <input type="range" id="rank-sensitivity" min="0" max="50" step="1" value="25">
+                        <div style="position: relative;">
+                            <input type="range" id="rank-sensitivity" min="0" max="50" step="1" value="25">
+                        </div>
                     </label>
                     <label for="consensus-bonus">
                         Consensus Boost: <span id="val-bonus">5</span>%
-                        <input type="range" id="consensus-bonus" min="0" max="0.1" step="0.001" value="0.05">
+                        <div style="position: relative;">
+                            <input type="range" id="consensus-bonus" min="0" max="0.1" step="0.001" value="0.05">
+                        </div>
                     </label>
                 </fieldset>
                 

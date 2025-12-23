@@ -355,6 +355,34 @@ resetConfigBtn.addEventListener('click', () => {
     debouncedUpdate();
 });
 
+// Helper function to add default marker to a slider
+function addDefaultMarker(slider, defaultValue, maxValue) {
+    // Remove existing marker if any
+    const parent = slider.parentElement;
+    const existingMarker = parent.querySelector('.default-marker');
+    if (existingMarker) {
+        existingMarker.remove();
+    }
+    
+    const marker = document.createElement('div');
+    marker.className = 'default-marker';
+    marker.style.position = 'absolute';
+    marker.style.width = '3px';
+    marker.style.height = '1.75rem'; // Taller to be more visible
+    marker.style.backgroundColor = '#f59e0b'; // Amber/orange accent color
+    marker.style.top = '50%';
+    marker.style.left = `${(defaultValue / maxValue) * 100}%`;
+    marker.style.transform = 'translate(-1.5px, -50%)';
+    marker.style.pointerEvents = 'none';
+    marker.style.opacity = '0.85';
+    marker.style.zIndex = '10'; // Above the track but below the thumb
+    marker.style.borderRadius = '2px';
+    marker.style.boxShadow = '0 0 6px rgba(245, 158, 11, 0.4)';
+    
+    // Append after the slider so it renders on top
+    parent.appendChild(marker);
+}
+
 // Populate configuration dialog with current values
 function populateConfigDialog() {
     // Set ranking parameter values
@@ -366,6 +394,10 @@ function populateConfigDialog() {
     
     document.getElementById('val-sensitivity').textContent = rankSensitivity;
     document.getElementById('val-bonus').textContent = (consensusBonus * 100).toFixed(1);
+    
+    // Add default markers for ranking parameters
+    addDefaultMarker(sensitivitySlider, defaultRankSensitivity, 50);
+    addDefaultMarker(bonusSlider, defaultConsensusBonus, 0.1);
     
     // Generate source weight sliders
     const container = document.getElementById('source-weights-container');
@@ -400,26 +432,17 @@ function populateConfigDialog() {
         slider.dataset.source = sourceName;
         slider.dataset.default = defaultWeight;
         
-        // Add default marker styling
+        // Add slider with default marker
         const sliderWrapper = document.createElement('div');
         sliderWrapper.style.position = 'relative';
         
-        const defaultMarker = document.createElement('div');
-        defaultMarker.style.position = 'absolute';
-        defaultMarker.style.width = '2px';
-        defaultMarker.style.height = '8px';
-        defaultMarker.style.backgroundColor = 'var(--pico-primary)';
-        defaultMarker.style.top = '0';
-        defaultMarker.style.left = `${(defaultWeight / 2) * 100}%`;
-        defaultMarker.style.transform = 'translateX(-1px)';
-        defaultMarker.style.pointerEvents = 'none';
-        defaultMarker.style.opacity = '0.5';
-        
         label.appendChild(sourceLabelSpan);
         label.appendChild(valueSpan);
-        sliderWrapper.appendChild(defaultMarker);
         sliderWrapper.appendChild(slider);
         label.appendChild(sliderWrapper);
+        
+        // Add default marker using helper
+        addDefaultMarker(slider, defaultWeight, 2);
         fieldset.appendChild(label);
         container.appendChild(fieldset);
         
