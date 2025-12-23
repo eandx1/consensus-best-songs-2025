@@ -20,9 +20,15 @@ async function init() {
         rankSensitivity = songData.config.ranking.rank_sensitivity;
         consensusBonus = songData.config.ranking.consensus_bonus;
         
-        // Map source weights
+        // Store defaults for reset/snap functionality
+        defaultRankSensitivity = rankSensitivity;
+        defaultConsensusBonus = consensusBonus;
+        
+        // Map source weights and store defaults
         Object.keys(songData.config.sources).forEach(key => {
-            userWeights[key] = songData.config.sources[key].weight;
+            const weight = songData.config.sources[key].weight;
+            userWeights[key] = weight;
+            defaultWeights[key] = weight;
         });
 
         // Sync with URL if parameters exist
@@ -236,19 +242,57 @@ window.openReview = function(name, quote, url) {
 // 5. URL PERSISTENCE (Syncing State)
 function saveStateToURL() {
     const params = new URLSearchParams();
-    params.set('s', rankSensitivity);
-    params.set('b', consensusBonus);
-    Object.entries(userWeights).forEach(([site, weight]) => {
-        if (weight !== 1.0) params.set(site, weight);
+    
+    // Only add parameters if they differ from defaults
+    if (rankSensitivity !== defaultRankSensitivity) {
+        params.set('s', rankSensitivity);
+    }
+    if (consensusBonus !== defaultConsensusBonus) {
+        params.set('b', consensusBonus);
+    }
+    
+    // Add source weights that differ from defaults
+    Object.entries(userWeights).forEach(([source, weight]) => {
+        if (weight !== defaultWeights[source]) {
+            // Use a shortened key for URL brevity
+            const key = 'w_' + source.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20);
+            params.set(key, weight);
+        }
     });
-    window.history.replaceState({}, '', `${location.pathname}?${params}`);
+    
+    const queryString = params.toString();
+    const newURL = queryString ? `${location.pathname}?${queryString}` : location.pathname;
+    window.history.replaceState({}, '', newURL);
 }
 
 function loadStateFromURL() {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('s')) rankSensitivity = parseFloat(params.get('s'));
-    if (params.has('b')) consensusBonus = parseFloat(params.get('b'));
-    // Additional logic for site weights here...
+    
+    // Load rank sensitivity
+    if (params.has('s')) {
+        rankSensitivity = parseFloat(params.get('s'));
+    }
+    
+    // Load consensus bonus
+    if (params.has('b')) {
+        consensusBonus = parseFloat(params.get('b'));
+    }
+    
+    // Load source weights
+    params.forEach((value, key) => {
+        if (key.startsWith('w_')) {
+            // Try to match the shortened key back to a source name
+            const searchPattern = key.substring(2).toLowerCase();
+            const matchedSource = Object.keys(userWeights).find(source => {
+                const normalized = source.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20).toLowerCase();
+                return normalized === searchPattern;
+            });
+            
+            if (matchedSource) {
+                userWeights[matchedSource] = parseFloat(value);
+            }
+        }
+    });
 }
 
 // 6. LOAD MORE HANDLER
@@ -264,6 +308,196 @@ document.getElementById('load-more').addEventListener('click', () => {
     
     renderList();
 });
+
+// 7. CONFIGURATION DIALOG
+const configDialog = document.getElementById('config-dialog');
+const configBtn = document.getElementById('config-btn');
+const closeConfigBtn = document.getElementById('close-config');
+const applyConfigBtn = document.getElementById('apply-config');
+const resetConfigBtn = document.getElementById('reset-config');
+
+// Store default values for snap-to and reset
+let defaultRankSensitivity = 25;
+let defaultConsensusBonus = 0.05;
+let defaultWeights = {};
+
+// Open configuration dialog
+configBtn.addEventListener('click', () => {
+    populateConfigDialog();
+    configDialog.showModal();
+});
+
+// Close configuration dialog
+closeConfigBtn.addEventListener('click', () => {
+    configDialog.close();
+});
+
+// Apply button just closes the dialog (changes are already applied via debounce)
+applyConfigBtn.addEventListener('click', () => {
+    configDialog.close();
+});
+
+// Reset to defaults
+resetConfigBtn.addEventListener('click', () => {
+    // Reset ranking parameters
+    rankSensitivity = defaultRankSensitivity;
+    consensusBonus = defaultConsensusBonus;
+    
+    // Reset source weights
+    Object.keys(defaultWeights).forEach(source => {
+        userWeights[source] = defaultWeights[source];
+    });
+    
+    // Update UI
+    populateConfigDialog();
+    
+    // Recalculate and update URL
+    debouncedUpdate();
+});
+
+// Populate configuration dialog with current values
+function populateConfigDialog() {
+    // Set ranking parameter values
+    const sensitivitySlider = document.getElementById('rank-sensitivity');
+    const bonusSlider = document.getElementById('consensus-bonus');
+    
+    sensitivitySlider.value = rankSensitivity;
+    bonusSlider.value = consensusBonus;
+    
+    document.getElementById('val-sensitivity').textContent = rankSensitivity;
+    document.getElementById('val-bonus').textContent = (consensusBonus * 100).toFixed(1);
+    
+    // Generate source weight sliders
+    const container = document.getElementById('source-weights-container');
+    container.innerHTML = '';
+    
+    Object.keys(songData.config.sources).forEach(sourceName => {
+        const weight = userWeights[sourceName];
+        const defaultWeight = defaultWeights[sourceName];
+        
+        const fieldset = document.createElement('fieldset');
+        fieldset.style.marginBottom = '1rem';
+        
+        const label = document.createElement('label');
+        label.setAttribute('for', `weight-${sourceName}`);
+        
+        const sourceLabelSpan = document.createElement('span');
+        sourceLabelSpan.textContent = sourceName + ': ';
+        sourceLabelSpan.style.fontSize = '0.85rem';
+        
+        const valueSpan = document.createElement('span');
+        valueSpan.id = `val-weight-${sourceName}`;
+        valueSpan.textContent = weight.toFixed(2);
+        valueSpan.style.fontWeight = 'bold';
+        
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.id = `weight-${sourceName}`;
+        slider.min = '0';
+        slider.max = '2';
+        slider.step = '0.05';
+        slider.value = weight;
+        slider.dataset.source = sourceName;
+        slider.dataset.default = defaultWeight;
+        
+        // Add default marker styling
+        const sliderWrapper = document.createElement('div');
+        sliderWrapper.style.position = 'relative';
+        
+        const defaultMarker = document.createElement('div');
+        defaultMarker.style.position = 'absolute';
+        defaultMarker.style.width = '2px';
+        defaultMarker.style.height = '8px';
+        defaultMarker.style.backgroundColor = 'var(--pico-primary)';
+        defaultMarker.style.top = '0';
+        defaultMarker.style.left = `${(defaultWeight / 2) * 100}%`;
+        defaultMarker.style.transform = 'translateX(-1px)';
+        defaultMarker.style.pointerEvents = 'none';
+        defaultMarker.style.opacity = '0.5';
+        
+        label.appendChild(sourceLabelSpan);
+        label.appendChild(valueSpan);
+        sliderWrapper.appendChild(defaultMarker);
+        sliderWrapper.appendChild(slider);
+        label.appendChild(sliderWrapper);
+        fieldset.appendChild(label);
+        container.appendChild(fieldset);
+        
+        // Add event listener for this slider
+        slider.addEventListener('input', handleWeightSliderChange);
+    });
+    
+    // Add listeners for ranking parameter sliders
+    sensitivitySlider.removeEventListener('input', handleSensitivityChange);
+    bonusSlider.removeEventListener('input', handleBonusChange);
+    sensitivitySlider.addEventListener('input', handleSensitivityChange);
+    bonusSlider.addEventListener('input', handleBonusChange);
+}
+
+// Handle rank sensitivity slider change
+function handleSensitivityChange(e) {
+    const value = parseFloat(e.target.value);
+    const defaultVal = defaultRankSensitivity;
+    
+    // Snap to default if within threshold
+    if (Math.abs(value - defaultVal) < 1) {
+        e.target.value = defaultVal;
+        rankSensitivity = defaultVal;
+    } else {
+        rankSensitivity = value;
+    }
+    
+    document.getElementById('val-sensitivity').textContent = rankSensitivity;
+    debouncedUpdate();
+}
+
+// Handle consensus bonus slider change
+function handleBonusChange(e) {
+    const value = parseFloat(e.target.value);
+    const defaultVal = defaultConsensusBonus;
+    
+    // Snap to default if within threshold
+    if (Math.abs(value - defaultVal) < 0.005) {
+        e.target.value = defaultVal;
+        consensusBonus = defaultVal;
+    } else {
+        consensusBonus = value;
+    }
+    
+    document.getElementById('val-bonus').textContent = (consensusBonus * 100).toFixed(1);
+    debouncedUpdate();
+}
+
+// Handle source weight slider change
+function handleWeightSliderChange(e) {
+    const sourceName = e.target.dataset.source;
+    const value = parseFloat(e.target.value);
+    const defaultVal = parseFloat(e.target.dataset.default);
+    
+    // Snap to default if within threshold
+    if (Math.abs(value - defaultVal) < 0.05) {
+        e.target.value = defaultVal;
+        userWeights[sourceName] = defaultVal;
+    } else {
+        userWeights[sourceName] = value;
+    }
+    
+    document.getElementById(`val-weight-${sourceName}`).textContent = userWeights[sourceName].toFixed(2);
+    debouncedUpdate();
+}
+
+// Debounced update function (250ms delay)
+let updateTimeout = null;
+function debouncedUpdate() {
+    if (updateTimeout) {
+        clearTimeout(updateTimeout);
+    }
+    
+    updateTimeout = setTimeout(() => {
+        updateRankings();
+        saveStateToURL();
+    }, 250);
+}
 
 // Kick off
 init();
