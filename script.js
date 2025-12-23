@@ -7,6 +7,8 @@ let songData = null; // Original JSON (Immutable Source)
 let userWeights = {}; 
 let rankSensitivity = 25;
 let consensusBonus = 0.05;
+let currentDisplayLimit = 25; // Start with top 25
+let rankedSongs = []; // Store the full ranked list
 
 // 1. INITIALIZATION
 async function init() {
@@ -54,7 +56,7 @@ function updateRankings() {
     const maxRaw = Math.max(...calculatedSongs.map(s => s.rawScore));
 
     // C. Normalize, Sort, and Assign Rank
-    const rankedList = calculatedSongs
+    rankedSongs = calculatedSongs
         .map(song => ({
             ...song,
             normalizedScore: song.rawScore / maxRaw
@@ -65,15 +67,18 @@ function updateRankings() {
             currentRank: index + 1
         }));
 
-    renderList(rankedList);
+    renderList();
 }
 
 // 3. UI RENDERING
-function renderList(songs) {
+function renderList() {
     const container = document.getElementById('song-list-container');
     container.innerHTML = ''; // Clear loading state
 
-    songs.slice(0, 100).forEach(song => {
+    // Render only up to the current display limit
+    const songsToDisplay = rankedSongs.slice(0, currentDisplayLimit);
+    
+    songsToDisplay.forEach(song => {
         const article = document.createElement('article');
         article.className = 'song-card';
         
@@ -166,6 +171,41 @@ function renderList(songs) {
         
         container.appendChild(article);
     });
+    
+    // Update Load More button
+    updateLoadMoreButton();
+}
+
+// Update the Load More button visibility and text
+function updateLoadMoreButton() {
+    const button = document.getElementById('load-more');
+    const totalSongs = rankedSongs.length;
+    
+    if (currentDisplayLimit >= totalSongs) {
+        // All songs are displayed
+        button.style.display = 'none';
+    } else {
+        button.style.display = 'block';
+        
+        // Determine next limit and update button text
+        let nextLimit;
+        if (currentDisplayLimit < 100) {
+            nextLimit = 100;
+        } else if (currentDisplayLimit < 200) {
+            nextLimit = 200;
+        } else {
+            nextLimit = totalSongs;
+        }
+        
+        const remaining = totalSongs - currentDisplayLimit;
+        const toShow = Math.min(nextLimit - currentDisplayLimit, remaining);
+        
+        if (nextLimit === totalSongs) {
+            button.textContent = `Show All (${remaining} more)`;
+        } else {
+            button.textContent = `Show Top ${nextLimit} (${toShow} more)`;
+        }
+    }
 }
 
 // Helper function to escape HTML special characters
@@ -210,6 +250,20 @@ function loadStateFromURL() {
     if (params.has('b')) consensusBonus = parseFloat(params.get('b'));
     // Additional logic for site weights here...
 }
+
+// 6. LOAD MORE HANDLER
+document.getElementById('load-more').addEventListener('click', () => {
+    // Progress through the display limits: 25 → 100 → 200 → all
+    if (currentDisplayLimit < 100) {
+        currentDisplayLimit = 100;
+    } else if (currentDisplayLimit < 200) {
+        currentDisplayLimit = 200;
+    } else {
+        currentDisplayLimit = rankedSongs.length;
+    }
+    
+    renderList();
+});
 
 // Kick off
 init();
