@@ -14,7 +14,7 @@ Users can adjust source weights and two ranking function parameters to dynamical
 - Plain semantic HTML5
 - Vanilla JavaScript (ES6+)
 - Pico CSS
-- Video Embeds: Use the `lite-youtube` web component when YouTube or YouTube Music IDs exist. Include it via CDN in the `<head>: <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>`
+- Video Embeds: Use the `lite-youtube` web component (v1+) when YouTube or YouTube Music IDs exist. Include it via CDN in the `<head>`: `<script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>`. Version 1+ is required for `::part(playButton)` styling support.
 - Data: All data is from a local `data.json` file
 - State Management: Treat `data.json` as an immutable source of truth. All rankings must be calculated as a "derived view" by applying default or user-defined weights to the source data
 - URL Persistence: Use the native URLSearchParams API to synchronize configuration state (weights and ranking parameters) to the URL query string. The application must be "deep-linkable," meaning if a user shares a URL, another user opening it should see the exact same custom ranking.
@@ -27,25 +27,34 @@ Users can adjust source weights and two ranking function parameters to dynamical
 
 "Dark mode" style website with clean, responsive UI for both desktop and mobile.
 
-## Top
+## Header
 
-- Include the site title "Consensus Best Songs of 2025"
-- Include a "Configuration" button (could use a gear icon)
-- Include an "About" link last that links to the README.md in this repo
+- Site title: "Consensus Best Songs 2025"
+- "Settings" button to open configuration modal
+- "About" link that opens GitHub repository in new tab (https://github.com/eandx1/consensus-best-songs-2025)
 
 ## Song Card List
 
 The primary focus is a ranked list of song cards showing:
 
-- Song title
-- Artist list
-- List of source review sites citing it and their ranks in Site#Rank format with links
-- One or more of Spotify, YouTube, Bandcamp, or Other link
-- Song thumbnail facade and link to play song (when data available)
-- Optional: Archetype badge
-- A faint info icon in the top right that opens up a modal with stats about the ranking 
+- Song rank number (large, left-aligned on desktop)
+- YouTube video player preview (uses `video_id` if available, falls back to `music_id`)
+  - Play button customized to be smaller (68x48px) and positioned in lower right corner via `::part(playButton)` styling
+- Song title and artist
+- Sources list: Single clickable line showing all sources in "SourceName#Rank" format, separated by middot (·)
+  - Sources wrap but each "SourceName#Rank" stays together (no line breaks within)
+  - Clicking opens Reviews modal with all sources, quotes, and review links
+- "LISTEN:" links dynamically generated based on available media:
+  - "YouTube" link (if `video_id` exists)
+  - "YTM" link (if `music_id` exists) - both can appear if both IDs present
+  - "Spotify" link (if `spotify.id` exists)
+  - "Bandcamp" link (if `bandcamp.url` exists)
+  - "Other" link (if `other.url` exists)
+- Info (ⓘ) icon in top right that opens Ranking Stats modal
 
-By default, the top 25 are shown, but the user can expand to the top 100, top 200, and then all.
+**Note**: Archetype badges have been removed from the current implementation.
+
+By default, the top 25 are shown. Users can progressively load more: top 100, top 200, then all songs.
 
 ## Interactivity
 
@@ -55,25 +64,65 @@ On Initialization: Check `window.location.search`. If parameters exist, override
 
 On Slider Change: Update the `URLSearchParams` object and use `history.replaceState` to update the browser's address bar without reloading the page.
 
-### Overlays
+### Overlays/Modals
 
-Overlays: Use semantic HTML `<dialog>` elements for the Configuration and Source Quote overlays. Leverage Pico CSS's built-in styles for modals.
+Three semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
-### Configuration
+1. **Settings Modal**: Title "Settings" - for adjusting ranking parameters and source weights
+2. **Ranking Stats Modal**: Title "Ranking: <song name>" - shows detailed scoring breakdown
+3. **Reviews Modal**: Title "Reviews" - shows all source reviews with quotes and links
 
-Clicking the configuration button in the header should open an overlay that lets the user adjust the following with horizontal sliders. Actual values should be shown at least in tool-tip like overlays when moved. The default should be marked with a small vertical line and have snap-to functionality.
+### Settings Modal
 
-- Ranking parameters
-  - Rank sensitivity in the weighted rank decay function. Default is in `data["config"]["ranking"]["rank_sensitivity"]`. Its range is 0 to 50.
-  - Consensus boost, which is a percentage from 0% to 10%. Default is in `data["config"]["ranking"]["consensus_boost"]`
-- Source weights
-  - These are weights from 0.0 to 2.0 per source. Defaults are in `"weight"` in `data["config"]["sources"]`
+Modal header shows "Settings". Contains two sections:
 
-Adjusting these parameters recomputes the score for each song. The song list is then automatically re-ranked by descending score and the UI is updated. Implementation of the ranking recalculation should be debounced (e.g., 250ms) to ensure the UI remains fluid while the user is actively sliding a range input.
+**Ranking Parameters** (appears first):
+- Rank Sensitivity slider: range 0-50, step 1, default from `data["config"]["ranking"]["rank_sensitivity"]`
+- Consensus Boost slider: range 0%-10%, step 0.1%, default from `data["config"]["ranking"]["consensus_boost"]`
 
-### Source review quotes
+**Source Weights** (appears second):
+- One slider per source: range 0.0-2.0, step 0.01, default from each source's `weight` in `data["config"]["sources"]`
+- Display the source's `full_name` if available, otherwise use the source key name
+- When a value differs from default, the label text is highlighted in amber (#f59e0b) to indicate customization
 
-Each source for a song also has a quote from the review. Clicking on an "info" icon near the source list should open an overlay showing the sources, their ranks, and a quote for each with a link to the full review.
+UI behaviors:
+- Values update in real-time (debounced by 250ms)
+- Rankings recalculate automatically as user adjusts sliders
+- Snap-to-default functionality when slider value is within threshold of default
+- "Defaults" button resets all values
+- "Close" button dismisses modal
+- Modal has unified scroll (no sub-scrolling sections)
+
+Adjusting parameters triggers debounced ranking recalculation and URL state update.
+
+### Reviews Modal
+
+Modal header shows "Reviews" (no song name to prevent overflow).
+
+Displays all sources for a song in order (preserving source array order from data):
+- Each source entry shows:
+  - Source name (use `full_name` from config if available, otherwise source key) with rank: "Source Name #Rank"
+  - Quote in italic, wrapped in double quotes
+  - "Read Full Review ↗" link (right-justified) to source URL
+- Modal content is scrollable for songs with many sources
+- Entries separated by horizontal dividers
+
+### Ranking Stats Modal
+
+Modal header shows "Ranking: <song name>".
+
+Displays scoring details in order:
+1. Normalized Score (the final 0-1 score)
+2. Review List Count (number of lists citing the song)
+3. Consensus Multiplier (the bonus applied)
+4. Raw Score (base score before normalization)
+5. Source Contributions section:
+   - Each source listed with rank and its calculated contribution
+   - Format: "Source Name #Rank: 0.xxxx"
+   - Sorted by contribution value (highest first)
+   - Scrollable if many sources
+
+Footer shows the formula: "Score = Raw Score × Consensus Multiplier"
 
 # Data Layout
 
@@ -119,6 +168,58 @@ root
 See [sample_data.json](samples/sample_data.json) for the JSON data format and 3 sample songs.
 
 See [song_sample.html](samples/song_sample.html) for inspiration for the UI style for a single song card in the list.
+
+# Workflow Guidelines
+
+1. **Atomic Changes:** Suggest one feature or one bug fix at a time.
+2. **Verification:** After writing code, explain how it interacts with the `data.json` structure.
+3. **No Placeholders:** Write complete code blocks; avoid "insert logic here" comments.
+
+# Implementation Details
+
+## YouTube Embed Priority
+
+For the main video player embed, prefer `video_id` over `music_id`:
+```javascript
+const embedId = song.media?.youtube?.video_id || song.media?.youtube?.music_id;
+```
+
+## Listen Links Logic
+
+Generate links dynamically based on available media:
+- YouTube link if `video_id` exists → `https://www.youtube.com/watch?v={video_id}`
+- YTM link if `music_id` exists → `https://music.youtube.com/watch?v={music_id}`
+- Both can appear if both IDs are present
+- Spotify link if `spotify.id` exists
+- Bandcamp link if `bandcamp.url` exists  
+- Other link if `other.url` exists
+
+## Video Player Customization
+
+The `lite-youtube` play button is customized via `::part(playButton)`:
+- Size: 68x48px (standard YouTube button size)
+- Position: lower right corner (bottom: 12px, right: 12px)
+- Opacity: 0.9 default, 1.0 on hover
+- Slight scale-up on hover for feedback
+
+## Security
+
+Always use `escapeHtml()` helper function when inserting user-generated or data-driven content into HTML to prevent XSS attacks.
+
+## Responsive Design
+
+- Desktop: Uses CSS Grid with 3 columns (rank, video, info)
+- Video column uses `minmax(200px, 320px)` for responsive scaling
+- Mobile: Stacked layout with flexbox
+- Sources list wraps with `white-space: nowrap` on individual items
+
+## Progressive Loading
+
+- Initial: 25 songs
+- Button shows: "Show Top 100 (75 more)"
+- Then: "Show Top 200 (100 more)"
+- Finally: "Show All (X more)"
+- Button hidden when all songs displayed
 
 # Workflow Guidelines
 
