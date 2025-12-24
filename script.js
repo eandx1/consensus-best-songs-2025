@@ -414,8 +414,17 @@ function addDefaultMarker(slider, defaultValue, maxValue) {
     marker.style.height = '1.75rem'; // Taller to be more visible
     marker.style.backgroundColor = '#f59e0b'; // Amber/orange accent color
     marker.style.top = '50%';
-    marker.style.left = `${(defaultValue / maxValue) * 100}%`;
-    marker.style.transform = 'translate(-1.5px, -50%)';
+    
+    // Calculate position - range input thumbs are positioned such that their center
+    // aligns with the value percentage, but the track has padding on the sides
+    const minValue = parseFloat(slider.min) || 0;
+    const percentage = (defaultValue - minValue) / (maxValue - minValue);
+    
+    // Use calc() for precise positioning that accounts for thumb width
+    // The formula: percentage of (100% - thumb width) + half thumb width
+    marker.style.left = `calc(${percentage * 100}% - ${percentage * 16}px + 8px)`;
+    marker.style.transform = 'translate(-50%, -50%)';
+    
     marker.style.pointerEvents = 'none';
     marker.style.opacity = '0.85';
     marker.style.zIndex = '10'; // Above the track but below the thumb
@@ -470,7 +479,7 @@ function populateConfigDialog() {
         slider.id = `weight-${sourceName}`;
         slider.min = '0';
         slider.max = '2';
-        slider.step = '0.05';
+        slider.step = '0.01';
         slider.value = weight;
         slider.dataset.source = sourceName;
         slider.dataset.default = defaultWeight;
