@@ -202,6 +202,51 @@
         .stats-table { width: 100%; font-size: 0.85rem; border-collapse: collapse; }
         .stats-table td { padding: 0.5rem 0; border-bottom: 1px solid var(--pico-muted-border-color); }
         .stats-table .val { text-align: right; font-weight: bold; color: var(--pico-primary); }
+        
+        /* Source Contributions Styling */
+        .source-contributions {
+            margin-top: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .source-contributions h6 {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .contributions-table {
+            font-size: 0.85rem;
+        }
+        
+        /* Modal Footer */
+        .modal-formula {
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: var(--pico-muted-color);
+        }
+        
+        /* Review Modal Container */
+        .review-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* Load More Section */
+        .load-more-section {
+            display: flex;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        /* Nav Buttons */
+        .nav-btn {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+        }
+        
+        /* Slider Wrapper */
+        .slider-wrapper {
+            position: relative;
+        }
     </style>
 </head>
 <body data-style="fjord">
@@ -212,8 +257,8 @@
                 <li><strong>Consensus Best Songs 2025</strong></li>
             </ul>
             <ul>
-                <li><button class="outline secondary" id="config-btn" style="font-size: 0.8rem; padding: 4px 12px;">Settings</button></li>
-                <li><a href="https://github.com/eandx1/consensus-best-songs-2025" target="_blank" class="secondary" style="font-size: 0.8rem;">About</a></li>
+                <li><button class="outline secondary nav-btn" id="config-btn">Settings</button></li>
+                <li><a href="https://github.com/eandx1/consensus-best-songs-2025" target="_blank" class="secondary nav-btn">About</a></li>
             </ul>
         </nav>
     </header>
@@ -225,9 +270,9 @@
             </article>
         </div>
 
-        <div style="display: flex; justify-content: center; padding: 2rem 0;">
+        <section class="load-more-section">
             <button id="load-more" class="outline" style="display: none;">Load More</button>
-        </div>
+        </section>
     </main>
 
     <dialog id="config-dialog">
@@ -241,13 +286,13 @@
                 <fieldset>
                     <label for="rank-sensitivity">
                         Rank Sensitivity: <span id="val-sensitivity">25</span>
-                        <div style="position: relative;">
+                        <div class="slider-wrapper">
                             <input type="range" id="rank-sensitivity" min="0" max="50" step="1" value="25">
                         </div>
                     </label>
                     <label for="consensus-bonus">
                         Consensus Boost: <span id="val-bonus">5</span>%
-                        <div style="position: relative;">
+                        <div class="slider-wrapper">
                             <input type="range" id="consensus-bonus" min="0" max="0.1" step="0.001" value="0.05">
                         </div>
                     </label>
@@ -276,13 +321,13 @@
                 <tr><td>Consensus Multiplier</td><td id="stat-mult" class="val"></td></tr>
                 <tr><td>Raw Score</td><td id="stat-raw" class="val"></td></tr>
             </table>
-            <div id="source-contributions" style="margin-top: 1.5rem; max-height: 300px; overflow-y: auto;">
-                <h6 style="margin-bottom: 0.5rem; font-size: 0.9rem;">Source Contributions</h6>
-                <table style="font-size: 0.85rem;">
+            <div class="source-contributions">
+                <h6>Source Contributions</h6>
+                <table class="contributions-table">
                     <tbody id="contributions-list"></tbody>
                 </table>
             </div>
-            <footer style="margin-top: 1rem; font-size: 0.7rem; color: var(--pico-muted-color);">
+            <footer class="modal-formula">
                 Score = Raw Score × Consensus Multiplier
             </footer>
         </article>
@@ -294,7 +339,7 @@
                 <button aria-label="Close" rel="prev" onclick="document.getElementById('review-modal').close()"></button>
                 <p><strong>Reviews</strong></p>
             </header>
-            <div id="review-sources-container" style="max-height: 400px; overflow-y: auto;">
+            <div id="review-sources-container" class="review-container">
                 <!-- Sources will be dynamically inserted here -->
             </div>
         </article>

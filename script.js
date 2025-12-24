@@ -463,7 +463,7 @@ function populateConfigDialog() {
         
         // Add slider with wrapper
         const sliderWrapper = document.createElement('div');
-        sliderWrapper.style.position = 'relative';
+        sliderWrapper.className = 'slider-wrapper';
         
         label.appendChild(sourceLabelSpan);
         label.appendChild(valueSpan);
