@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>
 
     <style>
         /* =========================================
@@ -67,6 +67,25 @@
             aspect-ratio: 16 / 9;
             border-radius: var(--pico-border-radius);
             background-color: #000;
+        }
+        
+        /* Customize YouTube play button - smaller and in lower right */
+        lite-youtube::part(playButton) {
+            width: 68px !important;
+            height: 48px !important;
+            position: absolute !important;
+            bottom: 12px !important;
+            right: 12px !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
+            opacity: 0.9;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        
+        lite-youtube::part(playButton):hover {
+            opacity: 1;
+            transform: scale(1.05) !important;
         }
 
         .col-info { 
