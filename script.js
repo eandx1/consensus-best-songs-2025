@@ -145,13 +145,8 @@ function renderList() {
                         <h3>${escapeHtml(song.name)}</h3>
                         <h4>${escapeHtml(song.artist)}</h4>
                     </div>
-                    ${song.archetype ? `<div class="archetype-badge">${escapeHtml(song.archetype)}</div>` : ''}
-                    <div class="sources-list">
-                        ${song.sources.map((src, srcIndex) => `
-                            <button class="source-pill" data-song-index="${song.currentRank - 1}" data-source-index="${srcIndex}">
-                                ${escapeHtml(src.name)} #${src.rank}
-                            </button>
-                        `).join('')}
+                    <div class="sources-container" data-song-index="${song.currentRank - 1}">
+                        ${song.sources.map(src => `<span class="source-item">${escapeHtml(src.name)}#${src.rank}</span>`).join('')}
                     </div>
                     ${listenHTML}
                 </div>
@@ -166,14 +161,12 @@ function renderList() {
             });
         }
         
-        const sourcePills = article.querySelectorAll('.source-pill');
-        sourcePills.forEach((pill, idx) => {
-            pill.addEventListener('click', () => {
-                const src = song.sources[idx];
-                const sourceUrl = songData.config.sources[src.name]?.url || '#';
-                openReview(src.name, src.quote || '', sourceUrl);
+        const sourcesContainer = article.querySelector('.sources-container');
+        if (sourcesContainer) {
+            sourcesContainer.addEventListener('click', () => {
+                openReview(song);
             });
-        });
+        }
         
         container.appendChild(article);
     });
@@ -262,10 +255,27 @@ window.openStats = function(song) {
     document.getElementById('stats-modal').showModal();
 };
 
-window.openReview = function(name, quote, url) {
-    document.getElementById('review-source-name').innerText = name;
-    document.getElementById('review-quote').innerText = quote ? `"${quote}"` : "No snippet available for this review.";
-    document.getElementById('review-link').href = url;
+window.openReview = function(song) {
+    document.getElementById('review-song-title').innerText = escapeHtml(song.name);
+    
+    const container = document.getElementById('review-sources-container');
+    container.innerHTML = ''; // Clear previous content
+    
+    // Display each source with its quote and link
+    song.sources.forEach(src => {
+        const sourceUrl = songData.config.sources[src.name]?.url || '#';
+        const quote = src.quote || 'No snippet available for this review.';
+        
+        const entry = document.createElement('div');
+        entry.className = 'review-source-entry';
+        entry.innerHTML = `
+            <div class="review-source-name">${escapeHtml(src.name)} #${src.rank}</div>
+            <div class="review-quote">"${escapeHtml(quote)}"</div>
+            <a href="${escapeHtml(sourceUrl)}" target="_blank" class="review-link">Read Full Review ↗</a>
+        `;
+        container.appendChild(entry);
+    });
+    
     document.getElementById('review-modal').showModal();
 };
 

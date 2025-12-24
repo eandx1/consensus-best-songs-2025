@@ -90,27 +90,51 @@
             width: fit-content;
         }
 
-        /* Optical Alignment for Sources */
-        .sources-list {
+        /* Sources display */
+        .sources-container {
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--pico-muted-color);
+            cursor: pointer;
+            transition: color 0.2s;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 0.25rem;
         }
-        .source-pill {
-            font-size: 0.65rem;
-            background: var(--pico-muted-border-color);
-            border: 1px solid transparent;
-            border-radius: 4px;
-            padding: 3px 8px;
-            cursor: pointer;
-            color: var(--pico-color);
-            transition: all 0.2s;
-            text-align: left;
+        .sources-container:hover {
+            color: var(--pico-primary);
         }
-        .source-pill:hover {
-            background: var(--pico-primary);
-            color: var(--pico-primary-inverse);
-            border-color: var(--pico-primary);
+        .source-item {
+            white-space: nowrap;
+        }
+        .source-item:not(:last-child)::after {
+            content: " |";
+            margin-right: 0.25rem;
+        }
+        
+        /* Review modal source entries */
+        .review-source-entry {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--pico-muted-border-color);
+        }
+        .review-source-entry:last-child {
+            border-bottom: none;
+        }
+        .review-source-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .review-quote {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--pico-muted-color);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .review-link {
+            font-size: 0.75rem;
         }
 
         .listen-footer {
@@ -257,12 +281,11 @@
         <article>
             <header>
                 <button aria-label="Close" rel="prev" onclick="document.getElementById('review-modal').close()"></button>
-                <h4 id="review-source-name">Source</h4>
+                <p><strong>Reviews: <span id="review-song-title"></span></strong></p>
             </header>
-            <blockquote id="review-quote" style="border-left-color: var(--pico-primary);"></blockquote>
-            <footer>
-                <a href="#" id="review-link" role="button" target="_blank" class="outline">Read Full Review ↗</a>
-            </footer>
+            <div id="review-sources-container" style="max-height: 400px; overflow-y: auto;">
+                <!-- Sources will be dynamically inserted here -->
+            </div>
         </article>
     </dialog>
 
