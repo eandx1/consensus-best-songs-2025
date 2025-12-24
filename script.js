@@ -398,41 +398,13 @@ resetConfigBtn.addEventListener('click', () => {
     debouncedUpdate();
 });
 
-// Helper function to add default marker to a slider
-function addDefaultMarker(slider, defaultValue, maxValue) {
-    // Remove existing marker if any
-    const parent = slider.parentElement;
-    const existingMarker = parent.querySelector('.default-marker');
-    if (existingMarker) {
-        existingMarker.remove();
+// Helper function to update label color based on whether value differs from default
+function updateLabelHighlight(labelElement, currentValue, defaultValue) {
+    if (Math.abs(currentValue - defaultValue) > 0.001) {
+        labelElement.style.color = '#f59e0b'; // Amber/orange highlight
+    } else {
+        labelElement.style.color = ''; // Reset to default
     }
-    
-    const marker = document.createElement('div');
-    marker.className = 'default-marker';
-    marker.style.position = 'absolute';
-    marker.style.width = '3px';
-    marker.style.height = '1.75rem'; // Taller to be more visible
-    marker.style.backgroundColor = '#f59e0b'; // Amber/orange accent color
-    marker.style.top = '50%';
-    
-    // Calculate position - range input thumbs are positioned such that their center
-    // aligns with the value percentage, but the track has padding on the sides
-    const minValue = parseFloat(slider.min) || 0;
-    const percentage = (defaultValue - minValue) / (maxValue - minValue);
-    
-    // Use calc() for precise positioning that accounts for thumb width
-    // The formula: percentage of (100% - thumb width) + half thumb width
-    marker.style.left = `calc(${percentage * 100}% - ${percentage * 16}px + 8px)`;
-    marker.style.transform = 'translate(-50%, -50%)';
-    
-    marker.style.pointerEvents = 'none';
-    marker.style.opacity = '0.85';
-    marker.style.zIndex = '10'; // Above the track but below the thumb
-    marker.style.borderRadius = '2px';
-    marker.style.boxShadow = '0 0 6px rgba(245, 158, 11, 0.4)';
-    
-    // Append after the slider so it renders on top
-    parent.appendChild(marker);
 }
 
 // Populate configuration dialog with current values
@@ -447,9 +419,11 @@ function populateConfigDialog() {
     document.getElementById('val-sensitivity').textContent = rankSensitivity;
     document.getElementById('val-bonus').textContent = (consensusBonus * 100).toFixed(1);
     
-    // Add default markers for ranking parameters
-    addDefaultMarker(sensitivitySlider, defaultRankSensitivity, 50);
-    addDefaultMarker(bonusSlider, defaultConsensusBonus, 0.1);
+    // Update label highlights for ranking parameters
+    const sensitivityLabel = document.querySelector('label[for="rank-sensitivity"]');
+    const bonusLabel = document.querySelector('label[for="consensus-bonus"]');
+    updateLabelHighlight(sensitivityLabel, rankSensitivity, defaultRankSensitivity);
+    updateLabelHighlight(bonusLabel, consensusBonus, defaultConsensusBonus);
     
     // Generate source weight sliders
     const container = document.getElementById('source-weights-container');
@@ -464,9 +438,13 @@ function populateConfigDialog() {
         
         const label = document.createElement('label');
         label.setAttribute('for', `weight-${sourceName}`);
+        label.dataset.source = sourceName; // Add data attribute for easy lookup
+        
+        // Use full_name if available, otherwise use sourceName
+        const displayName = songData.config.sources[sourceName]?.full_name || sourceName;
         
         const sourceLabelSpan = document.createElement('span');
-        sourceLabelSpan.textContent = sourceName + ': ';
+        sourceLabelSpan.textContent = displayName + ': ';
         sourceLabelSpan.style.fontSize = '0.85rem';
         
         const valueSpan = document.createElement('span');
@@ -483,8 +461,11 @@ function populateConfigDialog() {
         slider.value = weight;
         slider.dataset.source = sourceName;
         slider.dataset.default = defaultWeight;
+        slider.value = weight;
+        slider.dataset.source = sourceName;
+        slider.dataset.default = defaultWeight;
         
-        // Add slider with default marker
+        // Add slider with wrapper
         const sliderWrapper = document.createElement('div');
         sliderWrapper.style.position = 'relative';
         
@@ -493,8 +474,9 @@ function populateConfigDialog() {
         sliderWrapper.appendChild(slider);
         label.appendChild(sliderWrapper);
         
-        // Add default marker using helper
-        addDefaultMarker(slider, defaultWeight, 2);
+        // Update label highlight based on current vs default value
+        updateLabelHighlight(label, weight, defaultWeight);
+        
         fieldset.appendChild(label);
         container.appendChild(fieldset);
         
@@ -523,6 +505,11 @@ function handleSensitivityChange(e) {
     }
     
     document.getElementById('val-sensitivity').textContent = rankSensitivity;
+    
+    // Update label highlight
+    const sensitivityLabel = document.querySelector('label[for="rank-sensitivity"]');
+    updateLabelHighlight(sensitivityLabel, rankSensitivity, defaultRankSensitivity);
+    
     debouncedUpdate();
 }
 
@@ -540,6 +527,11 @@ function handleBonusChange(e) {
     }
     
     document.getElementById('val-bonus').textContent = (consensusBonus * 100).toFixed(1);
+    
+    // Update label highlight
+    const bonusLabel = document.querySelector('label[for="consensus-bonus"]');
+    updateLabelHighlight(bonusLabel, consensusBonus, defaultConsensusBonus);
+    
     debouncedUpdate();
 }
 
@@ -558,6 +550,11 @@ function handleWeightSliderChange(e) {
     }
     
     document.getElementById(`val-weight-${sourceName}`).textContent = userWeights[sourceName].toFixed(2);
+    
+    // Update label highlight
+    const label = document.querySelector(`label[for="weight-${sourceName}"]`);
+    updateLabelHighlight(label, userWeights[sourceName], parseFloat(e.target.dataset.default));
+    
     debouncedUpdate();
 }
 
