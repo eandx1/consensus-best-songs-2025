@@ -88,8 +88,8 @@ function renderList() {
         const article = document.createElement('article');
         article.className = 'song-card';
         
-        // Determine which YouTube ID to use for embed (prefer music_id, fallback to video_id)
-        const embedId = song.media?.youtube?.music_id || song.media?.youtube?.video_id;
+        // Determine which YouTube ID to use for embed (prefer video_id, fallback to music_id)
+        const embedId = song.media?.youtube?.video_id || song.media?.youtube?.music_id;
         
         // Build player HTML
         let playerHTML = '';
