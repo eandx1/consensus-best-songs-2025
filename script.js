@@ -104,11 +104,14 @@ function renderList() {
         // Build Listen links dynamically based on available media
         const listenLinks = [];
         
-        // YouTube link - prefer video_id, fall back to music_id
+        // YouTube video link
         if (song.media?.youtube?.video_id) {
             listenLinks.push(`<a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank">YouTube</a>`);
-        } else if (song.media?.youtube?.music_id) {
-            listenLinks.push(`<a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank">YT Music</a>`);
+        }
+        
+        // YouTube Music link
+        if (song.media?.youtube?.music_id) {
+            listenLinks.push(`<a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank">YTM</a>`);
         }
         
         // Spotify link
