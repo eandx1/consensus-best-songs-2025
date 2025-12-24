@@ -261,13 +261,15 @@ window.openReview = function(song) {
     
     // Display each source with its quote and link
     song.sources.forEach(src => {
-        const sourceUrl = songData.config.sources[src.name]?.url || '#';
+        const sourceConfig = songData.config.sources[src.name];
+        const sourceUrl = sourceConfig?.url || '#';
+        const displayName = sourceConfig?.full_name || src.name;
         const quote = src.quote || 'No snippet available for this review.';
         
         const entry = document.createElement('div');
         entry.className = 'review-source-entry';
         entry.innerHTML = `
-            <div class="review-source-name">${escapeHtml(src.name)} #${src.rank}</div>
+            <div class="review-source-name">${escapeHtml(displayName)} #${src.rank}</div>
             <div class="review-quote">"${escapeHtml(quote)}"</div>
             <a href="${escapeHtml(sourceUrl)}" target="_blank" class="review-link">Read Full Review ↗</a>
         `;
