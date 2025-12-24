@@ -237,7 +237,6 @@ window.openStats = function(song) {
         return {
             name: src.name,
             rank: src.rank,
-            weight: weight,
             contribution: contribution
         };
     });
@@ -458,9 +457,6 @@ function populateConfigDialog() {
         slider.min = '0';
         slider.max = '2';
         slider.step = '0.01';
-        slider.value = weight;
-        slider.dataset.source = sourceName;
-        slider.dataset.default = defaultWeight;
         slider.value = weight;
         slider.dataset.source = sourceName;
         slider.dataset.default = defaultWeight;
