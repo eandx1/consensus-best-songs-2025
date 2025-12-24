@@ -15,30 +15,55 @@
 
     <style>
         /* =========================================
-           THEME: FJORD (Cool Nordic Mono)
+           THEMES: Pico CSS Variable Overrides
+           
+           To add a new theme:
+           1. Add a new [data-style="theme-name"] selector below
+           2. Override Pico CSS variables as needed
+           3. Update body data-style attribute to switch themes
            ========================================= */
+        
+        /* THEME: FJORD - Cool Nordic Monospace (default) */
         [data-style="fjord"] {
+            /* Typography */
             --pico-font-family: "JetBrains Mono", monospace;
             --pico-headings-font-family: "JetBrains Mono", monospace;
 
+            /* Colors */
             --pico-primary: #9ca3af;
             --pico-primary-hover: #d1d5db;
             --pico-background-color: #0a0b0d;
             --pico-card-background-color: #111214;
-
             --pico-color: #d1d5db;
             --pico-muted-color: #6b7280;
             --pico-muted-border-color: rgba(156, 163, 175, 0.15);
 
+            /* Layout */
             --pico-border-radius: 2px;
             --pico-typography-spacing-vertical: 1rem;
+            
+            /* Custom adjustments */
+            letter-spacing: -0.02em;
         }
 
-        body { letter-spacing: -0.02em; }
+        /* FUTURE THEMES: Add additional themes here
+         * 
+         * Example structure:
+         * 
+         * [data-style="warm"] {
+         *     --pico-font-family: "Georgia", serif;
+         *     --pico-primary: #f59e0b;
+         *     --pico-background-color: #1a1410;
+         *     ...
+         * }
+         */
 
         /* =========================================
-           LAYOUT: MOBILE FIRST (Vertical Stack)
+           LAYOUT & COMPONENT STYLES
+           (Theme-agnostic structural CSS)
            ========================================= */
+
+        /* Song Card Layout */
         .song-card {
             margin-bottom: 2rem;
             border: 1px solid var(--pico-muted-border-color);
@@ -53,7 +78,7 @@
             padding: 1rem;
         }
 
-        /* Elements for Mobile */
+        /* Rank Display */
         .col-rank { order: 1; }
         .rank-number { 
             font-size: 2rem; 
@@ -61,6 +86,7 @@
             opacity: 0.2; 
         }
 
+        /* Video Player */
         .col-player { order: 2; }
         .col-player lite-youtube {
             width: 100%;
@@ -69,7 +95,7 @@
             background-color: #000;
         }
         
-        /* Customize YouTube play button - smaller and in lower right */
+        /* YouTube Play Button Customization */
         lite-youtube::part(playButton) {
             width: 68px !important;
             height: 48px !important;
@@ -88,6 +114,7 @@
             transform: scale(1.05) !important;
         }
 
+        /* Song Info Column */
         .col-info { 
             order: 3; 
             display: flex;
@@ -95,11 +122,21 @@
             gap: 0.75rem;
         }
 
-        /* Header Info */
-        .header-group h3 { margin: 0; font-size: 1.5rem; color: #fff; }
-        .header-group h4 { margin: 0; font-size: 0.9rem; font-weight: 400; text-transform: uppercase; color: var(--pico-muted-color); }
+        .header-group h3 { 
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: #fff; 
+        }
+        
+        .header-group h4 { 
+            margin: 0; 
+            font-size: 0.9rem; 
+            font-weight: 400; 
+            text-transform: uppercase; 
+            color: var(--pico-muted-color); 
+        }
 
-        /* Sources display */
+        /* Sources Display */
         .sources-container {
             margin-top: 0.75rem;
             font-size: 0.7rem;
@@ -110,44 +147,21 @@
             flex-wrap: wrap;
             gap: 0.25rem;
         }
+        
         .sources-container:hover {
             color: var(--pico-primary);
         }
+        
         .source-item {
             white-space: nowrap;
         }
+        
         .source-item:not(:last-child)::after {
             content: " ·";
             margin-right: 0.25rem;
         }
         
-        /* Review modal source entries */
-        .review-source-entry {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--pico-muted-border-color);
-        }
-        .review-source-entry:last-child {
-            border-bottom: none;
-        }
-        .review-source-name {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .review-quote {
-            font-size: 0.9rem;
-            font-style: italic;
-            color: var(--pico-muted-color);
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-        .review-link {
-            font-size: 0.75rem;
-            text-align: right;
-            display: block;
-        }
-
+        /* Listen Links */
         .listen-footer {
             font-size: 0.6rem;
             opacity: 0.5;
@@ -156,7 +170,7 @@
             margin-top: 0.5rem;
         }
 
-        /* Floating Info Icon */
+        /* Info Icon Button */
         .stats-trigger {
             position: absolute;
             top: 0.75rem;
@@ -170,11 +184,13 @@
             padding: 0;
             z-index: 10;
         }
-        .stats-trigger:hover { opacity: 1; color: var(--pico-primary); }
+        
+        .stats-trigger:hover { 
+            opacity: 1; 
+            color: var(--pico-primary); 
+        }
 
-        /* =========================================
-           LAYOUT: DESKTOP (3-Column Grid)
-           ========================================= */
+        /* Desktop Layout (3-Column Grid) */
         @media (min-width: 768px) {
             .card-grid {
                 display: grid;
@@ -185,8 +201,16 @@
                 align-items: stretch;
             }
 
-            .rank-number { font-size: 3rem; text-align: center; }
-            .col-rank { display: flex; align-items: center; justify-content: center; }
+            .rank-number { 
+                font-size: 3rem; 
+                text-align: center; 
+            }
+            
+            .col-rank { 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+            }
             
             .col-info { 
                 justify-content: space-between; 
@@ -194,40 +218,102 @@
                 padding: 0.1rem 0; 
             }
 
-            .header-group h3 { font-size: 1.7rem; }
-            .listen-footer { margin-top: auto; }
+            .header-group h3 { 
+                font-size: 1.7rem; 
+            }
+            
+            .listen-footer { 
+                margin-top: auto; 
+            }
         }
 
-        /* Modal Table Styling */
-        .stats-table { width: 100%; font-size: 0.85rem; border-collapse: collapse; }
-        .stats-table td { padding: 0.5rem 0; border-bottom: 1px solid var(--pico-muted-border-color); }
-        .stats-table .val { text-align: right; font-weight: bold; color: var(--pico-primary); }
+        /* =========================================
+           MODAL STYLES
+           ========================================= */
         
-        /* Source Contributions Styling */
+        /* Stats Modal */
+        .stats-table { 
+            width: 100%; 
+            font-size: 0.85rem; 
+            border-collapse: collapse; 
+        }
+        
+        .stats-table td { 
+            padding: 0.5rem 0; 
+            border-bottom: 1px solid var(--pico-muted-border-color); 
+        }
+        
+        .stats-table .val { 
+            text-align: right; 
+            font-weight: bold; 
+            color: var(--pico-primary); 
+        }
+        
         .source-contributions {
             margin-top: 1.5rem;
             max-height: 300px;
             overflow-y: auto;
         }
+        
         .source-contributions h6 {
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
         }
+        
         .contributions-table {
             font-size: 0.85rem;
         }
         
-        /* Modal Footer */
         .modal-formula {
             margin-top: 1rem;
             font-size: 0.7rem;
             color: var(--pico-muted-color);
         }
         
-        /* Review Modal Container */
+        /* Review Modal */
+        .review-source-entry {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--pico-muted-border-color);
+        }
+        
+        .review-source-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .review-source-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .review-quote {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--pico-muted-color);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .review-link {
+            font-size: 0.75rem;
+            text-align: right;
+            display: block;
+        }
+        
         .review-container {
             max-height: 400px;
             overflow-y: auto;
+        }
+
+        /* =========================================
+           UI COMPONENTS
+           ========================================= */
+        
+        /* Navigation Buttons */
+        .nav-btn {
+            font-size: 0.8rem;
+            padding: 4px 12px;
         }
         
         /* Load More Section */
@@ -235,12 +321,6 @@
             display: flex;
             justify-content: center;
             padding: 2rem 0;
-        }
-        
-        /* Nav Buttons */
-        .nav-btn {
-            font-size: 0.8rem;
-            padding: 4px 12px;
         }
         
         /* Slider Wrapper */
