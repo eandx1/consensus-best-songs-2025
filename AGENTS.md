@@ -88,6 +88,7 @@ root
 │   └── sources
 │       └── [SITE_NAME]                          // e.g., "Billboard (Staff Picks)"
 │           ├── url: string (url)
+│           ├── full_name: string (optional)
 │           └── weight: number (float)           // Default rank decay weight
 └── songs (array)
     └── [object]
@@ -95,11 +96,11 @@ root
         ├── artist: string
         ├── name: string
         ├── sources (array)
-        │   └── [SITE NAME]
-        │       ├── name: string                 // Must match a key in config.sources
+        │   └── [SITE]
+        │       ├── name: string                   // Must match a key in config.sources
         │       ├── rank: number (int/float)
-        │       └── quote: string (optional)     // Snippet from the review
-        ├── list_count: number (int)             // Total number of lists citing the song
+        │       └── quote: string (optional)       // Snippet from the review
+        ├── list_count: number (int)               // Total number of lists citing the song
         ├── media
         │   ├── youtube (optional)
         │   │   ├── music_id: string (optional)
