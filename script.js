@@ -256,8 +256,6 @@ window.openStats = function(song) {
 };
 
 window.openReview = function(song) {
-    document.getElementById('review-song-title').innerText = escapeHtml(song.name);
-    
     const container = document.getElementById('review-sources-container');
     container.innerHTML = ''; // Clear previous content
     
