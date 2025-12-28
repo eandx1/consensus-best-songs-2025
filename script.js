@@ -494,16 +494,33 @@ function renderSettingsUI() {
     html += '<hr><h4>Source Weights</h4>';
     const sortedSources = Object.keys(sources).sort();
     
-    html += '<div style="display: flex; flex-direction: column; gap: 0;">';
+    // Group sources by cluster
+    const sourcesByCluster = {};
     sortedSources.forEach(srcKey => {
-        const source = sources[srcKey];
-        const clusterName = source.cluster;
-        const emoji = clusterMetadata[clusterName]?.emoji || '';
-        const clusterInfo = clusterName ? `${emoji} ${clusterName}` : '';
-        
-        html += createSlider('source_weight', srcKey, source.full_name || srcKey, 0.0, 1.5, 0.01, false, false, clusterInfo);
+        const clusterName = sources[srcKey].cluster || 'Other';
+        if (!sourcesByCluster[clusterName]) {
+            sourcesByCluster[clusterName] = [];
+        }
+        sourcesByCluster[clusterName].push(srcKey);
     });
-    html += '</div>';
+    
+    // Sort clusters and display each group
+    const sortedClusters = Object.keys(sourcesByCluster).sort();
+    sortedClusters.forEach(clusterName => {
+        const emoji = clusterMetadata[clusterName]?.emoji || '';
+        const descriptor = clusterMetadata[clusterName]?.descriptor || '';
+        
+        html += `<h5 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">${emoji} ${clusterName}</h5>`;
+        if (descriptor) {
+            html += `<small>${descriptor}</small>`;
+        }
+        
+        html += '<div style="display: flex; flex-direction: column; gap: 0; margin-top: 1rem;">';
+        sourcesByCluster[clusterName].forEach(srcKey => {
+            html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey, 0.0, 1.5, 0.01);
+        });
+        html += '</div>';
+    });
 
     // 3. Shadow Ranks
     const unrankedSources = sortedSources.filter(k => sources[k].type === 'unranked');
