@@ -492,6 +492,7 @@ function renderSettingsUI() {
     
     // 2. Source Weights
     html += '<hr><h4>Source Weights</h4>';
+    html += '<small>Fine-tune the individual influence of each publication. These sliders allow you to manually adjust the specific "gravity" a source has within the final consensus.</small>';
     const sortedSources = Object.keys(sources).sort();
     
     // Group sources by cluster
@@ -526,6 +527,7 @@ function renderSettingsUI() {
     const unrankedSources = sortedSources.filter(k => sources[k].type === 'unranked');
     if (unrankedSources.length > 0) {
         html += '<hr><h4>Shadow Ranks</h4>';
+        html += '<small>Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</small>';
         html += '<div style="display: flex; flex-direction: column; gap: 0;">';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
