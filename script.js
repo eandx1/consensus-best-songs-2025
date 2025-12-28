@@ -451,9 +451,9 @@ function renderSettingsUI() {
     html += '<div style="display: flex; flex-direction: column; gap: 0;">';
     
     if (isConsensus) {
-        html += createSlider('ranking', 'k_value', 'Rank Decay (K)', 0, 50, 1);
+        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', 0, 50, 1);
     } else {
-        html += createSlider('ranking', 'p_exponent', 'Power-Law Decay (P)', 0.0, 1.1, 0.01);
+        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01);
     }
     
     html += createSlider('ranking', 'consensus_boost', 'Consensus Boost', 0, 0.1, 0.01, true);
