@@ -427,7 +427,7 @@ function renderSettingsUI() {
     `;
 
     // Sliders Helper
-    const createSlider = (category, key, label, min, max, step, isPercent = false, isBonus = false) => {
+    const createSlider = (category, key, label, min, max, step, isPercent = false, isBonus = false, helperText = '') => {
         let currentVal = category === 'ranking' ? ranking[key] : (category === 'source_weight' ? sources[key].weight : sources[key].shadow_rank);
         let defaultVal = category === 'ranking' ? defaults.ranking[key] : (category === 'source_weight' ? defaults.sources[key].weight : defaults.sources[key].shadow_rank);
         
@@ -435,6 +435,7 @@ function renderSettingsUI() {
         // Bonus values are stored as multipliers (1.1 = 10% bonus), so subtract 1 and multiply by 100 for display
         const displayVal = isBonus ? Math.round((currentVal - 1) * 100) + '%' : (isPercent ? Math.round(currentVal * 100) + '%' : currentVal);
         const idBase = `setting-${category}-${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
+        const helperId = `helper-text-${key}`;
 
         return `
             <div style="margin-bottom: 1rem;">
@@ -444,6 +445,7 @@ function renderSettingsUI() {
                 </label>
                 <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
                     oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
+                ${helperText ? `<small id="${helperId}">${helperText}</small>` : ''}
             </div>
         `;
     };
@@ -451,9 +453,15 @@ function renderSettingsUI() {
     html += '<div style="display: flex; flex-direction: column; gap: 0;">';
     
     if (isConsensus) {
-        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', 0, 50, 1);
+        const val10 = (1 + ranking.k_value) / (10 + ranking.k_value);
+        const val25 = (1 + ranking.k_value) / (25 + ranking.k_value);
+        const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1`;
+        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', 0, 50, 1, false, false, helper);
     } else {
-        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01);
+        const val10 = 1.0 / Math.pow(10, ranking.p_exponent);
+        const val25 = 1.0 / Math.pow(25, ranking.p_exponent);
+        const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1`;
+        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01, false, false, helper);
     }
     
     html += createSlider('ranking', 'consensus_boost', 'Consensus Boost', 0, 0.1, 0.01, true);
@@ -535,6 +543,25 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
         const label = document.getElementById(`label-${idBase}`);
         if (numVal !== defaultVal) label.classList.add('customized-label');
         else label.classList.remove('customized-label');
+    }
+
+    // Dynamic Helper Text Update for K and P
+    if (key === 'k_value' || key === 'p_exponent') {
+        const val = parseFloat(value);
+        let v10, v25;
+        
+        if (key === 'k_value') {
+            v10 = (1 + val) / (10 + val);
+            v25 = (1 + val) / (25 + val);
+        } else {
+            v10 = 1.0 / Math.pow(10, val);
+            v25 = 1.0 / Math.pow(25, val);
+        }
+        
+        const helperEl = document.getElementById(`helper-text-${key}`);
+        if (helperEl) {
+            helperEl.innerHTML = `Rank #10 is worth <strong>${Math.round(v10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(v25 * 100)}%</strong> of #1`;
+        }
     }
 
     debouncedReRank();
