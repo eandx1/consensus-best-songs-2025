@@ -19,6 +19,16 @@
             --pico-primary-underline: rgba(59, 130, 246, 0.5);
         }
         
+        /* Enable word-wrapping for Pico CSS tooltips */
+        [data-tooltip]::before {
+            display: block;
+            white-space: normal; /* Allows text to wrap to the next line */
+            width: 280px;        /* Sets a maximum width for the box */
+            max-width: 80vw;     /* Ensures it doesn't exceed the viewport on mobile */
+            line-height: 1.4;    /* Improves readability for multi-line text */
+            padding: 0.5rem 0.75rem;
+        }
+        
         /* Song Cards: Minimal custom styling, rely on Pico's article styling */
         article.song-card {
             position: relative;

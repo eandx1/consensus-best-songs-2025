@@ -357,7 +357,7 @@ window.showReviews = (idx) => {
                     <div style="flex: 1;">
                         <h4 style="margin: 0 0 0.25rem 0;">${escapeHtml(displayName)}</h4>
                         <small style="color: var(--pico-muted-color);">
-                            <abbr data-tooltip="${escapeHtml(clusterDesc)}" data-placement="right" style="text-decoration: none; cursor: help; white-space: normal;">
+                            <abbr data-tooltip="${escapeHtml(clusterDesc)}" data-placement="right" style="text-decoration: none; cursor: help;">
                                 ${clusterEmoji} ${escapeHtml(clusterName)}
                             </abbr>
                         </small>
