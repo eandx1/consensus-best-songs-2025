@@ -227,34 +227,32 @@ function render() {
         if (song.media?.bandcamp?.url) links.push(`<a href="${song.media.bandcamp.url}" target="_blank">Bandcamp</a>`);
         if (song.media?.other?.url) links.push(`<a href="${song.media.other.url}" target="_blank">Other</a>`);
 
-        const listenHTML = links.length > 0 ? `<div class="listen-links" style="margin-top: 0.5rem;"><small><strong>LISTEN:</strong> ${links.join(' ')}</small></div>` : '';
-
         return `
-            <article class="song-card" style="position: relative;">
-                <div class="song-card-grid">
-                    <div class="rank-large">#${song.rank}</div>
-                    <div class="video-container">
-                        <lite-youtube videoid="${youtubeId}"></lite-youtube>
-                    </div>
+            <article class="song-card">
+                <header>
+                    <a href="#" onclick="showStats(${idx}); return false;" aria-label="View ranking details">ⓘ</a>
+                </header>
+                
+                <div class="grid">
+                    <aside>#${song.rank}</aside>
+                    
+                    <figure>
+                        <lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(song.name)}"></lite-youtube>
+                    </figure>
+                    
                     <div>
-                        <header style="margin-bottom: 0;">
-                            <hgroup style="margin-bottom: 0.5rem;">
-                                <h3 style="margin-bottom: 0.25rem;">${escapeHtml(song.name)}</h3>
-                                <h4 style="color: var(--pico-muted-color); font-weight: normal;">${escapeHtml(song.artist)}</h4>
-                            </hgroup>
-                        </header>
+                        <hgroup>
+                            <h3>${escapeHtml(song.name)}</h3>
+                            <h4>${escapeHtml(song.artist)}</h4>
+                        </hgroup>
                         
-                        <div class="sources-list" onclick="showReviews(${idx})" style="cursor:pointer" title="Click to see reviews">
+                        <div data-sources onclick="showReviews(${idx})" title="Click to see reviews">
                             <small>
-                                ${song.sourceDetails.map(s => `<span class="source-tag">${s.full_name || s.name}#${s.rank || '★'}</span>`).join(' · ')}
+                                ${song.sourceDetails.map(s => `<span>${escapeHtml(s.full_name || s.name)}#${Math.floor(s.rank)}</span>`).join(' · ')}
                             </small>
                         </div>
-
-                        ${listenHTML}
                         
-                        <div style="position: absolute; top: 1rem; right: 1rem;">
-                            <a href="#" onclick="showStats(${idx}); return false;" class="secondary" style="text-decoration: none; font-size: 1.2rem;">ⓘ</a>
-                        </div>
+                        ${links.length > 0 ? `<footer><strong>LISTEN:</strong> ${links.join(' ')}</footer>` : ''}
                     </div>
                 </div>
             </article>

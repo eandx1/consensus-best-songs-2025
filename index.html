@@ -18,67 +18,182 @@
             --pico-primary-hover: #2563eb;
             --pico-primary-underline: rgba(59, 130, 246, 0.5);
         }
-        .song-card { 
-            margin-bottom: 2rem; 
-            padding: 1.5rem;
-            background-color: var(--pico-card-background-color);
-            border-radius: var(--pico-border-radius);
-            box-shadow: var(--pico-card-box-shadow);
+        
+        /* Song Cards: Minimal custom styling, rely on Pico's article styling */
+        article.song-card {
+            position: relative;
+            margin-bottom: 2rem;
         }
-        .song-card-grid {
-            display: grid;
-            gap: 1.5rem;
-            grid-template-columns: 1fr; /* Stacked on mobile */
+        
+        /* Use Pico's header for the info icon container only */
+        article.song-card > header {
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+        
+        /* Rank number as large display text using semantic <aside> */
+        article.song-card aside {
+            font-size: 3rem;
+            font-weight: 700;
+            opacity: 0.2;
+            line-height: 1;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Desktop: Rank left-aligned */
+        @media (min-width: 992px) {
+            article.song-card aside {
+                text-align: left;
+                justify-content: flex-start;
+            }
+        }
+        
+        /* Video player wrapper using semantic <figure> */
+        article.song-card figure {
+            margin: 0;
+            display: flex;
             align-items: center;
         }
-        @media (min-width: 992px) { /* Desktop breakpoint */
-            .song-card-grid {
-                grid-template-columns: 80px minmax(200px, 320px) 1fr;
-            }
-            .rank-large { text-align: left !important; }
+        
+        article.song-card figure lite-youtube {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: var(--pico-border-radius);
+            border: 1px solid var(--pico-muted-border-color);
         }
-        .rank-large { 
-            font-size: 3.5rem; 
-            font-weight: bold; 
-            opacity: 0.5; 
-            line-height: 1;
-            text-align: center; /* Center on mobile */
+        
+        /* Customize lite-youtube play button */
+        lite-youtube::part(playButton) {
+            width: 68px;
+            height: 48px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            opacity: 0.25;
+            transition: opacity 0.2s, transform 0.2s;
         }
-        .sources-list {
-            line-height: 1.6;
-            margin-top: 0.5rem;
+        
+        lite-youtube:hover::part(playButton) {
+            opacity: 1;
+            transform: scale(1.05);
         }
-        .source-tag {
+        
+        /* Info column - let Pico handle hgroup styling naturally */
+        article.song-card .grid > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        article.song-card hgroup {
+            margin-bottom: 0.75rem;
+        }
+        
+        /* Use h4 for artist name in hgroup (Pico will style it appropriately) */
+        article.song-card hgroup h4 {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: var(--pico-muted-color);
+            font-weight: normal;
+        }
+        
+        /* Sources section styling */
+        article.song-card [data-sources] {
+            margin: 0.75rem 0;
+            line-height: 1.8;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        article.song-card [data-sources] span {
             white-space: nowrap;
             color: var(--pico-muted-color);
             transition: color 0.2s;
         }
-        .song-card:hover .source-tag { color: var(--pico-color); }
-        .listen-links a {
-            margin-right: 0.75rem;
-            text-decoration: none;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            font-weight: bold;
+        
+        article.song-card:hover [data-sources] span {
+            color: var(--pico-color);
         }
-        .customized-label { color: var(--pico-primary); font-weight: bold; }
+        
+        /* Footer with listen links - nested inside grid column */
+        article.song-card footer {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: auto;
+            padding: 0;
+            border: none;
+            transition: opacity 0.2s;
+        }
+        
+        article.song-card footer:hover {
+            opacity: 1;
+        }
+        
+        article.song-card footer a {
+            margin-right: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        
+        /* Floating info icon */
+        article.song-card > header > a[aria-label] {
+            position: absolute;
+            top: var(--pico-spacing);
+            right: var(--pico-spacing);
+            opacity: 0.4;
+            font-size: 1.2rem;
+            transition: opacity 0.2s;
+            padding: 0;
+            margin: 0;
+        }
+        
+        article.song-card > header > a[aria-label]:hover {
+            opacity: 1;
+        }
+        
+        /* Pico's .grid: Customize column sizes for desktop */
+        article.song-card .grid {
+            grid-template-columns: 1fr;
+            gap: var(--pico-spacing);
+            align-items: stretch;
+        }
+        
+        @media (min-width: 992px) {
+            article.song-card .grid {
+                grid-template-columns: 80px minmax(200px, 320px) 1fr;
+            }
+        }
+        
+        /* Settings UI Styles */
+        .customized-label { 
+            color: var(--pico-primary); 
+            font-weight: bold; 
+        }
+        
         .mode-card {
             cursor: pointer;
             border: 2px solid transparent;
             transition: border-color 0.2s, transform 0.1s ease;
             margin-bottom: 0;
         }
+        
         .mode-card:hover {
             border-color: var(--pico-muted-border-color);
             transform: scale(1.02);
         }
+        
         .mode-card.active {
             border-color: var(--pico-primary);
         }
+        
         .column-list {
             column-count: 2;
             column-gap: 2rem;
         }
+        
         @media (max-width: 768px) {
             .column-list {
                 column-count: 1;
