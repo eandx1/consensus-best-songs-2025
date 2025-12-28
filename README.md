@@ -32,7 +32,7 @@ The core engine allows users to toggle between two mathematical philosophies:
 
 1.  **🤝 Consensus Mode (Modified Reciprocal Rank)**:
     *   Identifies the "Cultural Record"—songs appearing on the highest volume of lists.
-    *   Formula: `Score = 1 / (Rank + K)`
+    *   Formula: `Score = (1 + K) / (Rank + K)`
     *   Smooths out outliers to favor broad agreement.
 
 2.  **🔥 Conviction Mode (Power-Law Decay)**:
