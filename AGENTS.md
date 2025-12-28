@@ -308,3 +308,25 @@ The engine applies three specialized multipliers to the raw scores:
     - `p_mul = 1 + (provocation_boost * (np.std(ranks) / 100)) if len(ranks) > 1 else 1.0`
 3.  **Diversity (Crossover) Boost:** A bonus for every additional unique **Cluster** a song reaches in its top `cluster_threshold`. This identifies "Unicorns"—tracks that appeal to Authority, Tastemakers, and Specialists simultaneously.
     - `cl_mul = (1 + (cluster_boost * (len(top50_clusters_counts) - 1)) if len(top50_clusters_counts) > 0 else 1.0`
+
+# Implementation Plan
+
+## Phase 1: Core Engine & Data Foundation
+* Step 1: Data Integration & Types: Finalize the data.json loading and create a robust State object to hold the current configuration.
+* Step 2: JavaScript Ranking Engine: Port the Python logic into a JavaScript module, specifically implementing the Reciprocal Rank Fusion (Consensus) and Power-Law (Conviction) modes.
+* Step 3: Normalization & Multipliers: Implement the "Influence Budget" logic to normalize source lists and apply the Consensus, Provocation, and Cluster boosts.
+
+## Phase 2: Structural UI & Layout
+* Step 4: Semantic Shell: Set up the Pico CSS layout with the header, main content area, and hidden <dialog> modals.
+* Step 5: Song Card Component: Build the card layout featuring the large rank number, lite-youtube player, and metadata links (Spotify, YTM, etc.).
+* Step 6: Progressive Loading: Implement the "Show More" logic (25 → 100 → 200 → 500 → All) to ensure smooth performance.
+
+## Phase 3: Dynamic State & Sharing
+* Step 7: URL Synchronization: Map all ranking parameters (e.g., k_value, p_exponent) and source weights to the URLSearchParams API for deep-linking.
+* Step 8: The Settings Modal: Generate the UI sliders for ranking parameters, source weights, and shadow ranks dynamically based on the configuration.
+* Step 9: Debounced Recalculation: Add event listeners to sliders that trigger a debounced (250ms) re-rank and UI refresh.
+
+## Phase 4: Detailed Information (Modals)
+* Step 10: Reviews Modal: Create the logic to display source quotes, specific ranks, and "Read Full Review" links for individual songs.
+* Step 11: Ranking Stats Modal: Implement the scoring breakdown, showing exactly how normalized scores and multipliers combined to reach the final rank.
+* Step 12: Visual Polish: Finalize the "Dark Mode" styling, specifically the IntelliJ-inspired theme and the transparency effects for the YouTube play button.
