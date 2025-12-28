@@ -401,7 +401,10 @@ function renderSettingsUI() {
     let html = '';
 
     // 1. Ranking Parameters
+    html += '<article>';
+    html += '<hgroup>';
     html += '<h4>Ranking Parameters</h4>';
+    html += '</hgroup>';
 
     // Decay Mode
     const isConsensus = ranking.decay_mode === 'consensus';
@@ -445,7 +448,7 @@ function renderSettingsUI() {
                 </label>
                 <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
                     oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
-                ${helperText ? `<small id="${helperId}">${helperText}</small>` : ''}
+                ${helperText ? `<small id="${helperId}" style="color: var(--pico-muted-color);">${helperText}</small>` : ''}
             </div>
         `;
     };
@@ -489,10 +492,15 @@ function renderSettingsUI() {
     html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.01, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
     
     html += '</div>'; // End Stack
+    html += '</article>';
     
     // 2. Source Weights
-    html += '<hr><h4>Source Weights</h4>';
-    html += '<small>Fine-tune the individual influence of each publication. These sliders allow you to manually adjust the specific "gravity" a source has within the final consensus.</small>';
+    html += '<hr>';
+    html += '<article>';
+    html += '<hgroup>';
+    html += '<h4>Source Weights</h4>';
+    html += '<p style="color: var(--pico-muted-color);">Fine-tune the individual influence of each publication. These sliders allow you to manually adjust the specific "gravity" a source has within the final consensus.</p>';
+    html += '</hgroup>';
     const sortedSources = Object.keys(sources).sort();
     
     // Group sources by cluster
@@ -511,29 +519,33 @@ function renderSettingsUI() {
         const emoji = clusterMetadata[clusterName]?.emoji || '';
         const descriptor = clusterMetadata[clusterName]?.descriptor || '';
         
-        html += `<h5 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">${emoji} ${clusterName}</h5>`;
+        html += '<fieldset>';
+        html += `<legend>${emoji} ${clusterName}</legend>`;
         if (descriptor) {
-            html += `<small>${descriptor}</small>`;
+            html += `<small style="color: var(--pico-muted-color);">${descriptor}</small>`;
         }
         
-        html += '<div style="display: flex; flex-direction: column; gap: 0; margin-top: 1rem;">';
         sourcesByCluster[clusterName].forEach(srcKey => {
             html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey, 0.0, 1.5, 0.01);
         });
-        html += '</div>';
+        html += '</fieldset>';
     });
+    html += '</article>';
 
     // 3. Shadow Ranks
     const unrankedSources = sortedSources.filter(k => sources[k].type === 'unranked');
     if (unrankedSources.length > 0) {
-        html += '<hr><h4>Shadow Ranks</h4>';
-        html += '<small>Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</small>';
-        html += '<div style="display: flex; flex-direction: column; gap: 0;">';
+        html += '<hr>';
+        html += '<article>';
+        html += '<hgroup>';
+        html += '<h4>Shadow Ranks</h4>';
+        html += '<p style="color: var(--pico-muted-color);">Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</p>';
+        html += '</hgroup>';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
              html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`, 1.0, 100.0, 0.1);
         });
-        html += '</div>';
+        html += '</article>';
     }
 
     UI.settingsContent.innerHTML = html;
