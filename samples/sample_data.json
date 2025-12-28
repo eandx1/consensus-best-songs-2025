@@ -1,238 +1,363 @@
 {
     "config": {
         "ranking": {
-            "rank_sensitivity": 25,
-            "consensus_bonus": 0.05
+            "k_value": 20,
+            "p_exponent": 0.55,
+            "min_norm_length": 25,
+            "cluster_threshold": 50,
+            "consensus_boost": 0.05,
+            "provocation_boost": 0.1,
+            "cluster_boost": 0.03,
+            "rank1_bonus": 1.1,
+            "rank2_bonus": 1.075,
+            "rank3_bonus": 1.025,
+            "decay_mode": "consensus"
         },
         "sources": {
-            "Billboard (Staff Picks)": {
-                "url": "https://www.billboard.com/lists/best-songs-2025",
-                "weight": 1.5
-            },
-            "Rolling Stone": {
-                "url": "https://www.rollingstone.com/music/music-lists/best-songs-of-2025-1235468614",
-                "weight": 1.5
-            },
-            "Pitchfork": {
-                "url": "https://pitchfork.com/features/lists-and-guides/best-songs-2025/",
-                "weight": 1.2
-            },
-            "The Guardian": {
-                "url": "https://www.theguardian.com/music/ng-interactive/2025/dec/03/the-20-best-songs-of-2025",
-                "weight": 1.0
-            },
-            "New York Times (Jon Caramanica)": {
-                "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
-                "weight": 0.9
-            },
-            "New York Times (Lindsay Zoladz)": {
-                "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
-                "weight": 0.9
-            },
-            "Vulture": {
-                "url": "https://www.vulture.com/article/best-songs-2025.html",
-                "weight": 1.0
+            "LA Times": {
+                "url": "https://www.latimes.com/entertainment-arts/music/story/2025-12-04/25-best-songs-of-2025",
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 25
             },
             "NPR Top 25": {
                 "url": "https://www.npr.org/nx-s1-5616663",
-                "weight": 0.95
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "unranked",
+                "song_count": 25,
+                "shadow_rank": 13.0
             },
             "NPR Top 125": {
                 "url": "https://www.npr.org/nx-s1-5619849",
-                "weight": 0.95
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "unranked",
+                "song_count": 100,
+                "shadow_rank": 75.5
             },
-            "The Quietus": {
-                "url": "https://thequietus.com/tq-charts/tracks-of-the-year/the-quietus-tracks-of-the-year-2025/",
-                "weight": 0.9
+            "NYT (Caramanica)": {
+                "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
+                "weight": 1.0,
+                "full_name": "New York Times (Jon Caramanica)",
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 20
             },
-            "Gorilla vs. Bear": {
-                "url": "https://www.gorillavsbear.net/gorilla-vs-bears-songs-of-2025/",
-                "weight": 0.9
+            "NYT (Zoladz)": {
+                "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
+                "weight": 1.0,
+                "full_name": "New York Times (Lindsay Zoladz)",
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 20
             },
-            "The FADER": {
-                "url": "https://www.thefader.com/2025/12/09/best-songs-2025",
-                "weight": 0.9
+            "Rolling Stone": {
+                "url": "https://www.rollingstone.com/music/music-lists/best-songs-of-2025-1235468614",
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 100
+            },
+            "Slant": {
+                "url": "http://slantmagazine.com/music/the-50-best-songs-of-2025/",
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 50
+            },
+            "Guardian": {
+                "url": "https://www.theguardian.com/music/ng-interactive/2025/dec/03/the-20-best-songs-of-2025",
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 22,
+                "full_name": "The Guardian"
+            },
+            "Vulture": {
+                "url": "https://www.vulture.com/article/best-songs-2025.html",
+                "weight": 1.0,
+                "cluster": "Critical Authority",
+                "type": "ranked",
+                "song_count": 10
             },
             "Complex": {
                 "url": "https://www.complex.com/music/a/dimassanfiorenzo/best-songs-2025",
-                "weight": 0.9
-            },
-            "Stereogum": {
-                "url": "https://stereogum.com/2480811/the-50-best-songs-of-2025/lists/year-in-review/2025-in-review",
-                "weight": 0.85
-            },
-            "Crack": {
-                "url": "http://crackmagazine.net/article/list-article/best-tracks-2025/",
-                "weight": 0.85
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 50
             },
             "Consequence": {
                 "url": "https://consequence.net/list/200-best-songs-of-2025-annual-report/",
-                "weight": 0.75
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 200
+            },
+            "GvsB": {
+                "url": "https://www.gorillavsbear.net/gorilla-vs-bears-songs-of-2025/",
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 33,
+                "full_name": "Gorilla vs. Bear"
             },
             "Paste": {
                 "url": "https://www.pastemagazine.com/music/best-songs/the-100-best-songs-of-2025",
-                "weight": 0.75
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 100
+            },
+            "Pitchfork": {
+                "url": "https://pitchfork.com/features/lists-and-guides/best-songs-2025/",
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 100
+            },
+            "Stereogum": {
+                "url": "https://stereogum.com/2480811/the-50-best-songs-of-2025/lists/year-in-review/2025-in-review",
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 50
+            },
+            "FADER": {
+                "url": "https://www.thefader.com/2025/12/09/best-songs-2025",
+                "weight": 0.8,
+                "cluster": "Tastemakers",
+                "type": "ranked",
+                "song_count": 51,
+                "full_name": "The FADER"
+            },
+            "Crack": {
+                "url": "http://crackmagazine.net/article/list-article/best-tracks-2025/",
+                "weight": 0.7,
+                "cluster": "Specialists",
+                "type": "ranked",
+                "song_count": 25,
+                "full_name": "Crack Magazine"
+            },
+            "Dazed": {
+                "url": "https://www.dazeddigital.com/music/article/69273/1/20-best-tracks-of-2025-ranked-ethel-cain-smerz-esdeekid-fakemink",
+                "weight": 0.7,
+                "cluster": "Specialists",
+                "type": "ranked",
+                "song_count": 20,
+                "full_name": "Dazed & Confused"
             },
             "NME": {
                 "url": "https://www.nme.com/lists/end-of-year/best-songs-2025-3912937",
-                "weight": 0.75
+                "weight": 0.7,
+                "cluster": "Specialists",
+                "type": "ranked",
+                "song_count": 50
+            },
+            "Rough Trade": {
+                "url": "https://blog.roughtrade.com/gb/the-best-songs-of-2025/",
+                "weight": 0.7,
+                "cluster": "Specialists",
+                "type": "unranked",
+                "song_count": 63,
+                "shadow_rank": 32.0
+            },
+            "Independent": {
+                "url": "https://www.the-independent.com/arts-entertainment/music/features/the-best-songs-of-2025-b2884545.html",
+                "weight": 0.7,
+                "cluster": "Specialists",
+                "type": "unranked",
+                "song_count": 10,
+                "shadow_rank": 5.5,
+                "full_name": "The Independent"
+            },
+            "Quietus": {
+                "url": "https://thequietus.com/tq-charts/tracks-of-the-year/the-quietus-tracks-of-the-year-2025/",
+                "weight": 0.7,
+                "cluster": "Specialists",
+                "type": "ranked",
+                "song_count": 50,
+                "full_name": "The Quietus"
+            },
+            "AP": {
+                "url": "https://apnews.com/article/best-songs-2025-6a4712aa815b7554790ff28fbdff220b",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "unranked",
+                "song_count": 10,
+                "shadow_rank": 5.5,
+                "full_name": "Associated Press"
+            },
+            "Billboard Staff": {
+                "url": "https://www.billboard.com/lists/best-songs-2025",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "ranked",
+                "song_count": 100,
+                "full_name": "Billboard (Staff Picks)"
+            },
+            "Buzzfeed": {
+                "url": "https://www.buzzfeed.com/andrewfirriolo/favorite-songs-of-2025",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "ranked",
+                "song_count": 25
+            },
+            "ELLE": {
+                "url": "https://www.elle.com/culture/music/a65322446/best-songs-of-2025/",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "unranked",
+                "song_count": 48,
+                "shadow_rank": 24.5
+            },
+            "EW": {
+                "url": "https://ew.com/the-10-best-songs-of-2025-11864116",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "ranked",
+                "song_count": 10,
+                "full_name": "Entertainment Weekly"
+            },
+            "USA Today": {
+                "url": "https://www.usatoday.com/story/entertainment/music/2025/12/17/best-songs-2025-ranking/87703729007/",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "ranked",
+                "song_count": 10
+            },
+            "Variety": {
+                "url": "https://variety.com/lists/best-songs-2025",
+                "weight": 0.5,
+                "cluster": "Mainstream",
+                "type": "unranked",
+                "song_count": 61,
+                "shadow_rank": 31.0
             }
         }
     },
     "songs": [
         {
-            "id": "USMTD2400372",
-            "artist": "Perfume Genius",
-            "name": "It's a Mirror",
+            "id": "FRX452505206",
+            "artist": "dexter in the newsagent",
+            "name": "Special",
             "sources": [
                 {
-                    "name": "Consequence",
-                    "rank": 5,
-                    "quote": "transform that heavy pain into something luminous and vital"
+                    "name": "AP",
+                    "uses_shadow_rank": true,
+                    "quote": "catchy and effervescent, like a vintage R&B cut but undeniably contemporary in its slow, romantic production"
                 },
                 {
-                    "name": "New York Times (Lindsay Zoladz)",
-                    "rank": 11,
-                    "quote": "embraces the grain of guitars on this sumptuous, ever-escalating single ... confronting a swirling maelstrom of fears with a self-assured swagger"
+                    "name": "NYT (Caramanica)",
+                    "rank": 7,
+                    "quote": "a delightful, patient, encouraging and nourishing whisper of a love song"
                 },
                 {
-                    "name": "The Quietus",
-                    "rank": 22
+                    "name": "FADER",
+                    "rank": 37,
+                    "quote": "Heartbreak here sounds both resigned and hopeful"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 56,
+                    "quote": "dexter sings with such conviction that all you can do is bask in the beauty"
                 },
                 {
                     "name": "Pitchfork",
-                    "rank": 30,
-                    "quote": "The song sprawls at a magnificent scale, all crashing drums, rolling guitars, and weighted silences"
-                },
-                {
-                    "name": "NPR Top 125",
-                    "rank": 75.5,
-                    "quote": "self-isolating loops, retreating into dark thoughts ... the loop becomes an ouroboros"
+                    "rank": 66,
+                    "quote": "full of grace and fully imagined, as if it had always been with us"
                 }
             ],
             "list_count": 5,
             "media": {
                 "youtube": {
-                    "music_id": "-hqqLEhWq9M",
-                    "video_id": "hx2_NGaDPrk"
+                    "music_id": "BvM3LQtvYDU",
+                    "video_id": "6vLZjyKuWEY"
                 },
                 "spotify": {
-                    "id": "2UYuux157cn498H23UfHQf"
-                }
-            },
-            "archetype": "Critical Darling \ud83e\udde0"
-        },
-        {
-            "id": "GBAYE2500026",
-            "artist": "PinkPantheress",
-            "name": "Illegal",
-            "sources": [
-                {
-                    "name": "NME",
-                    "rank": 1,
-                    "quote": "[It] hits like a storm gale, distilling '90s rave energy and smouldering dance-pop lyricism into a young, fun banger"
-                },
-                {
-                    "name": "The Guardian",
-                    "rank": 2,
-                    "quote": "a sped-up sample of the floodlit synths ... that throbs with all the disorientation and delight of a THC-addled brain"
-                },
-                {
-                    "name": "The FADER",
-                    "rank": 3,
-                    "quote": "dreamy jungle-pop track ... introducing the TikTok generation to a rave staple heard everywhere from sweat-soaked scenes in \"Trainspotting\" to the London Olympics Opening Ceremony"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 6,
-                    "quote": "UK garage maximalism at its most indulgent"
-                },
-                {
-                    "name": "The Quietus",
-                    "rank": 6,
-                    "quote": "it's impossible not to be swept up by the intoxicating sugar rush of 'Illegal', with its dazzling Underworld-sampling synth melodies and shuffling 2-step UK garage rhythms"
-                },
-                {
-                    "name": "Stereogum",
-                    "rank": 6,
-                    "quote": "a giddy, stoned flirtation ... hinting at a nervous longing just beneath the surface"
-                },
-                {
-                    "name": "Billboard (Staff Picks)",
-                    "rank": 7,
-                    "quote": "PinkPantheress suddenly arrives as an unabashed artist, fully formed, with a hook that can't be ignored"
-                },
-                {
-                    "name": "Complex",
-                    "rank": 12,
-                    "quote": "sticky melodies, bathed in a melancholic longing ... hints at other acts of youthful rebellion"
-                },
-                {
-                    "name": "Consequence",
-                    "rank": 25,
-                    "quote": "contains a near-instant dopamine rush ... buoyed by a now-iconic opening sequence"
-                }
-            ],
-            "list_count": 9,
-            "media": {
-                "youtube": {
-                    "music_id": "XuKq7zT_0nM",
-                    "video_id": "TFWXqLSr4ZM"
-                },
-                "spotify": {
-                    "id": "1WmBVbFmLt0w6zPP37TeCG"
+                    "id": "7HWDQfrQvnAXp5Xk29xqh7"
                 }
             }
         },
         {
-            "id": "GBCVZ2500003",
-            "artist": "Pulp",
-            "name": "Spike Island",
+            "id": "USWB12502453",
+            "artist": "sombr",
+            "name": "12 to 12",
             "sources": [
                 {
-                    "name": "The Guardian",
-                    "rank": 7,
-                    "quote": "it has a disco rhythm that's done with real affection rather than ironic affectation"
+                    "name": "Buzzfeed",
+                    "rank": 12,
+                    "quote": "\"12 to 12\" has a catchy '80s-inspired vibe, and those opening synths and vocal effects grab you from the very first seconds"
+                },
+                {
+                    "name": "LA Times",
+                    "rank": 23,
+                    "quote": "The zoomer wedding dance-floor anthem of 2035."
+                },
+                {
+                    "name": "ELLE",
+                    "uses_shadow_rank": true,
+                    "quote": "Sombr's 2010s alt-rock sound hits close to home"
+                },
+                {
+                    "name": "Variety",
+                    "uses_shadow_rank": true,
+                    "quote": "a swaggering pop song that packs all of the punch it promises"
+                },
+                {
+                    "name": "Billboard Staff",
+                    "rank": 42,
+                    "quote": "delivered one of the sleekest disco workouts of the year"
                 },
                 {
                     "name": "NME",
-                    "rank": 9,
-                    "quote": "charm and delight with the kind of nuanced, uber-entertaining art-pop"
+                    "rank": 47,
+                    "quote": "has a penchant for putting melancholic heartbreak to a funky melody and making it sound like an intoxicatingly good time"
                 },
                 {
-                    "name": "The Quietus",
-                    "rank": 26
-                },
-                {
-                    "name": "Stereogum",
-                    "rank": 28,
-                    "quote": "he locks right back into his lounge-disco shimmy-strut"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 59,
-                    "quote": "rummaging through the cultural remains, wondering what it all meant"
-                },
-                {
-                    "name": "Billboard (Staff Picks)",
-                    "rank": 78,
-                    "quote": "a fist-pumping-and-hip-swinging return to form for Britpop greats Pulp"
+                    "name": "NPR Top 125",
+                    "uses_shadow_rank": true,
+                    "quote": "an undeniable '80s FM urgency ... The adrenaline rush of that driving groove and dramatic piano renders the rest of the track inconsequential"
                 }
             ],
-            "list_count": 6,
+            "list_count": 7,
             "media": {
                 "youtube": {
-                    "music_id": "DAeuKVWSm8w",
-                    "video_id": "-27a1ugJX8U"
+                    "music_id": "Lylp6w7LpHc",
+                    "video_id": "cZgUiR31m-Y"
                 },
                 "spotify": {
-                    "id": "1c66APUihMSvbniRdka1Er"
-                },
-                "bandcamp": {
-                    "url": "https://pulpmusic.bandcamp.com/track/spike-island"
+                    "id": "05od2qm2MTSKCHxy1GBp5W"
                 }
-            },
-            "archetype": "High-Heat Sniper \ud83c\udfaf"
+            }
+        },
+        {
+            "id": "USAT22504013",
+            "artist": "Charlie Puth",
+            "name": "Changes",
+            "sources": [
+                {
+                    "name": "LA Times",
+                    "rank": 13
+                },
+                {
+                    "name": "Variety",
+                    "uses_shadow_rank": true,
+                    "quote": "the breadth of his musical expertise and ability to put that knowledge into action continues to go unmatched in contemporary pop"
+                }
+            ],
+            "list_count": 2,
+            "media": {
+                "youtube": {
+                    "music_id": "U9pWCNM-040",
+                    "video_id": "Jrf8N1EMUhg"
+                },
+                "spotify": {
+                    "id": "4kUI0vuDd0Zub4IvxxNreM"
+                }
+            }
         }
     ]
 }
