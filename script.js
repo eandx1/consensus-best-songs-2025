@@ -484,9 +484,9 @@ function renderSettingsUI() {
     html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, clusterDesc);
     
     html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
-    html += createSlider('ranking', 'rank1_bonus', 'Rank 1 Bonus', 1.0, 1.2, 0.01, false, true);
-    html += createSlider('ranking', 'rank2_bonus', 'Rank 2 Bonus', 1.0, 1.2, 0.01, false, true);
-    html += createSlider('ranking', 'rank3_bonus', 'Rank 3 Bonus', 1.0, 1.2, 0.01, false, true);
+    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', 1.0, 1.2, 0.01, false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
+    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', 1.0, 1.2, 0.01, false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
+    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.01, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
     
     html += '</div>'; // End Stack
     
