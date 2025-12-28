@@ -458,14 +458,16 @@ function renderSettingsUI() {
         const helperId = `helper-text-${key}`;
 
         return `
-            <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                <span>${label}</span>
-                <kbd id="val-${idBase}" style="font-size: 0.8rem; min-width: ${minWidth}; text-align: center;">${displayVal}</kbd>
-                <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
-                    style="width: 100%;"
-                    oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
-                ${helperText ? `<p id="${helperId}" style="color: var(--pico-muted-color); width: 100%;">${helperText}</p>` : ''}
-            </label>
+            <div style="margin-bottom: var(--pico-spacing);">
+                <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0;">
+                    <span>${label}</span>
+                    <kbd id="val-${idBase}" style="font-size: 0.8rem; min-width: ${minWidth}; text-align: center;">${displayVal}</kbd>
+                    <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
+                        style="width: 100%; margin-bottom: 0.25rem;"
+                        oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
+                </label>
+                ${helperText ? `<p style="color: var(--pico-muted-color); font-size: 0.85em; margin-bottom: 0;">${helperText}</p>` : ''}
+            </div>
         `;
     };
 
@@ -508,11 +510,10 @@ function renderSettingsUI() {
     html += '</article>';
     
     // 2. Source Weights
-    html += '<hr>';
     html += '<article>';
     html += '<hgroup>';
     html += '<h4>Source Weights</h4>';
-    html += '<p style="color: var(--pico-muted-color);">Fine-tune the individual influence of each publication. These sliders allow you to manually adjust the specific "gravity" a source has within the final consensus.</p>';
+    html += '<p>Fine-tune the individual influence of each publication. These sliders allow you to manually adjust the specific "gravity" a source has within the final consensus.</p>';
     html += '</hgroup>';
     const sortedSources = Object.keys(sources).sort();
     
@@ -535,7 +536,7 @@ function renderSettingsUI() {
         html += '<fieldset>';
         html += `<legend>${emoji} ${clusterName}</legend>`;
         if (descriptor) {
-            html += `<p style="color: var(--pico-muted-color); font-size: 0.85rem; margin-bottom: 1.5rem;">${descriptor}</p>`;
+            html += `<p><small style="color: var(--pico-muted-color); display: block; margin-bottom: 1rem;">${descriptor}</small></p>`;
         }
         
         sourcesByCluster[clusterName].forEach(srcKey => {
@@ -548,11 +549,10 @@ function renderSettingsUI() {
     // 3. Shadow Ranks
     const unrankedSources = sortedSources.filter(k => sources[k].type === 'unranked');
     if (unrankedSources.length > 0) {
-        html += '<hr>';
         html += '<article>';
         html += '<hgroup>';
         html += '<h4>Shadow Ranks</h4>';
-        html += '<p style="color: var(--pico-muted-color);">Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</p>';
+        html += '<p>Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</p>';
         html += '</hgroup>';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
