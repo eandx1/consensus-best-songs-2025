@@ -61,7 +61,19 @@
             text-transform: uppercase;
             font-weight: bold;
         }
-        .customized-label { color: var(--primary); font-weight: bold; }
+        .customized-label { color: var(--pico-primary); font-weight: bold; }
+        .mode-card {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s, transform 0.2s;
+            margin-bottom: 0;
+        }
+        .mode-card:hover {
+            border-color: var(--pico-muted-border-color);
+        }
+        .mode-card.active {
+            border-color: var(--pico-primary);
+        }
     </style>
 </head>
 <body>

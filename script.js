@@ -406,19 +406,18 @@ function renderSettingsUI() {
     // Decay Mode
     const isConsensus = ranking.decay_mode === 'consensus';
     html += `
-        <fieldset>
-            <legend>Decay Mode</legend>
-            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <label>
-                    <input type="radio" name="decay_mode" value="consensus" ${isConsensus ? 'checked' : ''} onchange="updateSetting('ranking', 'decay_mode', 'consensus')">
-                    Consensus
-                </label>
-                <label>
-                    <input type="radio" name="decay_mode" value="conviction" ${!isConsensus ? 'checked' : ''} onchange="updateSetting('ranking', 'decay_mode', 'conviction')">
-                    Conviction
-                </label>
-            </div>
-        </fieldset>
+        <label>Decay Mode</label>
+        <div class="grid" style="margin-bottom: 2rem;">
+            <article class="mode-card ${isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'consensus')">
+                <header><strong>🤝 Consensus</strong></header>
+                <small>Identifies the cultural record. Rewards songs that appeared on the most lists.</small>
+            </article>
+            
+            <article class="mode-card ${!isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'conviction')">
+                <header><strong>🔥 Conviction</strong></header>
+                <small>Rewards critical obsession. A #1 rank carries massive weight.</small>
+            </article>
+        </div>
     `;
 
     // Sliders Helper
