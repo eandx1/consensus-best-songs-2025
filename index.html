@@ -44,16 +44,19 @@
         }
 
         .rank-display {
-            flex: 0 0 4.5rem; /* Do not grow, do not shrink, stay at 4.5rem */
-            text-align: right;
-            font-size: 2.5rem;
+            flex: 0 0 3rem; /* Smaller fixed width for rank on desktop */
+            text-align: center; /* Center the rank in its column */
+            font-size: clamp(1.75rem, 2.5vw, 2.25rem); /* Responsive font size that scales down if needed */
             font-weight: 900;
             opacity: 0.15;
             line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .video-figure {
-            flex: 0 0 240px; /* Do not grow, do not shrink, stay at 240px */
+            flex: 0 0 320px; /* Bigger video on desktop - increased from 240px */
             margin: 0;
         }
 
@@ -63,6 +66,13 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+        
+        /* Even bigger video on larger screens */
+        @media (min-width: 1200px) {
+            .video-figure {
+                flex: 0 0 360px; /* Even bigger on large screens */
+            }
         }
         
         /* --- THE DYNAMIC SHIFT --- */
@@ -75,8 +85,9 @@
             .rank-display {
                 flex: 0 0 auto; /* Allow it to be its natural size */
                 text-align: left;
-                font-size: 2rem;
+                font-size: 2.5rem; /* Bigger on mobile */
                 margin-bottom: -1rem; /* Pull the video up closer to the rank */
+                justify-content: flex-start;
             }
 
             .video-figure {
