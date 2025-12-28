@@ -334,7 +334,7 @@ window.showStats = (idx) => {
     const song = STATE.songs[idx];
     if (!song) return;
 
-    document.getElementById('stats-title').textContent = `Ranking: ${song.name}`;
+    document.getElementById('stats-title').textContent = 'Ranking Details';
     
     const stats = song.stats;
     
