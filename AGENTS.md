@@ -160,7 +160,6 @@ root (object)
 │   ├── ranking (object)
 │   │   ├── k_value (integer)
 │   │   ├── p_exponent (float)
-│   │   ├── min_norm_length (integer)
 │   │   ├── cluster_threshold (integer)
 │   │   ├── consensus_boost (float)
 │   │   ├── provocation_boost (float)
@@ -263,11 +262,11 @@ Always use `escapeHtml()` helper function when inserting user-generated or data-
 
 # Ranking Function
 
-## 🧠 Core Philosophy: The Influence Budget
+## 🧠 Core Philosophy: Direct Scoring
 
-Unlike simple point-aggregation models, this engine treats every source as a **Ballot** with a fixed **Influence Budget** (1.0 points). This ensures that a source with 200 songs does not inherently have more power than a source with 10 songs.
+This ranking engine uses a **direct scoring** approach where each source citation contributes points based on its rank position and the source's weight multiplier. Unlike normalization-based systems, this allows sources of different sizes to have influence proportional to their configured weight.
 
-Each source is assigned a `weight` which acts as a pure multiplier on their total influence. It is also assigned to a `cluster` which is a categorization of the type of source it is.
+Each source is assigned a `weight` which acts as a pure multiplier on their contributions. Sources are also assigned to a `cluster` which is a categorization of the type of source it is.
 
 ## 🛠 Ranking Modes
 
@@ -285,15 +284,7 @@ Based on a modified **Reciprocal Rank Fusion (RRF)**, this mode identifies the "
 Uses a **Power-Law Decay** (Generalized Zipfian distribution) to reward critical obsession and "Song of the Year" statements.
 
 - **Formula:** $W(rank) = \frac{1}{rank^P}$ (uses shadow ranks for unranked lists)
-- **Zipf Exponent ($P$):** SThis creates a steep "winner-take-most" curve where a #1 rank is significantly more valuable than a #10. The default is `p_exponent` in the ranking config.
-
----
-
-## 🛡 Inflation Protection
-
-To prevent very short lists (e.g., a Top 5) from concentrating all their influence into a few tracks and skewing the data, the engine uses:
-
-- **`min_norm_length`:** Every list is treated as if it has at least this many slots. If a critic provides fewer, the remaining influence budget is discarded rather than being reassigned to the top songs. This ensures a #5 rank carries consistent "weight" regardless of list length.
+- **Zipf Exponent ($P$):** This creates a steep "winner-take-most" curve where a #1 rank is significantly more valuable than a #10. The default is `p_exponent` in the ranking config.
 
 ---
 

@@ -36,7 +36,7 @@ const debounce = (func, wait) => {
 
 /**
  * RANKING ENGINE (Ported from Python)
- * Implements the "Influence Budget" philosophy where every source has a fixed power.
+ * Direct scoring with anchor-rank decay functions.
  */
 const RankingEngine = {
     getDecayValue(rank, config) {
@@ -49,36 +49,18 @@ const RankingEngine = {
             val = 1.0 / Math.pow(rank, config.p_exponent);
         }
 
-        // Apply Top Rank Bonuses
-        if (rank === 1) val *= (1 + config.rank1_bonus);
-        else if (rank === 2) val *= (1 + config.rank2_bonus);
-        else if (rank === 3) val *= (1 + config.rank3_bonus);
+        // Apply Top Rank Bonuses (for integer ranks only)
+        const intRank = Math.floor(rank);
+        if (intRank === 1) val *= (1 + config.rank1_bonus);
+        else if (intRank === 2) val *= (1 + config.rank2_bonus);
+        else if (intRank === 3) val *= (1 + config.rank3_bonus);
         
         return val;
     },
 
-    calculateSourceNormFactors(sources, rankingConfig) {
-        const normFactors = {};
-        Object.entries(sources).forEach(([name, srcConfig]) => {
-            // Lists are treated as if they have at least min_norm_length
-            const effLen = Math.max(srcConfig.song_count, rankingConfig.min_norm_length);
-            let totalPoints = 0;
-            // Handle NPR Top 125 offset: ranks start at 26
-            const startR = (name === "NPR Top 125") ? 26 : 1;
-            
-            for (let r = startR; r <= effLen; r++) {
-                totalPoints += this.getDecayValue(r, rankingConfig);
-            }
-            normFactors[name] = totalPoints;
-        });
-        return normFactors;
-    },
-
     compute(songs, config) {
-        const normFactors = this.calculateSourceNormFactors(config.sources, config.ranking);
-        
         const rankedSongs = songs.map(song => {
-            let totalNormalizedScore = 0;
+            let totalScore = 0;
             let ranks = [];
             let clustersSeen = new Set();
             let sourceDetails = [];
@@ -94,9 +76,9 @@ const RankingEngine = {
                     clustersSeen.add(srcCfg.cluster);
                 }
 
-                // Contribution = (Decay / Total Source Points) * Weight
-                const contribution = (this.getDecayValue(rank, config.ranking) / normFactors[srcEntry.name]) * srcCfg.weight;
-                totalNormalizedScore += contribution;
+                // Direct Scoring: Decay * Weight (no normalization)
+                const contribution = this.getDecayValue(rank, config.ranking) * srcCfg.weight;
+                totalScore += contribution;
                 
                 sourceDetails.push({ name: srcEntry.name, rank, contribution, full_name: srcCfg.full_name || srcEntry.name });
             });
@@ -114,13 +96,13 @@ const RankingEngine = {
 
             const cl_mul = clustersSeen.size > 0 ? 1 + (config.ranking.cluster_boost * (clustersSeen.size - 1)) : 1.0;
 
-            const finalScore = totalNormalizedScore * c_mul * p_mul * cl_mul;
+            const finalScore = totalScore * c_mul * p_mul * cl_mul;
 
             return {
                 ...song,
                 finalScore,
                 sourceDetails: sourceDetails.sort((a, b) => b.contribution - a.contribution),
-                stats: { totalNormalizedScore, c_mul, p_mul, cl_mul, listCount: ranks.length }
+                stats: { totalScore, c_mul, p_mul, cl_mul, listCount: ranks.length }
             };
         });
 
@@ -362,7 +344,7 @@ window.showStats = (idx) => {
                     <tbody>
                         <tr><td>Normalized Score</td><td><strong>${song.normalizedScore.toFixed(4)}</strong></td></tr>
                         <tr><td>Raw Score</td><td>${song.finalScore.toFixed(4)}</td></tr>
-                        <tr><td>Base Score</td><td>${stats.totalNormalizedScore.toFixed(4)}</td></tr>
+                        <tr><td>Base Score</td><td>${stats.totalScore.toFixed(4)}</td></tr>
                     </tbody>
                 </table>
             </div>
