@@ -339,24 +339,18 @@ window.showStats = (idx) => {
     const stats = song.stats;
     
     let html = `
-        <div class="grid">
+        <div>
             <div>
-                <h5>Scores</h5>
+                <h5>Scoring</h5>
                 <table class="striped">
                     <tbody>
                         <tr><td>Normalized Score</td><td><strong>${song.normalizedScore.toFixed(4)}</strong></td></tr>
                         <tr><td>Raw Score</td><td>${song.finalScore.toFixed(4)}</td></tr>
                         <tr><td>Base Score</td><td>${stats.totalScore.toFixed(4)}</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <h5>Multipliers</h5>
-                <table class="striped">
-                    <tbody>
-                        <tr><td>Consensus (List Count: ${stats.listCount})</td><td>x${stats.c_mul.toFixed(3)}</td></tr>
-                        <tr><td>Provocation (Polarization)</td><td>x${stats.p_mul.toFixed(3)}</td></tr>
-                        <tr><td>Cluster (Diversity)</td><td>x${stats.cl_mul.toFixed(3)}</td></tr>
+                        <tr><td>List Count</td><td>${stats.listCount}</td></tr>
+                        <tr><td>Consensus Boost</td><td>x${stats.c_mul.toFixed(3)}</td></tr>
+                        <tr><td>Provocation Boost</td><td>x${stats.p_mul.toFixed(3)}</td></tr>
+                        <tr><td>Cluster Boost</td><td>x${stats.cl_mul.toFixed(3)}</td></tr>
                     </tbody>
                 </table>
             </div>
