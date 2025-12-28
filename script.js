@@ -434,13 +434,14 @@ function renderSettingsUI() {
         let currentVal = category === 'ranking' ? ranking[key] : (category === 'source_weight' ? sources[key].weight : sources[key].shadow_rank);
         let defaultVal = category === 'ranking' ? defaults.ranking[key] : (category === 'source_weight' ? defaults.sources[key].weight : defaults.sources[key].shadow_rank);
         
-        const isModified = currentVal !== defaultVal;
+        // Approximate equality check for floating point values (within 0.0001)
+        const isModified = Math.abs(currentVal - defaultVal) > 0.0001;
         // Bonus values are stored as multipliers (1.1 = 10% bonus), so subtract 1 and multiply by 100 for display
         let displayVal;
         let minWidth = '3.5rem'; // default for decimals
         
         if (isBonus) {
-            displayVal = Math.round((currentVal - 1) * 100) + '%';
+            displayVal = ((currentVal - 1) * 100).toFixed(1) + '%';
         } else if (isPercent) {
             displayVal = Math.round(currentVal * 100) + '%';
         } else if (key === 'k_value') {
@@ -500,9 +501,9 @@ function renderSettingsUI() {
     html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, clusterDesc);
     
     html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
-    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', 1.0, 1.2, 0.01, false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
-    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', 1.0, 1.2, 0.01, false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
-    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.01, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
+    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', 1.0, 1.2, 0.005, false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
+    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', 1.0, 1.2, 0.005, false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
+    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.005, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
     
     html += '</article>';
     
@@ -604,7 +605,7 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
     if (idBase) {
         let displayVal;
         if (isBonus) {
-            displayVal = Math.round((numVal - 1) * 100) + '%';
+            displayVal = ((numVal - 1) * 100).toFixed(1) + '%';
         } else if (isPercent) {
             displayVal = Math.round(numVal * 100) + '%';
         } else if (key === 'k_value' || key === 'cluster_threshold') {
@@ -615,8 +616,12 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
         document.getElementById(`val-${idBase}`).textContent = displayVal;
         
         const label = document.getElementById(`label-${idBase}`);
-        if (numVal !== defaultVal) label.classList.add('customized-label');
-        else label.classList.remove('customized-label');
+        // Approximate equality check for floating point values (within 0.0001)
+        if (Math.abs(numVal - defaultVal) > 0.0001) {
+            label.classList.add('customized-label');
+        } else {
+            label.classList.remove('customized-label');
+        }
     }
 
     // Dynamic Helper Text Update for K and P
