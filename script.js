@@ -468,7 +468,15 @@ function renderSettingsUI() {
     
     html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', 0, 0.1, 0.01, true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
     html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', 0, 0.25, 0.01, true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
-    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, 'Rewards cross over between different categories of critics by giving a bonus for each new unique category with a rank under the Cluster Threshold.');
+    
+    // Collect unique clusters for Cluster Boost description
+    const clusters = [...new Set(Object.values(sources).map(src => src.cluster).filter(c => c))].sort();
+    const clusterList = clusters.length > 1 
+        ? clusters.slice(0, -1).join(', ') + ', and ' + clusters[clusters.length - 1]
+        : clusters[0] || '';
+    const clusterDesc = `Rewards crossover between different categories of critics by giving a bonus for each additional category reached with a best rank under the Cluster Threshold. The current critic categories are: ${clusterList}.`;
+    
+    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, clusterDesc);
     
     html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
     html += createSlider('ranking', 'rank1_bonus', 'Rank 1 Bonus', 1.0, 1.2, 0.01, false, true);
