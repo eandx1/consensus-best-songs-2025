@@ -402,11 +402,38 @@ window.showStats = (idx) => {
     
     // sourceDetails is already sorted by contribution in RankingEngine
     song.sourceDetails.forEach(sd => {
+        const sourceCfg = STATE.config.sources[sd.name];
+        const clusterId = sourceCfg?.cluster;
+        const clusterMeta = APP_DATA.config.cluster_metadata?.[clusterId];
+        
+        // Access the cluster ID (which is the name)
+        const clusterEmoji = clusterMeta?.emoji || '';
+        const clusterName = clusterId || 'Unknown Category';  // Use cluster ID as the name
+        
+        // Just use the category name for the tooltip (no descriptor)
+        const tooltipText = escapeHtml(clusterName);
+        
+        // Logic for Shadow Rank display (using the Ghost emoji/tilde approach)
+        const displayRank = String(sd.rank).includes('.5') 
+            ? `<abbr data-tooltip="Shadow Rank (Calculated from list length)">👻~${Math.ceil(sd.rank)}</abbr>` 
+            : sd.rank;
+
         html += `
             <tr>
-                <td>${sd.full_name || sd.name}</td>
-                <td>${sd.rank}</td>
-                <td>${sd.contribution.toFixed(4)}</td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <abbr data-tooltip="${tooltipText}" data-placement="right" style="text-decoration: none; cursor: help;">
+                            ${clusterEmoji}
+                        </abbr>
+                        <span>${escapeHtml(sd.full_name || sd.name)}</span>
+                    </div>
+                </td>
+                <td style="font-family: var(--pico-font-family-monospace);">${displayRank}</td>
+                <td style="text-align: right;">
+                    <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); font-weight: bold;">
+                        +${sd.contribution.toFixed(2)}
+                    </kbd>
+                </td>
             </tr>
         `;
     });
