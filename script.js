@@ -251,9 +251,20 @@ function render() {
                                     // Check if source uses shadow rank by looking at config
                                     const srcConfig = STATE.config.sources[s.name];
                                     const usesShadowRank = srcConfig && typeof srcConfig.shadow_rank !== 'undefined';
+                                    
+                                    // Build the display name
+                                    let displayName = escapeHtml(s.full_name || s.name);
+                                    
+                                    // For shadow rank sources (except NPR lists), show "(Top N)"
+                                    if (usesShadowRank && s.name !== 'NPR Top 25' && s.name !== 'NPR Top 125') {
+                                        const songCount = srcConfig.song_count || 0;
+                                        displayName = `${displayName} (Top ${songCount})`;
+                                    }
+                                    
                                     // Only show rank for sources with actual ranks, not shadow ranks
                                     const rankDisplay = usesShadowRank ? '' : `#${Math.floor(s.rank)}`;
-                                    return `<span>${escapeHtml(s.full_name || s.name)}${rankDisplay}</span>`;
+                                    
+                                    return `<span>${displayName}${rankDisplay}</span>`;
                                 }).join(' · ')}
                             </small>
                         </div>
