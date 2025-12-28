@@ -7,9 +7,9 @@
             "consensus_boost": 0.05,
             "provocation_boost": 0.1,
             "cluster_boost": 0.03,
-            "rank1_bonus": 0.1,
-            "rank2_bonus": 0.075,
-            "rank3_bonus": 0.025,
+            "rank1_bonus": 1.1,
+            "rank2_bonus": 1.075,
+            "rank3_bonus": 1.025,
             "decay_mode": "consensus"
         },
         "sources": {
@@ -257,114 +257,98 @@
     },
     "songs": [
         {
-            "id": "UK7MC2500274",
-            "artist": "Robyn",
-            "name": "Dopamine",
+            "id": "QT3F42457524",
+            "artist": "GELO",
+            "name": "Tweaker",
             "sources": [
                 {
-                    "name": "Dazed",
-                    "rank": 18,
-                    "quote": "the sovereign of sad-happy songs has returned with another cathartic club anthem"
-                },
-                {
-                    "name": "GvsB",
-                    "rank": 19
-                },
-                {
-                    "name": "ELLE",
-                    "uses_shadow_rank": true,
-                    "quote": "she delivers feel-good pop energy that we've been desperately needing"
-                },
-                {
-                    "name": "Billboard Staff",
-                    "rank": 66,
-                    "quote": "dissecting her own complicated emotions ... set to a pulsing beat that just keeps building"
-                },
-                {
-                    "name": "NPR Top 125",
-                    "uses_shadow_rank": true,
-                    "quote": "the Swedish fembot sounds like she's rebooting, fired up by romantic chemistry, ready to give us something to dance to"
-                }
-            ],
-            "list_count": 5,
-            "media": {
-                "youtube": {
-                    "music_id": "pwi-LyNgrD8",
-                    "video_id": "vitil9qMN6A"
-                },
-                "spotify": {
-                    "id": "168GHxsiJyT9tlJN74ZO11"
-                }
-            }
-        },
-        {
-            "id": "US2U62539801",
-            "artist": "feeble little horse",
-            "name": "This Is Real",
-            "sources": [
-                {
-                    "name": "AP",
-                    "uses_shadow_rank": true,
-                    "quote": "pushes the envelope further, working in computerized, hyperpop-esque electronics ... one of their heaviest tracks to date"
+                    "name": "NYT (Caramanica)",
+                    "rank": 20,
+                    "quote": "turns a drudging appearance on a livestream into evanescent hip-hop gold"
                 },
                 {
                     "name": "Stereogum",
-                    "rank": 45,
-                    "quote": "glitchy jangle riffs, overlapping twee-folk refrains\u2026 and the heaviest breakdown this year outside of metal"
+                    "rank": 44,
+                    "quote": "sliding into the kind of pocket that very few full-time rappers find"
                 },
                 {
-                    "name": "Quietus",
-                    "rank": 47
+                    "name": "Complex",
+                    "rank": 49,
+                    "quote": "a single so good it earned him a record deal with Def Jam"
                 },
                 {
-                    "name": "Rolling Stone",
-                    "rank": 82,
-                    "quote": "collide bedroom pop, noise pop, and hyper pop ... turns into bubbly electro cuteness, then runs into a wall of power-drone grind, then becomes a Nineties-style grunge-punk tantrum"
+                    "name": "Billboard Staff",
+                    "rank": 84,
+                    "quote": "a scalding anthem ... with shades of prime Master P flowing through his blood"
                 }
             ],
             "list_count": 4,
             "media": {
                 "youtube": {
-                    "music_id": "4tT4thtTees",
-                    "video_id": "ZZ5ARgm--Ok"
+                    "music_id": "Blo8ljEhA24",
+                    "video_id": "2Mk7VTUwbck"
                 },
                 "spotify": {
-                    "id": "4LYXtoiuM9xEmxklVvQnLl"
-                },
-                "bandcamp": {
-                    "url": "https://feeblelittlehorse.bandcamp.com/track/this-is-real"
+                    "id": "7HDq8aEtkBeZq7gfzYjW28"
                 }
             }
         },
         {
-            "id": "QM4TW2517490",
-            "artist": "Little Simz, Obongjayar, & Moonchild Sanelly",
-            "name": "Flood",
+            "id": "USBQU2500083",
+            "artist": "Geese",
+            "name": "Au Pays du Cocaine",
             "sources": [
                 {
                     "name": "Consequence",
-                    "rank": 18,
-                    "quote": "The UK rapper addresses betrayal with a haunting cadence and thunderous drums, taking no prisoners as she offers up hard-earned clarity and advice."
+                    "rank": 1,
+                    "quote": "Winter's yearning cries of total devotion ... are both devastating and heartwarming"
                 },
                 {
-                    "name": "Guardian",
-                    "rank": 20,
-                    "quote": "she lays out her six-point plan for greatness with koans of wisdom such as: \"Never eat with the hyenas / 'Cause they will look at you as bones.\""
+                    "name": "Paste",
+                    "rank": 61,
+                    "quote": "begins gently and humbly with a very pretty, '70s-tinged guitar riff before revealing itself as something more desperate, though still just as affecting"
+                }
+            ],
+            "list_count": 2,
+            "media": {
+                "youtube": {
+                    "music_id": "fpIHEHs-zck",
+                    "video_id": "fpIHEHs-zck"
+                },
+                "spotify": {
+                    "id": "1g9GiiPPaL7KcDHlDzu7lT"
+                }
+            }
+        },
+        {
+            "id": "QM6MZ2547404",
+            "artist": "CMAT",
+            "name": "EURO-COUNTRY",
+            "sources": [
+                {
+                    "name": "Paste",
+                    "rank": 4,
+                    "quote": "open letter to Ireland, as she pleads for the culture she identifies with so deeply to preserve itself"
                 },
                 {
-                    "name": "ELLE",
-                    "uses_shadow_rank": true,
-                    "quote": "a master class in storytelling, showing a profound confidence from the rapper"
+                    "name": "Crack",
+                    "rank": 22,
+                    "quote": "a powerful, offbeat spellbinder ... grieves an earlier time"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 85,
+                    "quote": "fragments herself, linguistically and musically"
                 }
             ],
             "list_count": 3,
             "media": {
                 "youtube": {
-                    "music_id": "FEORaPiNF6g",
-                    "video_id": "GvrNPiz7rHw"
+                    "music_id": "nksi6gLKpoE",
+                    "video_id": "_SVNTv44C4g"
                 },
                 "spotify": {
-                    "id": "3m9g8ua3M51JvqmS8rh6bS"
+                    "id": "22vRKcdPjVW7Q6ydLNcYBV"
                 }
             }
         }

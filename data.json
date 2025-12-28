@@ -7,9 +7,9 @@
             "consensus_boost": 0.05,
             "provocation_boost": 0.1,
             "cluster_boost": 0.03,
-            "rank1_bonus": 0.1,
-            "rank2_bonus": 0.075,
-            "rank3_bonus": 0.025,
+            "rank1_bonus": 1.1,
+            "rank2_bonus": 1.075,
+            "rank3_bonus": 1.025,
             "decay_mode": "consensus"
         },
         "sources": {
