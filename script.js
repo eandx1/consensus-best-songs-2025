@@ -240,6 +240,8 @@ function updateLoadMoreButton() {
         let nextStep = 75; // Initial 25 -> 100
         if (STATE.displayLimit === 100) nextStep = 100; // 100 -> 200
         if (STATE.displayLimit === 200) nextStep = 300; // 200 -> 500
+        if (STATE.displayLimit >= 500) nextStep = remaining; // 500 -> All
+
         UI.loadMoreBtn.textContent = remaining > nextStep ? `Show More (${nextStep})` : `Show All (${remaining})`;
     }
 }
