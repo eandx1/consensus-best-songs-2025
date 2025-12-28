@@ -416,7 +416,7 @@ function renderSettingsUI() {
                 <div style="text-align: center; margin-bottom: 0.5rem;">
                     $$ W(r) = \\frac{1 + K}{r + K} $$
                 </div>
-                <small>Identifies the cultural record. Rewards songs that appeared on the most lists.</small>
+                <p style="color: var(--pico-muted-color);">Identifies the cultural record. Rewards songs that appeared on the most lists.</p>
             </article>
             
             <article class="mode-card ${!isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'conviction')">
@@ -424,7 +424,7 @@ function renderSettingsUI() {
                 <div style="text-align: center; margin-bottom: 0.5rem;">
                     $$ W(r) = \\frac{1}{r^P} $$
                 </div>
-                <small>Rewards critical obsession. A #1 rank carries massive weight.</small>
+                <p style="color: var(--pico-muted-color);">Rewards critical obsession. A #1 rank carries massive weight.</p>
             </article>
         </div>
     `;
@@ -441,20 +441,17 @@ function renderSettingsUI() {
         const helperId = `helper-text-${key}`;
 
         return `
-            <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}">
-                <div style="display: flex; justify-content: space-between;">
-                    <span>${label}</span>
-                    <strong id="val-${idBase}">${displayVal}</strong>
-                </div>
+            <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}" style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <span>${label}</span>
+                <strong id="val-${idBase}">${displayVal}</strong>
                 <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
+                    style="width: 100%;"
                     oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
-                ${helperText ? `<small id="${helperId}" style="color: var(--pico-muted-color);">${helperText}</small>` : ''}
+                ${helperText ? `<p id="${helperId}" style="color: var(--pico-muted-color); width: 100%;">${helperText}</p>` : ''}
             </label>
         `;
     };
 
-    html += '<div style="display: flex; flex-direction: column; gap: 0;">';
-    
     if (isConsensus) {
         const val10 = (1 + ranking.k_value) / (10 + ranking.k_value);
         const val25 = (1 + ranking.k_value) / (25 + ranking.k_value);
@@ -491,7 +488,6 @@ function renderSettingsUI() {
     html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', 1.0, 1.2, 0.01, false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
     html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.01, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
     
-    html += '</div>'; // End Stack
     html += '</article>';
     
     // 2. Source Weights
@@ -522,7 +518,7 @@ function renderSettingsUI() {
         html += '<fieldset>';
         html += `<legend>${emoji} ${clusterName}</legend>`;
         if (descriptor) {
-            html += `<small style="color: var(--pico-muted-color);">${descriptor}</small>`;
+            html += `<p style="color: var(--pico-muted-color);">${descriptor}</p>`;
         }
         
         sourcesByCluster[clusterName].forEach(srcKey => {
@@ -541,10 +537,12 @@ function renderSettingsUI() {
         html += '<h4>Shadow Ranks</h4>';
         html += '<p style="color: var(--pico-muted-color);">Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</p>';
         html += '</hgroup>';
+        html += '<div class="grid">';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
              html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`, 1.0, 100.0, 0.1);
         });
+        html += '</div>';
         html += '</article>';
     }
 
