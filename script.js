@@ -466,11 +466,11 @@ function renderSettingsUI() {
         html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01, false, false, helper);
     }
     
-    html += createSlider('ranking', 'consensus_boost', 'Consensus Boost', 0, 0.1, 0.01, true);
-    html += createSlider('ranking', 'provocation_boost', 'Provocation Boost', 0, 0.25, 0.01, true);
-    html += createSlider('ranking', 'cluster_boost', 'Cluster Boost', 0, 0.1, 0.01, true);
+    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', 0, 0.1, 0.01, true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
+    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', 0, 0.25, 0.01, true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
+    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, 'Rewards cross over between different categories of critics by giving a bonus for each new unique category with a rank under the Cluster Threshold.');
     
-    html += createSlider('ranking', 'cluster_threshold', 'Cluster Threshold', 0, 100, 1);
+    html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
     html += createSlider('ranking', 'rank1_bonus', 'Rank 1 Bonus', 1.0, 1.2, 0.01, false, true);
     html += createSlider('ranking', 'rank2_bonus', 'Rank 2 Bonus', 1.0, 1.2, 0.01, false, true);
     html += createSlider('ranking', 'rank3_bonus', 'Rank 3 Bonus', 1.0, 1.2, 0.01, false, true);
