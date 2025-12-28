@@ -436,14 +436,30 @@ function renderSettingsUI() {
         
         const isModified = currentVal !== defaultVal;
         // Bonus values are stored as multipliers (1.1 = 10% bonus), so subtract 1 and multiply by 100 for display
-        const displayVal = isBonus ? Math.round((currentVal - 1) * 100) + '%' : (isPercent ? Math.round(currentVal * 100) + '%' : currentVal);
+        let displayVal;
+        let minWidth = '3.5rem'; // default for decimals
+        
+        if (isBonus) {
+            displayVal = Math.round((currentVal - 1) * 100) + '%';
+        } else if (isPercent) {
+            displayVal = Math.round(currentVal * 100) + '%';
+        } else if (key === 'k_value') {
+            displayVal = Math.round(currentVal).toString();
+            minWidth = '2rem'; // 2 digits
+        } else if (key === 'cluster_threshold') {
+            displayVal = Math.round(currentVal).toString();
+            minWidth = '2.5rem'; // 3 digits
+        } else {
+            displayVal = parseFloat(currentVal).toFixed(2);
+        }
+        
         const idBase = `setting-${category}-${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
         const helperId = `helper-text-${key}`;
 
         return `
-            <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}" style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                 <span>${label}</span>
-                <strong id="val-${idBase}">${displayVal}</strong>
+                <kbd id="val-${idBase}" style="font-size: 0.8rem; min-width: ${minWidth}; text-align: center;">${displayVal}</kbd>
                 <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
                     style="width: 100%;"
                     oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
@@ -518,7 +534,7 @@ function renderSettingsUI() {
         html += '<fieldset>';
         html += `<legend>${emoji} ${clusterName}</legend>`;
         if (descriptor) {
-            html += `<p style="color: var(--pico-muted-color);">${descriptor}</p>`;
+            html += `<p style="color: var(--pico-muted-color); font-size: 0.85rem; margin-bottom: 1.5rem;">${descriptor}</p>`;
         }
         
         sourcesByCluster[clusterName].forEach(srcKey => {
@@ -586,7 +602,16 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
 
     // Update Label UI
     if (idBase) {
-        const displayVal = isBonus ? Math.round((numVal - 1) * 100) + '%' : (isPercent ? Math.round(numVal * 100) + '%' : numVal);
+        let displayVal;
+        if (isBonus) {
+            displayVal = Math.round((numVal - 1) * 100) + '%';
+        } else if (isPercent) {
+            displayVal = Math.round(numVal * 100) + '%';
+        } else if (key === 'k_value' || key === 'cluster_threshold') {
+            displayVal = Math.round(numVal).toString();
+        } else {
+            displayVal = parseFloat(numVal).toFixed(2);
+        }
         document.getElementById(`val-${idBase}`).textContent = displayVal;
         
         const label = document.getElementById(`label-${idBase}`);
