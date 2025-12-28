@@ -3,333 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consensus Best Songs 2025 | The Best Songs of the Year</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
+    <title>Consensus Best Songs 2025</title>
+    <meta name="description" content="The definitive consensus ranking of 2025's best music.">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     
     <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>
 
     <style>
-        /* =========================================
-           THEMES: Pico CSS Variable Overrides
-           
-           To add a new theme:
-           1. Add a new [data-style="theme-name"] selector below
-           2. Override Pico CSS variables as needed
-           3. Update body data-style attribute to switch themes
-           ========================================= */
-        
-        /* THEME: FJORD - Cool Nordic Monospace (default) */
-        body[data-style="fjord"] {
-            /* Typography */
-            --pico-font-family: "JetBrains Mono", monospace;
-            --pico-headings-font-family: "JetBrains Mono", monospace;
-            font-family: var(--pico-font-family);
-
-            /* Colors */
-            --pico-primary: #9ca3af;
-            --pico-primary-hover: #d1d5db;
-            --pico-background-color: #0a0b0d;
-            --pico-card-background-color: #111214;
-            --pico-color: #d1d5db;
-            --pico-muted-color: #6b7280;
-            --pico-muted-border-color: rgba(156, 163, 175, 0.15);
-
-            /* Layout */
-            --pico-border-radius: 2px;
-            --pico-typography-spacing-vertical: 1rem;
-            
-            /* Custom adjustments */
-            letter-spacing: -0.02em;
+        :root {
+            --primary: #3b82f6; /* IntelliJ/Solarized inspired accent */
         }
-
-        /* FUTURE THEMES: Add additional themes here
-         * 
-         * Example structure:
-         * 
-         * [data-style="warm"] {
-         *     --pico-font-family: "Georgia", serif;
-         *     --pico-primary: #f59e0b;
-         *     --pico-background-color: #1a1410;
-         *     ...
-         * }
-         */
-
-        /* =========================================
-           LAYOUT & COMPONENT STYLES
-           (Theme-agnostic structural CSS)
-           ========================================= */
-
-        /* Song Card Layout */
-        .song-card {
-            margin-bottom: 2rem;
-            border: 1px solid var(--pico-muted-border-color);
-            position: relative;
-            padding: 0;
-        }
-
-        .card-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
-        }
-
-        /* Rank Display */
-        .col-rank { order: 1; }
-        .rank-number { 
-            font-size: 2rem; 
-            font-weight: 800; 
-            opacity: 0.2; 
-        }
-
-        /* Video Player */
-        .col-player { order: 2; }
-        .col-player lite-youtube {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: var(--pico-border-radius);
-            background-color: var(--pico-card-background-color);
-        }
-        
-        /* YouTube Play Button Customization */
+        /* Custom styling for lite-youtube play button per AGENTS.md */
         lite-youtube::part(playButton) {
-            width: 68px !important;
-            height: 48px !important;
-            position: absolute !important;
-            bottom: 12px !important;
-            right: 12px !important;
-            top: auto !important;
-            left: auto !important;
-            transform: none !important;
-            opacity: 0.9;
-            transition: opacity 0.2s, transform 0.2s;
-        }
-        
-        lite-youtube::part(playButton):hover {
-            opacity: 1;
-            transform: scale(1.05) !important;
-        }
-
-        /* Song Info Column */
-        .col-info { 
-            order: 3; 
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .header-group h3 { 
-            margin: 0; 
-            font-size: 1.5rem; 
-        }
-        
-        .header-group h4 { 
-            margin: 0; 
-            font-size: 0.9rem; 
-            font-weight: 400; 
-            text-transform: uppercase; 
-            color: var(--pico-muted-color); 
-        }
-
-        /* Sources Display */
-        .sources-container {
-            margin-top: 0.75rem;
-            font-size: 0.7rem;
-            color: var(--pico-muted-color);
-            cursor: pointer;
-            transition: color 0.2s;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.25rem;
-        }
-        
-        .sources-container:hover {
-            color: var(--pico-primary);
-        }
-        
-        .source-item {
-            white-space: nowrap;
-        }
-        
-        .source-item:not(:last-child)::after {
-            content: " ·";
-            margin-right: 0.25rem;
-        }
-        
-        /* Listen Links */
-        .listen-footer {
-            font-size: 0.6rem;
-            opacity: 0.5;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-top: 0.5rem;
-        }
-
-        /* Info Icon Button */
-        .stats-trigger {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            background: none;
+            background-color: rgba(128, 128, 128, 0.25);
+            color: white;
             border: none;
-            color: var(--pico-muted-color);
-            opacity: 0.4;
-            cursor: pointer;
-            font-size: 1.1rem;
-            padding: 0;
-            z-index: 10;
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
-        
-        .stats-trigger:hover { 
-            opacity: 1; 
-            color: var(--pico-primary); 
+        lite-youtube:hover::part(playButton) {
+            opacity: 1;
+            transform: scale(1.1);
+            background-color: rgba(128, 128, 128, 1);
         }
-
-        /* Desktop Layout (3-Column Grid) */
-        @media (min-width: 768px) {
-            .card-grid {
-                display: grid;
-                grid-template-columns: 80px minmax(200px, 320px) 1fr;
-                flex-direction: row;
-                gap: 1.5rem;
-                padding: 1.25rem;
-                align-items: stretch;
-            }
-
-            .rank-number { 
-                font-size: 3rem; 
-                text-align: center; 
-            }
-            
-            .col-rank { 
-                display: flex; 
-                align-items: center; 
-                justify-content: center; 
-            }
-            
-            .col-info { 
-                justify-content: space-between; 
-                gap: 0; 
-                padding: 0.1rem 0; 
-            }
-
-            .header-group h3 { 
-                font-size: 1.7rem; 
-            }
-            
-            .listen-footer { 
-                margin-top: auto; 
-            }
-        }
-
-        /* =========================================
-           MODAL STYLES
-           ========================================= */
-        
-        /* Stats Modal */
-        .stats-table { 
-            width: 100%; 
-            font-size: 0.85rem; 
-            border-collapse: collapse; 
-        }
-        
-        .stats-table td { 
-            padding: 0.5rem 0; 
-            border-bottom: 1px solid var(--pico-muted-border-color); 
-        }
-        
-        .stats-table .val { 
-            text-align: right; 
-            font-weight: bold; 
-            color: var(--pico-primary); 
-        }
-        
-        .source-contributions {
-            margin-top: 1.5rem;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .source-contributions h6 {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .contributions-table {
-            font-size: 0.85rem;
-        }
-        
-        .modal-formula {
-            margin-top: 1rem;
-            font-size: 0.7rem;
-            color: var(--pico-muted-color);
-        }
-        
-        /* Review Modal */
-        .review-source-entry {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--pico-muted-border-color);
-        }
-        
-        .review-source-entry:last-child {
-            border-bottom: none;
-        }
-        
-        .review-source-name {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .review-quote {
-            font-size: 0.9rem;
-            font-style: italic;
-            color: var(--pico-muted-color);
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-        
-        .review-link {
-            font-size: 0.75rem;
-            text-align: right;
-            display: block;
-        }
-        
-        .review-container {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        /* =========================================
-           UI COMPONENTS
-           ========================================= */
-        
-        /* Navigation Buttons */
-        .nav-btn {
-            font-size: 0.8rem;
-            padding: 4px 12px;
-        }
-        
-        /* Load More Section */
-        .load-more-section {
-            display: flex;
-            justify-content: center;
-            padding: 2rem 0;
-        }
-        
-        /* Slider Wrapper */
-        .slider-wrapper {
-            position: relative;
-        }
+        .song-card { margin-bottom: 2rem; }
+        .rank-large { font-size: 3rem; font-weight: bold; opacity: 0.5; }
+        .customized-label { color: var(--primary); font-weight: bold; }
     </style>
 </head>
-<body data-style="fjord">
+<body>
 
     <header class="container">
         <nav>
@@ -337,98 +39,65 @@
                 <li><strong>Consensus Best Songs 2025</strong></li>
             </ul>
             <ul>
-                <li><button class="outline secondary nav-btn" id="config-btn">Settings</button></li>
-                <li><a href="https://github.com/eandx1/consensus-best-songs-2025" target="_blank" class="secondary nav-btn">About</a></li>
+                <li><a href="#" id="open-settings">Settings</a></li>
+                <li><a href="#" id="open-about">About</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container">
-        <div id="song-list-container">
-            <article aria-busy="true" id="loading-state">
-                Loading consensus data...
-            </article>
+    <main class="container" id="app">
+        <div id="song-list"></div>
+        
+        <div class="text-center" style="padding: 2rem 0;">
+            <button id="load-more" class="outline">Show More</button>
         </div>
-
-        <section class="load-more-section">
-            <button id="load-more" class="outline" style="display: none;">Load More</button>
-        </section>
     </main>
 
-    <dialog id="config-dialog">
+    <dialog id="modal-settings">
         <article>
             <header>
-                <button aria-label="Close" rel="prev" id="close-config"></button>
-                <p><strong>Settings</strong></p>
+                <button aria-label="Close" rel="prev" class="close-modal"></button>
+                <h3>Settings</h3>
             </header>
-            <form id="config-form">
-                <h5>Ranking Parameters</h5>
-                <fieldset>
-                    <label for="rank-sensitivity">
-                        Rank Sensitivity: <span id="val-sensitivity">25</span>
-                        <div class="slider-wrapper">
-                            <input type="range" id="rank-sensitivity" min="0" max="50" step="1" value="25">
-                        </div>
-                    </label>
-                    <label for="consensus-bonus">
-                        Consensus Boost: <span id="val-bonus">5</span>%
-                        <div class="slider-wrapper">
-                            <input type="range" id="consensus-bonus" min="0" max="0.1" step="0.001" value="0.05">
-                        </div>
-                    </label>
-                </fieldset>
-                
-                <h5>Source Weights</h5>
-                <div id="source-weights-container">
+            <div id="settings-content">
                 </div>
-            </form>
             <footer>
-                <button class="secondary outline" id="reset-config">Defaults</button>
-                <button id="apply-config">Close</button>
+                <button class="secondary" id="reset-defaults">Defaults</button>
+                <button class="close-modal">Close</button>
             </footer>
         </article>
     </dialog>
 
-    <dialog id="stats-modal">
+    <dialog id="modal-stats">
         <article>
             <header>
-                <button aria-label="Close" rel="prev" onclick="document.getElementById('stats-modal').close()"></button>
-                <p><strong>Ranking: <span id="stats-song-title"></span></strong></p>
+                <button aria-label="Close" rel="prev" class="close-modal"></button>
+                <h3 id="stats-title">Ranking Stats</h3>
             </header>
-            <table class="stats-table">
-                <tr><td>Normalized Score</td><td id="stat-norm" class="val"></td></tr>
-                <tr><td>Review List Count</td><td id="stat-count" class="val"></td></tr>
-                <tr><td>Consensus Multiplier</td><td id="stat-mult" class="val"></td></tr>
-                <tr><td>Raw Score</td><td id="stat-raw" class="val"></td></tr>
-            </table>
-            <div class="source-contributions">
-                <h6>Source Contributions</h6>
-                <table class="contributions-table">
-                    <tbody id="contributions-list"></tbody>
-                </table>
-            </div>
-            <footer class="modal-formula">
-                Score = Raw Score × Consensus Multiplier
-            </footer>
+            <div id="stats-content"></div>
         </article>
     </dialog>
 
-    <dialog id="review-modal">
+    <dialog id="modal-reviews">
         <article>
             <header>
-                <button aria-label="Close" rel="prev" onclick="document.getElementById('review-modal').close()"></button>
-                <p><strong>Reviews</strong></p>
+                <button aria-label="Close" rel="prev" class="close-modal"></button>
+                <h3>Reviews</h3>
             </header>
-            <div id="review-sources-container" class="review-container">
-                <!-- Sources will be dynamically inserted here -->
-            </div>
+            <div id="reviews-content"></div>
         </article>
     </dialog>
 
-    <footer class="container">
-        <hr>
-        <small>Data aggregated from 20+ music publications. Rankings are calculated locally based on your weighted preferences.</small>
-    </footer>
+    <dialog id="modal-about">
+        <article>
+            <header>
+                <button aria-label="Close" rel="prev" class="close-modal"></button>
+                <h3>About</h3>
+            </header>
+            <p>Consensus Best Songs 2025 aggregates year-end lists to find the tracks critics agree on most.</p>
+            <p><a href="https://github.com/your-username/your-repo">View on Github</a></p>
+        </article>
+    </dialog>
 
     <script src="./script.js"></script>
 </body>
