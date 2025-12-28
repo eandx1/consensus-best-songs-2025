@@ -312,21 +312,33 @@ The engine applies three specialized multipliers to the raw scores:
 # Implementation Plan
 
 ## Phase 1: Core Engine & Data Foundation
-* Step 1: Data Integration & Types: Finalize the data.json loading and create a robust State object to hold the current configuration.
-* Step 2: JavaScript Ranking Engine: Port the Python logic into a JavaScript module, specifically implementing the Reciprocal Rank Fusion (Consensus) and Power-Law (Conviction) modes.
-* Step 3: Normalization & Multipliers: Implement the "Influence Budget" logic to normalize source lists and apply the Consensus, Provocation, and Cluster boosts.
+*   **Feature 1: Ranking Engine Parity & Robustness**
+    *   Verify `RankingEngine.compute` handles all edge cases (e.g., empty lists).
+    *   Ensure the standard deviation calculation for `Provocation Boost` matches the Python `np.std` (population vs sample).
+    *   Expose the `RankingEngine` globally or structure it for easy debugging.
 
 ## Phase 2: Structural UI & Layout
-* Step 4: Semantic Shell: Set up the Pico CSS layout with the header, main content area, and hidden <dialog> modals.
-* Step 5: Song Card Component: Build the card layout featuring the large rank number, lite-youtube player, and metadata links (Spotify, YTM, etc.).
-* Step 6: Progressive Loading: Implement the "Show More" logic (25 → 100 → 200 → 500 → All) to ensure smooth performance.
+*   **Feature 2: Song Card Layout & "Listen" Links**
+    *   Implement the responsive 3-column layout (Rank | Video | Info) and dynamic media links.
+    *   Update `render()` to generate "Listen" buttons for YouTube, Spotify, Bandcamp, etc.
+    *   Format the "Sources" list with middots and proper wrapping.
 
 ## Phase 3: Dynamic State & Sharing
-* Step 7: URL Synchronization: Map all ranking parameters (e.g., k_value, p_exponent) and source weights to the URLSearchParams API for deep-linking.
-* Step 8: The Settings Modal: Generate the UI sliders for ranking parameters, source weights, and shadow ranks dynamically based on the configuration.
-* Step 9: Debounced Recalculation: Add event listeners to sliders that trigger a debounced (250ms) re-rank and UI refresh.
+*   **Feature 3: Settings Modal (Configuration)**
+    *   Implement `renderSettingsUI()` to dynamically generate sliders for Ranking Parameters, Source Weights, and Shadow Ranks.
+    *   Attach event listeners to sliders to trigger `debouncedReRank()`.
+    *   Implement the "Defaults" button.
+*   **Feature 4: URL State Synchronization**
+    *   Refine `updateURL()` to write only *changed* values to the query string.
+    *   Ensure `syncStateFromURL()` correctly overrides `data.json` defaults on load.
 
 ## Phase 4: Detailed Information (Modals)
-* Step 10: Reviews Modal: Create the logic to display source quotes, specific ranks, and "Read Full Review" links for individual songs.
-* Step 11: Ranking Stats Modal: Implement the scoring breakdown, showing exactly how normalized scores and multipliers combined to reach the final rank.
-* Step 12: Visual Polish: Finalize the "Dark Mode" styling, specifically the IntelliJ-inspired theme and the transparency effects for the YouTube play button.
+*   **Feature 5: Reviews Modal**
+    *   Implement `showReviews(songIndex)` to display detailed source feedback.
+    *   Render the list of sources with ranks, quotes, and links.
+*   **Feature 6: Ranking Stats Modal**
+    *   Implement `showStats(songIndex)` to show scoring breakdown.
+    *   Calculate and display Normalized Score, Multipliers, and individual Source Contributions.
+*   **Feature 7: Visual Polish**
+    *   Finalize "Dark Mode" aesthetic (IntelliJ/Solarized theme).
+    *   Refine `lite-youtube` play button transparency and hover effects.
