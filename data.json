@@ -3,7 +3,6 @@
         "ranking": {
             "k_value": 20,
             "p_exponent": 0.55,
-            "min_norm_length": 25,
             "cluster_threshold": 50,
             "consensus_boost": 0.05,
             "provocation_boost": 0.1,
