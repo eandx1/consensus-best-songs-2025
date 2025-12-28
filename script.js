@@ -247,7 +247,14 @@ function render() {
                         
                         <div data-sources onclick="showReviews(${idx})" title="Click to see reviews">
                             <small>
-                                ${song.sourceDetails.map(s => `<span>${escapeHtml(s.full_name || s.name)}#${Math.floor(s.rank)}</span>`).join(' · ')}
+                                ${song.sourceDetails.map(s => {
+                                    // Check if source uses shadow rank by looking at config
+                                    const srcConfig = STATE.config.sources[s.name];
+                                    const usesShadowRank = srcConfig && typeof srcConfig.shadow_rank !== 'undefined';
+                                    // Only show rank for sources with actual ranks, not shadow ranks
+                                    const rankDisplay = usesShadowRank ? '' : `#${Math.floor(s.rank)}`;
+                                    return `<span>${escapeHtml(s.full_name || s.name)}${rankDisplay}</span>`;
+                                }).join(' · ')}
                             </small>
                         </div>
                         
