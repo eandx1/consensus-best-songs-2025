@@ -330,30 +330,47 @@ window.showReviews = (idx) => {
     const song = STATE.songs[idx];
     if (!song) return;
 
-    let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+    let html = '';
     
     song.sources.forEach(src => {
         const srcConfig = STATE.config.sources[src.name];
         const displayName = srcConfig.full_name || src.name;
+        
+        // Get cluster info
+        const clusterId = srcConfig?.cluster;
+        const clusterMeta = APP_DATA.config.cluster_metadata?.[clusterId];
+        const clusterEmoji = clusterMeta?.emoji || '';
+        const clusterName = clusterId || 'Unknown Category';
+        const clusterDesc = clusterMeta?.descriptor || '';
+        
         // Use configured shadow rank if applicable, otherwise source rank
         const rankVal = src.uses_shadow_rank ? srcConfig.shadow_rank : src.rank;
-        const rankDisplay = `#${rankVal}`;
+        
+        // Display rank with shadow rank notation if applicable
+        const displayRank = src.uses_shadow_rank 
+            ? `<abbr data-tooltip="Shadow Rank (Calculated from list length)" data-placement="left">👻~${Math.ceil(rankVal)}</abbr>` 
+            : `#${rankVal}`;
         
         html += `
-            <article style="padding: 1rem; margin: 0; background-color: var(--pico-card-background-color);">
-                <header style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong>${displayName}</strong> 
-                        <span style="color: var(--pico-muted-color); margin-left: 0.5rem;">${rankDisplay}</span>
+            <article>
+                <header style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                    <div style="flex: 1;">
+                        <h4 style="margin: 0 0 0.25rem 0;">${escapeHtml(displayName)}</h4>
+                        <small style="color: var(--pico-muted-color);">
+                            <abbr data-tooltip="${escapeHtml(clusterDesc)}" data-placement="right" style="text-decoration: none; cursor: help; white-space: normal;">
+                                ${clusterEmoji} ${escapeHtml(clusterName)}
+                            </abbr>
+                        </small>
                     </div>
-                    <a href="${srcConfig.url}" target="_blank" role="button" class="outline contrast" style="font-size: 0.8rem; padding: 0.25rem 0.5rem;">Read Review</a>
+                    <kbd style="background: var(--pico-secondary-background); min-width: 3ch; text-align: center; flex-shrink: 0; margin-left: 1rem;">${displayRank}</kbd>
                 </header>
-                ${src.quote ? `<blockquote style="margin: 0.5rem 0 0 0;">"${escapeHtml(src.quote)}"</blockquote>` : ''}
+                ${src.quote ? `<blockquote style="margin-top: 0;">"${escapeHtml(src.quote)}"</blockquote>` : '<p style="color: var(--pico-muted-color); font-style: italic; margin-top: 0;">No quote available</p>'}
+                <footer style="text-align: right; margin-top: 1rem;">
+                    <a href="${escapeHtml(srcConfig.url)}" target="_blank" role="button" class="outline secondary" style="margin-bottom: 0;">Read Full Review</a>
+                </footer>
             </article>
         `;
     });
-    
-    html += '</div>';
     
     UI.reviewsContent.innerHTML = html;
     document.getElementById('modal-reviews').showModal();
