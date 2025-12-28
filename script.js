@@ -455,12 +455,14 @@ function renderSettingsUI() {
     if (isConsensus) {
         const val10 = (1 + ranking.k_value) / (10 + ranking.k_value);
         const val25 = (1 + ranking.k_value) / (25 + ranking.k_value);
-        const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1`;
+        const val50 = (1 + ranking.k_value) / (50 + ranking.k_value);
+        const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(val50 * 100)}%</strong> of #1`;
         html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', 0, 50, 1, false, false, helper);
     } else {
         const val10 = 1.0 / Math.pow(10, ranking.p_exponent);
         const val25 = 1.0 / Math.pow(25, ranking.p_exponent);
-        const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1`;
+        const val50 = 1.0 / Math.pow(50, ranking.p_exponent);
+        const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(val50 * 100)}%</strong> of #1`;
         html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01, false, false, helper);
     }
     
@@ -548,19 +550,21 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
     // Dynamic Helper Text Update for K and P
     if (key === 'k_value' || key === 'p_exponent') {
         const val = parseFloat(value);
-        let v10, v25;
+        let v10, v25, v50;
         
         if (key === 'k_value') {
             v10 = (1 + val) / (10 + val);
             v25 = (1 + val) / (25 + val);
+            v50 = (1 + val) / (50 + val);
         } else {
             v10 = 1.0 / Math.pow(10, val);
             v25 = 1.0 / Math.pow(25, val);
+            v50 = 1.0 / Math.pow(50, val);
         }
         
         const helperEl = document.getElementById(`helper-text-${key}`);
         if (helperEl) {
-            helperEl.innerHTML = `Rank #10 is worth <strong>${Math.round(v10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(v25 * 100)}%</strong> of #1`;
+            helperEl.innerHTML = `Rank #10 is worth <strong>${Math.round(v10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(v25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(v50 * 100)}%</strong> of #1`;
         }
     }
 
