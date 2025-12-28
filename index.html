@@ -153,6 +153,22 @@
             }
         }
         
+        /* Target mobile devices - improve readability */
+        @media (max-width: 576px) {
+            html {
+                /* Pico's default is usually 16px. Boosting to 18px 
+                   makes everything feel more substantial. */
+                font-size: 112.5%; 
+            }
+
+            /* Increase line-height slightly for the source list 
+               so it's easier to tap with a thumb */
+            article.song-card [data-sources] {
+                line-height: 2;
+                font-size: 0.95rem;
+            }
+        }
+        
         
         /* Header contains hgroup and info icon */
         article.song-card .song-info > header {
