@@ -554,12 +554,10 @@ function renderSettingsUI() {
         html += '<h4>Shadow Ranks</h4>';
         html += '<p style="color: var(--pico-muted-color);">Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</p>';
         html += '</hgroup>';
-        html += '<div class="grid">';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
              html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`, 1.0, 100.0, 0.1);
         });
-        html += '</div>';
         html += '</article>';
     }
 

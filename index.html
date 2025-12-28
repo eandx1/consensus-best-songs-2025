@@ -69,14 +69,24 @@
         .mode-card {
             cursor: pointer;
             border: 2px solid transparent;
-            transition: border-color 0.2s, transform 0.2s;
+            transition: border-color 0.2s, transform 0.1s ease;
             margin-bottom: 0;
         }
         .mode-card:hover {
             border-color: var(--pico-muted-border-color);
+            transform: scale(1.02);
         }
         .mode-card.active {
             border-color: var(--pico-primary);
+        }
+        .column-list {
+            column-count: 2;
+            column-gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .column-list {
+                column-count: 1;
+            }
         }
         .katex-display {
             font-size: 0.8em;
