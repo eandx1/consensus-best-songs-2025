@@ -441,15 +441,15 @@ function renderSettingsUI() {
         const helperId = `helper-text-${key}`;
 
         return `
-            <div style="margin-bottom: 1rem;">
-                <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}" style="display:flex; justify-content:space-between;">
+            <label id="label-${idBase}" class="${isModified ? 'customized-label' : ''}">
+                <div style="display: flex; justify-content: space-between;">
                     <span>${label}</span>
                     <strong id="val-${idBase}">${displayVal}</strong>
-                </label>
+                </div>
                 <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" 
                     oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
                 ${helperText ? `<small id="${helperId}" style="color: var(--pico-muted-color);">${helperText}</small>` : ''}
-            </div>
+            </label>
         `;
     };
 
