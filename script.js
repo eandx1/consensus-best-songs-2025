@@ -374,13 +374,62 @@ window.showStats = (idx) => {
                 <h5>Scoring</h5>
                 <table class="striped">
                     <tbody>
-                        <tr><td>Normalized Score</td><td><strong>${song.normalizedScore.toFixed(4)}</strong></td></tr>
-                        <tr><td>Raw Score</td><td>${song.finalScore.toFixed(4)}</td></tr>
-                        <tr><td>Base Score</td><td>${stats.totalScore.toFixed(4)}</td></tr>
-                        <tr><td>List Count</td><td>${stats.listCount}</td></tr>
-                        <tr><td>Consensus Boost</td><td>x${stats.c_mul.toFixed(3)}</td></tr>
-                        <tr><td>Provocation Boost</td><td>x${stats.p_mul.toFixed(3)}</td></tr>
-                        <tr><td>Cluster Boost</td><td>x${stats.cl_mul.toFixed(3)}</td></tr>
+                        <tr>
+                            <td>Normalized Score</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-primary-background); color: var(--pico-primary-inverse); font-weight: bold; min-width: 6ch; display: inline-block;">
+                                    ${song.normalizedScore.toFixed(4)}
+                                </kbd>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Raw Score</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
+                                    ${song.finalScore.toFixed(4)}
+                                </kbd>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Base Score</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
+                                    ${stats.totalScore.toFixed(4)}
+                                </kbd>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>List Count</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 2ch; display: inline-block;">
+                                    ${stats.listCount}
+                                </kbd>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Consensus Boost</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
+                                    x${stats.c_mul.toFixed(3)}
+                                </kbd>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Provocation Boost</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
+                                    x${stats.p_mul.toFixed(3)}
+                                </kbd>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cluster Boost</td>
+                            <td style="text-align: right;">
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
+                                    x${stats.cl_mul.toFixed(3)}
+                                </kbd>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -415,7 +464,7 @@ window.showStats = (idx) => {
         
         // Logic for Shadow Rank display (using the Ghost emoji/tilde approach)
         const displayRank = String(sd.rank).includes('.5') 
-            ? `<abbr data-tooltip="Shadow Rank (Calculated from list length)">👻~${Math.ceil(sd.rank)}</abbr>` 
+            ? `<abbr data-tooltip="Shadow Rank (Calculated from list length)" style="font-family: var(--pico-font-family);">👻~${Math.ceil(sd.rank)}</abbr>` 
             : sd.rank;
 
         html += `
