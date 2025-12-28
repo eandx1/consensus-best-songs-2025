@@ -219,20 +219,16 @@ function render() {
     UI.songList.innerHTML = visible.map((song, idx) => {
         const youtubeId = song.media?.youtube?.video_id || song.media?.youtube?.music_id;
         
-        // Listen Links
+        // Listen Links as nav list items
         const links = [];
-        if (song.media?.youtube?.video_id) links.push(`<a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank">YouTube</a>`);
-        if (song.media?.youtube?.music_id) links.push(`<a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank">YTM</a>`);
-        if (song.media?.spotify?.id) links.push(`<a href="https://open.spotify.com/track/${song.media.spotify.id}" target="_blank">Spotify</a>`);
-        if (song.media?.bandcamp?.url) links.push(`<a href="${song.media.bandcamp.url}" target="_blank">Bandcamp</a>`);
-        if (song.media?.other?.url) links.push(`<a href="${song.media.other.url}" target="_blank">Other</a>`);
+        if (song.media?.youtube?.video_id) links.push(`<li><a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank">YouTube</a></li>`);
+        if (song.media?.youtube?.music_id) links.push(`<li><a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank">YTM</a></li>`);
+        if (song.media?.spotify?.id) links.push(`<li><a href="https://open.spotify.com/track/${song.media.spotify.id}" target="_blank">Spotify</a></li>`);
+        if (song.media?.bandcamp?.url) links.push(`<li><a href="${song.media.bandcamp.url}" target="_blank">Bandcamp</a></li>`);
+        if (song.media?.other?.url) links.push(`<li><a href="${song.media.other.url}" target="_blank">Other</a></li>`);
 
         return `
             <article class="song-card">
-                <header>
-                    <a href="#" onclick="showStats(${idx}); return false;" aria-label="View ranking details">ⓘ</a>
-                </header>
-                
                 <div class="grid">
                     <aside>#${song.rank}</aside>
                     
@@ -241,10 +237,13 @@ function render() {
                     </figure>
                     
                     <div>
-                        <hgroup>
-                            <h3>${escapeHtml(song.name)}</h3>
-                            <h4>${escapeHtml(song.artist)}</h4>
-                        </hgroup>
+                        <header>
+                            <hgroup>
+                                <h3>${escapeHtml(song.name)}</h3>
+                                <h4>${escapeHtml(song.artist)}</h4>
+                            </hgroup>
+                            <a href="#" onclick="showStats(${idx}); return false;" aria-label="View ranking details">ⓘ</a>
+                        </header>
                         
                         <div data-sources onclick="showReviews(${idx})" title="Click to see reviews">
                             <small>
@@ -252,7 +251,7 @@ function render() {
                             </small>
                         </div>
                         
-                        ${links.length > 0 ? `<footer><strong>LISTEN:</strong> ${links.join(' ')}</footer>` : ''}
+                        ${links.length > 0 ? `<nav aria-label="Listen links"><ul>${links.join('')}</ul></nav>` : ''}
                     </div>
                 </div>
             </article>

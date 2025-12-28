@@ -25,13 +25,6 @@
             margin-bottom: 2rem;
         }
         
-        /* Use Pico's header for the info icon container only */
-        article.song-card > header {
-            padding: 0;
-            margin: 0;
-            border: none;
-        }
-        
         /* Rank number as large display text using semantic <aside> */
         article.song-card aside {
             font-size: 3rem;
@@ -70,26 +63,38 @@
         lite-youtube::part(playButton) {
             width: 68px;
             height: 48px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--pico-secondary-background);
             border-radius: 4px;
             opacity: 0.25;
-            transition: opacity 0.2s, transform 0.2s;
+            transition: opacity 0.2s;
         }
         
         lite-youtube:hover::part(playButton) {
             opacity: 1;
-            transform: scale(1.05);
         }
         
-        /* Info column - let Pico handle hgroup styling naturally */
+        /* Info column - let Pico handle header/hgroup styling naturally */
         article.song-card .grid > div {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         
-        article.song-card hgroup {
+        /* Header contains hgroup and info icon */
+        article.song-card .grid > div > header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            padding: 0;
+            margin: 0;
             margin-bottom: 0.75rem;
+            border: none;
+        }
+        
+        article.song-card hgroup {
+            margin-bottom: 0;
+            flex: 1;
         }
         
         /* Use h4 for artist name in hgroup (Pico will style it appropriately) */
@@ -98,6 +103,21 @@
             font-size: 0.9rem;
             color: var(--pico-muted-color);
             font-weight: normal;
+        }
+        
+        /* Info icon - now inside header, aligned to baseline */
+        article.song-card header > a[aria-label] {
+            opacity: 0.4;
+            font-size: 1.2rem;
+            transition: opacity 0.2s;
+            padding: 0;
+            margin: 0;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        
+        article.song-card header > a[aria-label]:hover {
+            opacity: 1;
         }
         
         /* Sources section styling */
@@ -118,39 +138,37 @@
             color: var(--pico-color);
         }
         
-        /* Footer with listen links - nested inside grid column */
-        article.song-card footer {
-            font-size: 0.7rem;
-            opacity: 0.6;
+        /* Nav for listen links - Pico handles most styling */
+        article.song-card nav {
             margin-top: auto;
             padding: 0;
-            border: none;
-            transition: opacity 0.2s;
         }
         
-        article.song-card footer:hover {
-            opacity: 1;
+        article.song-card nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
         
-        article.song-card footer a {
-            margin-right: 0.5rem;
+        article.song-card nav li {
+            margin: 0;
+            padding: 0;
+        }
+        
+        article.song-card nav a {
+            font-size: 0.7rem;
             text-transform: uppercase;
             font-weight: 700;
-        }
-        
-        /* Floating info icon */
-        article.song-card > header > a[aria-label] {
-            position: absolute;
-            top: var(--pico-spacing);
-            right: var(--pico-spacing);
-            opacity: 0.4;
-            font-size: 1.2rem;
+            opacity: 0.6;
             transition: opacity 0.2s;
-            padding: 0;
-            margin: 0;
+            padding: 0.25rem 0.5rem;
+            text-decoration: none;
         }
         
-        article.song-card > header > a[aria-label]:hover {
+        article.song-card nav a:hover {
             opacity: 1;
         }
         
