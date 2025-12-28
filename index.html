@@ -155,10 +155,14 @@
         
         /* Target mobile devices - improve readability */
         @media (max-width: 576px) {
-            html {
-                /* Pico's default is usually 16px. Boosting to 18px 
-                   makes everything feel more substantial. */
-                font-size: 112.5%; 
+            :root {
+                /* Increase base size for better mobile legibility */
+                --pico-font-size: 110%; 
+            }
+
+            /* Add space for the iPhone's "notch" and address bar */
+            main#app {
+                padding-top: 2rem;
             }
 
             /* Increase line-height slightly for the source list 
@@ -167,6 +171,31 @@
                 line-height: 2;
                 font-size: 0.95rem;
             }
+        }
+        
+        /* Responsive Header Adjustments */
+        header.container nav {
+            flex-wrap: nowrap; /* Keep items on one line if possible */
+        }
+
+        header.container nav ul:first-of-type {
+            flex: 1; /* Let the title take up the remaining space */
+            min-width: 0; /* Allow the title text to truncate or shrink */
+        }
+
+        header.container nav ul:first-of-type li strong {
+            /* Scale the title font based on screen width */
+            font-size: clamp(0.9rem, 4vw, 1.2rem); 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* "Consensus Best..." if it gets too tight */
+            display: block;
+        }
+
+        /* Ensure the Settings/About links stay readable */
+        header.container nav ul:last-of-type li a {
+            font-size: 0.9rem;
+            padding-inline: 0.5rem;
         }
         
         
