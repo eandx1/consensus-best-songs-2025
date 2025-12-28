@@ -29,6 +29,18 @@
             padding: 0.5rem 0.75rem;
         }
         
+        /* Fix for mobile modal scrolling clipping */
+        dialog > article {
+            max-height: calc(100dvh - var(--pico-spacing) * 2);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Ensures smooth momentum scrolling on iOS */
+        }
+        
+        /* Add spacing at the top of the main container for rank #1 */
+        main.container {
+            padding-top: var(--pico-block-spacing-vertical);
+        }
+        
         /* Song Cards: Minimal custom styling, rely on Pico's article styling */
         article.song-card {
             position: relative;
