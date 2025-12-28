@@ -18,18 +18,6 @@
             --pico-primary-hover: #2563eb;
             --pico-primary-underline: rgba(59, 130, 246, 0.5);
         }
-        /* Custom styling for lite-youtube play button per AGENTS.md */
-        lite-youtube::part(playButton) {
-            background-color: rgba(128, 128, 128, 0.25);
-            color: white;
-            border: none;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-        lite-youtube:hover::part(playButton) {
-            opacity: 1;
-            transform: scale(1.1);
-            background-color: rgba(128, 128, 128, 1);
-        }
         .song-card { 
             margin-bottom: 2rem; 
             padding: 1.5rem;
@@ -93,7 +81,7 @@
     <main class="container" id="app">
         <div id="song-list"></div>
         
-        <div class="text-center" style="padding: 2rem 0;">
+        <div style="padding: 2rem 0; text-align: center;">
             <button id="load-more" class="outline">Show More</button>
         </div>
     </main>

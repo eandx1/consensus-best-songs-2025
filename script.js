@@ -236,7 +236,7 @@ function updateLoadMoreButton() {
     if (remaining <= 0) {
         UI.loadMoreBtn.style.display = 'none';
     } else {
-        UI.loadMoreBtn.style.display = 'block';
+        UI.loadMoreBtn.style.display = 'inline-block';
         let nextStep = 75; // Initial 25 -> 100
         if (STATE.displayLimit === 100) nextStep = 100; // 100 -> 200
         if (STATE.displayLimit === 200) nextStep = 300; // 200 -> 500
@@ -449,7 +449,7 @@ function renderSettingsUI() {
         `;
     };
 
-    html += '<div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;"><div>'; // 2 Col Layout for sliders
+    html += '<div style="display: flex; flex-direction: column; gap: 0;">';
     
     if (isConsensus) {
         html += createSlider('ranking', 'k_value', 'Rank Decay (K)', 0, 50, 1);
@@ -461,20 +461,18 @@ function renderSettingsUI() {
     html += createSlider('ranking', 'provocation_boost', 'Provocation Boost', 0, 0.25, 0.01, true);
     html += createSlider('ranking', 'cluster_boost', 'Cluster Boost', 0, 0.1, 0.01, true);
     
-    html += '</div><div>'; // Column Break
-    
     html += createSlider('ranking', 'cluster_threshold', 'Cluster Threshold', 0, 100, 1);
     html += createSlider('ranking', 'rank1_bonus', 'Rank 1 Bonus', 1.0, 1.2, 0.01, false, true);
     html += createSlider('ranking', 'rank2_bonus', 'Rank 2 Bonus', 1.0, 1.2, 0.01, false, true);
     html += createSlider('ranking', 'rank3_bonus', 'Rank 3 Bonus', 1.0, 1.2, 0.01, false, true);
     
-    html += '</div></div>'; // End Grid
+    html += '</div>'; // End Stack
     
     // 2. Source Weights
     html += '<hr><h4>Source Weights</h4>';
     const sortedSources = Object.keys(sources).sort();
     
-    html += '<div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">';
+    html += '<div style="display: flex; flex-direction: column; gap: 0;">';
     sortedSources.forEach(srcKey => {
         html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey, 0.0, 1.5, 0.01);
     });
@@ -484,9 +482,10 @@ function renderSettingsUI() {
     const unrankedSources = sortedSources.filter(k => sources[k].type === 'unranked');
     if (unrankedSources.length > 0) {
         html += '<hr><h4>Shadow Ranks</h4>';
-        html += '<div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">';
+        html += '<div style="display: flex; flex-direction: column; gap: 0;">';
         unrankedSources.forEach(srcKey => {
-             html += createSlider('source_shadow', srcKey, (sources[srcKey].full_name || srcKey) + ' (Shadow)', 1.0, 100.0, 0.1);
+             const songCount = APP_DATA.config.sources[srcKey].song_count;
+             html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`, 1.0, 100.0, 0.1);
         });
         html += '</div>';
     }
