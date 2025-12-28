@@ -410,11 +410,17 @@ function renderSettingsUI() {
         <div class="grid" style="margin-bottom: 2rem;">
             <article class="mode-card ${isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'consensus')">
                 <header><strong>🤝 Consensus</strong></header>
+                <div style="text-align: center; margin-bottom: 0.5rem;">
+                    $$ W(r) = \\frac{1 + K}{r + K} $$
+                </div>
                 <small>Identifies the cultural record. Rewards songs that appeared on the most lists.</small>
             </article>
             
             <article class="mode-card ${!isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'conviction')">
                 <header><strong>🔥 Conviction</strong></header>
+                <div style="text-align: center; margin-bottom: 0.5rem;">
+                    $$ W(r) = \\frac{1}{r^P} $$
+                </div>
                 <small>Rewards critical obsession. A #1 rank carries massive weight.</small>
             </article>
         </div>
@@ -484,6 +490,17 @@ function renderSettingsUI() {
     }
 
     UI.settingsContent.innerHTML = html;
+
+    // KaTeX Auto-render
+    if (window.renderMathInElement) {
+        renderMathInElement(UI.settingsContent, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    }
 }
 
 window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
