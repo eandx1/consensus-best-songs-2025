@@ -364,9 +364,9 @@ window.showReviews = (idx) => {
         // Use configured shadow rank if applicable, otherwise source rank
         const rankVal = src.uses_shadow_rank ? srcConfig.shadow_rank : src.rank;
         
-        // Display rank with shadow rank notation if applicable
+        // Display rank with shadow rank notation if applicable (full decimal value with ghost emoji)
         const displayRank = src.uses_shadow_rank 
-            ? `<abbr data-tooltip="Shadow Rank (Calculated from list length)" data-placement="left">👻~${Math.ceil(rankVal)}</abbr>` 
+            ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="left">👻 ${rankVal.toFixed(1)}</abbr>` 
             : `#${rankVal}`;
         
         html += `
@@ -497,9 +497,12 @@ window.showStats = (idx) => {
         // Just use the category name for the tooltip (no descriptor)
         const tooltipText = escapeHtml(clusterName);
         
-        // Logic for Shadow Rank display (using the Ghost emoji/tilde approach)
-        const displayRank = String(sd.rank).includes('.5') 
-            ? `<abbr data-tooltip="Shadow Rank (Calculated from list length)" style="font-family: var(--pico-font-family);">👻~${Math.ceil(sd.rank)}</abbr>` 
+        // Check if source uses shadow rank
+        const usesShadowRank = sourceCfg && typeof sourceCfg.shadow_rank !== 'undefined';
+        
+        // Logic for Shadow Rank display (ghost emoji with full decimal value)
+        const displayRank = usesShadowRank
+            ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" style="font-family: var(--pico-font-family);">👻 ${sd.rank.toFixed(1)}</abbr>` 
             : sd.rank;
 
         html += `
