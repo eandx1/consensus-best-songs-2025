@@ -471,9 +471,14 @@ function renderSettingsUI() {
     
     // Collect unique clusters for Cluster Boost description
     const clusters = [...new Set(Object.values(sources).map(src => src.cluster).filter(c => c))].sort();
-    const clusterList = clusters.length > 1 
-        ? clusters.slice(0, -1).join(', ') + ', and ' + clusters[clusters.length - 1]
-        : clusters[0] || '';
+    const clusterMetadata = APP_DATA.config.cluster_metadata || {};
+    const clustersWithEmoji = clusters.map(c => {
+        const emoji = clusterMetadata[c]?.emoji || '';
+        return emoji ? `${emoji} ${c}` : c;
+    });
+    const clusterList = clustersWithEmoji.length > 1 
+        ? clustersWithEmoji.slice(0, -1).join(', ') + ', and ' + clustersWithEmoji[clustersWithEmoji.length - 1]
+        : clustersWithEmoji[0] || '';
     const clusterDesc = `Rewards crossover between different categories of critics by giving a bonus for each additional category reached with a best rank under the Cluster Threshold. The current critic categories are: ${clusterList}.`;
     
     html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, clusterDesc);
@@ -491,7 +496,12 @@ function renderSettingsUI() {
     
     html += '<div style="display: flex; flex-direction: column; gap: 0;">';
     sortedSources.forEach(srcKey => {
-        html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey, 0.0, 1.5, 0.01);
+        const source = sources[srcKey];
+        const clusterName = source.cluster;
+        const emoji = clusterMetadata[clusterName]?.emoji || '';
+        const clusterInfo = clusterName ? `${emoji} ${clusterName}` : '';
+        
+        html += createSlider('source_weight', srcKey, source.full_name || srcKey, 0.0, 1.5, 0.01, false, false, clusterInfo);
     });
     html += '</div>';
 
