@@ -17,6 +17,39 @@ const UI = {
 };
 
 /**
+ * MATH FORMULA WEB COMPONENT
+ */
+class MathFormula extends HTMLElement {
+    connectedCallback() {
+        const type = this.getAttribute('type');
+        // Using Pico's CSS variable for the current text color
+        const color = 'var(--pico-color)';
+        
+        const formulas = {
+            consensus: `
+                <svg viewBox="0 0 100 40" style="width: 7em; height: auto;" xmlns="http://www.w3.org/2000/svg" fill="${color}">
+                    <text x="0" y="25" font-family="serif" font-style="italic" font-size="16">W(r) =</text>
+                    <line x1="52" y1="20" x2="98" y2="20" stroke="${color}" stroke-width="1.5"/>
+                    <text x="60" y="14" font-family="serif" font-size="12">1 + K</text>
+                    <text x="60" y="34" font-family="serif" font-size="12">r + K</text>
+                </svg>`,
+            conviction: `
+                <svg viewBox="0 0 80 40" style="width: 5.5em; height: auto;" xmlns="http://www.w3.org/2000/svg" fill="${color}">
+                    <text x="0" y="25" font-family="serif" font-style="italic" font-size="16">W(r) =</text>
+                    <line x1="52" y1="20" x2="78" y2="20" stroke="${color}" stroke-width="1.5"/>
+                    <text x="60" y="14" font-family="serif" font-size="12">1</text>
+                    <text x="58" y="34" font-family="serif" font-size="12">r<tspan baseline-shift="super" font-size="8">P</tspan></text>
+                </svg>`
+        };
+
+        this.innerHTML = formulas[type] || '';
+        this.style.display = 'inline-flex';
+    }
+}
+
+customElements.define('math-formula', MathFormula);
+
+/**
  * UTILITIES
  */
 const escapeHtml = (str) => {
@@ -411,20 +444,36 @@ function renderSettingsUI() {
     html += `
         <label>Decay Mode</label>
         <div class="grid" style="margin-bottom: 2rem;">
-            <article class="mode-card ${isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'consensus')">
-                <header><strong>🤝 Consensus</strong></header>
-                <div style="text-align: center; margin-bottom: 0.5rem;">
-                    $$ W(r) = \\frac{1 + K}{r + K} $$
+            <article class="mode-card ${isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'consensus')" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--pico-spacing);">
+                <header style="width: 100%; border-bottom: none; padding-bottom: 0;">
+                    <strong>🤝 Consensus</strong>
+                </header>
+                
+                <div class="formula-container" style="margin: var(--pico-spacing) 0;">
+                    <math-formula type="consensus"></math-formula>
                 </div>
-                <p style="color: var(--pico-muted-color);">Identifies the cultural record. Rewards songs that appeared on the most lists.</p>
+
+                <p style="margin-bottom: 0;">
+                    <small style="color: var(--pico-muted-color);">
+                        Rewards cultural record. Favors songs on more lists.
+                    </small>
+                </p>
             </article>
             
-            <article class="mode-card ${!isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'conviction')">
-                <header><strong>🔥 Conviction</strong></header>
-                <div style="text-align: center; margin-bottom: 0.5rem;">
-                    $$ W(r) = \\frac{1}{r^P} $$
+            <article class="mode-card ${!isConsensus ? 'active' : ''}" onclick="updateSetting('ranking', 'decay_mode', 'conviction')" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--pico-spacing);">
+                <header style="width: 100%; border-bottom: none; padding-bottom: 0;">
+                    <strong>🔥 Conviction</strong>
+                </header>
+                
+                <div class="formula-container" style="margin: var(--pico-spacing) 0;">
+                    <math-formula type="conviction"></math-formula>
                 </div>
-                <p style="color: var(--pico-muted-color);">Rewards critical obsession. A #1 rank carries massive weight.</p>
+
+                <p style="margin-bottom: 0;">
+                    <small style="color: var(--pico-muted-color);">
+                        Rewards obsession. Top ranks carry massive weight.
+                    </small>
+                </p>
             </article>
         </div>
     `;
@@ -562,17 +611,6 @@ function renderSettingsUI() {
     }
 
     UI.settingsContent.innerHTML = html;
-
-    // KaTeX Auto-render
-    if (window.renderMathInElement) {
-        renderMathInElement(UI.settingsContent, {
-            delimiters: [
-                {left: '$$', right: '$$', display: true},
-                {left: '$', right: '$', display: false}
-            ],
-            throwOnError: false
-        });
-    }
 }
 
 window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
