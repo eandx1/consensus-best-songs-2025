@@ -229,14 +229,14 @@ function render() {
 
         return `
             <article class="song-card">
-                <div class="grid">
-                    <aside>#${song.rank}</aside>
+                <div class="song-card-layout">
+                    <aside class="rank-display">#${song.rank}</aside>
                     
-                    <figure>
+                    <figure class="video-figure">
                         <lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(song.name)}"></lite-youtube>
                     </figure>
                     
-                    <div>
+                    <div class="song-info">
                         <header>
                             <hgroup>
                                 <h3>${escapeHtml(song.name)}</h3>
