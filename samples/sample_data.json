@@ -3,14 +3,13 @@
         "ranking": {
             "k_value": 20,
             "p_exponent": 0.55,
-            "min_norm_length": 25,
             "cluster_threshold": 50,
             "consensus_boost": 0.05,
             "provocation_boost": 0.1,
             "cluster_boost": 0.03,
-            "rank1_bonus": 1.1,
-            "rank2_bonus": 1.075,
-            "rank3_bonus": 1.025,
+            "rank1_bonus": 0.1,
+            "rank2_bonus": 0.075,
+            "rank3_bonus": 0.025,
             "decay_mode": "consensus"
         },
         "sources": {
@@ -236,126 +235,136 @@
                 "song_count": 61,
                 "shadow_rank": 31.0
             }
+        },
+        "cluster_metadata": {
+            "Critical Authority": {
+                "emoji": "\ud83c\udfdb\ufe0f",
+                "descriptor": "Essential critical voices from major institutions known for depth, rigorous standards, and long-standing industry trust."
+            },
+            "Tastemakers": {
+                "emoji": "\u26a1",
+                "descriptor": "Digital trendsetters and established indie mainstays driving the current musical conversation."
+            },
+            "Specialists": {
+                "emoji": "\ud83e\uddea",
+                "descriptor": "Niche expert curators focused on deep cuts, avant-garde discoveries, and specific genre depth."
+            },
+            "Mainstream": {
+                "emoji": "\ud83d\udce1",
+                "descriptor": "High-frequency media outlets and lifestyle sources tracking mass cultural appeal and global broadcasting trends."
+            }
         }
     },
     "songs": [
         {
-            "id": "FRX452505206",
-            "artist": "dexter in the newsagent",
-            "name": "Special",
+            "id": "UK7MC2500274",
+            "artist": "Robyn",
+            "name": "Dopamine",
             "sources": [
                 {
-                    "name": "AP",
+                    "name": "Dazed",
+                    "rank": 18,
+                    "quote": "the sovereign of sad-happy songs has returned with another cathartic club anthem"
+                },
+                {
+                    "name": "GvsB",
+                    "rank": 19
+                },
+                {
+                    "name": "ELLE",
                     "uses_shadow_rank": true,
-                    "quote": "catchy and effervescent, like a vintage R&B cut but undeniably contemporary in its slow, romantic production"
+                    "quote": "she delivers feel-good pop energy that we've been desperately needing"
                 },
                 {
-                    "name": "NYT (Caramanica)",
-                    "rank": 7,
-                    "quote": "a delightful, patient, encouraging and nourishing whisper of a love song"
-                },
-                {
-                    "name": "FADER",
-                    "rank": 37,
-                    "quote": "Heartbreak here sounds both resigned and hopeful"
-                },
-                {
-                    "name": "Paste",
-                    "rank": 56,
-                    "quote": "dexter sings with such conviction that all you can do is bask in the beauty"
-                },
-                {
-                    "name": "Pitchfork",
+                    "name": "Billboard Staff",
                     "rank": 66,
-                    "quote": "full of grace and fully imagined, as if it had always been with us"
+                    "quote": "dissecting her own complicated emotions ... set to a pulsing beat that just keeps building"
+                },
+                {
+                    "name": "NPR Top 125",
+                    "uses_shadow_rank": true,
+                    "quote": "the Swedish fembot sounds like she's rebooting, fired up by romantic chemistry, ready to give us something to dance to"
                 }
             ],
             "list_count": 5,
             "media": {
                 "youtube": {
-                    "music_id": "BvM3LQtvYDU",
-                    "video_id": "6vLZjyKuWEY"
+                    "music_id": "pwi-LyNgrD8",
+                    "video_id": "vitil9qMN6A"
                 },
                 "spotify": {
-                    "id": "7HWDQfrQvnAXp5Xk29xqh7"
+                    "id": "168GHxsiJyT9tlJN74ZO11"
                 }
             }
         },
         {
-            "id": "USWB12502453",
-            "artist": "sombr",
-            "name": "12 to 12",
+            "id": "US2U62539801",
+            "artist": "feeble little horse",
+            "name": "This Is Real",
             "sources": [
                 {
-                    "name": "Buzzfeed",
-                    "rank": 12,
-                    "quote": "\"12 to 12\" has a catchy '80s-inspired vibe, and those opening synths and vocal effects grab you from the very first seconds"
+                    "name": "AP",
+                    "uses_shadow_rank": true,
+                    "quote": "pushes the envelope further, working in computerized, hyperpop-esque electronics ... one of their heaviest tracks to date"
                 },
                 {
-                    "name": "LA Times",
-                    "rank": 23,
-                    "quote": "The zoomer wedding dance-floor anthem of 2035."
+                    "name": "Stereogum",
+                    "rank": 45,
+                    "quote": "glitchy jangle riffs, overlapping twee-folk refrains\u2026 and the heaviest breakdown this year outside of metal"
+                },
+                {
+                    "name": "Quietus",
+                    "rank": 47
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 82,
+                    "quote": "collide bedroom pop, noise pop, and hyper pop ... turns into bubbly electro cuteness, then runs into a wall of power-drone grind, then becomes a Nineties-style grunge-punk tantrum"
+                }
+            ],
+            "list_count": 4,
+            "media": {
+                "youtube": {
+                    "music_id": "4tT4thtTees",
+                    "video_id": "ZZ5ARgm--Ok"
+                },
+                "spotify": {
+                    "id": "4LYXtoiuM9xEmxklVvQnLl"
+                },
+                "bandcamp": {
+                    "url": "https://feeblelittlehorse.bandcamp.com/track/this-is-real"
+                }
+            }
+        },
+        {
+            "id": "QM4TW2517490",
+            "artist": "Little Simz, Obongjayar, & Moonchild Sanelly",
+            "name": "Flood",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 18,
+                    "quote": "The UK rapper addresses betrayal with a haunting cadence and thunderous drums, taking no prisoners as she offers up hard-earned clarity and advice."
+                },
+                {
+                    "name": "Guardian",
+                    "rank": 20,
+                    "quote": "she lays out her six-point plan for greatness with koans of wisdom such as: \"Never eat with the hyenas / 'Cause they will look at you as bones.\""
                 },
                 {
                     "name": "ELLE",
                     "uses_shadow_rank": true,
-                    "quote": "Sombr's 2010s alt-rock sound hits close to home"
-                },
-                {
-                    "name": "Variety",
-                    "uses_shadow_rank": true,
-                    "quote": "a swaggering pop song that packs all of the punch it promises"
-                },
-                {
-                    "name": "Billboard Staff",
-                    "rank": 42,
-                    "quote": "delivered one of the sleekest disco workouts of the year"
-                },
-                {
-                    "name": "NME",
-                    "rank": 47,
-                    "quote": "has a penchant for putting melancholic heartbreak to a funky melody and making it sound like an intoxicatingly good time"
-                },
-                {
-                    "name": "NPR Top 125",
-                    "uses_shadow_rank": true,
-                    "quote": "an undeniable '80s FM urgency ... The adrenaline rush of that driving groove and dramatic piano renders the rest of the track inconsequential"
+                    "quote": "a master class in storytelling, showing a profound confidence from the rapper"
                 }
             ],
-            "list_count": 7,
+            "list_count": 3,
             "media": {
                 "youtube": {
-                    "music_id": "Lylp6w7LpHc",
-                    "video_id": "cZgUiR31m-Y"
+                    "music_id": "FEORaPiNF6g",
+                    "video_id": "GvrNPiz7rHw"
                 },
                 "spotify": {
-                    "id": "05od2qm2MTSKCHxy1GBp5W"
-                }
-            }
-        },
-        {
-            "id": "USAT22504013",
-            "artist": "Charlie Puth",
-            "name": "Changes",
-            "sources": [
-                {
-                    "name": "LA Times",
-                    "rank": 13
-                },
-                {
-                    "name": "Variety",
-                    "uses_shadow_rank": true,
-                    "quote": "the breadth of his musical expertise and ability to put that knowledge into action continues to go unmatched in contemporary pop"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "U9pWCNM-040",
-                    "video_id": "Jrf8N1EMUhg"
-                },
-                "spotify": {
-                    "id": "4kUI0vuDd0Zub4IvxxNreM"
+                    "id": "3m9g8ua3M51JvqmS8rh6bS"
                 }
             }
         }
