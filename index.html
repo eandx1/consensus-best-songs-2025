@@ -44,7 +44,7 @@
         }
 
         .rank-display {
-            flex: 0 0 3rem; /* Smaller fixed width for rank on desktop */
+            flex: 0 0 4rem; /* Fixed width for rank on desktop */
             text-align: center; /* Center the rank in its column */
             font-size: clamp(1.75rem, 2.5vw, 2.25rem); /* Responsive font size that scales down if needed */
             font-weight: 900;
@@ -121,13 +121,15 @@
             transition: opacity 0.2s, filter 0.2s;
         }
         
-        /* Desktop: hide by default, show on hover */
+        /* Desktop: hide by default, show on hover or focus */
         @media (hover: hover) {
             lite-youtube::part(playButton) {
-                opacity: 0; /* Invisible until hover */
+                opacity: 0; /* Invisible until hover or focus */
             }
             
-            lite-youtube:hover::part(playButton) {
+            lite-youtube:hover::part(playButton),
+            lite-youtube:focus::part(playButton),
+            lite-youtube:focus-within::part(playButton) {
                 opacity: 1;
             }
         }
