@@ -17,6 +17,9 @@
             --pico-primary-background: #3b82f6;
             --pico-primary-hover: #2563eb;
             --pico-primary-underline: rgba(59, 130, 246, 0.5);
+            
+            /* Mobile-first: Increase base size for better legibility by default */
+            --pico-font-size: 110%;
         }
         
         /* Enable word-wrapping for Pico CSS tooltips */
@@ -41,72 +44,55 @@
             padding-top: var(--pico-block-spacing-vertical);
         }
         
+        /* Add space for the iPhone's "notch" and address bar on mobile by default */
+        main#app {
+            padding-top: 2rem;
+        }
+        
         /* Song Cards: Minimal custom styling, rely on Pico's article styling */
         article.song-card {
             position: relative;
             margin-bottom: 2rem;
         }
         
-        /* The container that replaces .grid inside the card */
+        /* 
+           MOBILE-FIRST LAYOUT 
+           Base styles apply to mobile (and up, unless overridden).
+        */
+        
         .song-card-layout {
             display: flex;
-            flex-direction: row; /* Horizontal on desktop */
-            align-items: center;
+            flex-direction: column; /* Stack vertically on mobile */
+            align-items: flex-start;
             gap: var(--pico-spacing);
         }
 
         .rank-display {
-            flex: 0 0 4rem; /* Fixed width for rank on desktop */
-            text-align: center; /* Center the rank in its column */
-            font-size: clamp(1.75rem, 2.5vw, 2.25rem); /* Responsive font size that scales down if needed */
+            flex: 0 0 auto;
+            text-align: left;
+            font-size: 2.5rem; /* Bigger rank on mobile */
             font-weight: 900;
             opacity: 0.15;
             line-height: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            margin-bottom: -1rem; /* Pull video up closer to rank */
         }
 
         .video-figure {
-            flex: 0 0 320px; /* Bigger video on desktop - increased from 240px */
+            flex: 0 0 auto;
+            width: 100%; /* Full width on mobile */
             margin: 0;
         }
 
         .song-info {
-            flex: 1; /* Take up all remaining horizontal space */
-            min-width: 0; /* Standard fix for text truncation/wrapping in flex */
+            flex: 1;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
-        
-        /* Even bigger video on larger screens */
-        @media (min-width: 1200px) {
-            .video-figure {
-                flex: 0 0 360px; /* Even bigger on large screens */
-            }
-        }
-        
-        /* --- THE DYNAMIC SHIFT --- */
-        @media (max-width: 768px) {
-            .song-card-layout {
-                flex-direction: column; /* Stack vertically on small screens */
-                align-items: flex-start;
-            }
-
-            .rank-display {
-                flex: 0 0 auto; /* Allow it to be its natural size */
-                text-align: left;
-                font-size: 2.5rem; /* Bigger on mobile */
-                margin-bottom: -1rem; /* Pull the video up closer to the rank */
-                justify-content: flex-start;
-            }
-
-            .video-figure {
-                flex: 0 0 auto;
-                width: 100%; /* Fill the full width of the container */
-                /* No max-width - let it use all available horizontal space */
-            }
+            width: 100%; /* Ensure it takes full width in stack */
         }
         
         /* Video player wrapper using semantic <figure> */
@@ -123,7 +109,7 @@
             border: 1px solid var(--pico-muted-border-color);
         }
         
-        /* Customize lite-youtube play button */
+        /* Customize lite-youtube play button - Mobile Default (visible) */
         lite-youtube::part(playButton) {
             width: 68px;
             height: 48px;
@@ -132,83 +118,6 @@
             opacity: 0.15; /* Mobile default - slightly visible */
             transition: opacity 0.2s, filter 0.2s;
         }
-        
-        /* Desktop: hide by default, show on hover or focus */
-        @media (hover: hover) {
-            lite-youtube::part(playButton) {
-                opacity: 0; /* Invisible until hover or focus */
-            }
-            
-            lite-youtube:hover::part(playButton),
-            lite-youtube:focus::part(playButton),
-            lite-youtube:focus-within::part(playButton) {
-                opacity: 1;
-            }
-        }
-        
-        /* Mobile: always visible at low opacity (no hover state) */
-        @media (hover: none) {
-            lite-youtube::part(playButton) {
-                opacity: 0.15;
-            }
-        }
-        
-        /* Target mobile devices - improve readability */
-        @media (max-width: 576px) {
-            :root {
-                /* Increase base size for better mobile legibility */
-                --pico-font-size: 110%; 
-            }
-
-            /* Add space for the iPhone's "notch" and address bar */
-            main#app {
-                padding-top: 2rem;
-            }
-
-            /* Increase line-height slightly for the source list 
-               so it's easier to tap with a thumb */
-            article.song-card [data-sources] {
-                line-height: 2;
-                font-size: 0.95rem;
-            }
-        }
-        
-        /* Responsive Header - Two-Column Flex Layout */
-        header.container nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; /* Title starts at top, but links stay level */
-            flex-wrap: nowrap; 
-        }
-
-        /* The Title Block */
-        header.container nav ul:first-of-type {
-            flex: 1;
-            display: block; /* Allow the <strong> to wrap naturally */
-            padding: 0;
-        }
-
-        header.container nav ul:first-of-type li {
-            display: block;
-            padding: 0;
-        }
-
-        header.container nav ul:first-of-type li strong {
-            display: block;
-            line-height: 1.1;
-            font-size: clamp(1rem, 4.5vw, 1.3rem);
-            white-space: normal; /* This enables the wrap you want */
-            max-width: 180px;    /* Forces 'Consensus' and 'Best Songs' to stack */
-        }
-
-        /* The Links Block */
-        header.container nav ul:last-of-type {
-            display: flex;
-            align-items: center; /* Keep 'Settings' and 'About' perfectly level */
-            height: 2.2rem;      /* Matches the height of the first line of text */
-            flex-shrink: 0;
-        }
-        
         
         /* Header contains hgroup and info icon */
         article.song-card .song-info > header {
@@ -250,12 +159,12 @@
             opacity: 1;
         }
         
-        /* Sources section styling */
+        /* Sources section styling - Mobile optimized */
         article.song-card [data-sources] {
             margin: 0.75rem 0;
-            line-height: 1.8;
+            line-height: 2; /* Taller line height for touch targets */
+            font-size: 0.95rem;
             cursor: pointer;
-            font-size: 0.875rem;
         }
         
         article.song-card [data-sources] span {
@@ -302,17 +211,98 @@
             opacity: 1;
         }
         
-        /* Pico's .grid: Customize column sizes for desktop */
-        article.song-card .grid {
-            grid-template-columns: 1fr;
-            gap: var(--pico-spacing);
-            align-items: stretch;
+        /* 
+           DESKTOP / TABLET OVERRIDES 
+           Apply when screen width is >= 577px
+        */
+        @media (min-width: 577px) {
+            :root {
+                --pico-font-size: 100%; /* Reset to standard size on desktop */
+            }
+
+            main#app {
+                padding-top: 0; /* Remove extra top padding */
+            }
+
+            .song-card-layout {
+                flex-direction: row; /* Horizontal layout */
+                align-items: center;
+            }
+
+            .rank-display {
+                flex: 0 0 4rem; /* Fixed width */
+                text-align: center;
+                font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+                margin-bottom: 0;
+                justify-content: center;
+            }
+
+            .video-figure {
+                flex: 0 0 320px; /* Fixed width for video */
+                width: auto;
+            }
+
+            /* Tighter line height for mouse users */
+            article.song-card [data-sources] {
+                line-height: 1.8;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Large Desktop Overrides */
+        @media (min-width: 1200px) {
+            .video-figure {
+                flex: 0 0 360px;
+            }
         }
         
-        @media (min-width: 992px) {
-            article.song-card .grid {
-                grid-template-columns: 80px minmax(200px, 320px) 1fr;
+        /* Hover effects for devices that support it (mostly desktop) */
+        @media (hover: hover) {
+            lite-youtube::part(playButton) {
+                opacity: 0; /* Invisible until hover or focus */
             }
+            
+            lite-youtube:hover::part(playButton),
+            lite-youtube:focus::part(playButton),
+            lite-youtube:focus-within::part(playButton) {
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive Header - Two-Column Flex Layout */
+        header.container nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Title starts at top, but links stay level */
+            flex-wrap: nowrap; 
+        }
+
+        /* The Title Block */
+        header.container nav ul:first-of-type {
+            flex: 1;
+            display: block; /* Allow the <strong> to wrap naturally */
+            padding: 0;
+        }
+
+        header.container nav ul:first-of-type li {
+            display: block;
+            padding: 0;
+        }
+
+        header.container nav ul:first-of-type li strong {
+            display: block;
+            line-height: 1.1;
+            font-size: clamp(1rem, 4.5vw, 1.3rem);
+            white-space: normal; /* This enables the wrap you want */
+            max-width: 180px;    /* Forces 'Consensus' and 'Best Songs' to stack */
+        }
+
+        /* The Links Block */
+        header.container nav ul:last-of-type {
+            display: flex;
+            align-items: center; /* Keep 'Settings' and 'About' perfectly level */
+            height: 2.2rem;      /* Matches the height of the first line of text */
+            flex-shrink: 0;
         }
         
         /* Settings UI Styles */
@@ -337,14 +327,15 @@
             border-color: var(--pico-primary);
         }
         
+        /* Column List: Defaults to 1 column (mobile), switches to 2 on larger screens */
         .column-list {
-            column-count: 2;
-            column-gap: 2rem;
+            column-count: 1;
         }
         
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
             .column-list {
-                column-count: 1;
+                column-count: 2;
+                column-gap: 2rem;
             }
         }
     </style>
