@@ -50,13 +50,13 @@
         
         /* Desktop: Allow container to be wider for more breathing room */
         @media (min-width: 992px) {
-            main.container {
+            main.container, header.container {
                 max-width: 90vw; /* Use more screen real estate */
             }
         }
 
         @media (min-width: 1400px) {
-            main.container {
+            main.container, header.container {
                 max-width: 1300px; /* Cap it reasonably on huge screens */
             }
         }
@@ -319,6 +319,18 @@
             font-size: clamp(1rem, 4.5vw, 1.3rem);
             white-space: normal; /* This enables the wrap you want */
             max-width: 180px;    /* Forces 'Consensus' and 'Best Songs' to stack */
+        }
+
+        /* Desktop: Unwrap title and align items vertically */
+        @media (min-width: 577px) {
+             header.container nav {
+                align-items: center;
+             }
+
+             header.container nav ul:first-of-type li strong {
+                max-width: none;
+                white-space: nowrap;
+             }
         }
 
         /* The Links Block */
