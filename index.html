@@ -356,6 +356,36 @@
             column-count: 1;
         }
         
+        /* Mobile Modal Fixes: Flatten nested structure to maximize width */
+        @media (max-width: 576px) {
+            /* Remove extra padding from container inside dialog */
+            dialog .container {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            /* Remove card styling from nested articles to regain horizontal space */
+            dialog article article {
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid var(--pico-muted-border-color);
+                padding-bottom: 1.5rem;
+            }
+
+            dialog article article:last-of-type {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            
+            /* Tighten up the formula display in settings */
+            math-formula svg {
+                max-width: 100%;
+            }
+        }
+        
         @media (min-width: 768px) {
             .column-list {
                 column-count: 2;
