@@ -355,6 +355,89 @@
         .column-list {
             column-count: 1;
         }
+
+        /* 
+           RESPONSIVE CONTRIBUTIONS TABLE 
+           Replaces standard table for better mobile display
+        */
+        .contributions-table {
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .contribution-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-areas: 
+                "source score"
+                "rank score";
+            gap: 0.25rem 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--pico-muted-border-color);
+        }
+
+        .contributions-header {
+            display: none; /* Hidden on mobile */
+        }
+
+        .col-source {
+            grid-area: source;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0; /* Enables truncation if needed */
+        }
+
+        .col-source span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .col-rank {
+            grid-area: rank;
+            font-family: var(--pico-font-family-monospace);
+            color: var(--pico-muted-color);
+            font-size: 0.85em;
+        }
+
+        .col-score {
+            grid-area: score;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* Desktop/Tablet: Switch to Table-like Grid */
+        @media (min-width: 768px) {
+            .contributions-header {
+                display: grid;
+                grid-template-columns: 1fr 100px 120px;
+                padding: 0.5rem 1rem;
+                font-weight: bold;
+                border-bottom: 2px solid var(--pico-muted-border-color);
+            }
+            
+            .contribution-row {
+                grid-template-columns: 1fr 100px 120px;
+                grid-template-areas: "source rank score";
+                align-items: center;
+                padding: 0.5rem 1rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--pico-table-border-color);
+            }
+            
+            .col-rank {
+                font-size: 1em;
+                color: var(--pico-color);
+            }
+
+            /* Striping */
+            .contribution-row:nth-child(even) {
+                background-color: var(--pico-table-row-stripped-background-color);
+            }
+        }
         
         /* Mobile Modal Fixes: Flatten nested structure to maximize width */
         @media (max-width: 576px) {
