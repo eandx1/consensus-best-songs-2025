@@ -42,6 +42,23 @@
         /* Add spacing at the top of the main container for rank #1 */
         main.container {
             padding-top: var(--pico-block-spacing-vertical);
+            
+            /* Mobile: Reduce side padding so cards are wider */
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        
+        /* Desktop: Allow container to be wider for more breathing room */
+        @media (min-width: 992px) {
+            main.container {
+                max-width: 90vw; /* Use more screen real estate */
+            }
+        }
+
+        @media (min-width: 1400px) {
+            main.container {
+                max-width: 1300px; /* Cap it reasonably on huge screens */
+            }
         }
         
         /* Add space for the iPhone's "notch" and address bar on mobile by default */
@@ -136,10 +153,17 @@
             flex: 1;
         }
         
-        /* Use h4 for artist name in hgroup (Pico will style it appropriately) */
+        /* Song Title - Mobile optimized */
+        article.song-card hgroup h3 {
+            font-size: 1.4rem; /* Larger, clearer title */
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+
+        /* Use h4 for artist name in hgroup */
         article.song-card hgroup h4 {
             margin-bottom: 0;
-            font-size: 0.9rem;
+            font-size: 1.1rem; /* Increased from 0.9rem for better readability */
             color: var(--pico-muted-color);
             font-weight: normal;
         }
@@ -147,10 +171,10 @@
         /* Info icon - now inside header, aligned to baseline */
         article.song-card header > a[aria-label] {
             opacity: 0.4;
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* Slightly larger touch target */
             transition: opacity 0.2s;
-            padding: 0;
-            margin: 0;
+            padding: 0.25rem;
+            margin: -0.25rem 0 0 0; /* Compensation for padding */
             text-decoration: none;
             flex-shrink: 0;
         }
@@ -162,8 +186,8 @@
         /* Sources section styling - Mobile optimized */
         article.song-card [data-sources] {
             margin: 0.75rem 0;
-            line-height: 2; /* Taller line height for touch targets */
-            font-size: 0.95rem;
+            line-height: 1.6; /* Tightened from 2, but still touch-friendly */
+            font-size: 1rem; /* Increased from 0.95rem */
             cursor: pointer;
         }
         
@@ -198,12 +222,12 @@
         }
         
         article.song-card nav a {
-            font-size: 0.7rem;
+            font-size: 0.85rem; /* Increased from 0.7rem */
             text-transform: uppercase;
             font-weight: 700;
-            opacity: 0.6;
+            opacity: 0.7;
             transition: opacity 0.2s;
-            padding: 0.25rem 0.5rem;
+            padding: 0.4rem 0.5rem; /* Larger touch targets */
             text-decoration: none;
         }
         
