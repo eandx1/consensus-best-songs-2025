@@ -282,13 +282,15 @@ function render() {
                         
                         <div data-sources onclick="showReviews(${idx})" title="Click to see reviews">
                             <small>
-                                ${song.sourceDetails.map(s => {
+                                ${song.sources.map(s => {
                                     // Check if source uses shadow rank by looking at config
                                     const srcConfig = STATE.config.sources[s.name];
+                                    if (!srcConfig) return '';
+
                                     const usesShadowRank = srcConfig && typeof srcConfig.shadow_rank !== 'undefined';
                                     
                                     // Build the display name
-                                    let displayName = escapeHtml(s.full_name || s.name);
+                                    let displayName = escapeHtml(srcConfig.full_name || s.name);
                                     
                                     // For shadow rank sources (except NPR lists), show "(Top N)"
                                     if (usesShadowRank && s.name !== 'NPR Top 25' && s.name !== 'NPR Top 125') {
@@ -300,7 +302,7 @@ function render() {
                                     const rankDisplay = usesShadowRank ? '' : `#${Math.floor(s.rank)}`;
                                     
                                     return `<span>${displayName}${rankDisplay}</span>`;
-                                }).join(' · ')}
+                                }).filter(Boolean).join(' · ')}
                             </small>
                         </div>
                         
