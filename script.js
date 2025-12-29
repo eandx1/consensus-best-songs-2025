@@ -152,11 +152,41 @@ const RankingEngine = {
 window.RankingEngine = RankingEngine;
 
 /**
+ * THEME MANAGEMENT
+ */
+function applyTheme(themeName) {
+    const html = document.documentElement;
+    // Map theme names to [data-theme, data-style]
+    const themes = {
+        'original-dark': { theme: 'dark', style: 'original' },
+        'original-light': { theme: 'light', style: 'original' },
+        'crimson-dark': { theme: 'dark', style: 'crimson' },
+        'crimson-light': { theme: 'light', style: 'crimson' }
+    };
+    
+    const settings = themes[themeName] || themes['original-dark'];
+    html.setAttribute('data-theme', settings.theme);
+    html.setAttribute('data-style', settings.style);
+    
+    if (STATE.config) STATE.config.theme = themeName;
+}
+
+/**
  * STATE SYNCING (URL <-> APP)
  */
 function syncStateFromURL(defaultConfig) {
     const params = new URLSearchParams(window.location.search);
     const config = JSON.parse(JSON.stringify(defaultConfig));
+
+    // Theme
+    if (params.has('theme')) {
+        config.theme = params.get('theme');
+        applyTheme(config.theme);
+    } else {
+        // Default theme
+        config.theme = 'original-dark';
+        applyTheme('original-dark');
+    }
 
     // Ranking Params
     const rankingKeys = ['decay_mode', 'k_value', 'p_exponent', 'consensus_boost', 'provocation_boost', 'cluster_boost', 'cluster_threshold', 'rank1_bonus', 'rank2_bonus', 'rank3_bonus'];
@@ -181,6 +211,11 @@ function syncStateFromURL(defaultConfig) {
 function updateURL(config) {
     const params = new URLSearchParams();
     const defaults = APP_DATA.config;
+
+    // Theme
+    if (config.theme && config.theme !== 'original-dark') {
+        params.set('theme', config.theme);
+    }
 
     // Ranking Params
     Object.entries(config.ranking).forEach(([k, v]) => {
@@ -472,16 +507,13 @@ window.showStats = (idx) => {
         
         <hr>
         <h5>Source Contributions</h5>
-        <div style="overflow-x: auto;">
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>Source</th>
-                        <th>Rank</th>
-                        <th>Contribution</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="contributions-table">
+            <header class="contributions-header">
+                <div>Source</div>
+                <div>Rank</div>
+                <div style="text-align: right;">Contribution</div>
+            </header>
+            <div class="contributions-body">
     `;
     
     // sourceDetails is already sorted by contribution in RankingEngine
@@ -502,32 +534,29 @@ window.showStats = (idx) => {
         
         // Logic for Shadow Rank display (ghost emoji with full decimal value)
         const displayRank = usesShadowRank
-            ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" style="font-family: var(--pico-font-family);">👻 ${sd.rank.toFixed(1)}</abbr>` 
-            : sd.rank;
+            ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="right" style="font-family: var(--pico-font-family);">👻 ${sd.rank.toFixed(1)}</abbr>` 
+            : `#${sd.rank}`;
 
         html += `
-            <tr>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <abbr data-tooltip="${tooltipText}" data-placement="right" style="text-decoration: none; cursor: help;">
-                            ${clusterEmoji}
-                        </abbr>
-                        <span>${escapeHtml(sd.full_name || sd.name)}</span>
-                    </div>
-                </td>
-                <td style="font-family: var(--pico-font-family-monospace);">${displayRank}</td>
-                <td style="text-align: right;">
+            <div class="contribution-row">
+                <div class="col-source">
+                    <abbr data-tooltip="${tooltipText}" data-placement="right" style="text-decoration: none; cursor: help;">
+                        ${clusterEmoji}
+                    </abbr>
+                    <span>${escapeHtml(sd.full_name || sd.name)}</span>
+                </div>
+                <div class="col-rank">${displayRank}</div>
+                <div class="col-score">
                     <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); font-weight: bold;">
                         +${sd.contribution.toFixed(2)}
                     </kbd>
-                </td>
-            </tr>
+                </div>
+            </div>
         `;
     });
     
     html += `
-                </tbody>
-            </table>
+            </div>
         </div>
     `;
 
@@ -721,6 +750,21 @@ function renderSettingsUI() {
         html += '</article>';
     }
 
+    // 4. Interface Settings
+    html += '<article>';
+    html += '<hgroup>';
+    html += '<h4>Interface</h4>';
+    html += '</hgroup>';
+
+    // Theme Selector
+    html += `
+        <label>Theme</label>
+        <select onchange="updateSetting('theme', 'theme', this.value)" style="margin-bottom: 2rem;">
+            <option value="original-dark" ${STATE.config.theme === 'original-dark' ? 'selected' : ''}>Original Dark (Default)</option>
+        </select>
+    `;
+    html += '</article>';
+
     UI.settingsContent.innerHTML = html;
 }
 
@@ -730,6 +774,12 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
         STATE.config.ranking.decay_mode = value;
         renderSettingsUI();
         debouncedReRank();
+        return;
+    }
+
+    if (key === 'theme') {
+        applyTheme(value);
+        debouncedReRank(); // To update URL
         return;
     }
 

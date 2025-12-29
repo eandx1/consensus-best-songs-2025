@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-style="original">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,14 +11,48 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>
 
     <style>
+        /* 
+           THEME CONFIGURATION
+           We use data-theme for Pico's base (light/dark) and data-style for specific color palettes/fonts.
+           
+           To add a new theme:
+           1. Define a new [data-style="theme-name"] block here with your overrides.
+              - --pico-primary: Main accent color
+              - --pico-primary-background: Background for buttons/badges
+              - --pico-primary-hover: Hover state color
+              - --pico-primary-underline: Underline color
+              - --pico-font-family: Optional font override (default is sans-serif)
+           2. Update the `themes` object in script.js `applyTheme()` function.
+           3. Add the option to the Theme Selector in script.js `renderSettingsUI()`.
+        */
+        
+        /* Base Settings (Global) */
         :root {
+             /* Mobile-first: Increase base size for better legibility by default */
+            --pico-font-size: 110%;
+        }
+
+        /* THEME: Original (Blue Accent) */
+        [data-style="original"] {
             /* IntelliJ/Solarized inspired blue accent */
             --pico-primary: #3b82f6;
             --pico-primary-background: #3b82f6;
             --pico-primary-hover: #2563eb;
             --pico-primary-underline: rgba(59, 130, 246, 0.5);
         }
-        
+
+        /* 
+           FUTURE THEME EXAMPLES:
+           
+           [data-style="crimson"] {
+               --pico-primary: #c62828;
+               --pico-primary-background: #c62828;
+               --pico-primary-hover: #b71c1c;
+               --pico-primary-underline: rgba(198, 40, 40, 0.5);
+               --pico-font-family: "Georgia", "Times New Roman", serif; 
+           }
+        */
+
         /* Enable word-wrapping for Pico CSS tooltips */
         [data-tooltip]::before {
             display: block;
@@ -39,6 +73,28 @@
         /* Add spacing at the top of the main container for rank #1 */
         main.container {
             padding-top: var(--pico-block-spacing-vertical);
+            
+            /* Mobile: Reduce side padding so cards are wider */
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        
+        /* Desktop: Allow container to be wider for more breathing room */
+        @media (min-width: 992px) {
+            main.container, header.container {
+                max-width: 90vw; /* Use more screen real estate */
+            }
+        }
+
+        @media (min-width: 1400px) {
+            main.container, header.container {
+                max-width: 1300px; /* Cap it reasonably on huge screens */
+            }
+        }
+        
+        /* Add space for the iPhone's "notch" and address bar on mobile by default */
+        main#app {
+            padding-top: 2rem;
         }
         
         /* Song Cards: Minimal custom styling, rely on Pico's article styling */
@@ -47,66 +103,44 @@
             margin-bottom: 2rem;
         }
         
-        /* The container that replaces .grid inside the card */
+        /* 
+           MOBILE-FIRST LAYOUT 
+           Base styles apply to mobile (and up, unless overridden).
+        */
+        
         .song-card-layout {
             display: flex;
-            flex-direction: row; /* Horizontal on desktop */
-            align-items: center;
+            flex-direction: column; /* Stack vertically on mobile */
+            align-items: flex-start;
             gap: var(--pico-spacing);
         }
 
         .rank-display {
-            flex: 0 0 4rem; /* Fixed width for rank on desktop */
-            text-align: center; /* Center the rank in its column */
-            font-size: clamp(1.75rem, 2.5vw, 2.25rem); /* Responsive font size that scales down if needed */
+            flex: 0 0 auto;
+            text-align: left;
+            font-size: 2.5rem; /* Bigger rank on mobile */
             font-weight: 900;
             opacity: 0.15;
             line-height: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            margin-bottom: -1rem; /* Pull video up closer to rank */
         }
 
         .video-figure {
-            flex: 0 0 320px; /* Bigger video on desktop - increased from 240px */
+            flex: 0 0 auto;
+            width: 100%; /* Full width on mobile */
             margin: 0;
         }
 
         .song-info {
-            flex: 1; /* Take up all remaining horizontal space */
-            min-width: 0; /* Standard fix for text truncation/wrapping in flex */
+            flex: 1;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
-        
-        /* Even bigger video on larger screens */
-        @media (min-width: 1200px) {
-            .video-figure {
-                flex: 0 0 360px; /* Even bigger on large screens */
-            }
-        }
-        
-        /* --- THE DYNAMIC SHIFT --- */
-        @media (max-width: 768px) {
-            .song-card-layout {
-                flex-direction: column; /* Stack vertically on small screens */
-                align-items: flex-start;
-            }
-
-            .rank-display {
-                flex: 0 0 auto; /* Allow it to be its natural size */
-                text-align: left;
-                font-size: 2.5rem; /* Bigger on mobile */
-                margin-bottom: -1rem; /* Pull the video up closer to the rank */
-                justify-content: flex-start;
-            }
-
-            .video-figure {
-                flex: 0 0 auto;
-                width: 100%; /* Fill the full width of the container */
-                /* No max-width - let it use all available horizontal space */
-            }
+            width: 100%; /* Ensure it takes full width in stack */
         }
         
         /* Video player wrapper using semantic <figure> */
@@ -123,7 +157,7 @@
             border: 1px solid var(--pico-muted-border-color);
         }
         
-        /* Customize lite-youtube play button */
+        /* Customize lite-youtube play button - Mobile Default (visible) */
         lite-youtube::part(playButton) {
             width: 68px;
             height: 48px;
@@ -132,72 +166,6 @@
             opacity: 0.15; /* Mobile default - slightly visible */
             transition: opacity 0.2s, filter 0.2s;
         }
-        
-        /* Desktop: hide by default, show on hover or focus */
-        @media (hover: hover) {
-            lite-youtube::part(playButton) {
-                opacity: 0; /* Invisible until hover or focus */
-            }
-            
-            lite-youtube:hover::part(playButton),
-            lite-youtube:focus::part(playButton),
-            lite-youtube:focus-within::part(playButton) {
-                opacity: 1;
-            }
-        }
-        
-        /* Mobile: always visible at low opacity (no hover state) */
-        @media (hover: none) {
-            lite-youtube::part(playButton) {
-                opacity: 0.15;
-            }
-        }
-        
-        /* Target mobile devices - improve readability */
-        @media (max-width: 576px) {
-            :root {
-                /* Increase base size for better mobile legibility */
-                --pico-font-size: 110%; 
-            }
-
-            /* Add space for the iPhone's "notch" and address bar */
-            main#app {
-                padding-top: 2rem;
-            }
-
-            /* Increase line-height slightly for the source list 
-               so it's easier to tap with a thumb */
-            article.song-card [data-sources] {
-                line-height: 2;
-                font-size: 0.95rem;
-            }
-        }
-        
-        /* Responsive Header Adjustments */
-        header.container nav {
-            flex-wrap: nowrap; /* Keep items on one line if possible */
-        }
-
-        header.container nav ul:first-of-type {
-            flex: 1; /* Let the title take up the remaining space */
-            min-width: 0; /* Allow the title text to truncate or shrink */
-        }
-
-        header.container nav ul:first-of-type li strong {
-            /* Scale the title font based on screen width */
-            font-size: clamp(0.9rem, 4vw, 1.2rem); 
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis; /* "Consensus Best..." if it gets too tight */
-            display: block;
-        }
-
-        /* Ensure the Settings/About links stay readable */
-        header.container nav ul:last-of-type li a {
-            font-size: 0.9rem;
-            padding-inline: 0.5rem;
-        }
-        
         
         /* Header contains hgroup and info icon */
         article.song-card .song-info > header {
@@ -216,10 +184,17 @@
             flex: 1;
         }
         
-        /* Use h4 for artist name in hgroup (Pico will style it appropriately) */
+        /* Song Title - Mobile optimized */
+        article.song-card hgroup h3 {
+            font-size: 1.4rem; /* Larger, clearer title */
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+        }
+
+        /* Use h4 for artist name in hgroup */
         article.song-card hgroup h4 {
             margin-bottom: 0;
-            font-size: 0.9rem;
+            font-size: 1.1rem; /* Increased from 0.9rem for better readability */
             color: var(--pico-muted-color);
             font-weight: normal;
         }
@@ -227,10 +202,10 @@
         /* Info icon - now inside header, aligned to baseline */
         article.song-card header > a[aria-label] {
             opacity: 0.4;
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* Slightly larger touch target */
             transition: opacity 0.2s;
-            padding: 0;
-            margin: 0;
+            padding: 0.25rem;
+            margin: -0.25rem 0 0 0; /* Compensation for padding */
             text-decoration: none;
             flex-shrink: 0;
         }
@@ -239,12 +214,12 @@
             opacity: 1;
         }
         
-        /* Sources section styling */
+        /* Sources section styling - Mobile optimized */
         article.song-card [data-sources] {
             margin: 0.75rem 0;
-            line-height: 1.8;
+            line-height: 1.6; /* Tightened from 2, but still touch-friendly */
+            font-size: 1rem; /* Increased from 0.95rem */
             cursor: pointer;
-            font-size: 0.875rem;
         }
         
         article.song-card [data-sources] span {
@@ -278,12 +253,12 @@
         }
         
         article.song-card nav a {
-            font-size: 0.7rem;
+            font-size: 0.85rem; /* Increased from 0.7rem */
             text-transform: uppercase;
             font-weight: 700;
-            opacity: 0.6;
+            opacity: 0.7;
             transition: opacity 0.2s;
-            padding: 0.25rem 0.5rem;
+            padding: 0.4rem 0.5rem; /* Larger touch targets */
             text-decoration: none;
         }
         
@@ -291,17 +266,110 @@
             opacity: 1;
         }
         
-        /* Pico's .grid: Customize column sizes for desktop */
-        article.song-card .grid {
-            grid-template-columns: 1fr;
-            gap: var(--pico-spacing);
-            align-items: stretch;
+        /* 
+           DESKTOP / TABLET OVERRIDES 
+           Apply when screen width is >= 577px
+        */
+        @media (min-width: 577px) {
+            :root {
+                --pico-font-size: 100%; /* Reset to standard size on desktop */
+            }
+
+            main#app {
+                padding-top: 0; /* Remove extra top padding */
+            }
+
+            .song-card-layout {
+                flex-direction: row; /* Horizontal layout */
+                align-items: center;
+            }
+
+            .rank-display {
+                flex: 0 0 4rem; /* Fixed width */
+                text-align: center;
+                font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+                margin-bottom: 0;
+                justify-content: center;
+            }
+
+            .video-figure {
+                flex: 0 0 320px; /* Fixed width for video */
+                width: auto;
+            }
+
+            /* Tighter line height for mouse users */
+            article.song-card [data-sources] {
+                line-height: 1.8;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Large Desktop Overrides */
+        @media (min-width: 1200px) {
+            .video-figure {
+                flex: 0 0 360px;
+            }
         }
         
-        @media (min-width: 992px) {
-            article.song-card .grid {
-                grid-template-columns: 80px minmax(200px, 320px) 1fr;
+        /* Hover effects for devices that support it (mostly desktop) */
+        @media (hover: hover) {
+            lite-youtube::part(playButton) {
+                opacity: 0; /* Invisible until hover or focus */
             }
+            
+            lite-youtube:hover::part(playButton),
+            lite-youtube:focus::part(playButton),
+            lite-youtube:focus-within::part(playButton) {
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive Header - Two-Column Flex Layout */
+        header.container nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Title starts at top, but links stay level */
+            flex-wrap: nowrap; 
+        }
+
+        /* The Title Block */
+        header.container nav ul:first-of-type {
+            flex: 1;
+            display: block; /* Allow the <strong> to wrap naturally */
+            padding: 0;
+        }
+
+        header.container nav ul:first-of-type li {
+            display: block;
+            padding: 0;
+        }
+
+        header.container nav ul:first-of-type li strong {
+            display: block;
+            line-height: 1.1;
+            font-size: clamp(1rem, 4.5vw, 1.3rem);
+            white-space: normal; /* This enables the wrap you want */
+            max-width: 180px;    /* Forces 'Consensus' and 'Best Songs' to stack */
+        }
+
+        /* Desktop: Unwrap title and align items vertically */
+        @media (min-width: 577px) {
+             header.container nav {
+                align-items: center;
+             }
+
+             header.container nav ul:first-of-type li strong {
+                max-width: none;
+                white-space: nowrap;
+             }
+        }
+
+        /* The Links Block */
+        header.container nav ul:last-of-type {
+            display: flex;
+            align-items: center; /* Keep 'Settings' and 'About' perfectly level */
+            height: 2.2rem;      /* Matches the height of the first line of text */
+            flex-shrink: 0;
         }
         
         /* Settings UI Styles */
@@ -326,14 +394,135 @@
             border-color: var(--pico-primary);
         }
         
+        /* Column List: Defaults to 1 column (mobile), switches to 2 on larger screens */
         .column-list {
-            column-count: 2;
-            column-gap: 2rem;
+            column-count: 1;
+        }
+
+        /* 
+           RESPONSIVE CONTRIBUTIONS TABLE 
+           Replaces standard table for better mobile display
+        */
+        .contributions-table {
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .contribution-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-areas: 
+                "source score"
+                "rank score";
+            gap: 0.25rem 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--pico-muted-border-color);
+        }
+
+        .contributions-header {
+            display: none; /* Hidden on mobile */
+        }
+
+        .col-source {
+            grid-area: source;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0; /* Enables truncation if needed */
+        }
+
+        .col-source span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .col-rank {
+            grid-area: rank;
+            font-family: var(--pico-font-family-monospace);
+            color: var(--pico-muted-color);
+            font-size: 0.85em;
+        }
+
+        .col-score {
+            grid-area: score;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* Desktop/Tablet: Switch to Table-like Grid */
+        @media (min-width: 768px) {
+            .contributions-header {
+                display: grid;
+                grid-template-columns: 1fr 100px 120px;
+                padding: 0.5rem 1rem;
+                gap: 1rem;
+                font-weight: bold;
+                border-bottom: 2px solid var(--pico-muted-border-color);
+            }
+            
+            /* Center the rank header specifically */
+            .contributions-header > div:nth-child(2) {
+                text-align: center;
+            }
+            
+            .contribution-row {
+                grid-template-columns: 1fr 100px 120px;
+                grid-template-areas: "source rank score";
+                align-items: center;
+                padding: 0.5rem 1rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--pico-table-border-color);
+            }
+            
+            .col-rank {
+                font-size: 1em;
+                color: var(--pico-color);
+                text-align: center; /* Center the rank numbers */
+            }
+
+            /* Striping */
+            .contribution-row:nth-child(even) {
+                background-color: var(--pico-table-row-stripped-background-color);
+            }
         }
         
-        @media (max-width: 768px) {
+        /* Mobile Modal Fixes: Flatten nested structure to maximize width */
+        @media (max-width: 576px) {
+            /* Remove extra padding from container inside dialog */
+            dialog .container {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            /* Remove card styling from nested articles to regain horizontal space */
+            dialog article article {
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid var(--pico-muted-border-color);
+                padding-bottom: 1.5rem;
+            }
+
+            dialog article article:last-of-type {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            
+            /* Tighten up the formula display in settings */
+            math-formula svg {
+                max-width: 100%;
+            }
+        }
+        
+        @media (min-width: 768px) {
             .column-list {
-                column-count: 1;
+                column-count: 2;
+                column-gap: 2rem;
             }
         }
     </style>
