@@ -80,7 +80,7 @@
         }
         
         /* Desktop: Allow container to be wider for more breathing room */
-        @media (min-width: 992px) {
+        @media (min-width: 1025px) {
             main.container, header.container {
                 max-width: 90vw; /* Use more screen real estate */
             }
@@ -270,7 +270,7 @@
            DESKTOP / TABLET OVERRIDES 
            Apply when screen width is >= 577px
         */
-        @media (min-width: 577px) {
+        @media (min-width: 1025px) {
             :root {
                 --pico-font-size: 100%; /* Reset to standard size on desktop */
             }
@@ -353,7 +353,7 @@
         }
 
         /* Desktop: Unwrap title and align items vertically */
-        @media (min-width: 577px) {
+        @media (min-width: 1025px) {
              header.container nav {
                 align-items: center;
              }
@@ -453,7 +453,7 @@
         }
 
         /* Desktop/Tablet: Switch to Table-like Grid */
-        @media (min-width: 768px) {
+        @media (min-width: 1025px) {
             .contributions-header {
                 display: grid;
                 grid-template-columns: 1fr 100px 120px;
@@ -490,7 +490,7 @@
         }
         
         /* Mobile Modal Fixes: Flatten nested structure to maximize width */
-        @media (max-width: 576px) {
+        @media (max-width: 1024px) {
             /* Remove extra padding from container inside dialog */
             dialog .container {
                 padding-left: 0;
@@ -519,7 +519,7 @@
             }
         }
         
-        @media (min-width: 768px) {
+        @media (min-width: 1025px) {
             .column-list {
                 column-count: 2;
                 column-gap: 2rem;
