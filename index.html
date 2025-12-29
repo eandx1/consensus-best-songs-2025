@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-style="original">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,17 +11,48 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>
 
     <style>
+        /* 
+           THEME CONFIGURATION
+           We use data-theme for Pico's base (light/dark) and data-style for specific color palettes/fonts.
+           
+           To add a new theme:
+           1. Define a new [data-style="theme-name"] block here with your overrides.
+              - --pico-primary: Main accent color
+              - --pico-primary-background: Background for buttons/badges
+              - --pico-primary-hover: Hover state color
+              - --pico-primary-underline: Underline color
+              - --pico-font-family: Optional font override (default is sans-serif)
+           2. Update the `themes` object in script.js `applyTheme()` function.
+           3. Add the option to the Theme Selector in script.js `renderSettingsUI()`.
+        */
+        
+        /* Base Settings (Global) */
         :root {
+             /* Mobile-first: Increase base size for better legibility by default */
+            --pico-font-size: 110%;
+        }
+
+        /* THEME: Original (Blue Accent) */
+        [data-style="original"] {
             /* IntelliJ/Solarized inspired blue accent */
             --pico-primary: #3b82f6;
             --pico-primary-background: #3b82f6;
             --pico-primary-hover: #2563eb;
             --pico-primary-underline: rgba(59, 130, 246, 0.5);
-            
-            /* Mobile-first: Increase base size for better legibility by default */
-            --pico-font-size: 110%;
         }
-        
+
+        /* 
+           FUTURE THEME EXAMPLES:
+           
+           [data-style="crimson"] {
+               --pico-primary: #c62828;
+               --pico-primary-background: #c62828;
+               --pico-primary-hover: #b71c1c;
+               --pico-primary-underline: rgba(198, 40, 40, 0.5);
+               --pico-font-family: "Georgia", "Times New Roman", serif; 
+           }
+        */
+
         /* Enable word-wrapping for Pico CSS tooltips */
         [data-tooltip]::before {
             display: block;
