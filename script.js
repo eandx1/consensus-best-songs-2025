@@ -499,7 +499,7 @@ window.showStats = (idx) => {
         
         // Logic for Shadow Rank display (ghost emoji with full decimal value)
         const displayRank = usesShadowRank
-            ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" style="font-family: var(--pico-font-family);">👻 ${sd.rank.toFixed(1)}</abbr>` 
+            ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="right" style="font-family: var(--pico-font-family);">👻 ${sd.rank.toFixed(1)}</abbr>` 
             : `#${sd.rank}`;
 
         html += `

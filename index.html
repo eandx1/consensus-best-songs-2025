@@ -415,8 +415,14 @@
                 display: grid;
                 grid-template-columns: 1fr 100px 120px;
                 padding: 0.5rem 1rem;
+                gap: 1rem;
                 font-weight: bold;
                 border-bottom: 2px solid var(--pico-muted-border-color);
+            }
+            
+            /* Center the rank header specifically */
+            .contributions-header > div:nth-child(2) {
+                text-align: center;
             }
             
             .contribution-row {
@@ -431,6 +437,7 @@
             .col-rank {
                 font-size: 1em;
                 color: var(--pico-color);
+                text-align: center; /* Center the rank numbers */
             }
 
             /* Striping */
