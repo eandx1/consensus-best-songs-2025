@@ -479,24 +479,24 @@ window.showStats = (idx) => {
                         <tr>
                             <td>Consensus Boost</td>
                             <td style="text-align: right;">
-                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
-                                    x${stats.c_mul.toFixed(3)}
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6.5ch; display: inline-block;">
+                                    ${((stats.c_mul - 1) * 100).toFixed(2)}%
                                 </kbd>
                             </td>
                         </tr>
                         <tr>
                             <td>Provocation Boost</td>
                             <td style="text-align: right;">
-                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
-                                    x${stats.p_mul.toFixed(3)}
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6.5ch; display: inline-block;">
+                                    ${((stats.p_mul - 1) * 100).toFixed(2)}%
                                 </kbd>
                             </td>
                         </tr>
                         <tr>
                             <td>Cluster Boost</td>
                             <td style="text-align: right;">
-                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6ch; display: inline-block;">
-                                    x${stats.cl_mul.toFixed(3)}
+                                <kbd style="background: var(--pico-secondary-background); color: var(--pico-secondary-color); min-width: 6.5ch; display: inline-block;">
+                                    ${((stats.cl_mul - 1) * 100).toFixed(2)}%
                                 </kbd>
                             </td>
                         </tr>
@@ -674,8 +674,8 @@ function renderSettingsUI() {
         html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01, false, false, helper);
     }
     
-    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', 0, 0.1, 0.01, true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
-    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', 0, 0.25, 0.01, true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
+    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', 0, 0.2, 0.01, true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
+    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', 0, 0.2, 0.01, true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
     
     // Collect unique clusters for Cluster Boost description
     const clusters = [...new Set(Object.values(sources).map(src => src.cluster).filter(c => c))].sort();
@@ -689,7 +689,7 @@ function renderSettingsUI() {
         : clustersWithEmoji[0] || '';
     const clusterDesc = `Rewards crossover between different categories of critics by giving a bonus for each additional category reached with a best rank under the Cluster Threshold. The current critic categories are: ${clusterList}.`;
     
-    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.1, 0.01, true, false, clusterDesc);
+    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.2, 0.01, true, false, clusterDesc);
     
     html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
     html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', 1.0, 1.2, 0.005, false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
