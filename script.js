@@ -337,6 +337,12 @@ async function init() {
     STATE.config = syncStateFromURL(APP_DATA.config);
     render();
     
+    // Update song count in About modal
+    const totalSongsEl = document.getElementById('total-songs-count');
+    if (totalSongsEl) {
+        totalSongsEl.textContent = APP_DATA.songs.length;
+    }
+    
     // Listen for "Load More"
     UI.loadMoreBtn.onclick = () => {
         if (STATE.displayLimit === 25) STATE.displayLimit = 100;
