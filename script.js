@@ -1,6 +1,24 @@
 /**
  * APP STATE & CONSTANTS
  */
+
+// Configuration bounds for validation and UI generation
+const CONFIG_BOUNDS = {
+    ranking: {
+        k_value: { min: 0, max: 50, step: 1 },
+        p_exponent: { min: 0.0, max: 1.1, step: 0.01 },
+        consensus_boost: { min: 0, max: 0.2, step: 0.01 },
+        provocation_boost: { min: 0, max: 0.2, step: 0.01 },
+        cluster_boost: { min: 0, max: 0.2, step: 0.01 },
+        cluster_threshold: { min: 0, max: 100, step: 1 },
+        rank1_bonus: { min: 1.0, max: 1.2, step: 0.005 },
+        rank2_bonus: { min: 1.0, max: 1.2, step: 0.005 },
+        rank3_bonus: { min: 1.0, max: 1.2, step: 0.005 }
+    },
+    source_weight: { min: 0.0, max: 1.5, step: 0.01 },
+    shadow_rank: { min: 1.0, max: 100.0, step: 0.1 }
+};
+
 let APP_DATA = null;
 let STATE = {
     config: {}, // Current active configuration (weights, rankings, etc)
@@ -65,6 +83,13 @@ const debounce = (func, wait) => {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), wait);
     };
+};
+
+/**
+ * Clamp a numeric value between min and max bounds
+ */
+const clamp = (value, min, max) => {
+    return Math.max(min, Math.min(max, value));
 };
 
 /**
@@ -189,16 +214,33 @@ function syncStateFromURL(defaultConfig) {
     const rankingKeys = ['decay_mode', 'k_value', 'p_exponent', 'consensus_boost', 'provocation_boost', 'cluster_boost', 'cluster_threshold', 'rank1_bonus', 'rank2_bonus', 'rank3_bonus'];
     rankingKeys.forEach(key => {
         if (params.has(key)) {
-            config.ranking[key] = (key === 'decay_mode') ? params.get(key) : parseFloat(params.get(key));
+            if (key === 'decay_mode') {
+                // Validate decay mode is one of the allowed values
+                const mode = params.get(key);
+                config.ranking[key] = (mode === 'consensus' || mode === 'conviction') ? mode : 'consensus';
+            } else {
+                // Parse and clamp numeric values
+                const value = parseFloat(params.get(key));
+                const bounds = CONFIG_BOUNDS.ranking[key];
+                config.ranking[key] = clamp(value, bounds.min, bounds.max);
+            }
         }
     });
 
     // Source Weights & Shadows
     Object.keys(config.sources).forEach(srcKey => {
         const urlKey = srcKey.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        if (params.has(`w_${urlKey}`)) config.sources[srcKey].weight = parseFloat(params.get(`w_${urlKey}`));
+        
+        // Weight
+        if (params.has(`w_${urlKey}`)) {
+            const value = parseFloat(params.get(`w_${urlKey}`));
+            config.sources[srcKey].weight = clamp(value, CONFIG_BOUNDS.source_weight.min, CONFIG_BOUNDS.source_weight.max);
+        }
+        
+        // Shadow Rank
         if (params.has(urlKey) && config.sources[srcKey].type === 'unranked') {
-            config.sources[srcKey].shadow_rank = parseFloat(params.get(urlKey));
+            const value = parseFloat(params.get(urlKey));
+            config.sources[srcKey].shadow_rank = clamp(value, CONFIG_BOUNDS.shadow_rank.min, CONFIG_BOUNDS.shadow_rank.max);
         }
     });
 
@@ -675,7 +717,19 @@ function renderSettingsUI() {
     `;
 
     // Sliders Helper
-    const createSlider = (category, key, label, min, max, step, isPercent = false, isBonus = false, helperText = '') => {
+    const createSlider = (category, key, label, isPercent = false, isBonus = false, helperText = '') => {
+        // Get bounds from CONFIG_BOUNDS
+        let bounds;
+        if (category === 'ranking') {
+            bounds = CONFIG_BOUNDS.ranking[key];
+        } else if (category === 'source_weight') {
+            bounds = CONFIG_BOUNDS.source_weight;
+        } else if (category === 'source_shadow') {
+            bounds = CONFIG_BOUNDS.shadow_rank;
+        }
+        
+        const { min, max, step } = bounds;
+        
         let currentVal = category === 'ranking' ? ranking[key] : (category === 'source_weight' ? sources[key].weight : sources[key].shadow_rank);
         let defaultVal = category === 'ranking' ? defaults.ranking[key] : (category === 'source_weight' ? defaults.sources[key].weight : defaults.sources[key].shadow_rank);
         
@@ -721,17 +775,17 @@ function renderSettingsUI() {
         const val25 = (1 + ranking.k_value) / (25 + ranking.k_value);
         const val50 = (1 + ranking.k_value) / (50 + ranking.k_value);
         const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(val50 * 100)}%</strong> of #1`;
-        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', 0, 50, 1, false, false, helper);
+        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', false, false, helper);
     } else {
         const val10 = 1.0 / Math.pow(10, ranking.p_exponent);
         const val25 = 1.0 / Math.pow(25, ranking.p_exponent);
         const val50 = 1.0 / Math.pow(50, ranking.p_exponent);
         const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(val50 * 100)}%</strong> of #1`;
-        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01, false, false, helper);
+        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', false, false, helper);
     }
     
-    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', 0, 0.2, 0.01, true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
-    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', 0, 0.2, 0.01, true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
+    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
+    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
     
     // Collect unique clusters for Cluster Boost description
     const clusters = [...new Set(Object.values(sources).map(src => src.cluster).filter(c => c))].sort();
@@ -745,12 +799,12 @@ function renderSettingsUI() {
         : clustersWithEmoji[0] || '';
     const clusterDesc = `Rewards crossover between different categories of critics by giving a bonus for each additional category reached with a best rank under the Cluster Threshold. The current critic categories are: ${clusterList}.`;
     
-    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.2, 0.01, true, false, clusterDesc);
+    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', true, false, clusterDesc);
     
-    html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
-    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', 1.0, 1.2, 0.005, false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
-    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', 1.0, 1.2, 0.005, false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
-    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.005, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
+    html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
+    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
+    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
+    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
     
     html += '</article>';
     
@@ -785,7 +839,7 @@ function renderSettingsUI() {
         }
         
         sourcesByCluster[clusterName].forEach(srcKey => {
-            html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey, 0.0, 1.5, 0.01);
+            html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey);
         });
         html += '</fieldset>';
     });
@@ -801,7 +855,7 @@ function renderSettingsUI() {
         html += '</hgroup>';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
-             html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`, 1.0, 100.0, 0.1);
+             html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`);
         });
         html += '</article>';
     }
