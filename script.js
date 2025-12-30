@@ -357,6 +357,7 @@ async function init() {
 
     document.getElementById('reset-defaults').onclick = () => {
         STATE.config = JSON.parse(JSON.stringify(APP_DATA.config));
+        applyTheme(STATE.config.theme || 'original-dark');
         renderSettingsUI();
         debouncedReRank();
     };
