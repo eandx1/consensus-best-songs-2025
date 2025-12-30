@@ -157,6 +157,13 @@
         width: 100%; /* Ensure it takes full width in stack */
       }
 
+      .about-methodology-box {
+        background: var(--pico-card-background-color);
+        padding: var(--pico-spacing);
+        border-radius: var(--pico-border-radius);
+        border: 1px solid var(--pico-muted-border-color);
+      }
+
       /* Video player wrapper using semantic <figure> */
       article.song-card figure {
         margin: 0;
@@ -660,10 +667,10 @@
             <p>
               The algorithm uses a
               <strong>Weighted Decay Model</strong> to assign value to each critic's chosen rank. A #1 is worth more than a
-              #10, but <em>how much more</em> depends on the formula used.
+              #10, but <em>how much more</em> depends on the formula and parameter used.
             </p>
             <div class="grid">
-              <div>
+              <article class="about-methodology-box">
                 <hgroup>
                   <h6>🤝 Consensus Mode</h6>
                   <p>
@@ -675,8 +682,8 @@
                     >
                   </p>
                 </hgroup>
-              </div>
-              <div>
+              </article>
+              <article class="about-methodology-box">
                 <hgroup>
                   <h6>🔥 Conviction Mode</h6>
                   <p>
@@ -686,8 +693,21 @@
                     >
                   </p>
                 </hgroup>
-              </div>
+              </article>
             </div>
+              
+              <table id="mode-comparison-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Consensus</th>
+                    <th>Conviction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="3">Loading...</td></tr>
+                </tbody>
+              </table>
         </article>
 
             <article id="about-ui">

@@ -343,6 +343,9 @@ async function init() {
         totalSongsEl.textContent = APP_DATA.songs.length;
     }
     
+    // Populate mode comparison table in About modal
+    populateModeComparisonTable();
+    
     // Listen for "Load More"
     UI.loadMoreBtn.onclick = () => {
         if (STATE.displayLimit === 25) STATE.displayLimit = 100;
@@ -382,6 +385,53 @@ const debouncedReRank = debounce(() => {
     updateURL(STATE.config);
     render();
 }, 250);
+
+/**
+ * POPULATE MODE COMPARISON TABLE
+ * Generates a comparison table showing decay values for Consensus vs Conviction modes
+ */
+function populateModeComparisonTable() {
+    const table = document.getElementById('mode-comparison-table');
+    if (!table || !STATE.config) return;
+    
+    const kValue = STATE.config.ranking.k_value;
+    const pValue = STATE.config.ranking.p_exponent;
+    const ranks = [1, 5, 10, 25, 50, 100];
+    
+    // Update table headers with current values
+    const thead = table.querySelector('thead');
+    thead.innerHTML = `
+        <tr>
+            <th>Rank</th>
+            <th>🤝 Consensus (K=${kValue})</th>
+            <th>🔥 Conviction (P=${pValue.toFixed(2)})</th>
+        </tr>
+    `;
+    
+    // Calculate decay values for each rank
+    const tbody = table.querySelector('tbody');
+    const rows = ranks.map(rank => {
+        // Consensus formula: (1 + K) / (rank + K)
+        const consensusValue = (1 + kValue) / (rank + kValue);
+        
+        // Conviction formula: 1 / rank^P
+        const convictionValue = 1.0 / Math.pow(rank, pValue);
+        
+        // Format as percentages relative to rank 1
+        const consensusPercent = (consensusValue * 100).toFixed(1);
+        const convictionPercent = (convictionValue * 100).toFixed(1);
+        
+        return `
+            <tr>
+                <td><strong>#${rank}</strong></td>
+                <td>${consensusPercent}%</td>
+                <td>${convictionPercent}%</td>
+            </tr>
+        `;
+    }).join('');
+    
+    tbody.innerHTML = rows;
+}
 
 init();
 // Reviews Modal
