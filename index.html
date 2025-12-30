@@ -44,7 +44,7 @@
       /* THEME: Original (Blue Accent) */
       [data-style="original"] {
         /* High-vibrancy Azure */
-        --pico-primary: #60a5fa; 
+        --pico-primary: #60a5fa;
         --pico-primary-background: #3b82f6;
         --pico-primary-hover: #93c5fd;
         --pico-primary-underline: rgba(96, 165, 250, 0.5);
@@ -608,28 +608,59 @@
         <main class="container">
           <article id="about-general">
             <hgroup>
-              <h2>The Cultural Record</h2>
-              <p>A data-driven consensus of 2025's musical landscape.</p>
+              <h2>Behind the project</h2>
+              <p>A labor of love for music and data</p>
             </hgroup>
             <p>
-              Every December, the music press releases hundreds of "Best of"
-              lists.
-              <strong>Consensus Best Songs 2025</strong> acts as a meta-critic,
-              aggregating these diverse viewpoints into a single, transparent
-              ranking. We identify the songs that defined the year, whether
-              through sheer ubiquity or intense critical obsession.
+              I'm Everett. I love music, data, and technology. Each year, I look
+              through the many
+              <strong>"Best Songs of the Year"</strong> lists to find new music
+              I might have missed. There are so many songs! I often prioritize
+              my listening order with a ranking. This site is a result of
+              that obsession and an excuse to try using AI for frontend
+              development.
+            </p>
+            <p>
+              <a href="https://github.com/eandx1/consensus-best-songs-2025"
+                >Read more about the analysis and process on GitHub</a
+              >.
             </p>
           </article>
 
           <article id="about-methodology">
             <hgroup>
-              <h3>Ranking Methodology</h3>
-              <p>Transparency in how we weigh critical opinion.</p>
+              <h2>How it works</h2>
+              <p>Build your own 2025 definitive ranking</p>
             </hgroup>
             <p>
-              Our engine uses a <strong>Weighted Decay Model</strong> to value
-              each rank. You can toggle between two primary philosophies in the
-              Settings:
+              This site aggregates <strong>"Best Songs of 2025"</strong> lists
+              from US/UK music industry sites, critics, niche/genre sites, and
+              the mainstream press.
+              <strong
+                >By default, the ranking prioritizes consensus and crossover
+                hits, seasoned with a bit of my own genre and source
+                biases.</strong
+              >
+            </p>
+            <p>
+              Make it your own!
+              <ul>
+                <li><strong>Weight sources</strong>: Boost your favorite publications</li>
+                <li><strong>Choose a rank decay function</strong>: Prioritize #1 spots over general consensus</li>
+                <li><strong>Boost song types</strong>: Prefer niche sounds over the mainstream</li>
+              </ul>
+            </p>
+          </article>
+
+          <article id="about-ranking">
+            <hgroup>
+              <h2>Ranking methodology</h2>
+              <p>Key settings</p>
+            </hgroup>
+            <p>
+              The algorithm uses a
+              <strong>Weighted Decay Model</strong> to assign value to each critic's chosen rank. A #1 is worth more than a
+              #10, but <em>how much more</em> depends on the formula used.
             </p>
             <div class="grid">
               <div>
@@ -637,8 +668,10 @@
                   <h6>🤝 Consensus Mode</h6>
                   <p>
                     <small
-                      >Identifies the "Cultural Record"—songs appearing on the
-                      highest volume of lists.</small
+                      >Prioritizes the "Cultural Record" songs appearing on the
+                      highest volume of lists rather than the differences
+                      between a song being #1 versus #10 on different
+                      ones.</small
                     >
                   </p>
                 </hgroup>
@@ -648,66 +681,38 @@
                   <h6>🔥 Conviction Mode</h6>
                   <p>
                     <small
-                      >Rewards critical obsession. A #1 rank carries
-                      exponentially more weight than a #5.</small
+                      >Rewards critical obsession with a steep power law decay,
+                      making a #1 worth dramatically more than a #10.</small
                     >
                   </p>
                 </hgroup>
               </div>
             </div>
-          </article>
+        </article>
 
-          <article id="about-data">
+            <article id="about-ui">
             <hgroup>
-              <h3>Decoding the Cards</h3>
-              <p>Understanding the icons and abbreviations.</p>
+                <h2>Decoding the UI</h2>
+              <p>Understanding the icons and abbreviations</p>
             </hgroup>
             <ul>
               <li>
-                <strong>Category Emojis:</strong> Indicators like 🏛️ (Authority)
-                or 🧪 (Specialists) show which "cluster" of critics championed a
-                track.
+                <strong>Categories</strong>: Indicators like 🏛️ (Critical Authority) or 🧪
+                (Specialists) show which category or "cluster" of critics championed a track.
+                You can give a boost to songs that were on lists from multiple
+                categories.
               </li>
               <li>
-                <strong>Shadow Ranks (👻~):</strong> For unranked lists, we
-                calculate a projected rank based on list length to ensure fair
-                weighting.
+                <strong>Shadow Ranks (👻)</strong>: For unranked lists, I
+                calculated a projected rank based on list length to ensure fair
+                weighting. You can change these if you like.
               </li>
               <li>
-                <strong>Boosters:</strong> Bonuses for ⚡ Provocation (critic
-                disagreement) and 🌍 Crossover (appearing in multiple
-                categories).
+                <strong>Other Boosts</strong>: You can add extra boosts for ⚡
+                Provocation (critic disagreement or polarization) and 🤝
+                Consensus (the number of different reviews a song appeared in).
               </li>
             </ul>
-          </article>
-
-          <article id="about-contact">
-            <div class="grid">
-              <div>
-                <hgroup>
-                  <h3>Behind the Project</h3>
-                  <p>Built for the love of music and data.</p>
-                </hgroup>
-                <p>
-                  I built this tool to visualize the mathematical "shape" of the
-                  year's music.
-                </p>
-              </div>
-              <nav>
-                <ul>
-                  <li><strong>Connect:</strong></li>
-                  <li>
-                    <a
-                      href="https://github.com/eandx1/consensus-best-songs-2025"
-                      target="_blank"
-                      class="secondary"
-                      >GitHub</a
-                    >
-                  </li>
-                  <li><a href="#" class="secondary">Portfolio</a></li>
-                </ul>
-              </nav>
-            </div>
           </article>
         </main>
       </article>
