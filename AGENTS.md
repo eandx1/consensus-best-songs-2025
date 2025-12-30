@@ -16,6 +16,7 @@ Users can adjust source weights and several ranking function parameters to dynam
 - Pico CSS
 - Video Embeds: Use the `lite-youtube` web component (v1+) when YouTube or YouTube Music IDs exist. Include it via CDN in the `<head>`: `<script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>`. Version 1+ is required for `::part(playButton)` styling support.
 - Data: All data is from a local `data.json` file
+- Mobile-first
 - State Management: Treat `data.json` as an immutable source of truth. All rankings must be calculated as a "derived view" by applying default or user-defined weights to the source data
 - URL Persistence: Use the native URLSearchParams API to synchronize configuration state (weights and ranking parameters) to the URL query string. The application must be "deep-linkable," meaning if a user shares a URL, another user opening it should see the exact same custom ranking.
 - Performance: The ranking algorithm should be efficient enough to run on input events (sliders) without blocking the UI thread
