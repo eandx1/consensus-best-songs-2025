@@ -158,10 +158,7 @@ function applyTheme(themeName) {
     const html = document.documentElement;
     // Map theme names to [data-theme, data-style]
     const themes = {
-        'original-dark': { theme: 'dark', style: 'original' },
-        'original-light': { theme: 'light', style: 'original' },
-        'crimson-dark': { theme: 'dark', style: 'crimson' },
-        'crimson-light': { theme: 'light', style: 'crimson' }
+        'original-dark': { theme: 'dark', style: 'original' }
     };
     
     const settings = themes[themeName] || themes['original-dark'];
@@ -412,17 +409,17 @@ window.showReviews = (idx) => {
                 <header style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
                     <div style="flex: 1;">
                         <h4 style="margin: 0 0 0.25rem 0;">${escapeHtml(displayName)}</h4>
-                        <small style="color: var(--pico-muted-color);">
+                        <small>
                             <abbr data-tooltip="${escapeHtml(clusterDesc)}" data-placement="right" style="text-decoration: none; cursor: help;">
                                 ${clusterEmoji} ${escapeHtml(clusterName)}
                             </abbr>
                         </small>
                     </div>
-                    <kbd style="background: var(--pico-secondary-background); min-width: 3ch; text-align: center; flex-shrink: 0; margin-left: 1rem;">${displayRank}</kbd>
+                    <kbd style="min-width: 3ch; text-align: center; flex-shrink: 0; margin-left: 1rem;">${displayRank}</kbd>
                 </header>
-                ${src.quote ? `<blockquote style="margin-top: 0;">"${escapeHtml(src.quote)}"</blockquote>` : '<p style="color: var(--pico-muted-color); font-style: italic; margin-top: 0;">No quote available</p>'}
+                ${src.quote ? `<blockquote style="font-style: italic; margin-top: 0;">"${escapeHtml(src.quote)}"</blockquote>` : '<p style="font-style: italic; margin-top: 0;">No quote available</p>'}
                 <footer style="text-align: right; margin-top: 1rem;">
-                    <a href="${escapeHtml(srcConfig.url)}" target="_blank" role="button" class="outline secondary" style="margin-bottom: 0;">Read Full Review</a>
+                    <a href="${escapeHtml(srcConfig.url)}" target="_blank" role="button" class="outline primary" style="margin-bottom: 0;">Read Full Review</a>
                 </footer>
             </article>
         `;
@@ -847,4 +844,37 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
 
     debouncedReRank();
 };
+
+/**
+ * CTRL+T THEME CYCLER
+ * Cycles through available themes
+ */
+(function() {
+    const themes = ['original-dark'];
+    let currentIndex = 0;
+
+    // Initialize index based on current theme
+    const initTheme = STATE.config?.theme || 'original-dark';
+    currentIndex = themes.indexOf(initTheme);
+    if (currentIndex === -1) currentIndex = 0;
+
+    document.addEventListener('keydown', (event) => {
+        // Check for Ctrl+T (or Cmd+T on Mac)
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 't') {
+            event.preventDefault(); // Stop browser from opening a new tab
+
+            // Advance to next theme
+            currentIndex = (currentIndex + 1) % themes.length;
+            const newTheme = themes[currentIndex];
+
+            // Apply the theme
+            STATE.config.theme = newTheme;
+            applyTheme(newTheme);
+            updateURL(STATE.config);
+
+            // Log to console
+            console.log(`🎨 Theme switched to: ${newTheme}`);
+        }
+    });
+})();
 

@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark" data-style="original">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Consensus Best Songs 2025</title>
-    <meta name="description" content="The definitive consensus ranking of 2025's best music.">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>
+    <meta
+      name="description"
+      content="The definitive consensus ranking of 2025's best music."
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
+    ></script>
 
     <style>
-        /* 
+      /* 
            THEME CONFIGURATION
            We use data-theme for Pico's base (light/dark) and data-style for specific color palettes/fonts.
            
@@ -25,23 +34,26 @@
            2. Update the `themes` object in script.js `applyTheme()` function.
            3. Add the option to the Theme Selector in script.js `renderSettingsUI()`.
         */
-        
-        /* Base Settings (Global) */
-        :root {
-             /* Mobile-first: Increase base size for better legibility by default */
-            --pico-font-size: 110%;
-        }
 
-        /* THEME: Original (Blue Accent) */
-        [data-style="original"] {
-            /* IntelliJ/Solarized inspired blue accent */
-            --pico-primary: #3b82f6;
-            --pico-primary-background: #3b82f6;
-            --pico-primary-hover: #2563eb;
-            --pico-primary-underline: rgba(59, 130, 246, 0.5);
-        }
+      /* Base Settings (Global) */
+      :root {
+        /* Mobile-first: Increase base size for better legibility by default */
+        --pico-font-size: 115%;
+      }
 
-        /* 
+      /* THEME: Original (Blue Accent) */
+      [data-style="original"] {
+        /* High-vibrancy Azure */
+        --pico-primary: #60a5fa; 
+        --pico-primary-background: #3b82f6;
+        --pico-primary-hover: #93c5fd;
+        --pico-primary-underline: rgba(96, 165, 250, 0.5);
+
+        /* Brighten secondary text for better reading */
+        --pico-muted-color: #94a3b8;
+      }
+
+      /* 
            FUTURE THEME EXAMPLES:
            
            [data-style="crimson"] {
@@ -53,625 +65,654 @@
            }
         */
 
-        /* Enable word-wrapping for Pico CSS tooltips */
-        [data-tooltip]::before {
-            display: block;
-            white-space: normal; /* Allows text to wrap to the next line */
-            width: 280px;        /* Sets a maximum width for the box */
-            max-width: 80vw;     /* Ensures it doesn't exceed the viewport on mobile */
-            line-height: 1.4;    /* Improves readability for multi-line text */
-            padding: 0.5rem 0.75rem;
-        }
-        
-        /* Fix for mobile modal scrolling clipping */
-        dialog > article {
-            max-height: calc(100dvh - var(--pico-spacing) * 2);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch; /* Ensures smooth momentum scrolling on iOS */
-        }
-        
-        /* Add spacing at the top of the main container for rank #1 */
-        main.container {
-            padding-top: var(--pico-block-spacing-vertical);
-            
-            /* Mobile: Reduce side padding so cards are wider */
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
-        
-        /* Desktop: Allow container to be wider for more breathing room */
-        @media (min-width: 1025px) {
-            main.container, header.container {
-                max-width: 90vw; /* Use more screen real estate */
-            }
-        }
+      /* Enable word-wrapping for Pico CSS tooltips */
+      [data-tooltip]::before {
+        display: block;
+        white-space: normal; /* Allows text to wrap to the next line */
+        width: 280px; /* Sets a maximum width for the box */
+        max-width: 80vw; /* Ensures it doesn't exceed the viewport on mobile */
+        line-height: 1.4; /* Improves readability for multi-line text */
+        padding: 0.5rem 0.75rem;
+      }
 
-        @media (min-width: 1400px) {
-            main.container, header.container {
-                max-width: 1300px; /* Cap it reasonably on huge screens */
-            }
+      /* Fix for mobile modal scrolling clipping */
+      dialog > article {
+        max-height: calc(100dvh - var(--pico-spacing) * 2);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch; /* Ensures smooth momentum scrolling on iOS */
+      }
+
+      /* Add spacing at the top of the main container for rank #1 */
+      main.container {
+        padding-top: var(--pico-block-spacing-vertical);
+
+        /* Mobile: Reduce side padding so cards are wider */
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      /* Desktop: Allow container to be wider for more breathing room */
+      @media (min-width: 1025px) {
+        main.container,
+        header.container {
+          max-width: 90vw; /* Use more screen real estate */
         }
-        
-        /* Add space for the iPhone's "notch" and address bar on mobile by default */
-        main#app {
-            padding-top: 2rem;
+      }
+
+      @media (min-width: 1400px) {
+        main.container,
+        header.container {
+          max-width: 1300px; /* Cap it reasonably on huge screens */
         }
-        
-        /* Song Cards: Minimal custom styling, rely on Pico's article styling */
-        article.song-card {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-        
-        /* 
+      }
+
+      /* Add space for the iPhone's "notch" and address bar on mobile by default */
+      main#app {
+        padding-top: 2rem;
+      }
+
+      /* Song Cards: Minimal custom styling, rely on Pico's article styling */
+      article.song-card {
+        position: relative;
+        margin-bottom: 2rem;
+      }
+
+      /* 
            MOBILE-FIRST LAYOUT 
            Base styles apply to mobile (and up, unless overridden).
         */
-        
-        .song-card-layout {
-            display: flex;
-            flex-direction: column; /* Stack vertically on mobile */
-            align-items: flex-start;
-            gap: var(--pico-spacing);
-        }
 
-        .rank-display {
-            flex: 0 0 auto;
-            text-align: left;
-            font-size: 2.5rem; /* Bigger rank on mobile */
-            font-weight: 900;
-            opacity: 0.15;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: -1rem; /* Pull video up closer to rank */
-        }
+      .song-card-layout {
+        display: flex;
+        flex-direction: column; /* Stack vertically on mobile */
+        align-items: flex-start;
+        gap: var(--pico-spacing);
+      }
 
-        .video-figure {
-            flex: 0 0 auto;
-            width: 100%; /* Full width on mobile */
-            margin: 0;
-        }
+      .rank-display {
+        flex: 0 0 auto;
+        text-align: left;
+        font-size: 2.5rem; /* Bigger rank on mobile */
+        font-weight: 900;
+        opacity: 0.6;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: -1rem; /* Pull video up closer to rank */
+      }
 
-        .song-info {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%; /* Ensure it takes full width in stack */
-        }
-        
-        /* Video player wrapper using semantic <figure> */
-        article.song-card figure {
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        article.song-card figure lite-youtube {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: var(--pico-border-radius);
-            border: 1px solid var(--pico-muted-border-color);
-        }
-        
-        /* Customize lite-youtube play button - Mobile Default (visible) */
-        lite-youtube::part(playButton) {
-            width: 68px;
-            height: 48px;
-            background-color: transparent;
-            filter: grayscale(1);
-            opacity: 0.15; /* Mobile default - slightly visible */
-            transition: opacity 0.2s, filter 0.2s;
-        }
-        
-        /* Header contains hgroup and info icon */
-        article.song-card .song-info > header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
-            padding: 0;
-            margin: 0;
-            margin-bottom: 0.75rem;
-            border: none;
-        }
-        
-        article.song-card hgroup {
-            margin-bottom: 0;
-            flex: 1;
-        }
-        
-        /* Song Title - Mobile optimized */
-        article.song-card hgroup h3 {
-            font-size: 1.4rem; /* Larger, clearer title */
-            margin-bottom: 0.25rem;
-            line-height: 1.2;
-        }
+      .video-figure {
+        flex: 0 0 auto;
+        width: 100%; /* Full width on mobile */
+        margin: 0;
+      }
 
-        /* Use h4 for artist name in hgroup */
-        article.song-card hgroup h4 {
-            margin-bottom: 0;
-            font-size: 1.1rem; /* Increased from 0.9rem for better readability */
-            color: var(--pico-muted-color);
-            font-weight: normal;
-        }
-        
-        /* Info icon - now inside header, aligned to baseline */
-        article.song-card header > a[aria-label] {
-            opacity: 0.4;
-            font-size: 1.4rem; /* Slightly larger touch target */
-            transition: opacity 0.2s;
-            padding: 0.25rem;
-            margin: -0.25rem 0 0 0; /* Compensation for padding */
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-        
-        article.song-card header > a[aria-label]:hover {
-            opacity: 1;
-        }
-        
-        /* Sources section styling - Mobile optimized */
-        article.song-card [data-sources] {
-            margin: 0.75rem 0;
-            line-height: 1.6; /* Tightened from 2, but still touch-friendly */
-            font-size: 1rem; /* Increased from 0.95rem */
-            cursor: pointer;
-        }
-        
-        article.song-card [data-sources] span {
-            white-space: nowrap;
-            color: var(--pico-muted-color);
-            transition: color 0.2s;
-        }
-        
-        article.song-card:hover [data-sources] span {
-            color: var(--pico-color);
-        }
-        
-        /* Nav for listen links - Pico handles most styling */
-        article.song-card nav {
-            margin-top: auto;
-            padding: 0;
-        }
-        
-        article.song-card nav ul {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        
-        article.song-card nav li {
-            margin: 0;
-            padding: 0;
-        }
-        
-        article.song-card nav a {
-            font-size: 0.85rem; /* Increased from 0.7rem */
-            text-transform: uppercase;
-            font-weight: 700;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            padding: 0.4rem 0.5rem; /* Larger touch targets */
-            text-decoration: none;
-        }
-        
-        article.song-card nav a:hover {
-            opacity: 1;
-        }
-        
-        /* 
+      .song-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%; /* Ensure it takes full width in stack */
+      }
+
+      /* Video player wrapper using semantic <figure> */
+      article.song-card figure {
+        margin: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      article.song-card figure lite-youtube {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: var(--pico-border-radius);
+        border: 1px solid var(--pico-muted-border-color);
+      }
+
+      /* Customize lite-youtube play button - Mobile Default (visible) */
+      lite-youtube::part(playButton) {
+        width: 68px;
+        height: 48px;
+        background-color: transparent;
+        filter: grayscale(1);
+        opacity: 0.15; /* Mobile default - slightly visible */
+        transition: opacity 0.2s, filter 0.2s;
+      }
+
+      /* Header contains hgroup and info icon */
+      article.song-card .song-info > header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 0.75rem;
+        border: none;
+      }
+
+      article.song-card hgroup {
+        margin-bottom: 0;
+        flex: 1;
+      }
+
+      /* Song Title - Mobile optimized */
+      article.song-card hgroup h3 {
+        /* font-size: 1.5rem; /* Larger, clearer title */
+        margin-bottom: 0.25rem;
+        line-height: 1.2;
+        color: var(--pico-color);
+
+        font-weight: 800; /* Extra bold for visibility */
+      }
+
+      /* Use h4 for artist name in hgroup */
+      article.song-card hgroup h4 {
+        margin-bottom: 0;
+        color: var(--pico-muted-color);
+        font-weight: normal;
+      }
+
+      /* Info icon - now inside header, aligned to baseline */
+      article.song-card header > a[aria-label] {
+        opacity: 0.4;
+        font-size: 1.4rem; /* Slightly larger touch target */
+        transition: opacity 0.2s;
+        padding: 0.25rem;
+        margin: -0.25rem 0 0 0; /* Compensation for padding */
+        text-decoration: none;
+        flex-shrink: 0;
+      }
+
+      article.song-card header > a[aria-label]:hover {
+        opacity: 1;
+      }
+
+      /* Sources section styling - Mobile optimized */
+      article.song-card [data-sources] {
+        margin: 0.75rem 0;
+        line-height: 1.6; /* Tightened from 2, but still touch-friendly */
+        font-size: 1rem; /* Increased from 0.95rem */
+        cursor: pointer;
+      }
+
+      article.song-card [data-sources] span {
+        white-space: nowrap;
+        color: var(--pico-muted-color);
+        font-size: 0.8rem;
+        transition: color 0.2s;
+      }
+
+      article.song-card:hover [data-sources] span {
+        color: var(--pico-color);
+      }
+
+      /* Nav for listen links - Pico handles most styling */
+      article.song-card nav {
+        margin-top: auto;
+        padding: 0;
+      }
+
+      article.song-card nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      article.song-card nav li {
+        margin: 0;
+        padding: 0;
+      }
+
+      article.song-card nav a {
+        font-size: 0.85rem; /* Increased from 0.7rem */
+        text-transform: uppercase;
+        font-weight: 700;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+        padding: 0.4rem 0.5rem; /* Larger touch targets */
+        text-decoration: none;
+      }
+
+      article.song-card nav a:hover {
+        opacity: 1;
+      }
+
+      /* 
            DESKTOP / TABLET OVERRIDES 
            Apply when screen width is >= 577px
         */
-        @media (min-width: 1025px) {
-            :root {
-                --pico-font-size: 100%; /* Reset to standard size on desktop */
-            }
-
-            main#app {
-                padding-top: 0; /* Remove extra top padding */
-            }
-
-            .song-card-layout {
-                flex-direction: row; /* Horizontal layout */
-                align-items: center;
-            }
-
-            .rank-display {
-                flex: 0 0 4rem; /* Fixed width */
-                text-align: center;
-                font-size: clamp(1.75rem, 2.5vw, 2.25rem);
-                margin-bottom: 0;
-                justify-content: center;
-            }
-
-            .video-figure {
-                flex: 0 0 320px; /* Fixed width for video */
-                width: auto;
-            }
-
-            /* Tighter line height for mouse users */
-            article.song-card [data-sources] {
-                line-height: 1.8;
-                font-size: 0.875rem;
-            }
+      @media (min-width: 1025px) {
+        :root {
+          --pico-font-size: 100%; /* Reset to standard size on desktop */
         }
 
-        /* Large Desktop Overrides */
-        @media (min-width: 1200px) {
-            .video-figure {
-                flex: 0 0 360px;
-            }
+        main#app {
+          padding-top: 0; /* Remove extra top padding */
         }
-        
-        /* Hover effects for devices that support it (mostly desktop) */
-        @media (hover: hover) {
-            lite-youtube::part(playButton) {
-                opacity: 0; /* Invisible until hover or focus */
-            }
-            
-            lite-youtube:hover::part(playButton),
-            lite-youtube:focus::part(playButton),
-            lite-youtube:focus-within::part(playButton) {
-                opacity: 1;
-            }
+
+        .song-card-layout {
+          flex-direction: row; /* Horizontal layout */
+          align-items: center;
         }
-        
-        /* Responsive Header - Two-Column Flex Layout */
+
+        .rank-display {
+          flex: 0 0 4rem; /* Fixed width */
+          text-align: center;
+          font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+          margin-bottom: 0;
+          justify-content: center;
+        }
+
+        .video-figure {
+          flex: 0 0 320px; /* Fixed width for video */
+          width: auto;
+        }
+
+        /* Tighter line height for mouse users */
+        article.song-card [data-sources] {
+          line-height: 1.8;
+          font-size: 0.875rem;
+        }
+      }
+
+      /* Large Desktop Overrides */
+      @media (min-width: 1200px) {
+        .video-figure {
+          flex: 0 0 360px;
+        }
+      }
+
+      /* Hover effects for devices that support it (mostly desktop) */
+      @media (hover: hover) {
+        lite-youtube::part(playButton) {
+          opacity: 0; /* Invisible until hover or focus */
+        }
+
+        lite-youtube:hover::part(playButton),
+        lite-youtube:focus::part(playButton),
+        lite-youtube:focus-within::part(playButton) {
+          opacity: 1;
+        }
+      }
+
+      /* Responsive Header - Two-Column Flex Layout */
+      header.container nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* Title starts at top, but links stay level */
+        flex-wrap: nowrap;
+      }
+
+      /* The Title Block */
+      header.container nav ul:first-of-type {
+        flex: 1;
+        display: block; /* Allow the <strong> to wrap naturally */
+        padding: 0;
+      }
+
+      header.container nav ul:first-of-type li {
+        display: block;
+        padding: 0;
+      }
+
+      header.container nav ul:first-of-type li strong {
+        display: block;
+        line-height: 1.1;
+        font-size: clamp(1rem, 4.5vw, 1.3rem);
+        white-space: normal; /* This enables the wrap you want */
+        max-width: 180px; /* Forces 'Consensus' and 'Best Songs' to stack */
+      }
+
+      /* Desktop: Unwrap title and align items vertically */
+      @media (min-width: 1025px) {
         header.container nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; /* Title starts at top, but links stay level */
-            flex-wrap: nowrap; 
-        }
-
-        /* The Title Block */
-        header.container nav ul:first-of-type {
-            flex: 1;
-            display: block; /* Allow the <strong> to wrap naturally */
-            padding: 0;
-        }
-
-        header.container nav ul:first-of-type li {
-            display: block;
-            padding: 0;
+          align-items: center;
         }
 
         header.container nav ul:first-of-type li strong {
-            display: block;
-            line-height: 1.1;
-            font-size: clamp(1rem, 4.5vw, 1.3rem);
-            white-space: normal; /* This enables the wrap you want */
-            max-width: 180px;    /* Forces 'Consensus' and 'Best Songs' to stack */
+          max-width: none;
+          white-space: nowrap;
         }
+      }
 
-        /* Desktop: Unwrap title and align items vertically */
-        @media (min-width: 1025px) {
-             header.container nav {
-                align-items: center;
-             }
+      /* The Links Block */
+      header.container nav ul:last-of-type {
+        display: flex;
+        align-items: center; /* Keep 'Settings' and 'About' perfectly level */
+        height: 2.2rem; /* Matches the height of the first line of text */
+        flex-shrink: 0;
+      }
 
-             header.container nav ul:first-of-type li strong {
-                max-width: none;
-                white-space: nowrap;
-             }
-        }
+      /* Settings UI Styles */
+      .customized-label {
+        color: var(--pico-primary);
+        font-weight: bold;
+      }
 
-        /* The Links Block */
-        header.container nav ul:last-of-type {
-            display: flex;
-            align-items: center; /* Keep 'Settings' and 'About' perfectly level */
-            height: 2.2rem;      /* Matches the height of the first line of text */
-            flex-shrink: 0;
-        }
-        
-        /* Settings UI Styles */
-        .customized-label { 
-            color: var(--pico-primary); 
-            font-weight: bold; 
-        }
-        
-        .mode-card {
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.2s, transform 0.1s ease;
-            margin-bottom: 0;
-        }
-        
-        .mode-card:hover {
-            border-color: var(--pico-muted-border-color);
-            transform: scale(1.02);
-        }
-        
-        .mode-card.active {
-            border-color: var(--pico-primary);
-        }
-        
-        /* Column List: Defaults to 1 column (mobile), switches to 2 on larger screens */
-        .column-list {
-            column-count: 1;
-        }
+      .mode-card {
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.2s, transform 0.1s ease;
+        margin-bottom: 0;
+      }
 
-        /* 
+      .mode-card:hover {
+        border-color: var(--pico-muted-border-color);
+        transform: scale(1.02);
+      }
+
+      .mode-card.active {
+        border-color: var(--pico-primary);
+      }
+
+      /* Column List: Defaults to 1 column (mobile), switches to 2 on larger screens */
+      .column-list {
+        column-count: 1;
+      }
+
+      /* 
            RESPONSIVE CONTRIBUTIONS TABLE 
            Replaces standard table for better mobile display
         */
-        .contributions-table {
-            width: 100%;
-            font-size: 0.9rem;
+      .contributions-table {
+        width: 100%;
+        font-size: 0.9rem;
+      }
+
+      .contribution-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "source score"
+          "rank score";
+        gap: 0.25rem 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--pico-muted-border-color);
+      }
+
+      .contributions-header {
+        display: none; /* Hidden on mobile */
+      }
+
+      .col-source {
+        grid-area: source;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 0; /* Enables truncation if needed */
+      }
+
+      .col-source span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .col-rank {
+        grid-area: rank;
+        font-family: var(--pico-font-family-monospace);
+        color: var(--pico-muted-color);
+        font-size: 0.85em;
+      }
+
+      .col-score {
+        grid-area: score;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      /* Desktop/Tablet: Switch to Table-like Grid */
+      @media (min-width: 1025px) {
+        .contributions-header {
+          display: grid;
+          grid-template-columns: 1fr 100px 120px;
+          padding: 0.5rem 1rem;
+          gap: 1rem;
+          font-weight: bold;
+          border-bottom: 2px solid var(--pico-muted-border-color);
+        }
+
+        /* Center the rank header specifically */
+        .contributions-header > div:nth-child(2) {
+          text-align: center;
         }
 
         .contribution-row {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-areas: 
-                "source score"
-                "rank score";
-            gap: 0.25rem 1rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--pico-muted-border-color);
-        }
-
-        .contributions-header {
-            display: none; /* Hidden on mobile */
-        }
-
-        .col-source {
-            grid-area: source;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            min-width: 0; /* Enables truncation if needed */
-        }
-
-        .col-source span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+          grid-template-columns: 1fr 100px 120px;
+          grid-template-areas: "source rank score";
+          align-items: center;
+          padding: 0.5rem 1rem;
+          gap: 1rem;
+          border-bottom: 1px solid var(--pico-table-border-color);
         }
 
         .col-rank {
-            grid-area: rank;
-            font-family: var(--pico-font-family-monospace);
-            color: var(--pico-muted-color);
-            font-size: 0.85em;
+          font-size: 1em;
+          color: var(--pico-color);
+          text-align: center; /* Center the rank numbers */
         }
 
-        .col-score {
-            grid-area: score;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
+        /* Striping */
+        .contribution-row:nth-child(even) {
+          background-color: var(--pico-table-row-stripped-background-color);
+        }
+      }
+
+      /* Mobile Modal Fixes: Flatten nested structure to maximize width */
+      @media (max-width: 1024px) {
+        /* Remove extra padding from container inside dialog */
+        dialog .container {
+          padding-left: 0;
+          padding-right: 0;
         }
 
-        /* Desktop/Tablet: Switch to Table-like Grid */
-        @media (min-width: 1025px) {
-            .contributions-header {
-                display: grid;
-                grid-template-columns: 1fr 100px 120px;
-                padding: 0.5rem 1rem;
-                gap: 1rem;
-                font-weight: bold;
-                border-bottom: 2px solid var(--pico-muted-border-color);
-            }
-            
-            /* Center the rank header specifically */
-            .contributions-header > div:nth-child(2) {
-                text-align: center;
-            }
-            
-            .contribution-row {
-                grid-template-columns: 1fr 100px 120px;
-                grid-template-areas: "source rank score";
-                align-items: center;
-                padding: 0.5rem 1rem;
-                gap: 1rem;
-                border-bottom: 1px solid var(--pico-table-border-color);
-            }
-            
-            .col-rank {
-                font-size: 1em;
-                color: var(--pico-color);
-                text-align: center; /* Center the rank numbers */
-            }
-
-            /* Striping */
-            .contribution-row:nth-child(even) {
-                background-color: var(--pico-table-row-stripped-background-color);
-            }
+        /* Remove card styling from nested articles to regain horizontal space */
+        dialog article article {
+          padding: 0;
+          background: transparent;
+          box-shadow: none;
+          margin-bottom: 1.5rem;
+          border-bottom: 1px solid var(--pico-muted-border-color);
+          padding-bottom: 1.5rem;
         }
-        
-        /* Mobile Modal Fixes: Flatten nested structure to maximize width */
-        @media (max-width: 1024px) {
-            /* Remove extra padding from container inside dialog */
-            dialog .container {
-                padding-left: 0;
-                padding-right: 0;
-            }
 
-            /* Remove card styling from nested articles to regain horizontal space */
-            dialog article article {
-                padding: 0;
-                background: transparent;
-                box-shadow: none;
-                margin-bottom: 1.5rem;
-                border-bottom: 1px solid var(--pico-muted-border-color);
-                padding-bottom: 1.5rem;
-            }
+        dialog article article:last-of-type {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
 
-            dialog article article:last-of-type {
-                border-bottom: none;
-                margin-bottom: 0;
-                padding-bottom: 0;
-            }
-            
-            /* Tighten up the formula display in settings */
-            math-formula svg {
-                max-width: 100%;
-            }
+        /* Tighten up the formula display in settings */
+        math-formula svg {
+          max-width: 100%;
         }
-        
-        @media (min-width: 1025px) {
-            .column-list {
-                column-count: 2;
-                column-gap: 2rem;
-            }
+      }
+
+      @media (min-width: 1025px) {
+        .column-list {
+          column-count: 2;
+          column-gap: 2rem;
         }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header class="container">
-        <nav>
-            <ul>
-                <li><strong>Consensus Best Songs 2025</strong></li>
-            </ul>
-            <ul>
-                <li><a href="#" id="open-settings">Settings</a></li>
-                <li><a href="#" id="open-about">About</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><strong>Consensus Best Songs 2025</strong></li>
+        </ul>
+        <ul>
+          <li><a href="#" id="open-settings">Settings</a></li>
+          <li><a href="#" id="open-about">About</a></li>
+        </ul>
+      </nav>
     </header>
 
     <main class="container" id="app">
-        <div id="song-list"></div>
-        
-        <div style="padding: 2rem 0; text-align: center;">
-            <button id="load-more" class="outline">Show More</button>
-        </div>
+      <div id="song-list"></div>
+
+      <div style="padding: 2rem 0; text-align: center">
+        <button id="load-more" class="outline">Show More</button>
+      </div>
     </main>
 
     <dialog id="modal-settings">
-        <article>
-            <header>
-                <button aria-label="Close" rel="prev" class="close-modal"></button>
-                <h3>Settings</h3>
-            </header>
-            <div id="settings-content">
-                </div>
-            <footer>
-                <button class="secondary" id="reset-defaults">Defaults</button>
-                <button class="close-modal">Close</button>
-            </footer>
-        </article>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <h3>Settings</h3>
+        </header>
+        <div id="settings-content"></div>
+        <footer>
+          <button class="secondary" id="reset-defaults">Defaults</button>
+          <button class="close-modal">Close</button>
+        </footer>
+      </article>
     </dialog>
 
     <dialog id="modal-stats">
-        <article>
-            <header>
-                <button aria-label="Close" rel="prev" class="close-modal"></button>
-                <h3 id="stats-title">Ranking Stats</h3>
-            </header>
-            <div id="stats-content"></div>
-        </article>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <h3 id="stats-title">Ranking Stats</h3>
+        </header>
+        <div id="stats-content"></div>
+      </article>
     </dialog>
 
     <dialog id="modal-reviews">
-        <article>
-            <header>
-                <button aria-label="Close" rel="prev" class="close-modal"></button>
-                <h3>Reviews</h3>
-            </header>
-            <div id="reviews-content"></div>
-        </article>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <h3>Reviews</h3>
+        </header>
+        <div id="reviews-content"></div>
+      </article>
     </dialog>
 
     <dialog id="modal-about">
-        <article>
-            <header>
-                <button aria-label="Close" rel="prev" class="close-modal"></button>
-                <h2>About</h2>
-            </header>
-            <main class="container">
-                <article id="about-general">
-                    <hgroup>
-                        <h2>The Cultural Record</h2>
-                        <p>A data-driven consensus of 2025's musical landscape.</p>
-                    </hgroup>
-                    <p>
-                        Every December, the music press releases hundreds of "Best of" lists. 
-                        <strong>Consensus Best Songs 2025</strong> acts as a meta-critic, aggregating 
-                        these diverse viewpoints into a single, transparent ranking. We identify the songs 
-                        that defined the year, whether through sheer ubiquity or intense critical obsession.
-                    </p>
-                </article>
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <h2>About</h2>
+        </header>
+        <main class="container">
+          <article id="about-general">
+            <hgroup>
+              <h2>The Cultural Record</h2>
+              <p>A data-driven consensus of 2025's musical landscape.</p>
+            </hgroup>
+            <p>
+              Every December, the music press releases hundreds of "Best of"
+              lists.
+              <strong>Consensus Best Songs 2025</strong> acts as a meta-critic,
+              aggregating these diverse viewpoints into a single, transparent
+              ranking. We identify the songs that defined the year, whether
+              through sheer ubiquity or intense critical obsession.
+            </p>
+          </article>
 
-                <article id="about-methodology">
-                    <hgroup>
-                        <h3>Ranking Methodology</h3>
-                        <p>Transparency in how we weigh critical opinion.</p>
-                    </hgroup>
-                    <p>
-                        Our engine uses a <strong>Weighted Decay Model</strong> to value each rank. 
-                        You can toggle between two primary philosophies in the Settings:
-                    </p>
-                    <div class="grid">
-                        <div>
-                            <hgroup>
-                                <h6>🤝 Consensus Mode</h6>
-                                <p><small>Identifies the "Cultural Record"—songs appearing on the highest volume of lists.</small></p>
-                            </hgroup>
-                        </div>
-                        <div>
-                            <hgroup>
-                                <h6>🔥 Conviction Mode</h6>
-                                <p><small>Rewards critical obsession. A #1 rank carries exponentially more weight than a #5.</small></p>
-                            </hgroup>
-                        </div>
-                    </div>
-                </article>
+          <article id="about-methodology">
+            <hgroup>
+              <h3>Ranking Methodology</h3>
+              <p>Transparency in how we weigh critical opinion.</p>
+            </hgroup>
+            <p>
+              Our engine uses a <strong>Weighted Decay Model</strong> to value
+              each rank. You can toggle between two primary philosophies in the
+              Settings:
+            </p>
+            <div class="grid">
+              <div>
+                <hgroup>
+                  <h6>🤝 Consensus Mode</h6>
+                  <p>
+                    <small
+                      >Identifies the "Cultural Record"—songs appearing on the
+                      highest volume of lists.</small
+                    >
+                  </p>
+                </hgroup>
+              </div>
+              <div>
+                <hgroup>
+                  <h6>🔥 Conviction Mode</h6>
+                  <p>
+                    <small
+                      >Rewards critical obsession. A #1 rank carries
+                      exponentially more weight than a #5.</small
+                    >
+                  </p>
+                </hgroup>
+              </div>
+            </div>
+          </article>
 
-                <article id="about-data">
-                    <hgroup>
-                        <h3>Decoding the Cards</h3>
-                        <p>Understanding the icons and abbreviations.</p>
-                    </hgroup>
-                    <ul>
-                        <li>
-                            <strong>Category Emojis:</strong> Indicators like 🏛️ (Authority) or 🧪 (Specialists) 
-                            show which "cluster" of critics championed a track.
-                        </li>
-                        <li>
-                            <strong>Shadow Ranks (👻~):</strong> For unranked lists, we calculate a 
-                            projected rank based on list length to ensure fair weighting.
-                        </li>
-                        <li>
-                            <strong>Boosters:</strong> Bonuses for ⚡ Provocation (critic disagreement) 
-                            and 🌍 Crossover (appearing in multiple categories).
-                        </li>
-                    </ul>
-                </article>
+          <article id="about-data">
+            <hgroup>
+              <h3>Decoding the Cards</h3>
+              <p>Understanding the icons and abbreviations.</p>
+            </hgroup>
+            <ul>
+              <li>
+                <strong>Category Emojis:</strong> Indicators like 🏛️ (Authority)
+                or 🧪 (Specialists) show which "cluster" of critics championed a
+                track.
+              </li>
+              <li>
+                <strong>Shadow Ranks (👻~):</strong> For unranked lists, we
+                calculate a projected rank based on list length to ensure fair
+                weighting.
+              </li>
+              <li>
+                <strong>Boosters:</strong> Bonuses for ⚡ Provocation (critic
+                disagreement) and 🌍 Crossover (appearing in multiple
+                categories).
+              </li>
+            </ul>
+          </article>
 
-                <article id="about-contact">
-                    <div class="grid">
-                        <div>
-                            <hgroup>
-                                <h3>Behind the Project</h3>
-                                <p>Built for the love of music and data.</p>
-                            </hgroup>
-                            <p>I built this tool to visualize the mathematical "shape" of the year's music.</p>
-                        </div>
-                        <nav>
-                            <ul>
-                                <li><strong>Connect:</strong></li>
-                                <li><a href="https://github.com/eandx1/consensus-best-songs-2025" target="_blank" class="secondary">GitHub</a></li>
-                                <li><a href="#" class="secondary">Portfolio</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </article>
-            </main>
-        </article>
+          <article id="about-contact">
+            <div class="grid">
+              <div>
+                <hgroup>
+                  <h3>Behind the Project</h3>
+                  <p>Built for the love of music and data.</p>
+                </hgroup>
+                <p>
+                  I built this tool to visualize the mathematical "shape" of the
+                  year's music.
+                </p>
+              </div>
+              <nav>
+                <ul>
+                  <li><strong>Connect:</strong></li>
+                  <li>
+                    <a
+                      href="https://github.com/eandx1/consensus-best-songs-2025"
+                      target="_blank"
+                      class="secondary"
+                      >GitHub</a
+                    >
+                  </li>
+                  <li><a href="#" class="secondary">Portfolio</a></li>
+                </ul>
+              </nav>
+            </div>
+          </article>
+        </main>
+      </article>
     </dialog>
 
     <script src="./script.js"></script>
-</body>
+  </body>
 </html>
