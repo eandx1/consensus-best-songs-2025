@@ -657,7 +657,7 @@ function renderSettingsUI() {
                         style="width: 100%; margin-bottom: 0.25rem;"
                         oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
                 </label>
-                ${helperText ? `<p style="color: var(--pico-muted-color); font-size: 0.85em; margin-bottom: 0;">${helperText}</p>` : ''}
+                ${helperText ? `<p id="${helperId}" style="color: var(--pico-muted-color); font-size: 0.85em; margin-bottom: 0;">${helperText}</p>` : ''}
             </div>
         `;
     };
