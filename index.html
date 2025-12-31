@@ -580,6 +580,20 @@
         .mode-name {
           display: none;
         }
+
+        /* Reduce the gap between the Consensus and Conviction boxes */
+        #about-ranking .grid {
+            gap: var(--pico-spacing); 
+        }
+
+        /* Reduce the bottom margin of the boxes so they sit closer to each other/table */
+        #about-ranking .about-methodology-box {
+            margin-bottom: 0;
+        }
+        
+        #about-ranking table {
+        margin-top: var(--pico-block-spacing-vertical);
+        }                
       }
 
       @media (min-width: 1025px) {
