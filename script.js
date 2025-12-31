@@ -1,6 +1,31 @@
 /**
  * APP STATE & CONSTANTS
  */
+
+// Configuration bounds for validation and UI generation
+const CONFIG_BOUNDS = {
+    ranking: {
+        k_value: { min: 0, max: 50, step: 1 },
+        p_exponent: { min: 0.0, max: 1.1, step: 0.01 },
+        consensus_boost: { min: 0, max: 0.2, step: 0.01 },
+        provocation_boost: { min: 0, max: 0.2, step: 0.01 },
+        cluster_boost: { min: 0, max: 0.2, step: 0.01 },
+        cluster_threshold: { min: 0, max: 100, step: 1 },
+        rank1_bonus: { min: 1.0, max: 1.2, step: 0.005 },
+        rank2_bonus: { min: 1.0, max: 1.2, step: 0.005 },
+        rank3_bonus: { min: 1.0, max: 1.2, step: 0.005 }
+    },
+    source_weight: { min: 0.0, max: 1.5, step: 0.01 },
+    shadow_rank: { min: 1.0, max: 100.0, step: 0.1 }
+};
+
+// Valid values for non-numeric parameters
+const VALID_DECAY_MODES = ['consensus', 'conviction'];
+const DEFAULT_DECAY_MODE = 'consensus'; // Safety fallback if data.json is invalid
+
+const VALID_THEMES = ['original-dark'];
+const DEFAULT_THEME = 'original-dark';
+
 let APP_DATA = null;
 let STATE = {
     config: {}, // Current active configuration (weights, rankings, etc)
@@ -65,6 +90,13 @@ const debounce = (func, wait) => {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), wait);
     };
+};
+
+/**
+ * Clamp a numeric value between min and max bounds
+ */
+const clamp = (value, min, max) => {
+    return Math.max(min, Math.min(max, value));
 };
 
 /**
@@ -175,30 +207,47 @@ function syncStateFromURL(defaultConfig) {
     const params = new URLSearchParams(window.location.search);
     const config = JSON.parse(JSON.stringify(defaultConfig));
 
-    // Theme
+    // Theme - validate against allowed themes
     if (params.has('theme')) {
-        config.theme = params.get('theme');
+        const theme = params.get('theme');
+        config.theme = VALID_THEMES.includes(theme) ? theme : DEFAULT_THEME;
         applyTheme(config.theme);
     } else {
-        // Default theme
-        config.theme = 'original-dark';
-        applyTheme('original-dark');
+        config.theme = DEFAULT_THEME;
+        applyTheme(DEFAULT_THEME);
     }
 
     // Ranking Params
     const rankingKeys = ['decay_mode', 'k_value', 'p_exponent', 'consensus_boost', 'provocation_boost', 'cluster_boost', 'cluster_threshold', 'rank1_bonus', 'rank2_bonus', 'rank3_bonus'];
     rankingKeys.forEach(key => {
         if (params.has(key)) {
-            config.ranking[key] = (key === 'decay_mode') ? params.get(key) : parseFloat(params.get(key));
+            if (key === 'decay_mode') {
+                // Validate decay mode against allowed values, fall back to data.json default
+                const mode = params.get(key);
+                config.ranking[key] = VALID_DECAY_MODES.includes(mode) ? mode : defaultConfig.ranking.decay_mode;
+            } else {
+                // Parse and clamp numeric values
+                const value = parseFloat(params.get(key));
+                const bounds = CONFIG_BOUNDS.ranking[key];
+                config.ranking[key] = clamp(value, bounds.min, bounds.max);
+            }
         }
     });
 
     // Source Weights & Shadows
     Object.keys(config.sources).forEach(srcKey => {
         const urlKey = srcKey.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        if (params.has(`w_${urlKey}`)) config.sources[srcKey].weight = parseFloat(params.get(`w_${urlKey}`));
+        
+        // Weight
+        if (params.has(`w_${urlKey}`)) {
+            const value = parseFloat(params.get(`w_${urlKey}`));
+            config.sources[srcKey].weight = clamp(value, CONFIG_BOUNDS.source_weight.min, CONFIG_BOUNDS.source_weight.max);
+        }
+        
+        // Shadow Rank
         if (params.has(urlKey) && config.sources[srcKey].type === 'unranked') {
-            config.sources[srcKey].shadow_rank = parseFloat(params.get(urlKey));
+            const value = parseFloat(params.get(urlKey));
+            config.sources[srcKey].shadow_rank = clamp(value, CONFIG_BOUNDS.shadow_rank.min, CONFIG_BOUNDS.shadow_rank.max);
         }
     });
 
@@ -346,6 +395,9 @@ async function init() {
     // Populate mode comparison table in About modal
     populateModeComparisonTable();
     
+    // Populate sources tables in About modal
+    populateSourcesTables();
+    
     // Listen for "Load More"
     UI.loadMoreBtn.onclick = () => {
         if (STATE.displayLimit === 25) STATE.displayLimit = 100;
@@ -431,6 +483,99 @@ function populateModeComparisonTable() {
     }).join('');
     
     tbody.innerHTML = rows;
+}
+
+/**
+ * POPULATE SOURCES TABLES
+ * Generates tables showing all ranked and unranked sources
+ */
+function populateSourcesTables() {
+    if (!APP_DATA || !APP_DATA.config || !APP_DATA.config.sources) return;
+    
+    const sources = APP_DATA.config.sources;
+    const clusterMetadata = APP_DATA.config.cluster_metadata || {};
+    
+    // Separate sources by type
+    const rankedSources = [];
+    const unrankedSources = [];
+    
+    Object.entries(sources).forEach(([key, source]) => {
+        const clusterMeta = clusterMetadata[source.cluster] || {};
+        const sourceData = {
+            key,
+            name: source.full_name || key,
+            url: source.url,
+            song_count: source.song_count || 0,
+            cluster: source.cluster || 'Unknown',
+            clusterEmoji: clusterMeta.emoji || '',
+            clusterDescriptor: clusterMeta.descriptor || ''
+        };
+        
+        if (source.type === 'ranked') {
+            rankedSources.push(sourceData);
+        } else if (source.type === 'unranked') {
+            unrankedSources.push(sourceData);
+        }
+    });
+    
+    // Sort by cluster name, then source name, then song_count
+    const sortSources = (a, b) => {
+        // First by cluster name
+        if (a.cluster !== b.cluster) {
+            return a.cluster.localeCompare(b.cluster);
+        }
+        // Then by source name
+        if (a.name !== b.name) {
+            return a.name.localeCompare(b.name);
+        }
+        // Finally by song count (descending)
+        return b.song_count - a.song_count;
+    };
+    
+    rankedSources.sort(sortSources);
+    unrankedSources.sort(sortSources);
+    
+    // Populate ranked sources table
+    const rankedTable = document.getElementById('ranked-sources-table');
+    if (rankedTable) {
+        const tbody = rankedTable.querySelector('tbody');
+        const rows = rankedSources.map(source => {
+            const tooltipText = source.cluster + ': ' + source.clusterDescriptor;
+            return `
+            <tr>
+                <td>
+                    <abbr data-tooltip="${escapeHtml(tooltipText)}" data-placement="right" style="text-decoration: none; cursor: help;">
+                        ${source.clusterEmoji}
+                    </abbr>
+                    <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
+                </td>
+                <td>${source.song_count}</td>
+            </tr>
+        `;
+        }).join('');
+        tbody.innerHTML = rows || '<tr><td colspan="2">No ranked sources found</td></tr>';
+    }
+    
+    // Populate unranked sources table
+    const unrankedTable = document.getElementById('unranked-sources-table');
+    if (unrankedTable) {
+        const tbody = unrankedTable.querySelector('tbody');
+        const rows = unrankedSources.map(source => {
+            const tooltipText = source.cluster + ': ' + source.clusterDescriptor;
+            return `
+            <tr>
+                <td>
+                    <abbr data-tooltip="${escapeHtml(tooltipText)}" data-placement="right" style="text-decoration: none; cursor: help;">
+                        ${source.clusterEmoji}
+                    </abbr>
+                    <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
+                </td>
+                <td>${source.song_count}</td>
+            </tr>
+        `;
+        }).join('');
+        tbody.innerHTML = rows || '<tr><td colspan="2">No unranked sources found</td></tr>';
+    }
 }
 
 init();
@@ -675,7 +820,19 @@ function renderSettingsUI() {
     `;
 
     // Sliders Helper
-    const createSlider = (category, key, label, min, max, step, isPercent = false, isBonus = false, helperText = '') => {
+    const createSlider = (category, key, label, isPercent = false, isBonus = false, helperText = '') => {
+        // Get bounds from CONFIG_BOUNDS
+        let bounds;
+        if (category === 'ranking') {
+            bounds = CONFIG_BOUNDS.ranking[key];
+        } else if (category === 'source_weight') {
+            bounds = CONFIG_BOUNDS.source_weight;
+        } else if (category === 'source_shadow') {
+            bounds = CONFIG_BOUNDS.shadow_rank;
+        }
+        
+        const { min, max, step } = bounds;
+        
         let currentVal = category === 'ranking' ? ranking[key] : (category === 'source_weight' ? sources[key].weight : sources[key].shadow_rank);
         let defaultVal = category === 'ranking' ? defaults.ranking[key] : (category === 'source_weight' ? defaults.sources[key].weight : defaults.sources[key].shadow_rank);
         
@@ -721,17 +878,17 @@ function renderSettingsUI() {
         const val25 = (1 + ranking.k_value) / (25 + ranking.k_value);
         const val50 = (1 + ranking.k_value) / (50 + ranking.k_value);
         const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(val50 * 100)}%</strong> of #1`;
-        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', 0, 50, 1, false, false, helper);
+        html += createSlider('ranking', 'k_value', 'Smoothing Factor (K)', false, false, helper);
     } else {
         const val10 = 1.0 / Math.pow(10, ranking.p_exponent);
         const val25 = 1.0 / Math.pow(25, ranking.p_exponent);
         const val50 = 1.0 / Math.pow(50, ranking.p_exponent);
         const helper = `Rank #10 is worth <strong>${Math.round(val10 * 100)}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(val25 * 100)}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(val50 * 100)}%</strong> of #1`;
-        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', 0.0, 1.1, 0.01, false, false, helper);
+        html += createSlider('ranking', 'p_exponent', 'Power Law Steepness (P)', false, false, helper);
     }
     
-    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', 0, 0.2, 0.01, true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
-    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', 0, 0.2, 0.01, true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
+    html += createSlider('ranking', 'consensus_boost', '🤝 Consensus Boost', true, false, 'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.');
+    html += createSlider('ranking', 'provocation_boost', '⚡ Provocation Boost', true, false, 'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.');
     
     // Collect unique clusters for Cluster Boost description
     const clusters = [...new Set(Object.values(sources).map(src => src.cluster).filter(c => c))].sort();
@@ -745,12 +902,12 @@ function renderSettingsUI() {
         : clustersWithEmoji[0] || '';
     const clusterDesc = `Rewards crossover between different categories of critics by giving a bonus for each additional category reached with a best rank under the Cluster Threshold. The current critic categories are: ${clusterList}.`;
     
-    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', 0, 0.2, 0.01, true, false, clusterDesc);
+    html += createSlider('ranking', 'cluster_boost', '🌍 Cluster Boost', true, false, clusterDesc);
     
-    html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', 0, 100, 1, false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
-    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', 1.0, 1.2, 0.005, false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
-    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', 1.0, 1.2, 0.005, false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
-    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', 1.0, 1.2, 0.005, false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
+    html += createSlider('ranking', 'cluster_threshold', '🎯 Cluster Threshold', false, false, 'Defines the rank a song must achieve to count for the Cluster Boost.');
+    html += createSlider('ranking', 'rank1_bonus', '🥇 Rank 1 Bonus', false, true, 'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.');
+    html += createSlider('ranking', 'rank2_bonus', '🥈 Rank 2 Bonus', false, true, 'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.');
+    html += createSlider('ranking', 'rank3_bonus', '🥉 Rank 3 Bonus', false, true, 'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.');
     
     html += '</article>';
     
@@ -785,7 +942,7 @@ function renderSettingsUI() {
         }
         
         sourcesByCluster[clusterName].forEach(srcKey => {
-            html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey, 0.0, 1.5, 0.01);
+            html += createSlider('source_weight', srcKey, sources[srcKey].full_name || srcKey);
         });
         html += '</fieldset>';
     });
@@ -801,7 +958,7 @@ function renderSettingsUI() {
         html += '</hgroup>';
         unrankedSources.forEach(srcKey => {
              const songCount = APP_DATA.config.sources[srcKey].song_count;
-             html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`, 1.0, 100.0, 0.1);
+             html += createSlider('source_shadow', srcKey, `${sources[srcKey].full_name || srcKey} (${songCount} songs)`);
         });
         html += '</article>';
     }

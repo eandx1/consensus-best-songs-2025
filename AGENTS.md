@@ -72,9 +72,9 @@ On Slider Change: Update the `URLSearchParams` object and use `history.replaceSt
 Four semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
 1. **Settings Modal**: Title "Settings" - for adjusting ranking parameters and source weights
-2. **Ranking Stats Modal**: Title "Ranking: <song name>" - shows detailed scoring breakdown
+2. **Ranking Stats Modal**: Title "Ranking" - shows detailed scoring breakdown for a song
 3. **Reviews Modal**: Title "Reviews" - shows all source reviews with quotes and links
-4. **About Modal**: Shows a description of the site and links to the Github Repo
+4. **About Modal**: Title "About" - shows site description, methodology explanation, and mode comparison table
 
 ### Settings Modal
 
@@ -150,6 +150,36 @@ Displays scoring details in order:
    - Format: "Source Name #Rank: 0.xxxx"
    - Sorted by contribution value (highest first)
    - Scrollable if many sources
+
+### About Modal
+
+Modal header shows "About".
+
+Contains four main sections:
+
+**Behind the project:**
+- Personal statement about the site
+- Dynamic display of total song count from `data.json` using `<kbd>` element
+- Link to GitHub repository
+
+**How it works:**
+- Explanation of the aggregation methodology
+- Bullet list of customization options (source weights, decay functions, boosts)
+
+**Ranking methodology:**
+- Description of the Weighted Decay Model
+- Two-column grid showing Consensus Mode (🤝) and Conviction Mode (🔥) descriptions
+- **Mode Comparison Table**: Dynamic table comparing decay values at ranks 1, 5, 10, 25, 50, 100
+  - Shows current K value for Consensus mode
+  - Shows current P value for Conviction mode
+  - Percentages calculated relative to rank #1
+  - Updates based on user's configuration
+  - Uses formulas: Consensus = `(1 + K) / (rank + K)`, Conviction = `1 / rank^P`
+
+**Decoding the UI:**
+- Explanation of cluster emojis and categories
+- Shadow ranks explanation with ghost emoji (👻)
+- Boost types (Provocation ⚡ and Consensus 🤝)
 
 # Data Layout
 
@@ -238,6 +268,16 @@ The `lite-youtube` play button is customized via `::part(playButton)`:
 - Use white on gray
 - Opacity: 0.25 default, 1.0 on hover
 - Slight scale-up on hover for feedback
+
+## About Modal Styling
+
+The `.about-methodology-box` class is used to style the mode description cards:
+
+- Background: Uses Pico's card background color
+- Padding: Standard Pico spacing
+- Border radius: Pico's default border radius
+- Border: 1px solid muted border color
+- Applied to the Consensus and Conviction mode description boxes
 
 ## Security
 

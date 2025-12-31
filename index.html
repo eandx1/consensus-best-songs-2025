@@ -164,6 +164,40 @@
         border: 1px solid var(--pico-muted-border-color);
       }
 
+      /* Apply a shared class to both tables */
+      .source-stats-table {
+        table-layout: fixed;
+        width: 100%;
+        margin-bottom: var(--pico-block-spacing-vertical);
+      }
+
+      /* Define the width of the Source Name column */
+      .source-stats-table th:first-child,
+      .source-stats-table td:first-child {
+        width: 70%; 
+        /* Allow tooltips to overflow - no clipping */
+        text-overflow: ellipsis;
+      }
+
+      /* Define the width of the Song Count column */
+      .source-stats-table th:last-child,
+      .source-stats-table td:last-child {
+        width: 30%;
+        text-align: right; /* Keeps numbers neatly aligned on the right */
+      }
+
+      /* Ensure table rows and cells don't clip tooltips */
+      .source-stats-table tbody tr,
+      .source-stats-table tbody td {
+        overflow: visible;
+      }
+      
+      /* Ensure tooltips in source tables wrap text properly */
+      .source-stats-table abbr[data-tooltip]::before,
+      .source-stats-table abbr[data-tooltip]::after {
+        white-space: normal !important;
+      }
+
       /* Video player wrapper using semantic <figure> */
       article.song-card figure {
         margin: 0;
@@ -630,8 +664,12 @@
             <p>
               <a href="https://github.com/eandx1/consensus-best-songs-2025"
                 >Read more about the analysis and process on GitHub</a
-              >.
+              >
             </p>
+            <p>
+              <a href="https://www.linkedin.com/in/everett-anderson-swe/"
+                >Contact me on LinkedIn</a>              
+            </p>            
           </article>
 
           <article id="about-methodology">
@@ -733,6 +771,43 @@
                 Consensus (the number of different reviews a song appeared in).
               </li>
             </ul>
+          </article>
+          
+          <article id="about-sources">
+            <hgroup>
+              <h2>Sources</h2>
+              <p>All the song and ranking sources</p>
+            </hgroup>
+            
+            <h5>Ranked</h5>
+            <figure>
+              <table id="ranked-sources-table" class="source-stats-table">
+                <thead>
+                  <tr>
+                    <th>Source</th>
+                    <th>Songs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="2">Loading...</td></tr>
+                </tbody>
+              </table>
+            </figure>
+            
+            <h5>Unranked</h5>
+            <figure>
+              <table id="unranked-sources-table" class="source-stats-table">
+                <thead>
+                  <tr>
+                    <th>Source</th>
+                    <th>Songs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="2">Loading...</td></tr>
+                </tbody>
+              </table>
+            </figure>
           </article>
         </main>
       </article>
