@@ -175,9 +175,8 @@
       .source-stats-table th:first-child,
       .source-stats-table td:first-child {
         width: 75%; 
-        overflow: hidden;
+        /* Allow tooltips to overflow - no clipping */
         text-overflow: ellipsis;
-        white-space: nowrap;
       }
 
       /* Define the width of the Song Count column */
@@ -185,6 +184,18 @@
       .source-stats-table td:last-child {
         width: 25%;
         text-align: right; /* Keeps numbers neatly aligned on the right */
+      }
+
+      /* Ensure table rows and cells don't clip tooltips */
+      .source-stats-table tbody tr,
+      .source-stats-table tbody td {
+        overflow: visible;
+      }
+      
+      /* Ensure tooltips in source tables wrap text properly */
+      .source-stats-table abbr[data-tooltip]::before,
+      .source-stats-table abbr[data-tooltip]::after {
+        white-space: normal !important;
       }
 
       /* Video player wrapper using semantic <figure> */
@@ -764,13 +775,13 @@
               <p>All the song and ranking sources</p>
             </hgroup>
             
-            <h5>Ranked Lists</h5>
+            <h5>Ranked</h5>
             <figure>
               <table id="ranked-sources-table" class="source-stats-table">
                 <thead>
                   <tr>
                     <th>Source</th>
-                    <th>Number of Songs</th>
+                    <th>Songs</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -779,13 +790,13 @@
               </table>
             </figure>
             
-            <h5>Unranked Lists</h5>
+            <h5>Unranked</h5>
             <figure>
               <table id="unranked-sources-table" class="source-stats-table">
                 <thead>
                   <tr>
                     <th>Source</th>
-                    <th>Number of Songs</th>
+                    <th>Songs</th>
                   </tr>
                 </thead>
                 <tbody>
