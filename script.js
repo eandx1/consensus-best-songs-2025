@@ -460,8 +460,8 @@ function populateModeComparisonTable() {
     thead.innerHTML = `
         <tr>
             <th>Rank</th>
-            <th>🤝 Consensus (K=${kValue})</th>
-            <th>🔥 Conviction (P=${pValue.toFixed(2)})</th>
+            <th>🤝 <span class="mode-name">Consensus</span> (K=${kValue})</th>
+            <th>🔥 <span class="mode-name">Conviction</span> (P=${pValue.toFixed(2)})</th>
         </tr>
     `;
     
@@ -613,15 +613,15 @@ window.showReviews = (idx) => {
         html += `
             <article>
                 <header style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                    <div style="flex: 1;">
-                        <h4 style="margin: 0 0 0.25rem 0;">${escapeHtml(displayName)}</h4>
-                        <small>
+                    <div style="flex: 1; min-width: 0;">
+                        <h4 style="margin: 0 0 0.25rem 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(displayName)}</h4>
+                        <small style="display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                             <abbr data-tooltip="${escapeHtml(clusterDesc)}" data-placement="right" style="text-decoration: none; cursor: help;">
-                                ${clusterEmoji} ${escapeHtml(clusterName)}
+                                ${escapeHtml(clusterEmoji)} ${escapeHtml(clusterName)}
                             </abbr>
                         </small>
                     </div>
-                    <kbd style="min-width: 3ch; text-align: center; flex-shrink: 0; margin-left: 1rem;">${displayRank}</kbd>
+                    <kbd style="min-width: 3ch; text-align: center; flex-shrink: 0; margin-left: 0.5rem;">${displayRank}</kbd>
                 </header>
                 ${src.quote ? `<blockquote style="font-style: italic; margin-top: 0;">"${escapeHtml(src.quote)}"</blockquote>` : '<p style="font-style: italic; margin-top: 0;">No quote available</p>'}
                 <footer style="text-align: right; margin-top: 1rem;">
