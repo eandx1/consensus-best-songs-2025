@@ -116,16 +116,6 @@ Counting NPR as one source:
 - Total ranked sources: `22`
 - Total unranked sources: `6`
 
-#### Average lists per song with default ranking
-
-- Top 5: `13.00`
-- Top 10: `11.00`
-- Top 25: `8.88`
-- Top 50: `6.92`
-- Top 100: `5.16`
-- Top 200: `3.48`
-- Top 500: `2.11`
-
 #### Unique Artists
 
 - Unique artist (including collaborators) strings: `683`
@@ -210,6 +200,61 @@ Counting NPR as one source:
 | [Rough Trade](https://blog.roughtrade.com/gb/the-best-songs-of-2025/)                                                     | 63    | 0.60           | 32.00       | 🧪 Specialists        |
 | [The Independent](https://www.the-independent.com/arts-entertainment/music/features/the-best-songs-of-2025-b2884545.html) | 10    | 0.60           | 5.50        | 📡 Mainstream         |
 | [Variety](https://variety.com/lists/best-songs-2025)                                                                      | 61    | 0.50           | 31.00       | 📡 Mainstream         |
+
+### Ranking
+
+Using the default ranking (which uses consensus mode):
+
+#### Average lists per song in the Top N
+
+- Top 5: `13.00`
+- Top 10: `11.00`
+- Top 25: `8.88`
+- Top 50: `6.92`
+- Top 100: `5.16`
+- Top 200: `3.48`
+- Top 500: `2.11`
+
+#### List Count vs Score
+
+<img src="./images/consensus_step_ladder.svg" width="100%" alt="Consensus Step Ladder plot of normalized score versus number of lists">
+
+- Score spread even at lower list counts
+- A few songs with very high scores driven by number of list counts at the top of the range
+
+#### Consensus Mode vs Conviction Mode
+
+The site defaults to Consensus mode, but you can choose to use a power law decay formula, instead, to try to give more favor to critical passion over appearing on more lists. Here's a plot showing a possible Conviction mode setup with extra boosts for #1s with cluster and consensus boosts down to 0%:
+
+<img src="./images/consensus_vs_conviction.svg" width="100%" alt="Consensus vs Conviction Mode plot for top 100">
+
+##### How to read this chart
+
+- **The Diagonal (Perfect Alignment)**: Undisputed hits regardless of model, performing similarly either way
+- **The red zone (Conviction picks)**: These tracks may have appeared on fewer total lists, but the publications that included them ranked them extremely high (often #1 or #2)
+- **The blue zone (Consensus picks)**: These tracks may have appeared on a majority of lists but potentially at lower ranks
+
+##### Notes
+
+- For the best songs of the year, the top 10 are mostly unchanged
+- The red dots might be more interesting for discovering new sounds!
+
+<img src="./images/rank_divergence_dumbbell.svg" width="100%" alt="Rank Divergence for Top 100">
+
+##### Ranking Mode Stability
+
+<img src="./images/model_sensitivity_analysis.svg" width="100%" alt="Ranking Mode Stability">
+
+- **Consensus Stability**: The model reaches peak stability around K=25, where the Top 10 remains 100% consistent across a wide range of decay settings. (The current default is K=20 for this mode right now)
+- **Conviction Intensity**: The default P=0.55 is the peak of the stability curve. It provides enough "intensity" to highlight passion picks without making the model so volatile that individual outliers dominate
+
+### Publications
+
+<img src="./images/normalized_overlap_matrix.svg" width="100%" alt="Publication Song Overlap for Top 100">
+
+### Categories
+
+<img src="./images/category_crossover_sankey.svg" width="70%" alt="Contributions to the top 10 from the different categories">
 
 ## 👤 Contact
 
