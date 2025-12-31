@@ -164,6 +164,29 @@
         border: 1px solid var(--pico-muted-border-color);
       }
 
+      /* Apply a shared class to both tables */
+      .source-stats-table {
+        table-layout: fixed;
+        width: 100%;
+        margin-bottom: var(--pico-block-spacing-vertical);
+      }
+
+      /* Define the width of the Source Name column */
+      .source-stats-table th:first-child,
+      .source-stats-table td:first-child {
+        width: 75%; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Define the width of the Song Count column */
+      .source-stats-table th:last-child,
+      .source-stats-table td:last-child {
+        width: 25%;
+        text-align: right; /* Keeps numbers neatly aligned on the right */
+      }
+
       /* Video player wrapper using semantic <figure> */
       article.song-card figure {
         margin: 0;
@@ -743,7 +766,7 @@
             
             <h5>Ranked Lists</h5>
             <figure>
-              <table id="ranked-sources-table">
+              <table id="ranked-sources-table" class="source-stats-table">
                 <thead>
                   <tr>
                     <th>Source</th>
@@ -758,7 +781,7 @@
             
             <h5>Unranked Lists</h5>
             <figure>
-              <table id="unranked-sources-table">
+              <table id="unranked-sources-table" class="source-stats-table">
                 <thead>
                   <tr>
                     <th>Source</th>

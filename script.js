@@ -549,7 +549,7 @@ function populateSourcesTables() {
                     </abbr>
                     <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
                 </td>
-                <td style="text-align: center;">${source.song_count}</td>
+                <td>${source.song_count}</td>
             </tr>
         `;
         }).join('');
@@ -570,7 +570,7 @@ function populateSourcesTables() {
                     </abbr>
                     <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
                 </td>
-                <td style="text-align: center;">${source.song_count}</td>
+                <td>${source.song_count}</td>
             </tr>
         `;
         }).join('');
