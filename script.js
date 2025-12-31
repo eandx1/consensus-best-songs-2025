@@ -19,6 +19,13 @@ const CONFIG_BOUNDS = {
     shadow_rank: { min: 1.0, max: 100.0, step: 0.1 }
 };
 
+// Valid values for non-numeric parameters
+const VALID_DECAY_MODES = ['consensus', 'conviction'];
+const DEFAULT_DECAY_MODE = 'consensus';
+
+const VALID_THEMES = ['original-dark'];
+const DEFAULT_THEME = 'original-dark';
+
 let APP_DATA = null;
 let STATE = {
     config: {}, // Current active configuration (weights, rankings, etc)
@@ -200,14 +207,14 @@ function syncStateFromURL(defaultConfig) {
     const params = new URLSearchParams(window.location.search);
     const config = JSON.parse(JSON.stringify(defaultConfig));
 
-    // Theme
+    // Theme - validate against allowed themes
     if (params.has('theme')) {
-        config.theme = params.get('theme');
+        const theme = params.get('theme');
+        config.theme = VALID_THEMES.includes(theme) ? theme : DEFAULT_THEME;
         applyTheme(config.theme);
     } else {
-        // Default theme
-        config.theme = 'original-dark';
-        applyTheme('original-dark');
+        config.theme = DEFAULT_THEME;
+        applyTheme(DEFAULT_THEME);
     }
 
     // Ranking Params
@@ -215,9 +222,9 @@ function syncStateFromURL(defaultConfig) {
     rankingKeys.forEach(key => {
         if (params.has(key)) {
             if (key === 'decay_mode') {
-                // Validate decay mode is one of the allowed values
+                // Validate decay mode against allowed values
                 const mode = params.get(key);
-                config.ranking[key] = (mode === 'consensus' || mode === 'conviction') ? mode : 'consensus';
+                config.ranking[key] = VALID_DECAY_MODES.includes(mode) ? mode : DEFAULT_DECAY_MODE;
             } else {
                 // Parse and clamp numeric values
                 const value = parseFloat(params.get(key));
