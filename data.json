@@ -39,18 +39,18 @@
             "NYT (Caramanica)": {
                 "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
                 "weight": 1.0,
-                "full_name": "New York Times (Jon Caramanica)",
                 "cluster": "Critical Authority",
                 "type": "ranked",
-                "song_count": 20
+                "song_count": 20,
+                "full_name": "New York Times (Jon Caramanica)"
             },
             "NYT (Zoladz)": {
                 "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
                 "weight": 1.0,
-                "full_name": "New York Times (Lindsay Zoladz)",
                 "cluster": "Critical Authority",
                 "type": "ranked",
-                "song_count": 20
+                "song_count": 20,
+                "full_name": "New York Times (Lindsay Zoladz)"
             },
             "Rolling Stone": {
                 "url": "https://www.rollingstone.com/music/music-lists/best-songs-of-2025-1235468614",
