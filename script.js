@@ -395,6 +395,9 @@ async function init() {
     // Populate mode comparison table in About modal
     populateModeComparisonTable();
     
+    // Populate sources tables in About modal
+    populateSourcesTables();
+    
     // Listen for "Load More"
     UI.loadMoreBtn.onclick = () => {
         if (STATE.displayLimit === 25) STATE.displayLimit = 100;
@@ -480,6 +483,72 @@ function populateModeComparisonTable() {
     }).join('');
     
     tbody.innerHTML = rows;
+}
+
+/**
+ * POPULATE SOURCES TABLES
+ * Generates tables showing all ranked and unranked sources
+ */
+function populateSourcesTables() {
+    if (!APP_DATA || !APP_DATA.config || !APP_DATA.config.sources) return;
+    
+    const sources = APP_DATA.config.sources;
+    
+    // Separate sources by type
+    const rankedSources = [];
+    const unrankedSources = [];
+    
+    Object.entries(sources).forEach(([key, source]) => {
+        const sourceData = {
+            key,
+            name: source.full_name || key,
+            url: source.url,
+            song_count: source.song_count || 0
+        };
+        
+        if (source.type === 'ranked') {
+            rankedSources.push(sourceData);
+        } else if (source.type === 'unranked') {
+            unrankedSources.push(sourceData);
+        }
+    });
+    
+    // Sort by song_count (descending), then by name (ascending)
+    const sortSources = (a, b) => {
+        if (b.song_count !== a.song_count) {
+            return b.song_count - a.song_count;
+        }
+        return a.name.localeCompare(b.name);
+    };
+    
+    rankedSources.sort(sortSources);
+    unrankedSources.sort(sortSources);
+    
+    // Populate ranked sources table
+    const rankedTable = document.getElementById('ranked-sources-table');
+    if (rankedTable) {
+        const tbody = rankedTable.querySelector('tbody');
+        const rows = rankedSources.map(source => `
+            <tr>
+                <td><a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a></td>
+                <td style="text-align: center;">${source.song_count}</td>
+            </tr>
+        `).join('');
+        tbody.innerHTML = rows || '<tr><td colspan="2">No ranked sources found</td></tr>';
+    }
+    
+    // Populate unranked sources table
+    const unrankedTable = document.getElementById('unranked-sources-table');
+    if (unrankedTable) {
+        const tbody = unrankedTable.querySelector('tbody');
+        const rows = unrankedSources.map(source => `
+            <tr>
+                <td><a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a></td>
+                <td style="text-align: center;">${source.song_count}</td>
+            </tr>
+        `).join('');
+        tbody.innerHTML = rows || '<tr><td colspan="2">No unranked sources found</td></tr>';
+    }
 }
 
 init();
