@@ -21,7 +21,7 @@ const CONFIG_BOUNDS = {
 
 // Valid values for non-numeric parameters
 const VALID_DECAY_MODES = ['consensus', 'conviction'];
-const DEFAULT_DECAY_MODE = 'consensus';
+const DEFAULT_DECAY_MODE = 'consensus'; // Safety fallback if data.json is invalid
 
 const VALID_THEMES = ['original-dark'];
 const DEFAULT_THEME = 'original-dark';
@@ -222,9 +222,9 @@ function syncStateFromURL(defaultConfig) {
     rankingKeys.forEach(key => {
         if (params.has(key)) {
             if (key === 'decay_mode') {
-                // Validate decay mode against allowed values
+                // Validate decay mode against allowed values, fall back to data.json default
                 const mode = params.get(key);
-                config.ranking[key] = VALID_DECAY_MODES.includes(mode) ? mode : DEFAULT_DECAY_MODE;
+                config.ranking[key] = VALID_DECAY_MODES.includes(mode) ? mode : defaultConfig.ranking.decay_mode;
             } else {
                 // Parse and clamp numeric values
                 const value = parseFloat(params.get(key));
