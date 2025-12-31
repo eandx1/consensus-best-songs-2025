@@ -94,8 +94,13 @@ const debounce = (func, wait) => {
 
 /**
  * Clamp a numeric value between min and max bounds
+ * Returns min if value is NaN (handles invalid URL parameters)
  */
 const clamp = (value, min, max) => {
+    // If value is NaN, return min as a safe default
+    if (isNaN(value)) {
+        return min;
+    }
     return Math.max(min, Math.min(max, value));
 };
 
@@ -545,7 +550,7 @@ function populateSourcesTables() {
             <tr>
                 <td>
                     <abbr data-tooltip="${escapeHtml(tooltipText)}" data-placement="right" style="text-decoration: none; cursor: help;">
-                        ${source.clusterEmoji}
+                        ${escapeHtml(source.clusterEmoji)}
                     </abbr>
                     <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
                 </td>
@@ -566,7 +571,7 @@ function populateSourcesTables() {
             <tr>
                 <td>
                     <abbr data-tooltip="${escapeHtml(tooltipText)}" data-placement="right" style="text-decoration: none; cursor: help;">
-                        ${source.clusterEmoji}
+                        ${escapeHtml(source.clusterEmoji)}
                     </abbr>
                     <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
                 </td>
