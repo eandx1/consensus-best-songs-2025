@@ -217,7 +217,7 @@ Using the default ranking (which uses consensus mode):
 
 #### List Count vs Score
 
-<img src="./images/consensus_step_ladder.svg" width="80%" alt="Consensus Step Ladder plot of normalized score versus number of lists">
+<img src="./images/consensus_step_ladder.svg" width="100%" alt="Consensus Step Ladder plot of normalized score versus number of lists">
 
 - Score spread even at lower list counts
 - A few songs with very high scores driven by number of list counts at the top of the range
@@ -239,22 +239,22 @@ The site defaults to Consensus mode, but you can choose to use a power law decay
 - For the best songs of the year, the top 10 are mostly unchanged
 - The red dots might be more interesting for discovering new sounds!
 
-<img src="./images/rank_divergence_dumbbell.svg" width="80%" alt="Rank Divergence for Top 100">
+<img src="./images/rank_divergence_dumbbell.svg" width="100%" alt="Rank Divergence for Top 100">
 
 ##### Ranking Mode Stability
 
-<img src="./images/model_sensitivity_analysis.svg" width="80%" alt="Ranking Mode Stability">
+<img src="./images/model_sensitivity_analysis.svg" width="100%" alt="Ranking Mode Stability">
 
 - **Consensus Stability**: The model reaches peak stability around K=25, where the Top 10 remains 100% consistent across a wide range of decay settings. (The current default is K=20 for this mode right now)
 - **Conviction Intensity**: The default P=0.55 is the peak of the stability curve. It provides enough "intensity" to highlight passion picks without making the model so volatile that individual outliers dominate
 
 ### Publications
 
-<img src="./images/normalized_overlap_matrix.svg" width="80%" alt="Publication Song Overlap for Top 100">
+<img src="./images/normalized_overlap_matrix.svg" width="100%" alt="Publication Song Overlap for Top 100">
 
 ### Categories
 
-<img src="./images/category_crossover_sankey.svg" width="50%" alt="Contributions to the top 10 from the different categories">
+<img src="./images/category_crossover_sankey.svg" width="70%" alt="Contributions to the top 10 from the different categories">
 
 ## 👤 Contact
 
