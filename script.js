@@ -493,17 +493,22 @@ function populateSourcesTables() {
     if (!APP_DATA || !APP_DATA.config || !APP_DATA.config.sources) return;
     
     const sources = APP_DATA.config.sources;
+    const clusterMetadata = APP_DATA.config.cluster_metadata || {};
     
     // Separate sources by type
     const rankedSources = [];
     const unrankedSources = [];
     
     Object.entries(sources).forEach(([key, source]) => {
+        const clusterMeta = clusterMetadata[source.cluster] || {};
         const sourceData = {
             key,
             name: source.full_name || key,
             url: source.url,
-            song_count: source.song_count || 0
+            song_count: source.song_count || 0,
+            cluster: source.cluster || 'Unknown',
+            clusterEmoji: clusterMeta.emoji || '',
+            clusterDescriptor: clusterMeta.descriptor || ''
         };
         
         if (source.type === 'ranked') {
@@ -513,12 +518,18 @@ function populateSourcesTables() {
         }
     });
     
-    // Sort by song_count (descending), then by name (ascending)
+    // Sort by cluster name, then source name, then song_count
     const sortSources = (a, b) => {
-        if (b.song_count !== a.song_count) {
-            return b.song_count - a.song_count;
+        // First by cluster name
+        if (a.cluster !== b.cluster) {
+            return a.cluster.localeCompare(b.cluster);
         }
-        return a.name.localeCompare(b.name);
+        // Then by source name
+        if (a.name !== b.name) {
+            return a.name.localeCompare(b.name);
+        }
+        // Finally by song count (descending)
+        return b.song_count - a.song_count;
     };
     
     rankedSources.sort(sortSources);
@@ -528,12 +539,20 @@ function populateSourcesTables() {
     const rankedTable = document.getElementById('ranked-sources-table');
     if (rankedTable) {
         const tbody = rankedTable.querySelector('tbody');
-        const rows = rankedSources.map(source => `
+        const rows = rankedSources.map(source => {
+            const tooltipText = source.cluster + ': ' + source.clusterDescriptor;
+            return `
             <tr>
-                <td><a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a></td>
+                <td>
+                    <abbr data-tooltip="${escapeHtml(tooltipText)}" data-placement="right" style="text-decoration: none; cursor: help;">
+                        ${source.clusterEmoji}
+                    </abbr>
+                    <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
+                </td>
                 <td style="text-align: center;">${source.song_count}</td>
             </tr>
-        `).join('');
+        `;
+        }).join('');
         tbody.innerHTML = rows || '<tr><td colspan="2">No ranked sources found</td></tr>';
     }
     
@@ -541,12 +560,20 @@ function populateSourcesTables() {
     const unrankedTable = document.getElementById('unranked-sources-table');
     if (unrankedTable) {
         const tbody = unrankedTable.querySelector('tbody');
-        const rows = unrankedSources.map(source => `
+        const rows = unrankedSources.map(source => {
+            const tooltipText = source.cluster + ': ' + source.clusterDescriptor;
+            return `
             <tr>
-                <td><a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a></td>
+                <td>
+                    <abbr data-tooltip="${escapeHtml(tooltipText)}" data-placement="right" style="text-decoration: none; cursor: help;">
+                        ${source.clusterEmoji}
+                    </abbr>
+                    <a href="${escapeHtml(source.url)}" target="_blank">${escapeHtml(source.name)}</a>
+                </td>
                 <td style="text-align: center;">${source.song_count}</td>
             </tr>
-        `).join('');
+        `;
+        }).join('');
         tbody.innerHTML = rows || '<tr><td colspan="2">No unranked sources found</td></tr>';
     }
 }
