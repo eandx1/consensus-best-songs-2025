@@ -575,12 +575,22 @@
         math-formula svg {
           max-width: 100%;
         }
+        
+        /* Hide mode names in comparison table on mobile to save space */
+        .mode-name {
+          display: none;
+        }
       }
 
       @media (min-width: 1025px) {
         .column-list {
           column-count: 2;
           column-gap: 2rem;
+        }
+        
+        /* Show mode names on desktop */
+        .mode-name {
+          display: inline;
         }
       }
     </style>

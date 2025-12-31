@@ -460,8 +460,8 @@ function populateModeComparisonTable() {
     thead.innerHTML = `
         <tr>
             <th>Rank</th>
-            <th>🤝 Consensus (K=${kValue})</th>
-            <th>🔥 Conviction (P=${pValue.toFixed(2)})</th>
+            <th>🤝 <span class="mode-name">Consensus</span> (K=${kValue})</th>
+            <th>🔥 <span class="mode-name">Conviction</span> (P=${pValue.toFixed(2)})</th>
         </tr>
     `;
     
