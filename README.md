@@ -8,9 +8,9 @@ It was also a good excuse to experiment with a variety of AI models and tools fo
 
 I scraped around 28 song lists and did the following:
 
-* **Canonicalization**: Used the Spotify search API (with [Spotipy](https://spotipy.readthedocs.io/en/latest/)) to find IDs and canonical artist and song names
-* **YouTube Matching**: Looked up YouTube Music and YouTube IDs (via ytmusicapi)
-* **Quote Extraction**: Ran reviews through Claude Haiku or Sonnet to distill down to a quote per source
+- **Canonicalization**: Used the Spotify search API (with [Spotipy](https://spotipy.readthedocs.io/en/latest/)) to find IDs and canonical artist and song names
+- **YouTube Matching**: Looked up YouTube Music and YouTube IDs (via ytmusicapi)
+- **Quote Extraction**: Ran reviews through Claude Haiku or Sonnet to distill down to a quote per source
 
 I then developed ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
 
@@ -43,13 +43,15 @@ _Note: I'll check in the notebook and Python code soon for posterity._
 
 ### Data Cleaning
 
-* **Manual Overrides**: I manually corrected or specified around 30 song/artist names to work around Spotify search failures, including songs simply missing from Spotify
-* **Matching Heuristics**: Spotify, YouTube, and YouTube Music results were vetted with surprisingly good comparison heuristic functions Gemini 3 Pro helped me with, often using [RapidFuzz](https://pypi.org/project/RapidFuzz/). Many of the review sites also linked to official videos or Spotify tracks, which I leveraged
+- **Manual Overrides**: I manually corrected or specified around 30 song/artist names to work around Spotify search failures, including songs simply missing from Spotify
+- **Matching Heuristics**: Spotify, YouTube, and YouTube Music results were vetted with surprisingly good comparison heuristic functions Gemini 3 Pro helped me with, often using [RapidFuzz](https://pypi.org/project/RapidFuzz/). Many of the review sites also linked to official videos or Spotify tracks, which I leveraged
 
 ### Shadow Ranks 👻
 
-Not all lists are ranked. For unranked lists, I assigned a **Shadow Rank** based on the list's length to ensure fair weighting. For example, [Variety's The Best Songs of 2025](https://variety.com/lists/best-songs-2025/) has 61 unranked songs so I used the midpoint 
+Not all lists are ranked. For unranked lists, I assigned a **Shadow Rank** based on the list's length to ensure fair weighting. For example, [Variety's The Best Songs of 2025](https://variety.com/lists/best-songs-2025/) has 61 unranked songs so I used the midpoint
 $$(1 + 61) / 2 = 31$$
+
+NPR produced two overlapping lists -- ["The 25 Best Songs of 2025"](https://www.npr.org/2025/12/09/nx-s1-5616663/the-25-best-songs-of-2025) and their full ["The 125 Best Songs of 2025"](https://www.npr.org/nx-s1-5619849). In order to make the shadow ranks more accurate and prevent double counting, I created two non-overlapping sources, one for the top 25 with shadow rank $(1 + 25) / 2 = 13$ and one for the bottom 100 with shadow rank $(26 + 125) / 2 = 75.5$.
 
 ### 🏷️ Category Decisions
 
@@ -61,6 +63,12 @@ The categories are currently:
 - **⚡ Tastemakers**: Digital trendsetters and established indie mainstays driving the current musical conversation.
 - **🧪 Specialists**: Niche expert curators focused on deep cuts, avant-garde discoveries, and specific genre depth.
 - **📡 Mainstream**: High-frequency media outlets and lifestyle sources tracking mass cultural appeal and global broadcasting trends.
+
+### ⚖️ Source Weights
+
+This is really where the subjectivity comes in on top of that of the reviewers! I set the default weights to favor authoritative critical voices while also trying to make sure I didn't completely miss genres and niches. My biases and preferences are certainly in there! The mainstream definitely still comes in heavily, though.
+
+This is where I wanted to give the user full control. They can change the weights and everything is updated in the URL so they can share their own lists.
 
 ## AI Development Journey
 
@@ -84,7 +92,7 @@ This was my first experience with Cursor. A few thoughts:
 - **Enthusiasm**: Much like Claude Code, the Cursor agent chat interface _wants to do stuff_. It doesn't feel like a great place to _discuss_ a solution, which is why I continued to use Gemini on the web. Asking about something in the agent chat tended to result in it going off and building something. I did love that when I asked it to do something, though, it was incredibly enthusiastic. "I'll commit these changes for you!"
 - **Weird review/commit bugs**: I was probably using it wrong, but often even if I clicked Review and accepted changes and even if they were committed, it seemed to think they were still open files.
 - **Sonnet 4.5 integration**: Cursor seemed well-optimized for this model. I didn't notice from the scroll of its "thoughts" that it had to back track much. When I tried Gemini 3 Pro Preview, it occasionally got stuck in a loop or its "thoughts" suggested it had to back track or go another way.
-- **CSS best practices**: The models didn't initially prioritize mobile-first design and sometimes snuck in fixed pixel widths or used CSS that wasn't well aligned with Pico CSS's conventions despite prompting. 
+- **CSS best practices**: The models didn't initially prioritize mobile-first design and sometimes snuck in fixed pixel widths or used CSS that wasn't well aligned with Pico CSS's conventions despite prompting.
 
 ### Quote extraction task
 
@@ -96,7 +104,112 @@ Ultimately I made a first pass with Haiku and then fell back to Sonnet for cases
 
 ## Analysis
 
-I have some fun visualizations of the data I'll add here soon.
+### Overall
+
+Counting NPR as one source:
+
+- Unique songs: `881`
+- Total song reviews: `1438`
+- Average reviews per source: `49.59`
+- Median reviews per source: `48.0`
+- Total sources: `28`
+- Total ranked sources: `22`
+- Total unranked sources: `6`
+
+#### Average lists per song with default ranking
+
+- Top 5: `13.00`
+- Top 10: `11.00`
+- Top 25: `8.88`
+- Top 50: `6.92`
+- Top 100: `5.16`
+- Top 200: `3.48`
+- Top 500: `2.11`
+
+#### Unique Artists
+
+- Unique artist (including collaborators) strings: `683`
+- Unique primary artist IDs (1st listed Spotify artist): `628`
+
+#### Primary artists with at least 5 cited songs
+
+| artist_name                                                                          | song_count | songs                                                                                                                                                                                                                               |
+| :----------------------------------------------------------------------------------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lorde                                                                                | 7          | Current Affairs · David · Favourite Daughter · Hammer · Man Of The Year · Shapeshifter · What Was That                                                                                                                              |
+| Miley Cyrus                                                                          | 6          | Dream As One - from Avatar: Fire and Ash · Easy Lover · End of the World · Every Girl You've Ever Loved (feat. Naomi Campbell) · Pretend You're God · Walk of Fame (feat. Brittany Howard)                                          |
+| Geese                                                                                | 6          | Au Pays du Cocaine · Getting Killed · Husbands · Long Island City Here I Come · Taxes · Trinidad                                                                                                                                    |
+| ROSALÍA, Björk, & Yves Tumor                                                         | 6          | Berghain · Divinize · La Perla · La Rumba Del Perdón · Porcelana · Reliquia                                                                                                                                                         |
+| FKA twigs                                                                            | 6          | Drums of Death · Girl Feels Good · HARD · Room of Fools · Stereo Boy · Striptease                                                                                                                                                   |
+| Cardi B                                                                              | 6          | Bodega Baddie · ErrTime · Imaginary Playerz · Magnet · Outside · Pretty & Petty                                                                                                                                                     |
+| Oklou                                                                                | 5          | blade bird · obvious · take me by the hand · thank you for recording · viscus (feat. FKA twigs)                                                                                                                                     |
+| Addison Rae                                                                          | 5          | Fame is a Gun · Headphones On · High Fashion · Money is Everything · Times Like These                                                                                                                                               |
+| Clipse, Pusha T, & Malice                                                            | 5          | Chains & Whips · F.I.C.O. · P.O.V. · So Be It · The Birds Don't Sing                                                                                                                                                                |
+| Playboi Carti                                                                        | 5          | ALIVE · EVIL J0RDAN · LIKE WEEZY · OLYMPIAN · OPM BABI                                                                                                                                                                              |
+| Turnstile                                                                            | 5          | BIRDS · LIGHT DESIGN · LOOK OUT FOR ME · NEVER ENOUGH · SOLE                                                                                                                                                                        |
+| Blood Orange, Tariq Al-Sabir, Caroline Polachek, Daniel Caesar, & The Durutti Column | 5          | Mind Loaded (feat. Caroline Polachek, Lorde & Mustafa) · Somewhere in Between · The Field (feat. The Durutti Column, Tariq Al-Sabir, Caroline Polachek & Daniel Caesar) · Vivid Light · Westerberg (feat. Eva Tolkin & Liam Benzvi) |
+| Justin Bieber                                                                        | 5          | DAISIES · DEVOTION · FIRST PLACE · GO BABY · YUKON                                                                                                                                                                                  |
+| Wednesday                                                                            | 5          | Elderberry Wine · Pick Up That Knife · The Way Love Goes · Townies · Wound Up Here (By Holdin On)                                                                                                                                   |
+| billy woods & Kenny Segal                                                            | 5          | A Doll Fulla Pins · BLK XMAS · Corinthians · Misery · Waterproof Mascara                                                                                                                                                            |
+
+#### Media Links
+
+- Songs with Spotify ID: `869` (`98.64%`)
+- Songs with YouTube ID: `407` (`46.20%`)
+- Songs with YouTube Music ID: `873` (`99.09%`)
+
+#### Most Frequently Listed Songs
+
+| artist                       | name                 | list_count |
+| :--------------------------- | :------------------- | :--------- |
+| Chappell Roan                | The Subway           | 16         |
+| PinkPantheress               | Illegal              | 14         |
+| Lady Gaga                    | Abracadabra          | 13         |
+| Olivia Dean                  | Man I Need           | 12         |
+| Sabrina Carpenter            | Manchild             | 10         |
+| RAYE                         | WHERE IS MY HUSBAND! | 10         |
+| Kehlani                      | Folded               | 10         |
+| Dijon                        | Yamaha               | 10         |
+| Tate McRae                   | Sports car           | 9          |
+| ROSALÍA, Björk, & Yves Tumor | Berghain             | 9          |
+
+#### Ranked Sources
+
+| name                                                                                                                         | songs | default weight | category              |
+| :--------------------------------------------------------------------------------------------------------------------------- | :---- | :------------- | :-------------------- |
+| [Billboard (Staff Picks)](https://www.billboard.com/lists/best-songs-2025)                                                   | 100   | 0.70           | 📡 Mainstream         |
+| [Buzzfeed](https://www.buzzfeed.com/andrewfirriolo/favorite-songs-of-2025)                                                   | 25    | 0.50           | 📡 Mainstream         |
+| [Complex](https://www.complex.com/music/a/dimassanfiorenzo/best-songs-2025)                                                  | 50    | 0.90           | ⚡ Tastemakers        |
+| [Consequence](https://consequence.net/list/200-best-songs-of-2025-annual-report/)                                            | 200   | 0.80           | ⚡ Tastemakers        |
+| [Crack Magazine](http://crackmagazine.net/article/list-article/best-tracks-2025/)                                            | 25    | 0.70           | 🧪 Specialists        |
+| [Dazed](https://www.dazeddigital.com/music/article/69273/1/20-best-tracks-of-2025-ranked-ethel-cain-smerz-esdeekid-fakemink) | 20    | 0.60           | 🧪 Specialists        |
+| [Entertainment Weekly](https://ew.com/the-10-best-songs-of-2025-11864116)                                                    | 10    | 0.50           | 📡 Mainstream         |
+| [Gorilla vs. Bear](https://www.gorillavsbear.net/gorilla-vs-bears-songs-of-2025/)                                            | 33    | 0.90           | ⚡ Tastemakers        |
+| [LA Times](https://www.latimes.com/entertainment-arts/music/story/2025-12-04/25-best-songs-of-2025)                          | 25    | 1.00           | 🏛️ Critical Authority |
+| [NME](https://www.nme.com/lists/end-of-year/best-songs-2025-3912937)                                                         | 50    | 0.80           | ⚡ Tastemakers        |
+| [New York Times (Jon Caramanica)](https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html)                        | 20    | 1.00           | 🏛️ Critical Authority |
+| [New York Times (Lindsay Zoladz)](https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html)                        | 20    | 1.00           | 🏛️ Critical Authority |
+| [Paste](https://www.pastemagazine.com/music/best-songs/the-100-best-songs-of-2025)                                           | 100   | 0.70           | ⚡ Tastemakers        |
+| [Pitchfork](https://pitchfork.com/features/lists-and-guides/best-songs-2025/)                                                | 100   | 1.00           | ⚡ Tastemakers        |
+| [Rolling Stone](https://www.rollingstone.com/music/music-lists/best-songs-of-2025-1235468614)                                | 100   | 1.00           | 🏛️ Critical Authority |
+| [Slant](http://slantmagazine.com/music/the-50-best-songs-of-2025/)                                                           | 50    | 0.90           | ⚡ Tastemakers        |
+| [Stereogum](https://stereogum.com/2480811/the-50-best-songs-of-2025/lists/year-in-review/2025-in-review)                     | 50    | 0.70           | ⚡ Tastemakers        |
+| [The FADER](https://www.thefader.com/2025/12/09/best-songs-2025)                                                             | 51    | 0.90           | ⚡ Tastemakers        |
+| [The Guardian](https://www.theguardian.com/music/ng-interactive/2025/dec/03/the-20-best-songs-of-2025)                       | 22    | 0.90           | 🏛️ Critical Authority |
+| [The Quietus](https://thequietus.com/tq-charts/tracks-of-the-year/the-quietus-tracks-of-the-year-2025/)                      | 50    | 0.70           | 🧪 Specialists        |
+| [USA Today](https://www.usatoday.com/story/entertainment/music/2025/12/17/best-songs-2025-ranking/87703729007/)              | 10    | 0.50           | 📡 Mainstream         |
+| [Vulture](https://www.vulture.com/article/best-songs-2025.html)                                                              | 10    | 1.00           | 🏛️ Critical Authority |
+
+#### Unranked Sources
+
+| name                                                                                                                      | songs | default weight | shadow rank | category              |
+| :------------------------------------------------------------------------------------------------------------------------ | :---- | :------------- | :---------- | :-------------------- |
+| [Associated Press](https://apnews.com/article/best-songs-2025-6a4712aa815b7554790ff28fbdff220b)                           | 10    | 0.60           | 5.50        | 📡 Mainstream         |
+| [ELLE](https://www.elle.com/culture/music/a65322446/best-songs-of-2025/)                                                  | 48    | 0.50           | 24.50       | 📡 Mainstream         |
+| [NPR Top 125](https://www.npr.org/nx-s1-5619849)                                                                          | 100   | 1.00           | 75.50       | 🏛️ Critical Authority |
+| [NPR Top 25](https://www.npr.org/nx-s1-5616663)                                                                           | 25    | 1.00           | 13.00       | 🏛️ Critical Authority |
+| [Rough Trade](https://blog.roughtrade.com/gb/the-best-songs-of-2025/)                                                     | 63    | 0.60           | 32.00       | 🧪 Specialists        |
+| [The Independent](https://www.the-independent.com/arts-entertainment/music/features/the-best-songs-of-2025-b2884545.html) | 10    | 0.60           | 5.50        | 📡 Mainstream         |
+| [Variety](https://variety.com/lists/best-songs-2025)                                                                      | 61    | 0.50           | 31.00       | 📡 Mainstream         |
 
 ## 👤 Contact
 
