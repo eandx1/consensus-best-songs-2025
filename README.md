@@ -2,6 +2,8 @@
 
 🔗 **Live Site:** [https://bestsongs2025.com/](https://bestsongs2025.com/)
 
+<a href="https://bestsongs2025.com/"><img src="./og-image.png" width="50%" alt="Image of the site"></a>
+
 ## About
 
 This project is the result of a yearly personal obsession: figuring out how to prioritize the latest music based on "Best Songs of 2025" lists from a wide variety of publications. I love finding new music that I wouldn't have discovered otherwise.
