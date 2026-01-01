@@ -1,5 +1,7 @@
 # Consensus Best Songs 2025
 
+🔗 **Live Site:** [https://bestsongs2025.com/](https://bestsongs2025.com/)
+
 ## About
 
 This project is the result of a yearly personal obsession: figuring out how to prioritize the latest music based on "Best Songs of 2025" lists from a wide variety of publications. I love finding new music that I wouldn't have discovered otherwise.
@@ -15,8 +17,6 @@ I scraped around 28 song lists and did the following:
 I then developed ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
 
 The resulting site lets you view the result of that ranking, but you can customize the knobs and share your own, instead.
-
-🔗 **Live Site:** [https://bestsongs2025.com/](https://bestsongs2025.com/)
 
 ## 🏗️ Project Structure
 
