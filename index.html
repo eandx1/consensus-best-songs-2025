@@ -571,7 +571,7 @@
         }
 
         /* Remove card styling from nested articles to regain horizontal space */
-        dialog article article {
+        dialog article article:not(.mode-card) {
           padding: 0;
           background: transparent;
           box-shadow: none;
@@ -580,7 +580,7 @@
           padding-bottom: 1.5rem;
         }
 
-        dialog article article:last-of-type {
+        dialog article article:not(.mode-card):last-of-type {
           border-bottom: none;
           margin-bottom: 0;
           padding-bottom: 0;
