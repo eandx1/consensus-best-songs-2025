@@ -3,9 +3,9 @@
         "ranking": {
             "k_value": 20,
             "p_exponent": 0.55,
-            "cluster_threshold": 50,
-            "consensus_boost": 0.05,
-            "provocation_boost": 0.1,
+            "cluster_threshold": 25,
+            "consensus_boost": 0.03,
+            "provocation_boost": 0.0,
             "cluster_boost": 0.03,
             "rank1_bonus": 1.1,
             "rank2_bonus": 1.075,
@@ -39,18 +39,18 @@
             "NYT (Caramanica)": {
                 "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
                 "weight": 1.0,
-                "full_name": "New York Times (Jon Caramanica)",
                 "cluster": "Critical Authority",
                 "type": "ranked",
-                "song_count": 20
+                "song_count": 20,
+                "full_name": "New York Times (Jon Caramanica)"
             },
             "NYT (Zoladz)": {
                 "url": "https://www.nytimes.com/2025/12/07/arts/music/best-songs-2025.html",
                 "weight": 1.0,
-                "full_name": "New York Times (Lindsay Zoladz)",
                 "cluster": "Critical Authority",
                 "type": "ranked",
-                "song_count": 20
+                "song_count": 20,
+                "full_name": "New York Times (Lindsay Zoladz)"
             },
             "Rolling Stone": {
                 "url": "https://www.rollingstone.com/music/music-lists/best-songs-of-2025-1235468614",
@@ -61,14 +61,14 @@
             },
             "Slant": {
                 "url": "http://slantmagazine.com/music/the-50-best-songs-of-2025/",
-                "weight": 1.0,
-                "cluster": "Critical Authority",
+                "weight": 0.9,
+                "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 50
             },
             "Guardian": {
                 "url": "https://www.theguardian.com/music/ng-interactive/2025/dec/03/the-20-best-songs-of-2025",
-                "weight": 1.0,
+                "weight": 0.9,
                 "cluster": "Critical Authority",
                 "type": "ranked",
                 "song_count": 22,
@@ -83,7 +83,7 @@
             },
             "Complex": {
                 "url": "https://www.complex.com/music/a/dimassanfiorenzo/best-songs-2025",
-                "weight": 0.8,
+                "weight": 0.9,
                 "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 50
@@ -97,7 +97,7 @@
             },
             "GvsB": {
                 "url": "https://www.gorillavsbear.net/gorilla-vs-bears-songs-of-2025/",
-                "weight": 0.8,
+                "weight": 0.9,
                 "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 33,
@@ -105,28 +105,28 @@
             },
             "Paste": {
                 "url": "https://www.pastemagazine.com/music/best-songs/the-100-best-songs-of-2025",
-                "weight": 0.8,
+                "weight": 0.7,
                 "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 100
             },
             "Pitchfork": {
                 "url": "https://pitchfork.com/features/lists-and-guides/best-songs-2025/",
-                "weight": 0.8,
+                "weight": 1.0,
                 "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 100
             },
             "Stereogum": {
                 "url": "https://stereogum.com/2480811/the-50-best-songs-of-2025/lists/year-in-review/2025-in-review",
-                "weight": 0.8,
+                "weight": 0.7,
                 "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 50
             },
             "FADER": {
                 "url": "https://www.thefader.com/2025/12/09/best-songs-2025",
-                "weight": 0.8,
+                "weight": 0.9,
                 "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 51,
@@ -142,22 +142,21 @@
             },
             "Dazed": {
                 "url": "https://www.dazeddigital.com/music/article/69273/1/20-best-tracks-of-2025-ranked-ethel-cain-smerz-esdeekid-fakemink",
-                "weight": 0.7,
+                "weight": 0.6,
                 "cluster": "Specialists",
                 "type": "ranked",
-                "song_count": 20,
-                "full_name": "Dazed & Confused"
+                "song_count": 20
             },
             "NME": {
                 "url": "https://www.nme.com/lists/end-of-year/best-songs-2025-3912937",
-                "weight": 0.7,
-                "cluster": "Specialists",
+                "weight": 0.8,
+                "cluster": "Tastemakers",
                 "type": "ranked",
                 "song_count": 50
             },
             "Rough Trade": {
                 "url": "https://blog.roughtrade.com/gb/the-best-songs-of-2025/",
-                "weight": 0.7,
+                "weight": 0.6,
                 "cluster": "Specialists",
                 "type": "unranked",
                 "song_count": 63,
@@ -165,8 +164,8 @@
             },
             "Independent": {
                 "url": "https://www.the-independent.com/arts-entertainment/music/features/the-best-songs-of-2025-b2884545.html",
-                "weight": 0.7,
-                "cluster": "Specialists",
+                "weight": 0.6,
+                "cluster": "Mainstream",
                 "type": "unranked",
                 "song_count": 10,
                 "shadow_rank": 5.5,
@@ -182,7 +181,7 @@
             },
             "AP": {
                 "url": "https://apnews.com/article/best-songs-2025-6a4712aa815b7554790ff28fbdff220b",
-                "weight": 0.5,
+                "weight": 0.6,
                 "cluster": "Mainstream",
                 "type": "unranked",
                 "song_count": 10,
@@ -191,7 +190,7 @@
             },
             "Billboard Staff": {
                 "url": "https://www.billboard.com/lists/best-songs-2025",
-                "weight": 0.5,
+                "weight": 0.7,
                 "cluster": "Mainstream",
                 "type": "ranked",
                 "song_count": 100,
@@ -257,100 +256,423 @@
     },
     "songs": [
         {
-            "id": "QT3F42457524",
-            "artist": "GELO",
-            "name": "Tweaker",
+            "id": "USUG12503807",
+            "artist": "YoungBoy Never Broke Again",
+            "name": "Shot Callin",
             "sources": [
                 {
-                    "name": "NYT (Caramanica)",
-                    "rank": 20,
-                    "quote": "turns a drudging appearance on a livestream into evanescent hip-hop gold"
-                },
-                {
-                    "name": "Stereogum",
-                    "rank": 44,
-                    "quote": "sliding into the kind of pocket that very few full-time rappers find"
+                    "name": "Rolling Stone",
+                    "rank": 7,
+                    "quote": "the track hits you like a gut punch with its explosive trap drums and YoungBoy's melodic and menacing delivery"
                 },
                 {
                     "name": "Complex",
-                    "rank": 49,
-                    "quote": "a single so good it earned him a record deal with Def Jam"
-                },
-                {
-                    "name": "Billboard Staff",
-                    "rank": 84,
-                    "quote": "a scalding anthem ... with shades of prime Master P flowing through his blood"
-                }
-            ],
-            "list_count": 4,
-            "media": {
-                "youtube": {
-                    "music_id": "Blo8ljEhA24",
-                    "video_id": "2Mk7VTUwbck"
-                },
-                "spotify": {
-                    "id": "7HDq8aEtkBeZq7gfzYjW28"
-                }
-            }
-        },
-        {
-            "id": "USBQU2500083",
-            "artist": "Geese",
-            "name": "Au Pays du Cocaine",
-            "sources": [
-                {
-                    "name": "Consequence",
-                    "rank": 1,
-                    "quote": "Winter's yearning cries of total devotion ... are both devastating and heartwarming"
-                },
-                {
-                    "name": "Paste",
-                    "rank": 61,
-                    "quote": "begins gently and humbly with a very pretty, '70s-tinged guitar riff before revealing itself as something more desperate, though still just as affecting"
+                    "rank": 7,
+                    "quote": "a generation-defining artist finally basking in well-earned glory"
                 }
             ],
             "list_count": 2,
             "media": {
                 "youtube": {
-                    "music_id": "fpIHEHs-zck",
-                    "video_id": "fpIHEHs-zck"
+                    "music_id": "XoqyAWcedvM",
+                    "video_id": "XoqyAWcedvM"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/shot-callin/1824363644?i=1824363817"
                 },
                 "spotify": {
-                    "id": "1g9GiiPPaL7KcDHlDzu7lT"
+                    "id": "4n4tC4qO2LeWQRM9Gbbtop"
                 }
-            }
+            },
+            "genres": [
+                "Hip-Hop/Rap"
+            ]
         },
         {
-            "id": "QM6MZ2547404",
-            "artist": "CMAT",
-            "name": "EURO-COUNTRY",
+            "id": "USRC12500972",
+            "artist": "Doja Cat",
+            "name": "Jealous Type",
             "sources": [
                 {
-                    "name": "Paste",
-                    "rank": 4,
-                    "quote": "open letter to Ireland, as she pleads for the culture she identifies with so deeply to preserve itself"
+                    "name": "LA Times",
+                    "rank": 5,
+                    "quote": "'80s-pop cosplay so convincing that folks in 2025 forgot to make it a real hit"
                 },
                 {
-                    "name": "Crack",
-                    "rank": 22,
-                    "quote": "a powerful, offbeat spellbinder ... grieves an earlier time"
+                    "name": "Quietus",
+                    "rank": 8,
+                    "quote": "Doja Cat channels Madonna and Vanity 6 for this sultry banger ... there just isn't really anyone else doing stuff like this right now and absolutely owning it."
+                }
+            ],
+            "list_count": 2,
+            "media": {
+                "youtube": {
+                    "music_id": "VmYbegvVfHE",
+                    "video_id": "lv1MwS56aCo"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/jealous-type/1834042903?i=1834042905"
+                },
+                "spotify": {
+                    "id": "03JZr55j9bIj1d2RQJ7Yq9"
+                }
+            },
+            "genres": [
+                "Pop"
+            ]
+        },
+        {
+            "id": "QZS7J2542546",
+            "artist": "MOLIY, Silent Addy, Skillibeng, & Shenseea",
+            "name": "Shake It To The Max (FLY) - Remix",
+            "sources": [
+                {
+                    "name": "Complex",
+                    "rank": 15,
+                    "quote": "one of the funnest, sweatiest dancefloor anthems of the year"
+                },
+                {
+                    "name": "NYT (Caramanica)",
+                    "rank": 16,
+                    "quote": "A global dancehall anthem that bridged Africa, the Caribbean and the United States"
+                },
+                {
+                    "name": "Billboard Staff",
+                    "rank": 17,
+                    "quote": "an absolute banger that should've been nominated for a Grammy"
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 52,
+                    "quote": "melds classic dancehall vibes with modern instrumentation"
                 },
                 {
                     "name": "Pitchfork",
-                    "rank": 85,
-                    "quote": "fragments herself, linguistically and musically"
+                    "rank": 72,
+                    "quote": "a party honeypot, but what makes it so unforgettable is the way MOLIY sends the request up from the floor knowing she's not about to take any bullshit"
+                }
+            ],
+            "list_count": 5,
+            "media": {
+                "youtube": {
+                    "music_id": "EVwh5pJj5KY",
+                    "video_id": "UjBhbMMgLzc"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/shake-it-to-the-max-fly-remix/1795039318?i=1795039319"
+                },
+                "spotify": {
+                    "id": "0QCIpQV3twfqo9kh0t8Zza"
+                }
+            },
+            "genres": [
+                "Afrobeats",
+                "African"
+            ]
+        },
+        {
+            "id": "USSM12504044",
+            "artist": "ROSAL\u00cdA, Estrella Morente, & S\u00edlvia P\u00e9rez Cruz",
+            "name": "La Rumba Del Perd\u00f3n",
+            "sources": [
+                {
+                    "name": "Vulture",
+                    "rank": 3,
+                    "quote": "coming to grips with betrayal amid the gravitas of a rumba flamenca tune"
+                },
+                {
+                    "name": "LA Times",
+                    "rank": 8,
+                    "quote": "[A] woman possessed of celestial talents fights it out with the god who abandoned her"
+                }
+            ],
+            "list_count": 2,
+            "media": {
+                "youtube": {
+                    "music_id": "whWGBVowiHE",
+                    "video_id": "aobwPVZfuSQ"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/la-rumba-del-perd%C3%B3n/1848167516?i=1848167785"
+                },
+                "spotify": {
+                    "id": "7o76sIawH9bRWsltcWfQfd"
+                }
+            },
+            "genres": [
+                "Rock y Alternativo",
+                "Latin"
+            ]
+        },
+        {
+            "id": "USWB12502453",
+            "artist": "sombr",
+            "name": "12 to 12",
+            "sources": [
+                {
+                    "name": "Buzzfeed",
+                    "rank": 12,
+                    "quote": "\"12 to 12\" has a catchy '80s-inspired vibe, and those opening synths and vocal effects grab you from the very first seconds"
+                },
+                {
+                    "name": "LA Times",
+                    "rank": 23,
+                    "quote": "The zoomer wedding dance-floor anthem of 2035."
+                },
+                {
+                    "name": "ELLE",
+                    "uses_shadow_rank": true,
+                    "quote": "Sombr's 2010s alt-rock sound hits close to home"
+                },
+                {
+                    "name": "Variety",
+                    "uses_shadow_rank": true,
+                    "quote": "a swaggering pop song that packs all of the punch it promises"
+                },
+                {
+                    "name": "Billboard Staff",
+                    "rank": 42,
+                    "quote": "delivered one of the sleekest disco workouts of the year"
+                },
+                {
+                    "name": "NME",
+                    "rank": 47,
+                    "quote": "has a penchant for putting melancholic heartbreak to a funky melody and making it sound like an intoxicatingly good time"
+                },
+                {
+                    "name": "NPR Top 125",
+                    "uses_shadow_rank": true,
+                    "quote": "an undeniable '80s FM urgency ... The adrenaline rush of that driving groove and dramatic piano renders the rest of the track inconsequential"
+                }
+            ],
+            "list_count": 7,
+            "media": {
+                "youtube": {
+                    "music_id": "Lylp6w7LpHc",
+                    "video_id": "cZgUiR31m-Y"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/12-to-12/1828036634?i=1828036635"
+                },
+                "spotify": {
+                    "id": "05od2qm2MTSKCHxy1GBp5W"
+                }
+            },
+            "genres": [
+                "Indie Rock",
+                "Alternative"
+            ]
+        },
+        {
+            "id": "QM4TW2517490",
+            "artist": "Little Simz, Obongjayar, & Moonchild Sanelly",
+            "name": "Flood",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 18,
+                    "quote": "The UK rapper addresses betrayal with a haunting cadence and thunderous drums, taking no prisoners as she offers up hard-earned clarity and advice."
+                },
+                {
+                    "name": "Guardian",
+                    "rank": 20,
+                    "quote": "she lays out her six-point plan for greatness with koans of wisdom such as: \"Never eat with the hyenas / 'Cause they will look at you as bones.\""
+                },
+                {
+                    "name": "ELLE",
+                    "uses_shadow_rank": true,
+                    "quote": "a master class in storytelling, showing a profound confidence from the rapper"
                 }
             ],
             "list_count": 3,
             "media": {
                 "youtube": {
-                    "music_id": "nksi6gLKpoE",
-                    "video_id": "_SVNTv44C4g"
+                    "music_id": "FEORaPiNF6g",
+                    "video_id": "GvrNPiz7rHw"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/flood-feat-obongjayar-moonchild-sanelly/1794880972?i=1794880975"
                 },
                 "spotify": {
-                    "id": "22vRKcdPjVW7Q6ydLNcYBV"
+                    "id": "3m9g8ua3M51JvqmS8rh6bS"
+                }
+            },
+            "genres": [
+                "Hip-Hop",
+                "Hip-Hop/Rap"
+            ]
+        },
+        {
+            "id": "QMB622500153",
+            "artist": "Hayley Williams",
+            "name": "True Believer",
+            "sources": [
+                {
+                    "name": "NME",
+                    "rank": 6,
+                    "quote": "makes an especially bold statement on 'True Believer' ... slicing deep into the historic rot that lies at the heart of her home"
+                },
+                {
+                    "name": "NPR Top 25",
+                    "uses_shadow_rank": true,
+                    "quote": "weeps and seethes for Nashville, a city built on religious systems that still justify colonization and racism"
+                },
+                {
+                    "name": "Consequence",
+                    "rank": 14,
+                    "quote": "she pours out her criticism like it's honeyed holy water over a false idol"
+                },
+                {
+                    "name": "Variety",
+                    "uses_shadow_rank": true,
+                    "quote": "makes for good, smart-mouthed pop at a time when most musicians are content to avoid the divisive elephants in the room"
+                }
+            ],
+            "list_count": 4,
+            "media": {
+                "youtube": {
+                    "music_id": "ZRH5vhscJZY",
+                    "video_id": "a5Uy5vDXhKI"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/true-believer/1850011909?i=1850012209"
+                },
+                "spotify": {
+                    "id": "4cSeIOmk8tffkGPYavEp57"
+                }
+            },
+            "genres": [
+                "Alternative"
+            ]
+        },
+        {
+            "id": "GBBKS2500056",
+            "artist": "Nourished by Time",
+            "name": "9 2 5",
+            "sources": [
+                {
+                    "name": "Quietus",
+                    "rank": 14,
+                    "quote": "an ode to the necessity of keeping the dream alive ... stands as the glistening centrepiece to Nourished By Time's superb second album"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 22,
+                    "quote": "makes the Sisyphean feat of a working-class artist sound like a scrappier version of an '80s boogie anthem for the nightclub"
+                },
+                {
+                    "name": "NME",
+                    "rank": 31,
+                    "quote": "he refuses to \"let the dreamer die\""
+                }
+            ],
+            "list_count": 3,
+            "media": {
+                "youtube": {
+                    "music_id": "ZJfqx_rxOTc",
+                    "video_id": "NEEv8DuqQSY"
+                },
+                "spotify": {
+                    "id": "6IzuJx4beJwcP9ImbZsKYd"
                 }
             }
+        },
+        {
+            "id": "USA2P2520537",
+            "artist": "Ryan Davis & the Roadhouse Band",
+            "name": "New Threats From The Soul",
+            "sources": [
+                {
+                    "name": "Paste",
+                    "rank": 2,
+                    "quote": "the loudmouth tempo of Jerry Jeff Walker, the literary devastation of David Berman, and the oddball charm of a John Prine verse and blends them all into a potent, drunken recital of strangeness"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 5,
+                    "quote": "for as kaleidoscopic as the music can be, most listeners will come away just thinking about the lyrics, so full of humor and personality"
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 11,
+                    "quote": "distilling all that's complex and confounding about life into clarifying gems"
+                },
+                {
+                    "name": "Rough Trade",
+                    "uses_shadow_rank": true,
+                    "quote": "an album just comes right out of nowhere and knocks you out"
+                }
+            ],
+            "list_count": 4,
+            "media": {
+                "youtube": {
+                    "music_id": "t_GCZgqElQY",
+                    "video_id": "TuvUY9adrQ8"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/new-threats-from-the-soul/1826129223?i=1826129225"
+                },
+                "spotify": {
+                    "id": "1IXWSLygPDS5LQDQZH0NAz"
+                }
+            },
+            "genres": [
+                "Indie Rock",
+                "Alternative"
+            ]
+        },
+        {
+            "id": "USJ5G2542804",
+            "artist": "Wednesday",
+            "name": "Elderberry Wine",
+            "sources": [
+                {
+                    "name": "Slant",
+                    "rank": 5,
+                    "quote": "exudes such pleasant vibes ... it's actually a bittersweet breakup song"
+                },
+                {
+                    "name": "AP",
+                    "uses_shadow_rank": true,
+                    "quote": "a lovely, fermented rumination on a relationship gone sour, stuffed with poetic wisdom"
+                },
+                {
+                    "name": "Guardian",
+                    "rank": 18,
+                    "quote": "beneath all the twang and sway lay a fairly devastating account of the distance elapsed between two people"
+                },
+                {
+                    "name": "FADER",
+                    "rank": 27,
+                    "quote": "jam-packed with metaphors, imagery, and turns of phrase that it's practically a novel in miniature"
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 47,
+                    "quote": "a lovely country-rock tune, steeped in pedal steel and patient jangle"
+                },
+                {
+                    "name": "Consequence",
+                    "rank": 106,
+                    "quote": "a tune as sweet as its namesake"
+                }
+            ],
+            "list_count": 6,
+            "media": {
+                "youtube": {
+                    "music_id": "CAoz3ykn2t4",
+                    "video_id": "uE0waEdE2Pw"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/elderberry-wine/1809401153?i=1809401163"
+                },
+                "spotify": {
+                    "id": "00lSB9CSyOcsxKVtbPbniL"
+                }
+            },
+            "genres": [
+                "Alternative"
+            ]
         }
     ]
 }
