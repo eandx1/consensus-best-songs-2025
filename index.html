@@ -172,6 +172,14 @@
         width: 100%; /* Ensure it takes full width in stack */
       }
 
+      /* Genre display styling - use specific selector to override Pico's h5 styles */
+      article.song-card hgroup h5.song-genres {
+        font-size: 0.8rem;
+        opacity: 65%;
+        font-weight: 300; /* Lighter weight creates a sophisticated look */
+        margin-bottom: 0;
+      }
+
       .about-methodology-box {
         background: var(--pico-card-background-color);
         padding: var(--pico-spacing);
@@ -266,9 +274,9 @@
 
       /* Use h4 for artist name in hgroup */
       article.song-card hgroup h4 {
-        margin-bottom: 0;
         color: var(--pico-muted-color);
         font-weight: normal;
+        margin-bottom: 0.25rem
       }
 
       /* Info icon - now inside header, aligned to baseline */

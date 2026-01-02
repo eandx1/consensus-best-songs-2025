@@ -256,423 +256,517 @@
     },
     "songs": [
         {
-            "id": "USUG12503807",
-            "artist": "YoungBoy Never Broke Again",
-            "name": "Shot Callin",
+            "id": "USSM12504030",
+            "artist": "ROSAL\u00cdA",
+            "name": "Reliquia",
             "sources": [
                 {
-                    "name": "Rolling Stone",
+                    "name": "Paste",
                     "rank": 7,
-                    "quote": "the track hits you like a gut punch with its explosive trap drums and YoungBoy's melodic and menacing delivery"
+                    "quote": "opening cascade of vibrant strings ... provides an opening for ROSAL\u00cdA to wax poetic on the trappings of fame"
                 },
                 {
-                    "name": "Complex",
+                    "name": "NME",
                     "rank": 7,
-                    "quote": "a generation-defining artist finally basking in well-earned glory"
+                    "quote": "its gorgeous opening string arrangement melting into gently thumping electronic production"
+                },
+                {
+                    "name": "Slant",
+                    "rank": 14,
+                    "quote": "projects a heavenly tranquility as she lists the sacrifices she's made for art and love"
                 }
             ],
-            "list_count": 2,
+            "list_count": 3,
             "media": {
                 "youtube": {
-                    "music_id": "XoqyAWcedvM",
-                    "video_id": "XoqyAWcedvM"
+                    "music_id": "QI2kMNHKC2M",
+                    "video_id": "xPaSuWrBAQI"
                 },
                 "apple": {
-                    "url": "https://music.apple.com/us/album/shot-callin/1824363644?i=1824363817"
+                    "url": "https://music.apple.com/us/album/reliquia/1848167516?i=1848167522"
                 },
                 "spotify": {
-                    "id": "4n4tC4qO2LeWQRM9Gbbtop"
+                    "id": "4ORvXsPK9AJmDzm36BYcdy"
                 }
             },
-            "genres": [
-                "Hip-Hop/Rap"
-            ]
+            "genres": "Latin"
         },
         {
-            "id": "USRC12500972",
-            "artist": "Doja Cat",
-            "name": "Jealous Type",
+            "id": "FRX452505206",
+            "artist": "dexter in the newsagent",
+            "name": "Special",
             "sources": [
                 {
-                    "name": "LA Times",
-                    "rank": 5,
-                    "quote": "'80s-pop cosplay so convincing that folks in 2025 forgot to make it a real hit"
-                },
-                {
-                    "name": "Quietus",
-                    "rank": 8,
-                    "quote": "Doja Cat channels Madonna and Vanity 6 for this sultry banger ... there just isn't really anyone else doing stuff like this right now and absolutely owning it."
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "VmYbegvVfHE",
-                    "video_id": "lv1MwS56aCo"
-                },
-                "apple": {
-                    "url": "https://music.apple.com/us/album/jealous-type/1834042903?i=1834042905"
-                },
-                "spotify": {
-                    "id": "03JZr55j9bIj1d2RQJ7Yq9"
-                }
-            },
-            "genres": [
-                "Pop"
-            ]
-        },
-        {
-            "id": "QZS7J2542546",
-            "artist": "MOLIY, Silent Addy, Skillibeng, & Shenseea",
-            "name": "Shake It To The Max (FLY) - Remix",
-            "sources": [
-                {
-                    "name": "Complex",
-                    "rank": 15,
-                    "quote": "one of the funnest, sweatiest dancefloor anthems of the year"
+                    "name": "AP",
+                    "uses_shadow_rank": true,
+                    "quote": "catchy and effervescent, like a vintage R&B cut but undeniably contemporary in its slow, romantic production"
                 },
                 {
                     "name": "NYT (Caramanica)",
-                    "rank": 16,
-                    "quote": "A global dancehall anthem that bridged Africa, the Caribbean and the United States"
+                    "rank": 7,
+                    "quote": "a delightful, patient, encouraging and nourishing whisper of a love song"
                 },
                 {
-                    "name": "Billboard Staff",
-                    "rank": 17,
-                    "quote": "an absolute banger that should've been nominated for a Grammy"
+                    "name": "FADER",
+                    "rank": 37,
+                    "quote": "Heartbreak here sounds both resigned and hopeful"
                 },
                 {
-                    "name": "Rolling Stone",
-                    "rank": 52,
-                    "quote": "melds classic dancehall vibes with modern instrumentation"
+                    "name": "Paste",
+                    "rank": 56,
+                    "quote": "dexter sings with such conviction that all you can do is bask in the beauty"
                 },
                 {
                     "name": "Pitchfork",
-                    "rank": 72,
-                    "quote": "a party honeypot, but what makes it so unforgettable is the way MOLIY sends the request up from the floor knowing she's not about to take any bullshit"
+                    "rank": 66,
+                    "quote": "full of grace and fully imagined, as if it had always been with us"
                 }
             ],
             "list_count": 5,
             "media": {
                 "youtube": {
-                    "music_id": "EVwh5pJj5KY",
-                    "video_id": "UjBhbMMgLzc"
+                    "music_id": "BvM3LQtvYDU",
+                    "video_id": "6vLZjyKuWEY"
                 },
                 "apple": {
-                    "url": "https://music.apple.com/us/album/shake-it-to-the-max-fly-remix/1795039318?i=1795039319"
+                    "url": "https://music.apple.com/us/album/special/1818861416?i=1818861424"
                 },
                 "spotify": {
-                    "id": "0QCIpQV3twfqo9kh0t8Zza"
+                    "id": "7HWDQfrQvnAXp5Xk29xqh7"
                 }
             },
-            "genres": [
-                "Afrobeats",
-                "African"
-            ]
+            "genres": "Lo-Fi Indie"
         },
         {
-            "id": "USSM12504044",
-            "artist": "ROSAL\u00cdA, Estrella Morente, & S\u00edlvia P\u00e9rez Cruz",
-            "name": "La Rumba Del Perd\u00f3n",
+            "id": "USUG12506170",
+            "artist": "Chappell Roan",
+            "name": "The Subway",
             "sources": [
                 {
-                    "name": "Vulture",
+                    "name": "EW",
+                    "rank": 2,
+                    "quote": "the vivid imagery in their dream-pop stunner \"The Subway\" is a big reason why it's so relatably, palpably devastating"
+                },
+                {
+                    "name": "USA Today",
+                    "rank": 2,
+                    "quote": "a throwback to the '90s jangle-pop of The Cranberries and The Sundays ... Roan's voice aches with heartbreak"
+                },
+                {
+                    "name": "LA Times",
                     "rank": 3,
-                    "quote": "coming to grips with betrayal amid the gravitas of a rumba flamenca tune"
-                },
-                {
-                    "name": "LA Times",
-                    "rank": 8,
-                    "quote": "[A] woman possessed of celestial talents fights it out with the god who abandoned her"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "whWGBVowiHE",
-                    "video_id": "aobwPVZfuSQ"
-                },
-                "apple": {
-                    "url": "https://music.apple.com/us/album/la-rumba-del-perd%C3%B3n/1848167516?i=1848167785"
-                },
-                "spotify": {
-                    "id": "7o76sIawH9bRWsltcWfQfd"
-                }
-            },
-            "genres": [
-                "Rock y Alternativo",
-                "Latin"
-            ]
-        },
-        {
-            "id": "USWB12502453",
-            "artist": "sombr",
-            "name": "12 to 12",
-            "sources": [
-                {
-                    "name": "Buzzfeed",
-                    "rank": 12,
-                    "quote": "\"12 to 12\" has a catchy '80s-inspired vibe, and those opening synths and vocal effects grab you from the very first seconds"
-                },
-                {
-                    "name": "LA Times",
-                    "rank": 23,
-                    "quote": "The zoomer wedding dance-floor anthem of 2035."
-                },
-                {
-                    "name": "ELLE",
-                    "uses_shadow_rank": true,
-                    "quote": "Sombr's 2010s alt-rock sound hits close to home"
-                },
-                {
-                    "name": "Variety",
-                    "uses_shadow_rank": true,
-                    "quote": "a swaggering pop song that packs all of the punch it promises"
-                },
-                {
-                    "name": "Billboard Staff",
-                    "rank": 42,
-                    "quote": "delivered one of the sleekest disco workouts of the year"
-                },
-                {
-                    "name": "NME",
-                    "rank": 47,
-                    "quote": "has a penchant for putting melancholic heartbreak to a funky melody and making it sound like an intoxicatingly good time"
-                },
-                {
-                    "name": "NPR Top 125",
-                    "uses_shadow_rank": true,
-                    "quote": "an undeniable '80s FM urgency ... The adrenaline rush of that driving groove and dramatic piano renders the rest of the track inconsequential"
-                }
-            ],
-            "list_count": 7,
-            "media": {
-                "youtube": {
-                    "music_id": "Lylp6w7LpHc",
-                    "video_id": "cZgUiR31m-Y"
-                },
-                "apple": {
-                    "url": "https://music.apple.com/us/album/12-to-12/1828036634?i=1828036635"
-                },
-                "spotify": {
-                    "id": "05od2qm2MTSKCHxy1GBp5W"
-                }
-            },
-            "genres": [
-                "Indie Rock",
-                "Alternative"
-            ]
-        },
-        {
-            "id": "QM4TW2517490",
-            "artist": "Little Simz, Obongjayar, & Moonchild Sanelly",
-            "name": "Flood",
-            "sources": [
-                {
-                    "name": "Consequence",
-                    "rank": 18,
-                    "quote": "The UK rapper addresses betrayal with a haunting cadence and thunderous drums, taking no prisoners as she offers up hard-earned clarity and advice."
+                    "quote": "The vocal performance of the year."
                 },
                 {
                     "name": "Guardian",
-                    "rank": 20,
-                    "quote": "she lays out her six-point plan for greatness with koans of wisdom such as: \"Never eat with the hyenas / 'Cause they will look at you as bones.\""
+                    "rank": 3,
+                    "quote": "a lovelorn Celtic pop epic in thrall to the Cranberries ... reprising those torchbearers' snarling, choral rage"
                 },
                 {
-                    "name": "ELLE",
+                    "name": "Independent",
                     "uses_shadow_rank": true,
-                    "quote": "a master class in storytelling, showing a profound confidence from the rapper"
-                }
-            ],
-            "list_count": 3,
-            "media": {
-                "youtube": {
-                    "music_id": "FEORaPiNF6g",
-                    "video_id": "GvrNPiz7rHw"
-                },
-                "apple": {
-                    "url": "https://music.apple.com/us/album/flood-feat-obongjayar-moonchild-sanelly/1794880972?i=1794880975"
-                },
-                "spotify": {
-                    "id": "3m9g8ua3M51JvqmS8rh6bS"
-                }
-            },
-            "genres": [
-                "Hip-Hop",
-                "Hip-Hop/Rap"
-            ]
-        },
-        {
-            "id": "QMB622500153",
-            "artist": "Hayley Williams",
-            "name": "True Believer",
-            "sources": [
-                {
-                    "name": "NME",
-                    "rank": 6,
-                    "quote": "makes an especially bold statement on 'True Believer' ... slicing deep into the historic rot that lies at the heart of her home"
-                },
-                {
-                    "name": "NPR Top 25",
-                    "uses_shadow_rank": true,
-                    "quote": "weeps and seethes for Nashville, a city built on religious systems that still justify colonization and racism"
-                },
-                {
-                    "name": "Consequence",
-                    "rank": 14,
-                    "quote": "she pours out her criticism like it's honeyed holy water over a false idol"
-                },
-                {
-                    "name": "Variety",
-                    "uses_shadow_rank": true,
-                    "quote": "makes for good, smart-mouthed pop at a time when most musicians are content to avoid the divisive elephants in the room"
-                }
-            ],
-            "list_count": 4,
-            "media": {
-                "youtube": {
-                    "music_id": "ZRH5vhscJZY",
-                    "video_id": "a5Uy5vDXhKI"
-                },
-                "apple": {
-                    "url": "https://music.apple.com/us/album/true-believer/1850011909?i=1850012209"
-                },
-                "spotify": {
-                    "id": "4cSeIOmk8tffkGPYavEp57"
-                }
-            },
-            "genres": [
-                "Alternative"
-            ]
-        },
-        {
-            "id": "GBBKS2500056",
-            "artist": "Nourished by Time",
-            "name": "9 2 5",
-            "sources": [
-                {
-                    "name": "Quietus",
-                    "rank": 14,
-                    "quote": "an ode to the necessity of keeping the dream alive ... stands as the glistening centrepiece to Nourished By Time's superb second album"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 22,
-                    "quote": "makes the Sisyphean feat of a working-class artist sound like a scrappier version of an '80s boogie anthem for the nightclub"
-                },
-                {
-                    "name": "NME",
-                    "rank": 31,
-                    "quote": "he refuses to \"let the dreamer die\""
-                }
-            ],
-            "list_count": 3,
-            "media": {
-                "youtube": {
-                    "music_id": "ZJfqx_rxOTc",
-                    "video_id": "NEEv8DuqQSY"
-                },
-                "spotify": {
-                    "id": "6IzuJx4beJwcP9ImbZsKYd"
-                }
-            }
-        },
-        {
-            "id": "USA2P2520537",
-            "artist": "Ryan Davis & the Roadhouse Band",
-            "name": "New Threats From The Soul",
-            "sources": [
-                {
-                    "name": "Paste",
-                    "rank": 2,
-                    "quote": "the loudmouth tempo of Jerry Jeff Walker, the literary devastation of David Berman, and the oddball charm of a John Prine verse and blends them all into a potent, drunken recital of strangeness"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 5,
-                    "quote": "for as kaleidoscopic as the music can be, most listeners will come away just thinking about the lyrics, so full of humor and personality"
-                },
-                {
-                    "name": "Rolling Stone",
-                    "rank": 11,
-                    "quote": "distilling all that's complex and confounding about life into clarifying gems"
-                },
-                {
-                    "name": "Rough Trade",
-                    "uses_shadow_rank": true,
-                    "quote": "an album just comes right out of nowhere and knocks you out"
-                }
-            ],
-            "list_count": 4,
-            "media": {
-                "youtube": {
-                    "music_id": "t_GCZgqElQY",
-                    "video_id": "TuvUY9adrQ8"
-                },
-                "apple": {
-                    "url": "https://music.apple.com/us/album/new-threats-from-the-soul/1826129223?i=1826129225"
-                },
-                "spotify": {
-                    "id": "1IXWSLygPDS5LQDQZH0NAz"
-                }
-            },
-            "genres": [
-                "Indie Rock",
-                "Alternative"
-            ]
-        },
-        {
-            "id": "USJ5G2542804",
-            "artist": "Wednesday",
-            "name": "Elderberry Wine",
-            "sources": [
-                {
-                    "name": "Slant",
-                    "rank": 5,
-                    "quote": "exudes such pleasant vibes ... it's actually a bittersweet breakup song"
+                    "quote": "\"The Subway\" is an open-hearted, grandiose slice of big-city yearning ... It sounds a little like something the late Dolores O'Riordan could have made, which only adds to its sublime melancholy."
                 },
                 {
                     "name": "AP",
                     "uses_shadow_rank": true,
-                    "quote": "a lovely, fermented rumination on a relationship gone sour, stuffed with poetic wisdom"
+                    "quote": "slow-burn dream-pop with Roan demonstrating her chameleonic properties by channeling both the Cranberries' Dolores O'Riordan and Alanis Morissette's yodel"
                 },
                 {
-                    "name": "Guardian",
-                    "rank": 18,
-                    "quote": "beneath all the twang and sway lay a fairly devastating account of the distance elapsed between two people"
-                },
-                {
-                    "name": "FADER",
-                    "rank": 27,
-                    "quote": "jam-packed with metaphors, imagery, and turns of phrase that it's practically a novel in miniature"
+                    "name": "Billboard Staff",
+                    "rank": 8,
+                    "quote": "utterly resplendent"
                 },
                 {
                     "name": "Rolling Stone",
-                    "rank": 47,
-                    "quote": "a lovely country-rock tune, steeped in pedal steel and patient jangle"
+                    "rank": 10,
+                    "quote": "this delicious heartbreaker ... the most emotionally devastating song about standing on a subway platform"
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 11,
+                    "quote": "a lovely, anthemic coda ... It's melancholy but somehow at peace, and totally sublime"
+                },
+                {
+                    "name": "Slant",
+                    "rank": 13,
+                    "quote": "A midtempo dream-pop ballad\u2014replete with crisp, teary-eyed guitars\u2014that finds Chappell Roan achingly pining for the one that got away"
+                },
+                {
+                    "name": "Crack",
+                    "rank": 17,
+                    "quote": "a moment of pure cathartic release"
                 },
                 {
                     "name": "Consequence",
-                    "rank": 106,
-                    "quote": "a tune as sweet as its namesake"
+                    "rank": 24,
+                    "quote": "offers a remarkable glimmer of Roan's cross-genre potential"
+                },
+                {
+                    "name": "ELLE",
+                    "uses_shadow_rank": true,
+                    "quote": "a dreamy '90s pop-rock feel, reminiscent of The Cranberries"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 31,
+                    "quote": "She's haunted by signs of her ex ... the flash of green hair and a beauty mark on a stranger that makes her heart stop"
+                },
+                {
+                    "name": "Rough Trade",
+                    "uses_shadow_rank": true,
+                    "quote": "paints such a devastatingly clear picture of lost love"
+                },
+                {
+                    "name": "NME",
+                    "rank": 35,
+                    "quote": "[she] lets completely loose ... the passionate, gut-wrenching two-minute outro"
+                }
+            ],
+            "list_count": 16,
+            "media": {
+                "youtube": {
+                    "music_id": "Qam5A9lG-wc",
+                    "video_id": "woLfAvD5iXI"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/the-subway/1828261054?i=1828261475"
+                },
+                "spotify": {
+                    "id": "2SsY5k7UWFqgye3PUMG3Oq"
+                }
+            },
+            "genres": "Pop"
+        },
+        {
+            "id": "USJ5G2542802",
+            "artist": "Wednesday",
+            "name": "Townies",
+            "sources": [
+                {
+                    "name": "Stereogum",
+                    "rank": 1,
+                    "quote": "a master of writing grimy, evocative scenes of troubled youth that are daringly specific"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 7
+                },
+                {
+                    "name": "Consequence",
+                    "rank": 9,
+                    "quote": "the ultimate Wednesday song ... offers up one of the best examples of their countrygaze stylings"
+                },
+                {
+                    "name": "NPR Top 25",
+                    "uses_shadow_rank": true,
+                    "quote": "catchy, country-influenced storytelling and the rock-star ability to stretch the word \"died\" into nine syllables"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 21,
+                    "quote": "A mature and masterful missive from one of our greatest working songwriters"
+                },
+                {
+                    "name": "NME",
+                    "rank": 42,
+                    "quote": "excavating the pains of the past helps with closure"
                 }
             ],
             "list_count": 6,
             "media": {
                 "youtube": {
-                    "music_id": "CAoz3ykn2t4",
-                    "video_id": "uE0waEdE2Pw"
+                    "music_id": "mHEiyObNciA",
+                    "video_id": "E8cKoQqdtwA"
                 },
                 "apple": {
-                    "url": "https://music.apple.com/us/album/elderberry-wine/1809401153?i=1809401163"
+                    "url": "https://music.apple.com/us/album/townies/1807870796?i=1807870800"
                 },
                 "spotify": {
-                    "id": "00lSB9CSyOcsxKVtbPbniL"
+                    "id": "2deA4WXDrTa7jAZuaIAeqo"
+                },
+                "bandcamp": {
+                    "url": "https://wednesdayband.bandcamp.com/track/townies"
                 }
             },
-            "genres": [
-                "Alternative"
-            ]
+            "genres": "Alt Country"
+        },
+        {
+            "id": "QZVEM2532603",
+            "artist": "zayALLCAPS",
+            "name": "MTV's Pimp My Ride",
+            "sources": [
+                {
+                    "name": "FADER",
+                    "rank": 28,
+                    "quote": "blurs the line between meet-cute, seduction, and homage to the titular 2000s reality TV staple"
+                },
+                {
+                    "name": "Consequence",
+                    "rank": 37,
+                    "quote": "zayALLCAPS knows how to make even the most throwback sounds feel current and unique"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 47,
+                    "quote": "proves that nostalgia isn't the artistically bankrupt strategy many make it out to be"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 50,
+                    "quote": "an R&B jam with the same zaniness that made the show so popular"
+                }
+            ],
+            "list_count": 4,
+            "media": {
+                "youtube": {
+                    "music_id": "S4OzEth_euE",
+                    "video_id": "S4OzEth_euE"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/mtvs-pimp-my-ride/1802142712?i=1802142713"
+                },
+                "spotify": {
+                    "id": "6sRu3Bf5hxIRCQ8XGfYv1c"
+                }
+            },
+            "genres": "R&B/Soul"
+        },
+        {
+            "id": "US2U62539801",
+            "artist": "feeble little horse",
+            "name": "This Is Real",
+            "sources": [
+                {
+                    "name": "AP",
+                    "uses_shadow_rank": true,
+                    "quote": "pushes the envelope further, working in computerized, hyperpop-esque electronics ... one of their heaviest tracks to date"
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 45,
+                    "quote": "glitchy jangle riffs, overlapping twee-folk refrains\u2026 and the heaviest breakdown this year outside of metal"
+                },
+                {
+                    "name": "Quietus",
+                    "rank": 47
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 82,
+                    "quote": "collide bedroom pop, noise pop, and hyper pop ... turns into bubbly electro cuteness, then runs into a wall of power-drone grind, then becomes a Nineties-style grunge-punk tantrum"
+                }
+            ],
+            "list_count": 4,
+            "media": {
+                "youtube": {
+                    "music_id": "4tT4thtTees",
+                    "video_id": "ZZ5ARgm--Ok"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/this-is-real/1796181543?i=1796181548"
+                },
+                "spotify": {
+                    "id": "4LYXtoiuM9xEmxklVvQnLl"
+                },
+                "bandcamp": {
+                    "url": "https://feeblelittlehorse.bandcamp.com/track/this-is-real"
+                }
+            },
+            "genres": "Shoegaze"
+        },
+        {
+            "id": "QMFMF2447057",
+            "artist": "Bad Bunny",
+            "name": "BAILE INoLVIDABLE",
+            "sources": [
+                {
+                    "name": "LA Times",
+                    "rank": 1,
+                    "quote": "a six-minute ode to the island's roots and influence on the genre ... salsa has become cool once again"
+                },
+                {
+                    "name": "Rolling Stone",
+                    "rank": 4,
+                    "quote": "the album's most poignant facet is his take on salsa"
+                },
+                {
+                    "name": "EW",
+                    "rank": 4,
+                    "quote": "six minutes of pure, unbridled joy, a glorious and exultant tribute to salsa and the power of dance"
+                },
+                {
+                    "name": "Complex",
+                    "rank": 6,
+                    "quote": "a salsa track ... it features a twist ... lively salsa rhythms, layered with twinkling pianos, congas, timbales, and a brassy trumpet melody that could make anyone dance"
+                },
+                {
+                    "name": "NME",
+                    "rank": 10,
+                    "quote": "'Baile Inolvidable' is one of his most magnificent torch songs"
+                },
+                {
+                    "name": "NPR Top 25",
+                    "uses_shadow_rank": true,
+                    "quote": "The song comes alive in a complex expression of communal pain"
+                },
+                {
+                    "name": "ELLE",
+                    "uses_shadow_rank": true,
+                    "quote": "melancholy, but glows with warm instrumentation and harmonies"
+                },
+                {
+                    "name": "Slant",
+                    "rank": 27,
+                    "quote": "a spine-chilling collision of old and new ... turning the dance floor into a metaphor for life itself: as a party that must end"
+                }
+            ],
+            "list_count": 8,
+            "media": {
+                "youtube": {
+                    "music_id": "JseJETvMtHY",
+                    "video_id": "a1Femq4NPxs"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/baile-inolvidable/1787022393?i=1787022842"
+                },
+                "spotify": {
+                    "id": "2lTm559tuIvatlT1u0JYG2"
+                }
+            },
+            "genres": "Reggaeton"
+        },
+        {
+            "id": "GBBKS2500077",
+            "artist": "Jim Legxacy",
+            "name": "stick",
+            "sources": [
+                {
+                    "name": "Vulture",
+                    "rank": 4,
+                    "quote": "surveys tough times sweetly"
+                },
+                {
+                    "name": "FADER",
+                    "rank": 8,
+                    "quote": "inexplicably moving and seriously addictive"
+                },
+                {
+                    "name": "NPR Top 25",
+                    "uses_shadow_rank": true,
+                    "quote": "the ascendant U.K. rapper is an aerial dancer here, whirling between half-sung catch phrases on a ribbon of hummed chords"
+                }
+            ],
+            "list_count": 3,
+            "media": {
+                "youtube": {
+                    "music_id": "YrVJE_6Hg6c",
+                    "video_id": "qfDIhj8UIfc"
+                },
+                "spotify": {
+                    "id": "03zypUrD0e5vrFcmc80NJm"
+                }
+            }
+        },
+        {
+            "id": "GBBKS2500311",
+            "artist": "Jim Legxacy",
+            "name": "'06 wayne rooney",
+            "sources": [
+                {
+                    "name": "GvsB",
+                    "rank": 9
+                },
+                {
+                    "name": "Quietus",
+                    "rank": 19,
+                    "quote": "a painful and refreshingly open insight into the effects of the chaos that life throws at us"
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 30,
+                    "quote": "Converting inner-city turmoil into pillowy singalong hooks is something that comes natural for Jim Legxacy"
+                },
+                {
+                    "name": "Rough Trade",
+                    "uses_shadow_rank": true,
+                    "quote": "the perfect example of Jim's power in evoking an era, producing nostalgia and reflecting on real life shit"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 59,
+                    "quote": "[A] poignant reminder that \"making it\" isn't always a salve for old wounds"
+                },
+                {
+                    "name": "Consequence",
+                    "rank": 191,
+                    "quote": "Channeling the spirit of mid-aughts landfill indie and a myriad of bangers from FIFA soundtracks"
+                }
+            ],
+            "list_count": 6,
+            "media": {
+                "youtube": {
+                    "music_id": "Yq8EXOJbsCE",
+                    "video_id": "RhjZgIk9oCs"
+                },
+                "spotify": {
+                    "id": "7p6LdEcYnSbw68yJDbUjxD"
+                }
+            }
+        },
+        {
+            "id": "GBLZC2400049",
+            "artist": "aya",
+            "name": "off to the ESSO",
+            "sources": [
+                {
+                    "name": "Quietus",
+                    "rank": 2,
+                    "quote": "nerve-jangling sound design, delirium tremens percussion skitter ... actually combine to produce one of the most life-affirming bangers of recent years"
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 13,
+                    "quote": "nauseating dubstep-meets-gabber ... [with] timbres [that] squelch and burst"
+                },
+                {
+                    "name": "Guardian",
+                    "rank": 14,
+                    "quote": "conjures the skull-clattering experience of being too drunk on public transport at an indeterminate morning hour"
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 17,
+                    "quote": "a terrifying, upsetting portrait of drug addiction"
+                },
+                {
+                    "name": "Dazed",
+                    "rank": 17,
+                    "quote": "bundles all of this up in a frantic three-and-a-half minutes, beginning with a thumping bass ... culminating with a ruckus of aggressive synths"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 45,
+                    "quote": "You can feel every buzz, screech, and smack in your bones, taking over your whole being like a persistent parasite"
+                }
+            ],
+            "list_count": 6,
+            "media": {
+                "youtube": {
+                    "music_id": "yBMSzoovWbw",
+                    "video_id": "-vgDl8Asle0"
+                },
+                "apple": {
+                    "url": "https://music.apple.com/us/album/off-to-the-esso/1791674346?i=1791674348"
+                },
+                "spotify": {
+                    "id": "4BsGxMMDdcWQzrUTGXqlAE"
+                },
+                "bandcamp": {
+                    "url": "https://aya-yco.bandcamp.com/track/off-to-the-esso"
+                }
+            },
+            "genres": "Experimental"
         }
     ]
 }
