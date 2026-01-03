@@ -222,6 +222,15 @@ function syncStateFromURL(defaultConfig) {
         applyTheme(DEFAULT_THEME);
     }
 
+    // Display Limit (n parameter)
+    if (params.has('n')) {
+        const n = parseInt(params.get('n'));
+        // Validate: must be a positive integer, clamp to reasonable range
+        if (!isNaN(n) && n > 0) {
+            STATE.displayLimit = Math.min(n, 10000); // Cap at 10000 for safety
+        }
+    }
+
     // Ranking Params
     const rankingKeys = ['decay_mode', 'k_value', 'p_exponent', 'consensus_boost', 'provocation_boost', 'cluster_boost', 'cluster_threshold', 'rank1_bonus', 'rank2_bonus', 'rank3_bonus'];
     rankingKeys.forEach(key => {
@@ -262,6 +271,11 @@ function syncStateFromURL(defaultConfig) {
 function updateURL(config) {
     const params = new URLSearchParams();
     const defaults = APP_DATA.config;
+
+    // Display Limit (n parameter) - only include if not default (25)
+    if (STATE.displayLimit !== 25) {
+        params.set('n', STATE.displayLimit);
+    }
 
     // Theme
     if (config.theme && config.theme !== 'original-dark') {
@@ -411,6 +425,7 @@ async function init() {
         else if (STATE.displayLimit === 100) STATE.displayLimit = 200;
         else if (STATE.displayLimit === 200) STATE.displayLimit = 500;
         else STATE.displayLimit = STATE.songs.length;
+        updateURL(STATE.config); // Persist display limit to URL
         render();
     };
 
@@ -421,8 +436,9 @@ async function init() {
     };
 
     document.getElementById('reset-defaults').onclick = () => {
+        const currentTheme = STATE.config.theme; // Preserve current theme
         STATE.config = JSON.parse(JSON.stringify(APP_DATA.config));
-        applyTheme(STATE.config.theme || 'original-dark');
+        STATE.config.theme = currentTheme; // Restore preserved theme
         renderSettingsUI();
         debouncedReRank();
     };
