@@ -1,5 +1,9 @@
 # Consensus Best Songs 2025
 
+🔗 **Live Site:** [https://bestsongs2025.com/](https://bestsongs2025.com/)
+
+<a href="https://bestsongs2025.com/"><img src="./og-image.png" width="50%" alt="Image of the site"></a>
+
 ## About
 
 This project is the result of a yearly personal obsession: figuring out how to prioritize the latest music based on "Best Songs of 2025" lists from a wide variety of publications. I love finding new music that I wouldn't have discovered otherwise.
@@ -15,8 +19,6 @@ I scraped around 28 song lists and did the following:
 I then developed ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
 
 The resulting site lets you view the result of that ranking, but you can customize the knobs and share your own, instead.
-
-🔗 **Live Site:** [https://bestsongs2025.com/](https://bestsongs2025.com/)
 
 ## 🏗️ Project Structure
 
@@ -123,23 +125,24 @@ Counting NPR as one source:
 
 #### Primary artists with at least 5 cited songs
 
-| artist_name                                                                          | song_count | songs                                                                                                                                                                                                                               |
-| :----------------------------------------------------------------------------------- | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Lorde                                                                                | 7          | Current Affairs · David · Favourite Daughter · Hammer · Man Of The Year · Shapeshifter · What Was That                                                                                                                              |
-| Miley Cyrus                                                                          | 6          | Dream As One - from Avatar: Fire and Ash · Easy Lover · End of the World · Every Girl You've Ever Loved (feat. Naomi Campbell) · Pretend You're God · Walk of Fame (feat. Brittany Howard)                                          |
-| Geese                                                                                | 6          | Au Pays du Cocaine · Getting Killed · Husbands · Long Island City Here I Come · Taxes · Trinidad                                                                                                                                    |
-| ROSALÍA, Björk, & Yves Tumor                                                         | 6          | Berghain · Divinize · La Perla · La Rumba Del Perdón · Porcelana · Reliquia                                                                                                                                                         |
-| FKA twigs                                                                            | 6          | Drums of Death · Girl Feels Good · HARD · Room of Fools · Stereo Boy · Striptease                                                                                                                                                   |
-| Cardi B                                                                              | 6          | Bodega Baddie · ErrTime · Imaginary Playerz · Magnet · Outside · Pretty & Petty                                                                                                                                                     |
-| Oklou                                                                                | 5          | blade bird · obvious · take me by the hand · thank you for recording · viscus (feat. FKA twigs)                                                                                                                                     |
-| Addison Rae                                                                          | 5          | Fame is a Gun · Headphones On · High Fashion · Money is Everything · Times Like These                                                                                                                                               |
-| Clipse, Pusha T, & Malice                                                            | 5          | Chains & Whips · F.I.C.O. · P.O.V. · So Be It · The Birds Don't Sing                                                                                                                                                                |
-| Playboi Carti                                                                        | 5          | ALIVE · EVIL J0RDAN · LIKE WEEZY · OLYMPIAN · OPM BABI                                                                                                                                                                              |
-| Turnstile                                                                            | 5          | BIRDS · LIGHT DESIGN · LOOK OUT FOR ME · NEVER ENOUGH · SOLE                                                                                                                                                                        |
-| Blood Orange, Tariq Al-Sabir, Caroline Polachek, Daniel Caesar, & The Durutti Column | 5          | Mind Loaded (feat. Caroline Polachek, Lorde & Mustafa) · Somewhere in Between · The Field (feat. The Durutti Column, Tariq Al-Sabir, Caroline Polachek & Daniel Caesar) · Vivid Light · Westerberg (feat. Eva Tolkin & Liam Benzvi) |
-| Justin Bieber                                                                        | 5          | DAISIES · DEVOTION · FIRST PLACE · GO BABY · YUKON                                                                                                                                                                                  |
-| Wednesday                                                                            | 5          | Elderberry Wine · Pick Up That Knife · The Way Love Goes · Townies · Wound Up Here (By Holdin On)                                                                                                                                   |
-| billy woods & Kenny Segal                                                            | 5          | A Doll Fulla Pins · BLK XMAS · Corinthians · Misery · Waterproof Mascara                                                                                                                                                            |
+| primary_artist_name | song_count | songs                                                                                                                                                                                                                               |
+| :------------------ | :--------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lorde               | 7          | Current Affairs · David · Favourite Daughter · Hammer · Man Of The Year · Shapeshifter · What Was That                                                                                                                              |
+| Miley Cyrus         | 6          | Dream As One - from Avatar: Fire and Ash · Easy Lover · End of the World · Every Girl You've Ever Loved (feat. Naomi Campbell) · Pretend You're God · Walk of Fame (feat. Brittany Howard)                                          |
+| Geese               | 6          | Au Pays du Cocaine · Getting Killed · Husbands · Long Island City Here I Come · Taxes · Trinidad                                                                                                                                    |
+| ROSALÍA             | 6          | Berghain · Divinize · La Perla · La Rumba Del Perdón · Porcelana · Reliquia                                                                                                                                                         |
+| FKA twigs           | 6          | Drums of Death · Girl Feels Good · HARD · Room of Fools · Stereo Boy · Striptease                                                                                                                                                   |
+| Cardi B             | 6          | Bodega Baddie · ErrTime · Imaginary Playerz · Magnet · Outside · Pretty & Petty                                                                                                                                                     |
+| Oklou               | 5          | blade bird · obvious · take me by the hand · thank you for recording · viscus (feat. FKA twigs)                                                                                                                                     |
+| Addison Rae         | 5          | Fame is a Gun · Headphones On · High Fashion · Money is Everything · Times Like These                                                                                                                                               |
+| Clipse              | 5          | Chains & Whips · F.I.C.O. · P.O.V. · So Be It · The Birds Don't Sing                                                                                                                                                                |
+| Playboi Carti       | 5          | ALIVE · EVIL J0RDAN · LIKE WEEZY · OLYMPIAN · OPM BABI                                                                                                                                                                              |
+| Turnstile           | 5          | BIRDS · LIGHT DESIGN · LOOK OUT FOR ME · NEVER ENOUGH · SOLE                                                                                                                                                                        |
+| Blood Orange        | 5          | Mind Loaded (feat. Caroline Polachek, Lorde & Mustafa) · Somewhere in Between · The Field (feat. The Durutti Column, Tariq Al-Sabir, Caroline Polachek & Daniel Caesar) · Vivid Light · Westerberg (feat. Eva Tolkin & Liam Benzvi) |
+| Justin Bieber       | 5          | DAISIES · DEVOTION · FIRST PLACE · GO BABY · YUKON                                                                                                                                                                                  |
+| Wednesday           | 5          | Elderberry Wine · Pick Up That Knife · The Way Love Goes · Townies · Wound Up Here (By Holdin On)                                                                                                                                   |
+| billy woods         | 5          | A Doll Fulla Pins · BLK XMAS · Corinthians · Misery · Waterproof Mascara                                                                                                                                                            |
+
 
 #### Media Links
 

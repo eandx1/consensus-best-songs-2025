@@ -53,6 +53,7 @@ The primary focus is a ranked list of song cards showing:
   - "YouTube" link (if `video_id` exists)
   - "YTM" link (if `music_id` exists) - both can appear if both IDs present
   - "Spotify" link (if `spotify.id` exists)
+  - "Apple" link (if `apple.url` exists)
   - "Bandcamp" link (if `bandcamp.url` exists)
   - "Other" link (if `other.url` exists)
 - Info (ⓘ) icon in top right that opens Ranking Stats modal
@@ -158,15 +159,18 @@ Modal header shows "About".
 Contains four main sections:
 
 **Behind the project:**
+
 - Personal statement about the site
 - Dynamic display of total song count from `data.json` using `<kbd>` element
 - Link to GitHub repository
 
 **How it works:**
+
 - Explanation of the aggregation methodology
 - Bullet list of customization options (source weights, decay functions, boosts)
 
 **Ranking methodology:**
+
 - Description of the Weighted Decay Model
 - Two-column grid showing Consensus Mode (🤝) and Conviction Mode (🔥) descriptions
 - **Mode Comparison Table**: Dynamic table comparing decay values at ranks 1, 5, 10, 25, 50, 100
@@ -177,6 +181,7 @@ Contains four main sections:
   - Uses formulas: Consensus = `(1 + K) / (rank + K)`, Conviction = `1 / rank^P`
 
 **Decoding the UI:**
+
 - Explanation of cluster emojis and categories
 - Shadow ranks explanation with ghost emoji (👻)
 - Boost types (Provocation ⚡ and Consensus 🤝)
@@ -225,17 +230,20 @@ root (object)
         │       └── quote (string, optional)
         ├── list_count (integer: number of sources citing this song)
         ├── archetype (string, optional)
+        ├── genres (string, optional)
         └── media (object)
-            ├── youtube (object)
-            │   ├── music_id (string)
-            │   └── video_id (string)
-            └── spotify (object)
-                └── id (string)
+            ├── apple (object, optional)
+            │   └── url (string)
+            ├── youtube (object, optional)
+            │   ├── music_id (string, optional)
+            │   └── video_id (string, optional)
+            └── spotify (object, optional)
+                └── id (string, optional)
 ```
 
 # Samples
 
-See [sample_data.json](samples/sample_data.json) for the JSON data format and 3 sample songs.
+See [sample_data.json](samples/sample_data.json) for the JSON data format and sample songs.
 
 See [song_sample.html](samples/song_sample.html) for inspiration for the UI style for a single song card in the list.
 
@@ -257,6 +265,7 @@ Generate links dynamically based on available media:
 - YTM link if `music_id` exists → `https://music.youtube.com/watch?v={music_id}`
 - Both can appear if both IDs are present
 - Spotify link if `spotify.id` exists
+- Apple link if `apple.url` exists
 - Bandcamp link if `bandcamp.url` exists
 - Other link if `other.url` exists
 
@@ -348,33 +357,37 @@ The engine applies three specialized multipliers to the raw scores:
 # Implementation Plan
 
 ## Phase 1: Core Engine & Data Foundation
-*   **Feature 1: Ranking Engine Parity & Robustness**
-    *   Verify `RankingEngine.compute` handles all edge cases (e.g., empty lists).
-    *   Ensure the standard deviation calculation for `Provocation Boost` matches the Python `np.std` (population vs sample).
-    *   Expose the `RankingEngine` globally or structure it for easy debugging.
+
+- **Feature 1: Ranking Engine Parity & Robustness**
+  - Verify `RankingEngine.compute` handles all edge cases (e.g., empty lists).
+  - Ensure the standard deviation calculation for `Provocation Boost` matches the Python `np.std` (population vs sample).
+  - Expose the `RankingEngine` globally or structure it for easy debugging.
 
 ## Phase 2: Structural UI & Layout
-*   **Feature 2: Song Card Layout & "Listen" Links**
-    *   Implement the responsive 3-column layout (Rank | Video | Info) and dynamic media links.
-    *   Update `render()` to generate "Listen" buttons for YouTube, Spotify, Bandcamp, etc.
-    *   Format the "Sources" list with middots and proper wrapping.
+
+- **Feature 2: Song Card Layout & "Listen" Links**
+  - Implement the responsive 3-column layout (Rank | Video | Info) and dynamic media links.
+  - Update `render()` to generate "Listen" buttons for YouTube, Spotify, Bandcamp, etc.
+  - Format the "Sources" list with middots and proper wrapping.
 
 ## Phase 3: Dynamic State & Sharing
-*   **Feature 3: Settings Modal (Configuration)**
-    *   Implement `renderSettingsUI()` to dynamically generate sliders for Ranking Parameters, Source Weights, and Shadow Ranks.
-    *   Attach event listeners to sliders to trigger `debouncedReRank()`.
-    *   Implement the "Defaults" button.
-*   **Feature 4: URL State Synchronization**
-    *   Refine `updateURL()` to write only *changed* values to the query string.
-    *   Ensure `syncStateFromURL()` correctly overrides `data.json` defaults on load.
+
+- **Feature 3: Settings Modal (Configuration)**
+  - Implement `renderSettingsUI()` to dynamically generate sliders for Ranking Parameters, Source Weights, and Shadow Ranks.
+  - Attach event listeners to sliders to trigger `debouncedReRank()`.
+  - Implement the "Defaults" button.
+- **Feature 4: URL State Synchronization**
+  - Refine `updateURL()` to write only _changed_ values to the query string.
+  - Ensure `syncStateFromURL()` correctly overrides `data.json` defaults on load.
 
 ## Phase 4: Detailed Information (Modals)
-*   **Feature 5: Reviews Modal**
-    *   Implement `showReviews(songIndex)` to display detailed source feedback.
-    *   Render the list of sources with ranks, quotes, and links.
-*   **Feature 6: Ranking Stats Modal**
-    *   Implement `showStats(songIndex)` to show scoring breakdown.
-    *   Calculate and display Normalized Score, Multipliers, and individual Source Contributions.
-*   **Feature 7: Visual Polish**
-    *   Finalize "Dark Mode" aesthetic (IntelliJ/Solarized theme).
-    *   Refine `lite-youtube` play button transparency and hover effects.
+
+- **Feature 5: Reviews Modal**
+  - Implement `showReviews(songIndex)` to display detailed source feedback.
+  - Render the list of sources with ranks, quotes, and links.
+- **Feature 6: Ranking Stats Modal**
+  - Implement `showStats(songIndex)` to show scoring breakdown.
+  - Calculate and display Normalized Score, Multipliers, and individual Source Contributions.
+- **Feature 7: Visual Polish**
+  - Finalize "Dark Mode" aesthetic (IntelliJ/Solarized theme).
+  - Refine `lite-youtube` play button transparency and hover effects.
