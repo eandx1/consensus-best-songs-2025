@@ -12,26 +12,26 @@ from collections import Counter
 K_VALUE = 20  # Constant for 'Consensus' mode decay
 P_EXPONENT = 0.55  # Exponent for 'Conviction' mode decay
 
-CLUSTER_THRESHOLD = 50  # Rank limit to qualify for the Crossover Bonus
-CONSENSUS_BOOST = 0.05  # Multiplier for ln(number_of_lists)
-PROVOCATION_BOOST = 0.10  # Max bonus for bold/polarized choices
+CLUSTER_THRESHOLD = 25  # Rank limit to qualify for the Crossover Bonus
+CONSENSUS_BOOST = 0.03  # Multiplier for ln(number_of_lists)
+PROVOCATION_BOOST = 0.0  # Max bonus for bold/polarized choices
 CLUSTER_BOOST = 0.03  # Bonus for hit in a new cluster (within Top 50)
-TOP_BONUSES = {1: 0.10, 2: 0.075, 3: 0.025}
+TOP_BONUSES_CONSENSUS = {1: 0.1, 2: 0.075, 3: 0.025}
+TOP_BONUSES_CONVICTION = {1: 0.25, 2: 0.15, 3: 0.075}
 
-
-def get_decay_value(rank, mode):
+def get_decay_value(rank, mode, k_value: float, p_exponent: float, top_bonuses: dict):
     """Calculates the point value for a specific rank based on chosen mode."""
     if mode == "consensus":
         # (1 + K) / (rank + K)
-        val = (1.0 + K_VALUE) / (rank + K_VALUE)
+        val = (1.0 + k_value) / (rank + k_value)
     else:
         # 1 / (rank ^ P)
-        val = 1.0 / (rank**P_EXPONENT)
+        val = 1.0 / (rank**p_exponent)
 
     # Apply conviction bonuses for integer ranks 1, 2, or 3
     int_rank = int(math.floor(rank))
-    if int_rank in TOP_BONUSES:
-        val *= (1.0 + TOP_BONUSES[int_rank])
+    if int_rank in top_bonuses:
+        val *= 1.0 + top_bonuses[int_rank]
     return val
 
 
@@ -42,6 +42,9 @@ def score_song(
     consensus_boost: float,
     provocation_boost: float,
     cluster_boost: float,
+    k_value: float,
+    p_exponent: float,
+    top_bonuses: dict,
 ):
 
     total_score = 0
@@ -64,7 +67,10 @@ def score_song(
         all_cluster_counts[category] += 1
 
         # DIRECT SCORING (ANCHOR-RANK)
-        pts = get_decay_value(rank, mode) * config["weight"]
+        pts = (
+            get_decay_value(rank, mode, k_value, p_exponent, top_bonuses)
+            * config["weight"]
+        )
         total_score += pts
 
     # Multipliers
@@ -110,7 +116,15 @@ def score_song(
 
 
 def compute_rankings_with_configs(
-    df: pd.DataFrame, sources: dict, mode: str = "consensus"
+    df: pd.DataFrame,
+    sources: dict,
+    mode: str = "consensus",
+    consensus_boost=CONSENSUS_BOOST,
+    provocation_boost=PROVOCATION_BOOST,
+    cluster_boost=CLUSTER_BOOST,
+    k_value: float = K_VALUE,
+    p_exponent: float = P_EXPONENT,
+    top_bonuses: dict = TOP_BONUSES_CONSENSUS,
 ):
     df = df.copy()
 
@@ -119,9 +133,12 @@ def compute_rankings_with_configs(
             row,
             mode,
             sources,
-            CONSENSUS_BOOST,
-            PROVOCATION_BOOST,
-            CLUSTER_BOOST,
+            consensus_boost=consensus_boost,
+            provocation_boost=provocation_boost,
+            cluster_boost=cluster_boost,
+            k_value=k_value,
+            p_exponent=p_exponent,
+            top_bonuses=top_bonuses,
         ),
         axis=1,
         result_type="expand",
@@ -144,6 +161,8 @@ def compute_rankings_with_configs(
 
     # Sort and add final rank
     df = df.sort_values("score", ascending=False).reset_index(drop=True)
+    if 'rank' in df.columns:
+        df.drop(columns=["rank"], inplace=True)
     df.insert(0, "rank", df.index + 1)
 
     return df
