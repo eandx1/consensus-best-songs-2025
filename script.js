@@ -328,6 +328,7 @@ function render() {
                             <hgroup>
                                 <h3>${escapeHtml(song.name)}</h3>
                                 <h4>${escapeHtml(song.artist)}</h4>
+                                ${song.genres ? `<h5 class="song-genres">${escapeHtml(song.genres)}</h5>` : ''}
                             </hgroup>
                             <a href="#" onclick="showStats(${idx}); return false;" aria-label="View ranking details">ⓘ</a>
                         </header>
