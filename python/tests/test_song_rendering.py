@@ -2,11 +2,11 @@ import re
 from playwright.sync_api import Page, expect
 
 def test_media_links_berghain(page: Page, server_url):
-    """Test that Berghain (which has YT, Apple, Spotify) renders correct links."""
+    """Test that a song with YT, Apple, and Spotify renders correct links."""
     page.goto(server_url)
     
-    # Find Berghain card
-    card = page.locator(".song-card", has_text="Berghain").first
+    # Find "WHERE IS MY HUSBAND!" by RAYE (has video_id, music_id, Apple, Spotify)
+    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
     
     # Check links
     nav = card.locator("nav")
@@ -26,8 +26,8 @@ def test_media_links_bandcamp(page: Page, server_url):
     """Test that a song with Bandcamp link renders it."""
     page.goto(server_url)
     
-    # Find "Breathe Kullawada" card
-    card = page.locator(".song-card", has_text="Breathe Kullawada").first
+    # Find "Townies" by Wednesday (has Bandcamp link)
+    card = page.locator(".song-card", has_text="Townies").first
     
     expect(card).to_be_visible()
     
@@ -39,11 +39,11 @@ def test_lite_youtube_player(page: Page, server_url):
     """Test that the lite-youtube component is rendered with correct video ID."""
     page.goto(server_url)
     
-    # Berghain video_id="htQBS2Ikz6c"
-    card = page.locator(".song-card", has_text="Berghain").first
+    # "WHERE IS MY HUSBAND!" by RAYE has video_id="rK5TyISxZ_M"
+    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
     
     player = card.locator("lite-youtube")
     expect(player).to_be_visible()
-    expect(player).to_have_attribute("videoid", "htQBS2Ikz6c")
-    expect(player).to_have_attribute("playlabel", "Play Berghain")
+    expect(player).to_have_attribute("videoid", "rK5TyISxZ_M")
+    expect(player).to_have_attribute("playlabel", "Play WHERE IS MY HUSBAND!")
 

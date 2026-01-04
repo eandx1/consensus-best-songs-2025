@@ -15,8 +15,8 @@ def test_about_modal(page: Page, server_url):
     expect(modal).to_contain_text("Decoding the UI")
     
     # Check dynamic song count
-    # Based on failure output, it seems to be 25.
-    expect(modal.locator("#total-songs-count")).to_contain_text("25")
+    # test_data.json has 35 songs
+    expect(modal.locator("#total-songs-count")).to_contain_text("35")
     
     # Check comparison table populated
     table = modal.locator("#mode-comparison-table")

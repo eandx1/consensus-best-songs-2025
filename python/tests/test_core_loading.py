@@ -23,32 +23,33 @@ def test_specific_song_content(page: Page, server_url):
     """Test that a specific song from test_data.json is rendered correctly."""
     page.goto(server_url)
     
-    # Look for the top ranked song. Based on test_data.json, "Berghain" should be #1.
+    # Look for the top ranked song. Based on test_data.json with consensus mode,
+    # "RAYE - WHERE IS MY HUSBAND!" appears on 10 lists and should rank highly.
     
     first_card = page.locator(".song-card").first
     
     # Check rank
     expect(first_card.locator(".rank-display")).to_contain_text("#1")
     
-    # Check title and artist
-    expect(first_card.locator("h3")).to_contain_text("Berghain")
-    expect(first_card.locator("h4")).to_contain_text("ROSALÍA")
+    # Check title and artist - RAYE's song should be #1 with 10 list appearances
+    expect(first_card.locator("h3")).to_contain_text("WHERE IS MY HUSBAND!")
+    expect(first_card.locator("h4")).to_contain_text("RAYE")
     
     # Check genre pill
-    expect(first_card.locator(".song-genres")).to_contain_text("Latin")
+    expect(first_card.locator(".song-genres")).to_contain_text("Pop")
 
 def test_show_more_functionality(page: Page, server_url):
     """Test the 'Show More' button if applicable."""
-    # Since our test data only has ~18 songs, the 'Show More' button might not appear 
-    # or might behave differently if the default page size is 25.
-    # Let's check if it's hidden since 18 < 25.
+    # test_data.json has 35 songs, so with default page size of 25,
+    # the Show More button should be visible with "Show All (10 more)"
     page.goto(server_url)
     
-    show_more_btn = page.locator("#load-more-btn")
+    show_more_btn = page.locator("#load-more")
     
     # Wait for data to load
     page.locator(".song-card").first.wait_for()
     
-    # With 18 songs and page size 25, button should be hidden
-    expect(show_more_btn).to_be_hidden()
+    # With 35 songs and page size 25, button should be visible
+    expect(show_more_btn).to_be_visible()
+    expect(show_more_btn).to_contain_text("10")
 
