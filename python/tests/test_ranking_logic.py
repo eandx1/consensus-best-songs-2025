@@ -60,18 +60,37 @@ def test_theme_switch(page: Page, server_url):
 def test_consensus_mode_ranking_changes(page: Page, server_url):
     """Test that consensus mode settings changes produce ranking changes."""
     page.goto(server_url)
+    page.wait_for_timeout(300)
     
-    # Open settings
+    # Capture INITIAL state with default settings
+    initial_top_song = page.locator(".song-card").first.locator("h3").inner_text()
+    initial_song_2 = page.locator(".song-card").nth(1).locator("h3").inner_text()
+    initial_song_3 = page.locator(".song-card").nth(2).locator("h3").inner_text()
+    
+    # Get initial scores for top song
+    page.locator(".song-card").first.locator("header a[aria-label='View ranking details']").click()
+    modal = page.locator("#modal-stats")
+    expect(modal).to_be_visible()
+    
+    initial_norm_text = modal.locator("text=Normalized Score").locator("..").inner_text()
+    initial_raw_text = modal.locator("text=Raw Score").locator("..").inner_text()
+    initial_norm_score = float(re.search(r"(\d+\.\d+)", initial_norm_text).group(1))
+    initial_raw_score = float(re.search(r"(\d+\.\d+)", initial_raw_text).group(1))
+    
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(200)
+    
+    # Now CHANGE settings
     page.locator("#open-settings").click()
     page.wait_for_timeout(200)
     
     # Change settings:
-    # - 5% consensus boost (0.05)
-    # - 0.0 Buzzfeed weight
-    # - 0.0 Independent weight  
-    # - 15 K value
+    # - 5% consensus boost (0.05) [default is 3%]
+    # - 0.0 Buzzfeed weight [default is 0.5]
+    # - 0.0 Independent weight [default is 0.6]
+    # - 15 K value [default is 20]
     
-    # Set consensus boost to 5% (0.05) - use evaluate to set range input value
+    # Set consensus boost to 5% (0.05)
     page.evaluate("document.getElementById('setting-ranking-consensus_boost').value = '0.05'")
     page.locator("#setting-ranking-consensus_boost").dispatch_event("input")
     
@@ -98,114 +117,131 @@ def test_consensus_mode_ranking_changes(page: Page, server_url):
     
     # Close settings modal
     page.locator("#modal-settings button", has_text="Close").click()
-    
-    # Wait for modal to close and list to rerank
     page.wait_for_timeout(300)
     
-    # Get top song card (should still be RAYE with these settings, but scores will differ)
-    first_card = page.locator(".song-card").first
+    # Capture NEW state after settings change
+    new_top_song = page.locator(".song-card").first.locator("h3").inner_text()
+    new_song_2 = page.locator(".song-card").nth(1).locator("h3").inner_text()
+    new_song_3 = page.locator(".song-card").nth(2).locator("h3").inner_text()
     
-    # Open stats modal for #1
-    first_card.locator("header a[aria-label='View ranking details']").click()
-    modal = page.locator("#modal-stats")
+    # Verify song names to show ranking occurred (store for comparison)
+    print(f"\nInitial rankings: #{1}={initial_top_song}, #{2}={initial_song_2}, #{3}={initial_song_3}")
+    print(f"New rankings: #{1}={new_top_song}, #{2}={new_song_2}, #{3}={new_song_3}")
+    
+    # Get NEW scores for top song
+    page.locator(".song-card").first.locator("header a[aria-label='View ranking details']").click()
     expect(modal).to_be_visible()
     
-    # Check normalized score is 1.0 for top song
+    # Check normalized score is 1.0 for top song (always true for #1)
     normalized_row = modal.locator("text=Normalized Score").locator("..")
-    expect(normalized_row).to_contain_text(re.compile(r"1\.0+"))
+    new_norm_text = normalized_row.inner_text()
+    new_norm_score = float(re.search(r"(\d+\.\d+)", new_norm_text).group(1))
+    assert new_norm_score == 1.0, f"Top song should have normalized score 1.0, got {new_norm_score}"
     
-    # Extract and verify raw score exists
+    # Extract raw score and verify it changed
     raw_row = modal.locator("text=Raw Score").locator("..")
-    expect(raw_row).to_be_visible()
-    raw_score_text = raw_row.inner_text()
-    # Raw score should be a number
-    assert re.search(r"\d+\.\d+", raw_score_text)
+    new_raw_text = raw_row.inner_text()
+    new_raw_score = float(re.search(r"(\d+\.\d+)", new_raw_text).group(1))
     
-    # Check consensus multiplier contribution
+    print(f"Initial scores: norm={initial_norm_score}, raw={initial_raw_score}")
+    print(f"New scores: norm={new_norm_score}, raw={new_raw_score}")
+    
+    # The raw score should be different due to settings changes
+    # (unless we're very unlucky with the math, which is unlikely given 5 different changes)
+    assert abs(new_raw_score - initial_raw_score) > 0.001, \
+        f"Raw score should have changed! Was {initial_raw_score}, still {new_raw_score}"
+    
+    # Check consensus boost contribution
     consensus_mul_row = modal.locator("text=Consensus Boost").locator("..")
-    expect(consensus_mul_row).to_be_visible()
     consensus_mul_text = consensus_mul_row.inner_text()
-    # With 10 lists and 5% boost parameter, the actual boost should be positive
-    # Extract percentage value and verify it's greater than 0%
-    match = re.search(r"(\d+\.\d+)%", consensus_mul_text)
-    assert match, f"Could not find consensus boost percentage in {consensus_mul_text}"
-    consensus_boost_pct = float(match.group(1))
-    # With 10 lists, should have a positive consensus boost (roughly 8-12%)
+    consensus_boost_pct = float(re.search(r"(\d+\.\d+)%", consensus_mul_text).group(1))
+    print(f"Consensus boost: {consensus_boost_pct}%")
+    
+    # With 10 lists and 5% boost parameter (increased from 3%), should be ~9-10%
     assert consensus_boost_pct > 7, f"Expected consensus boost > 7%, got {consensus_boost_pct}%"
     
-    # Check that Buzzfeed contribution is 0.0 (if it was a source)
-    # RAYE's song has Buzzfeed#3 as a source
+    # Check that Buzzfeed contribution is 0.0000
     buzzfeed_contrib = modal.locator(".contribution-row", has_text="Buzzfeed")
     if buzzfeed_contrib.count() > 0:
         expect(buzzfeed_contrib).to_contain_text("0.0000")
-    
-    # Close modal
-    page.keyboard.press("Escape")
-    page.wait_for_timeout(200)
-    
-    # Check song #2
-    second_card = page.locator(".song-card").nth(1)
-    second_card.locator("header a[aria-label='View ranking details']").click()
-    expect(modal).to_be_visible()
-    
-    # Verify scores exist
-    expect(modal.locator("text=Normalized Score").locator("..")).to_be_visible()
-    expect(modal.locator("text=Raw Score").locator("..")).to_be_visible()
+        print("✓ Buzzfeed weight=0 confirmed: contributes 0.0000")
     
     page.keyboard.press("Escape")
     page.wait_for_timeout(200)
     
-    # Check song #3
-    third_card = page.locator(".song-card").nth(2)
-    third_card.locator("header a[aria-label='View ranking details']").click()
-    expect(modal).to_be_visible()
+    # Check scores for songs #2, #3, and #25
+    for idx, song_num in enumerate([1, 2, 24]):
+        card = page.locator(".song-card").nth(song_num)
+        card.locator("header a[aria-label='View ranking details']").click()
+        expect(modal).to_be_visible()
+        
+        # Extract and verify scores exist and are reasonable
+        norm_text = modal.locator("text=Normalized Score").locator("..").inner_text()
+        raw_text = modal.locator("text=Raw Score").locator("..").inner_text()
+        
+        norm_score = float(re.search(r"(\d+\.\d+)", norm_text).group(1))
+        raw_score = float(re.search(r"(\d+\.\d+)", raw_text).group(1))
+        
+        # Normalized scores should be descending (1.0 > song2 > song3 > ... > song25)
+        assert 0 < norm_score <= 1.0, f"Song #{song_num+1} normalized score should be 0-1, got {norm_score}"
+        assert raw_score > 0, f"Song #{song_num+1} raw score should be positive, got {raw_score}"
+        
+        print(f"Song #{song_num+1}: norm={norm_score:.4f}, raw={raw_score:.4f}")
+        
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(200)
     
-    expect(modal.locator("text=Normalized Score").locator("..")).to_be_visible()
-    expect(modal.locator("text=Raw Score").locator("..")).to_be_visible()
-    
-    page.keyboard.press("Escape")
-    page.wait_for_timeout(200)
-    
-    # Check song #25
-    card_25 = page.locator(".song-card").nth(24)
-    card_25.locator("header a[aria-label='View ranking details']").click()
-    expect(modal).to_be_visible()
-    
-    expect(modal.locator("text=Normalized Score").locator("..")).to_be_visible()
-    expect(modal.locator("text=Raw Score").locator("..")).to_be_visible()
-    
-    page.keyboard.press("Escape")
+    print("✓ All consensus mode ranking changes verified")
 
 def test_conviction_mode_ranking_changes(page: Page, server_url):
-    """Test that conviction mode settings changes produce ranking changes."""
+    """Test that conviction mode settings changes produce ranking changes and different top songs."""
     page.goto(server_url)
+    page.wait_for_timeout(300)
     
-    # Open settings
+    # Capture INITIAL state with default consensus mode settings
+    initial_top_song = page.locator(".song-card").first.locator("h3").inner_text()
+    initial_song_2 = page.locator(".song-card").nth(1).locator("h3").inner_text()
+    initial_song_3 = page.locator(".song-card").nth(2).locator("h3").inner_text()
+    
+    print(f"\nInitial (Consensus mode) rankings:")
+    print(f"  #1: {initial_top_song}")
+    print(f"  #2: {initial_song_2}")
+    print(f"  #3: {initial_song_3}")
+    
+    # Get initial score for top song
+    page.locator(".song-card").first.locator("header a[aria-label='View ranking details']").click()
+    modal = page.locator("#modal-stats")
+    expect(modal).to_be_visible()
+    
+    initial_raw_text = modal.locator("text=Raw Score").locator("..").inner_text()
+    initial_raw_score = float(re.search(r"(\d+\.\d+)", initial_raw_text).group(1))
+    print(f"  Initial top raw score: {initial_raw_score}")
+    
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(200)
+    
+    # Now CHANGE to Conviction mode with different settings
     page.locator("#open-settings").click()
     page.wait_for_timeout(200)
     
-    # Change to Conviction mode by clicking the article with "🔥 Conviction"
+    # Switch to Conviction mode (this will cause a significant ranking change)
     conviction_card = page.locator("article.mode-card", has_text="🔥 Conviction")
     conviction_card.click()
-    
-    # Wait for mode switch and UI to re-render
     page.wait_for_timeout(400)
     
-    # Set P exponent to 0.7
-    p_slider = page.locator("#setting-ranking-p_exponent")
-    expect(p_slider).to_be_visible()
+    # Set P exponent to 0.7 (more aggressive decay, favors #1 ranks even more)
     page.evaluate("document.getElementById('setting-ranking-p_exponent').value = '0.7'")
-    p_slider.dispatch_event("input")
+    page.locator("#setting-ranking-p_exponent").dispatch_event("input")
     
-    # Set consensus boost to 0%
+    # Set consensus boost to 0% (removes advantage for appearing on many lists)
     page.evaluate("document.getElementById('setting-ranking-consensus_boost').value = '0'")
     page.locator("#setting-ranking-consensus_boost").dispatch_event("input")
     
-    # Set cluster boost to 0%
+    # Set cluster boost to 0% (removes crossover bonus)
     page.evaluate("document.getElementById('setting-ranking-cluster_boost').value = '0'")
     page.locator("#setting-ranking-cluster_boost").dispatch_event("input")
     
-    # Set provocation boost to 5% (0.05)
+    # Set provocation boost to 5% (rewards polarizing songs)
     page.evaluate("document.getElementById('setting-ranking-provocation_boost').value = '0.05'")
     page.locator("#setting-ranking-provocation_boost").dispatch_event("input")
     
@@ -223,50 +259,98 @@ def test_conviction_mode_ranking_changes(page: Page, server_url):
     page.locator("#modal-settings button", has_text="Close").click()
     page.wait_for_timeout(300)
     
-    # Track the largest provocation boost we find
-    max_provocation_boost = 0.0
+    # Capture NEW state after switching to Conviction mode
+    new_top_song = page.locator(".song-card").first.locator("h3").inner_text()
+    new_song_2 = page.locator(".song-card").nth(1).locator("h3").inner_text()
+    new_song_3 = page.locator(".song-card").nth(2).locator("h3").inner_text()
     
-    # Check top 3 songs and song #25
-    for idx in [0, 1, 2, 24]:
-        card = page.locator(".song-card").nth(idx)
+    print(f"\nNew (Conviction mode) rankings:")
+    print(f"  #1: {new_top_song}")
+    print(f"  #2: {new_song_2}")
+    print(f"  #3: {new_song_3}")
+    
+    # Verify that the ranking actually changed
+    # (Conviction mode should produce different results than Consensus mode)
+    ranking_changed = (
+        new_top_song != initial_top_song or
+        new_song_2 != initial_song_2 or
+        new_song_3 != initial_song_3
+    )
+    assert ranking_changed, \
+        "Rankings should change between Consensus and Conviction modes!"
+    print("✓ Rankings changed between modes (as expected)")
+    
+    # Get NEW score for top song
+    page.locator(".song-card").first.locator("header a[aria-label='View ranking details']").click()
+    expect(modal).to_be_visible()
+    
+    new_norm_text = modal.locator("text=Normalized Score").locator("..").inner_text()
+    new_raw_text = modal.locator("text=Raw Score").locator("..").inner_text()
+    
+    new_norm_score = float(re.search(r"(\d+\.\d+)", new_norm_text).group(1))
+    new_raw_score = float(re.search(r"(\d+\.\d+)", new_raw_text).group(1))
+    
+    assert new_norm_score == 1.0, f"Top song should have normalized score 1.0, got {new_norm_score}"
+    print(f"  New top raw score: {new_raw_score}")
+    
+    # Check that boosts are set correctly
+    consensus_text = modal.locator("text=Consensus Boost").locator("..").inner_text()
+    cluster_text = modal.locator("text=Cluster Boost").locator("..").inner_text()
+    provocation_text = modal.locator("text=Provocation Boost").locator("..").inner_text()
+    
+    assert "0.00%" in consensus_text, f"Expected consensus boost 0.00%, got {consensus_text}"
+    assert "0.00%" in cluster_text, f"Expected cluster boost 0.00%, got {cluster_text}"
+    print("✓ Consensus and cluster boosts are 0.00% (as configured)")
+    
+    # Extract provocation boost - should be > 0% for songs with rank variation
+    provocation_pct = float(re.search(r"(\d+\.\d+)%", provocation_text).group(1))
+    print(f"  Provocation boost: {provocation_pct}%")
+    
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(200)
+    
+    # Track the largest provocation boost and verify scores decrease
+    max_provocation_boost = provocation_pct
+    prev_norm_score = new_norm_score
+    
+    # Check scores for songs #2, #3, and #25
+    for idx, song_num in enumerate([1, 2, 24]):
+        card = page.locator(".song-card").nth(song_num)
+        song_name = card.locator("h3").inner_text()
         card.locator("header a[aria-label='View ranking details']").click()
-        
-        modal = page.locator("#modal-stats")
         expect(modal).to_be_visible()
         
-        # Check normalized and raw scores exist
-        expect(modal.locator("text=Normalized Score").locator("..")).to_be_visible()
-        expect(modal.locator("text=Raw Score").locator("..")).to_be_visible()
+        # Extract scores
+        norm_text = modal.locator("text=Normalized Score").locator("..").inner_text()
+        raw_text = modal.locator("text=Raw Score").locator("..").inner_text()
+        consensus_text = modal.locator("text=Consensus Boost").locator("..").inner_text()
+        cluster_text = modal.locator("text=Cluster Boost").locator("..").inner_text()
+        provocation_text = modal.locator("text=Provocation Boost").locator("..").inner_text()
         
-        # Check consensus boost multiplier is 0.0% (0% boost parameter)
-        consensus_mul_row = modal.locator("text=Consensus Boost").locator("..")
-        expect(consensus_mul_row).to_be_visible()
-        consensus_text = consensus_mul_row.inner_text()
-        # Should be 0.00% since consensus boost parameter is 0%
-        assert "0.00%" in consensus_text, f"Expected 0.00%, got {consensus_text}"
+        norm_score = float(re.search(r"(\d+\.\d+)", norm_text).group(1))
+        raw_score = float(re.search(r"(\d+\.\d+)", raw_text).group(1))
         
-        # Check cluster boost multiplier is 0.00% (0% boost parameter)
-        cluster_mul_row = modal.locator("text=Cluster Boost").locator("..")
-        expect(cluster_mul_row).to_be_visible()
-        cluster_text = cluster_mul_row.inner_text()
-        # Should be 0.00% since cluster boost parameter is 0%
-        assert "0.00%" in cluster_text, f"Expected 0.00%, got {cluster_text}"
+        # Verify scores are in valid range and descending
+        assert 0 < norm_score < prev_norm_score, \
+            f"Song #{song_num+1} norm score {norm_score} should be < previous {prev_norm_score}"
+        assert raw_score > 0, f"Song #{song_num+1} raw score should be positive, got {raw_score}"
         
-        # Extract provocation boost value
-        provocation_mul_row = modal.locator("text=Provocation Boost").locator("..")
-        expect(provocation_mul_row).to_be_visible()
-        provocation_text = provocation_mul_row.inner_text()
+        # Verify boosts
+        assert "0.00%" in consensus_text, f"Song #{song_num+1}: Expected consensus 0.00%"
+        assert "0.00%" in cluster_text, f"Song #{song_num+1}: Expected cluster 0.00%"
         
-        # Extract the percentage value
-        match = re.search(r"(\d+\.\d+)%", provocation_text)
-        if match:
-            provocation_boost_pct = float(match.group(1))
-            max_provocation_boost = max(max_provocation_boost, provocation_boost_pct)
+        # Track max provocation boost
+        prov_pct = float(re.search(r"(\d+\.\d+)%", provocation_text).group(1))
+        max_provocation_boost = max(max_provocation_boost, prov_pct)
         
-            # Close modal
-            page.keyboard.press("Escape")
-            page.wait_for_timeout(200)
+        print(f"  Song #{song_num+1} ({song_name}): norm={norm_score:.4f}, raw={raw_score:.4f}, provocation={prov_pct}%")
+        
+        prev_norm_score = norm_score
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(200)
     
-    # Verify we found at least one provocation boost > 0%
-    # (songs with varying ranks should have std dev > 0, thus provocation boost > 0%)
-    assert max_provocation_boost > 0, f"Expected max provocation boost > 0%, got {max_provocation_boost}%"
+    # Verify we found at least one song with provocation boost > 0%
+    assert max_provocation_boost > 0, \
+        f"Expected max provocation boost > 0%, got {max_provocation_boost}%"
+    print(f"✓ Max provocation boost found: {max_provocation_boost}%")
+    print("✓ All conviction mode ranking changes verified")
