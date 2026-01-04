@@ -26,7 +26,7 @@ def test_export_modal_opens(page: Page, server_url):
     
     modal = page.locator("#modal-export")
     expect(modal).to_be_visible()
-    expect(modal.locator("h3")).to_have_text("Export Playlist")
+    expect(modal.locator("h3")).to_have_text("Export")
 
 def test_export_modal_default_state(page: Page, server_url):
     """Test the default state of the export modal."""
@@ -265,11 +265,11 @@ def test_export_song_not_available(page: Page, server_url):
     # So we should see 34 songs available
     expect(content).to_contain_text("Ready to export 34 videos")
     
-    # Should show warning
-    expect(content).to_contain_text("⚠️ 1 songs missing IDs will be skipped")
+    # Should show warning with singular "song" (only 1 missing)
+    expect(content).to_contain_text("⚠️ 1 song missing IDs will be skipped")
     
-    # Should show the specific song that's missing
-    expect(content).to_contain_text("It's Your Anniversary")
+    # Should show the specific song with artist - song format
+    expect(content).to_contain_text("Freddie Gibbs - It's Your Anniversary")
 
 def test_export_works_with_other_params(page: Page, server_url):
     """Test that export works alongside other URL parameters."""

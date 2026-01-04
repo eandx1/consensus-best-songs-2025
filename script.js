@@ -863,9 +863,9 @@ function renderExportUI(limit = 25, preference = 'videos') {
             </p>
             ${missingSongs.length > 0 ? `
                 <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
-                    <small>⚠️ ${missingSongs.length} songs missing IDs will be skipped:</small>
+                    <small>⚠️ ${missingSongs.length} ${missingSongs.length === 1 ? 'song' : 'songs'} missing IDs will be skipped:</small>
                     <ul style="font-size: 0.8em; margin-bottom: 0;">
-                        ${missingSongs.map(s => `<li>#${s.rank} ${escapeHtml(s.name)}</li>`).join('')}
+                        ${missingSongs.map(s => `<li>#${s.rank} ${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join('')}
                     </ul>
                 </div>
             ` : '<small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'}
