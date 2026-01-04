@@ -807,17 +807,17 @@ window.showStats = (idx) => {
 /**
  * EXPORT UI
  */
-function renderExportUI(limit = 25, platform = 'youtube') {
+function renderExportUI(limit = 25, preference = 'videos') {
     const songsToExport = STATE.songs.slice(0, limit);
     const validSongs = [];
     const missingSongs = [];
 
     songsToExport.forEach(song => {
         // Priority logic:
-        // YouTube: video_id > music_id
-        // YouTube Music: music_id > video_id
+        // Videos preference: video_id > music_id (prefer official music videos)
+        // Songs preference: music_id > video_id (prefer album audio)
         let id = null;
-        if (platform === 'music') {
+        if (preference === 'songs') {
             id = song.media?.youtube?.music_id || song.media?.youtube?.video_id;
         } else {
             id = song.media?.youtube?.video_id || song.media?.youtube?.music_id;
@@ -830,35 +830,36 @@ function renderExportUI(limit = 25, platform = 'youtube') {
         }
     });
 
-    const domain = platform === 'music' ? 'music.youtube.com' : 'www.youtube.com';
-    const url = `https://${domain}/watch_videos?video_ids=${validSongs.join(',')}`;
+    const url = `https://www.youtube.com/watch_videos?video_ids=${validSongs.join(',')}`;
     
     // Helper to generate button classes
     const getBtnClass = (isActive) => isActive ? '' : 'outline secondary';
 
+    const preferenceName = preference === 'songs' ? 'songs' : 'videos';
+
     // HTML Generation
     let html = `
-        <label>Destination</label>
+        <label>Preference</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(platform === 'youtube')}" onclick="renderExportUI(${limit}, 'youtube')">
-                YouTube
+            <button class="${getBtnClass(preference === 'videos')}" onclick="renderExportUI(${limit}, 'videos')">
+                Videos
             </button>
-            <button class="${getBtnClass(platform === 'music')}" onclick="renderExportUI(${limit}, 'music')">
-                YouTube Music
+            <button class="${getBtnClass(preference === 'songs')}" onclick="renderExportUI(${limit}, 'songs')">
+                Songs
             </button>
         </div>
 
         <label>Range</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(limit === 10)}" onclick="renderExportUI(10, '${platform}')">Top 10</button>
-            <button class="${getBtnClass(limit === 25)}" onclick="renderExportUI(25, '${platform}')">Top 25</button>
-            <button class="${getBtnClass(limit === 50)}" onclick="renderExportUI(50, '${platform}')">Top 50</button>
+            <button class="${getBtnClass(limit === 10)}" onclick="renderExportUI(10, '${preference}')">Top 10</button>
+            <button class="${getBtnClass(limit === 25)}" onclick="renderExportUI(25, '${preference}')">Top 25</button>
+            <button class="${getBtnClass(limit === 50)}" onclick="renderExportUI(50, '${preference}')">Top 50</button>
         </div>
 
         <article style="background-color: var(--pico-card-background-color); margin-bottom: var(--pico-spacing);">
             <header><strong>Summary</strong></header>
             <p style="margin-bottom: ${missingSongs.length > 0 ? '0.5rem' : '0'}">
-                Ready to export <strong>${validSongs.length}</strong> songs to a new ${platform === 'music' ? 'YouTube Music' : 'YouTube'} playlist.
+                Ready to export <strong>${validSongs.length}</strong> ${preferenceName} to a new YouTube playlist.
             </p>
             ${missingSongs.length > 0 ? `
                 <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
@@ -870,7 +871,7 @@ function renderExportUI(limit = 25, platform = 'youtube') {
             ` : '<small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'}
         </article>
         
-        <p><small>Note: You will be redirected to ${platform === 'music' ? 'YouTube Music' : 'YouTube'} where you can name and save your playlist.</small></p>
+        <p><small>Note: You will be redirected to YouTube where you can name and save your playlist.</small></p>
     `;
 
     // Inject into content

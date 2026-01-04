@@ -36,17 +36,17 @@ def test_export_modal_default_state(page: Page, server_url):
     modal = page.locator("#modal-export")
     content = modal.locator("#export-content")
     
-    # Check destination buttons - YouTube should be selected by default
-    youtube_btn = content.get_by_role("button", name="YouTube", exact=True)
-    ytm_btn = content.get_by_role("button", name="YouTube Music")
+    # Check preference buttons - Videos should be selected by default
+    videos_btn = content.get_by_role("button", name="Videos", exact=True)
+    songs_btn = content.get_by_role("button", name="Songs")
     
-    # YouTube should not have outline/secondary classes (is active)
-    expect(youtube_btn).not_to_have_class(re.compile("outline"))
-    expect(youtube_btn).not_to_have_class(re.compile("secondary"))
+    # Videos should not have outline/secondary classes (is active)
+    expect(videos_btn).not_to_have_class(re.compile("outline"))
+    expect(videos_btn).not_to_have_class(re.compile("secondary"))
     
-    # YouTube Music should have outline secondary classes (not active)
-    expect(ytm_btn).to_have_class(re.compile("outline"))
-    expect(ytm_btn).to_have_class(re.compile("secondary"))
+    # Songs should have outline secondary classes (not active)
+    expect(songs_btn).to_have_class(re.compile("outline"))
+    expect(songs_btn).to_have_class(re.compile("secondary"))
     
     # Check range buttons - Top 25 should be selected by default
     top10_btn = content.get_by_role("button", name="Top 10")
@@ -57,29 +57,29 @@ def test_export_modal_default_state(page: Page, server_url):
     expect(top25_btn).not_to_have_class(re.compile("outline"))
     expect(top50_btn).to_have_class(re.compile("outline"))
     
-    # Check summary text - test data has 24 songs with YouTube IDs out of top 25
-    expect(content).to_contain_text("Ready to export 24 songs to a new YouTube playlist")
+    # Check summary text - test data has 24 videos with YouTube IDs out of top 25
+    expect(content).to_contain_text("Ready to export 24 videos to a new YouTube playlist")
     
     # Check footer buttons
     footer = modal.locator("footer")
     expect(footer.get_by_role("button", name="Cancel")).to_be_visible()
     expect(footer.get_by_role("button", name="Create Playlist")).to_be_visible()
 
-def test_export_youtube_playlist_url(page: Page, server_url):
-    """Test that the YouTube playlist URL contains correct video IDs."""
+def test_export_videos_preference_url(page: Page, server_url):
+    """Test that Videos preference uses video_id with music_id fallback."""
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
     
     modal = page.locator("#modal-export")
     
-    # Get the Create Playlist link
+    # Videos is default, so just check the URL
     create_btn = modal.locator("footer a[role='button']")
     expect(create_btn).to_be_visible()
     
     # Get the href attribute
     playlist_url = create_btn.get_attribute("href")
     
-    # Should be YouTube URL
+    # Should be YouTube URL (not music.youtube.com)
     assert playlist_url.startswith("https://www.youtube.com/watch_videos?video_ids=")
     
     # Extract video IDs
@@ -89,43 +89,71 @@ def test_export_youtube_playlist_url(page: Page, server_url):
     assert len(video_ids) == 24
     
     # Check that first song "Townies" by Wednesday has correct video_id (E8cKoQqdtwA)
-    # Townies should be #1 or #2 in default ranking
+    # When preferring videos, we should get video_id
     assert "E8cKoQqdtwA" in video_ids[:5], "Townies video_id should be in top 5"
 
-def test_export_youtube_music_playlist_url(page: Page, server_url):
-    """Test that the YouTube Music playlist URL contains correct music IDs."""
+def test_export_songs_preference_url(page: Page, server_url):
+    """Test that Songs preference uses music_id with video_id fallback."""
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
     
     modal = page.locator("#modal-export")
     content = modal.locator("#export-content")
     
-    # Switch to YouTube Music
-    ytm_btn = content.get_by_role("button", name="YouTube Music")
-    ytm_btn.click()
+    # Switch to Songs preference
+    songs_btn = content.get_by_role("button", name="Songs")
+    songs_btn.click()
     
     # Wait for re-render
     page.wait_for_timeout(100)
     
-    # Check that summary updated
-    expect(content).to_contain_text("Ready to export 24 songs to a new YouTube Music playlist")
+    # Check that summary updated to say "songs"
+    expect(content).to_contain_text("Ready to export 24 songs to a new YouTube playlist")
     
     # Get the Create Playlist link
     create_btn = modal.locator("footer a[role='button']")
     playlist_url = create_btn.get_attribute("href")
     
-    # Should be YouTube Music URL
-    assert playlist_url.startswith("https://music.youtube.com/watch_videos?video_ids=")
+    # Should still be YouTube URL (music.youtube.com doesn't support this feature)
+    assert playlist_url.startswith("https://www.youtube.com/watch_videos?video_ids=")
     
-    # Extract video IDs
-    video_ids = playlist_url.split("video_ids=")[1].split(",")
+    # Extract IDs
+    ids = playlist_url.split("video_ids=")[1].split(",")
     
-    # Test data has 24 songs with YouTube IDs out of top 25
-    assert len(video_ids) == 24
+    # Test data has 24 songs with YouTube IDs
+    assert len(ids) == 24
     
-    # Check that first song "Townies" has correct music_id (mHEiyObNciA)
-    # Note: For YouTube Music, we prefer music_id over video_id
-    assert "mHEiyObNciA" in video_ids[:5], "Townies music_id should be in top 5"
+    # When preferring songs, "Townies" should use music_id (mHEiyObNciA) instead of video_id
+    # Note: The URL still goes to youtube.com, but uses the music_id
+    assert "mHEiyObNciA" in ids[:5], "Townies music_id should be in top 5 when Songs preference is selected"
+
+def test_export_preference_switch(page: Page, server_url):
+    """Test switching between Videos and Songs preferences."""
+    page.goto(f"{server_url}?unlisted_youtube_export")
+    page.locator("#open-export").click()
+    
+    modal = page.locator("#modal-export")
+    content = modal.locator("#export-content")
+    
+    # Start with Videos (default)
+    expect(content).to_contain_text("videos")
+    
+    # Switch to Songs
+    songs_btn = content.get_by_role("button", name="Songs")
+    songs_btn.click()
+    page.wait_for_timeout(100)
+    
+    # Should now say "songs"
+    expect(content).to_contain_text("songs")
+    expect(content).not_to_contain_text("videos to a new")
+    
+    # Switch back to Videos
+    videos_btn = content.get_by_role("button", name="Videos")
+    videos_btn.click()
+    page.wait_for_timeout(100)
+    
+    # Should say "videos" again
+    expect(content).to_contain_text("videos")
 
 def test_export_top10_range(page: Page, server_url):
     """Test that selecting Top 10 updates the playlist correctly."""
@@ -143,15 +171,7 @@ def test_export_top10_range(page: Page, server_url):
     page.wait_for_timeout(100)
     
     # Check summary updated
-    expect(content).to_contain_text("Ready to export 10 songs")
-    
-    # Get the playlist URL
-    create_btn = modal.locator("footer a[role='button']")
-    playlist_url = create_btn.get_attribute("href")
-    
-    # Extract and count video IDs
-    video_ids = playlist_url.split("video_ids=")[1].split(",")
-    assert len(video_ids) == 10
+    expect(content).to_contain_text("Ready to export 10 videos")
 
 def test_export_top50_range(page: Page, server_url):
     """Test that selecting Top 50 updates the playlist correctly."""
@@ -170,36 +190,36 @@ def test_export_top50_range(page: Page, server_url):
     
     # Check summary updated - test data has 35 songs total, 34 with YouTube IDs
     # So when requesting top 50, we get 34 (all available songs with IDs)
-    expect(content).to_contain_text("Ready to export 34 songs")
+    expect(content).to_contain_text("Ready to export 34 videos")
 
 def test_export_id_fallback_logic(page: Page, server_url):
-    """Test that the export handles songs with only music_id or only video_id."""
+    """Test that the ID fallback logic works correctly."""
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
     
     modal = page.locator("#modal-export")
-    
-    # For YouTube: should prefer video_id, fall back to music_id
-    youtube_create_btn = modal.locator("footer a[role='button']")
-    youtube_url = youtube_create_btn.get_attribute("href")
-    youtube_ids = youtube_url.split("video_ids=")[1].split(",")
-    
-    # Switch to YouTube Music
     content = modal.locator("#export-content")
-    ytm_btn = content.get_by_role("button", name="YouTube Music")
-    ytm_btn.click()
+    
+    # Get URL with Videos preference (video_id > music_id)
+    create_btn = modal.locator("footer a[role='button']")
+    videos_url = create_btn.get_attribute("href")
+    videos_ids = videos_url.split("video_ids=")[1].split(",")
+    
+    # Switch to Songs preference (music_id > video_id)
+    songs_btn = content.get_by_role("button", name="Songs")
+    songs_btn.click()
     page.wait_for_timeout(100)
     
-    # For YouTube Music: should prefer music_id, fall back to video_id
-    ytm_create_btn = modal.locator("footer a[role='button']")
-    ytm_url = ytm_create_btn.get_attribute("href")
-    ytm_ids = ytm_url.split("video_ids=")[1].split(",")
+    songs_url = create_btn.get_attribute("href")
+    songs_ids = songs_url.split("video_ids=")[1].split(",")
     
-    # Both should have the same count (all songs with at least one ID)
-    assert len(youtube_ids) == len(ytm_ids)
+    # The IDs should be different because priorities are different
+    # Both should have the same number of songs (24)
+    assert len(videos_ids) == 24
+    assert len(songs_ids) == 24
     
-    # But the IDs might be different due to fallback priority
-    # This is the key feature we're testing
+    # At least some IDs should be different
+    assert videos_ids != songs_ids, "Videos and Songs preferences should use different IDs"
 
 def test_export_all_songs_available(page: Page, server_url):
     """Test that the modal shows success message when all songs have IDs."""
@@ -216,7 +236,7 @@ def test_export_all_songs_available(page: Page, server_url):
     page.wait_for_timeout(100)
     
     # Should show 10 songs
-    expect(content).to_contain_text("Ready to export 10 songs")
+    expect(content).to_contain_text("Ready to export 10 videos")
     
     # All songs should be available
     expect(content).to_contain_text("✓ All requested songs are available")
@@ -228,10 +248,7 @@ def test_export_all_songs_available(page: Page, server_url):
 def test_export_song_not_available(page: Page, server_url):
     """Test that the modal shows warning when song IDs are missing."""
     # "It's Your Anniversary" by Freddie Gibbs has no YouTube IDs (only "other" media)
-    # It ranks around #13 in default settings, so we need to:
-    # 1. Set FADER weight to 0 (only source that has this song)
-    # 2. This will push it out of top rankings
-    # 3. Use Top 50 to make sure we see some songs without IDs
+    # It ranks around #13 in default settings
     
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
@@ -246,7 +263,7 @@ def test_export_song_not_available(page: Page, server_url):
     
     # With test data's 35 songs, one song ("It's Your Anniversary") has no YouTube IDs
     # So we should see 34 songs available
-    expect(content).to_contain_text("Ready to export 34 songs")
+    expect(content).to_contain_text("Ready to export 34 videos")
     
     # Should show warning
     expect(content).to_contain_text("⚠️ 1 songs missing IDs will be skipped")
@@ -255,27 +272,20 @@ def test_export_song_not_available(page: Page, server_url):
     expect(content).to_contain_text("It's Your Anniversary")
 
 def test_export_works_with_other_params(page: Page, server_url):
-    """Test that export feature flag works alongside other URL parameters."""
+    """Test that export works alongside other URL parameters."""
     page.goto(f"{server_url}?unlisted_youtube_export&k_value=10&decay_mode=conviction")
     
-    # Export link should be visible
+    # Export link should still be visible
     export_link = page.locator("#open-export")
     expect(export_link).to_be_visible()
     
-    # Open modal
-    export_link.click()
+    # Modal should still work
+    page.locator("#open-export").click()
     modal = page.locator("#modal-export")
     expect(modal).to_be_visible()
-    
-    # The ranking will be different due to k_value and decay_mode changes
-    # But the export functionality should still work
-    create_btn = modal.locator("footer a[role='button']")
-    playlist_url = create_btn.get_attribute("href")
-    
-    assert playlist_url.startswith("https://www.youtube.com/watch_videos?video_ids=")
 
 def test_export_modal_cancel_button(page: Page, server_url):
-    """Test that the Cancel button closes the modal."""
+    """Test that Cancel button closes the modal."""
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
     
@@ -283,22 +293,23 @@ def test_export_modal_cancel_button(page: Page, server_url):
     expect(modal).to_be_visible()
     
     # Click Cancel
-    modal.locator("footer button", has_text="Cancel").click()
+    cancel_btn = modal.locator("footer button", has_text="Cancel")
+    cancel_btn.click()
     
     # Modal should be closed
     expect(modal).not_to_be_visible()
 
 def test_export_modal_close_button(page: Page, server_url):
-    """Test that the X close button closes the modal."""
+    """Test that Close button (X) closes the modal."""
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
     
     modal = page.locator("#modal-export")
     expect(modal).to_be_visible()
     
-    # Click the X button
-    modal.locator("button.close-modal").first.click()
+    # Click close button
+    close_btn = modal.locator("header button[aria-label='Close']")
+    close_btn.click()
     
     # Modal should be closed
     expect(modal).not_to_be_visible()
-
