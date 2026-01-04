@@ -37,11 +37,52 @@ def test_specific_song_content(page: Page, server_url):
     
     # Check genre pill
     expect(first_card.locator(".song-genres")).to_contain_text("Pop")
+    
+    # Check media links with correct URLs
+    nav = first_card.locator("nav")
+    expect(nav).to_be_visible()
+    
+    # YouTube link with video_id
+    yt_link = nav.locator("a", has_text="YouTube")
+    expect(yt_link).to_be_visible()
+    expect(yt_link).to_have_attribute("href", "https://www.youtube.com/watch?v=rK5TyISxZ_M")
+    
+    # YouTube Music link with music_id
+    ytm_link = nav.locator("a", has_text="YTM")
+    expect(ytm_link).to_be_visible()
+    expect(ytm_link).to_have_attribute("href", "https://music.youtube.com/watch?v=V3NbrjVPIHM")
+    
+    # Spotify link
+    spotify_link = nav.locator("a", has_text="Spotify")
+    expect(spotify_link).to_be_visible()
+    expect(spotify_link).to_have_attribute("href", re.compile("spotify.*55lijDD6OAjLFFUHU9tcDm"))
+    
+    # Apple Music link
+    apple_link = nav.locator("a", has_text="Apple")
+    expect(apple_link).to_be_visible()
+    expect(apple_link).to_have_attribute("href", "https://geo.music.apple.com/us/album/where-is-my-husband/1838737596?i=1838737598")
+    
+    # Check sources list and ranks
+    # Expected: Buzzfeed#3 · The Independent (Top 10) · NPR Top 25 · Billboard (Staff Picks)#16 · 
+    # The Guardian#17 · NME#18 · Rolling Stone#24 · ELLE (Top 48) · Rough Trade (Top 63) · Consequence#129
+    sources = first_card.locator("[data-sources]")
+    expect(sources).to_be_visible()
+    expect(sources).to_contain_text("Buzzfeed#3")
+    expect(sources).to_contain_text("Independent")
+    expect(sources).to_contain_text("NPR Top 25")
+    expect(sources).to_contain_text("Billboard")
+    expect(sources).to_contain_text("#16")
+    expect(sources).to_contain_text("Guardian#17")
+    expect(sources).to_contain_text("NME#18")
+    expect(sources).to_contain_text("Rolling Stone#24")
+    expect(sources).to_contain_text("ELLE")
+    expect(sources).to_contain_text("Rough Trade")
+    expect(sources).to_contain_text("Consequence#129")
 
 def test_show_more_functionality(page: Page, server_url):
-    """Test the 'Show More' button if applicable."""
+    """Test the 'Show More' button expands the song list."""
     # test_data.json has 35 songs, so with default page size of 25,
-    # the Show More button should be visible with "Show All (10 more)"
+    # clicking the button should expand to show all 35 songs
     page.goto(server_url)
     
     show_more_btn = page.locator("#load-more")
@@ -49,7 +90,25 @@ def test_show_more_functionality(page: Page, server_url):
     # Wait for data to load
     page.locator(".song-card").first.wait_for()
     
-    # With 35 songs and page size 25, button should be visible
+    # Initially should have 25 songs displayed
+    song_cards = page.locator(".song-card")
+    initial_count = song_cards.count()
+    assert initial_count == 25
+    
+    # Button should be visible and show "10" remaining
     expect(show_more_btn).to_be_visible()
     expect(show_more_btn).to_contain_text("10")
+    
+    # Click the button
+    show_more_btn.click()
+    
+    # Wait a moment for the list to update
+    page.wait_for_timeout(100)
+    
+    # Now should have all 35 songs displayed
+    expanded_count = song_cards.count()
+    assert expanded_count == 35
+    
+    # Button should now be hidden since all songs are shown
+    expect(show_more_btn).to_be_hidden()
 

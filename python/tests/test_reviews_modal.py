@@ -1,4 +1,5 @@
 from playwright.sync_api import Page, expect
+import re
 
 def test_reviews_modal_content(page: Page, server_url):
     """Test that clicking sources opens reviews modal with correct content."""
@@ -22,6 +23,20 @@ def test_reviews_modal_content(page: Page, server_url):
     
     # Check link
     expect(guardian_review.locator("a", has_text="Read Full Review")).to_have_attribute("href", "https://www.theguardian.com/music/ng-interactive/2025/dec/03/the-20-best-songs-of-2025")
+    
+    # Check that ALL reviews have links to full reviews
+    # There are 10 sources for this song
+    review_articles = modal.locator("#reviews-content article")
+    review_count = review_articles.count()
+    assert review_count == 10
+    
+    # Check each article has a "Read Full Review" link
+    for i in range(review_count):
+        article = review_articles.nth(i)
+        review_link = article.locator("a", has_text="Read Full Review")
+        expect(review_link).to_be_visible()
+        # Verify it has a valid href
+        expect(review_link).to_have_attribute("href", re.compile("^https?://"))
 
 def test_shadow_rank_display(page: Page, server_url):
     """Test that shadow ranks are displayed with the ghost emoji."""
