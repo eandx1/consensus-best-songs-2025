@@ -38,7 +38,8 @@ const UI = {
     loadMoreBtn: document.getElementById('load-more'),
     settingsContent: document.getElementById('settings-content'),
     statsContent: document.getElementById('stats-content'),
-    reviewsContent: document.getElementById('reviews-content')
+    reviewsContent: document.getElementById('reviews-content'),
+    exportContent: document.getElementById('export-content')
 };
 
 /**
@@ -454,6 +455,21 @@ async function init() {
     document.getElementById('open-about').onclick = () => {
         document.getElementById('modal-about').showModal();
     };
+
+    // Export modal - only if feature flag is enabled
+    const params = new URLSearchParams(window.location.search);
+    const exportEnabled = params.has('unlisted_youtube_export');
+    
+    const exportLink = document.getElementById('open-export');
+    if (exportEnabled && exportLink) {
+        exportLink.style.display = '';
+        exportLink.onclick = () => {
+            renderExportUI();
+            document.getElementById('modal-export').showModal();
+        };
+    } else if (exportLink) {
+        exportLink.style.display = 'none';
+    }
 }
 
 const debouncedReRank = debounce(() => {
@@ -787,6 +803,96 @@ window.showStats = (idx) => {
     UI.statsContent.innerHTML = html;
     document.getElementById('modal-stats').showModal();
 };
+
+/**
+ * EXPORT UI
+ */
+function renderExportUI(limit = 25, platform = 'youtube') {
+    const songsToExport = STATE.songs.slice(0, limit);
+    const validSongs = [];
+    const missingSongs = [];
+
+    songsToExport.forEach(song => {
+        // Priority logic:
+        // YouTube: video_id > music_id
+        // YouTube Music: music_id > video_id
+        let id = null;
+        if (platform === 'music') {
+            id = song.media?.youtube?.music_id || song.media?.youtube?.video_id;
+        } else {
+            id = song.media?.youtube?.video_id || song.media?.youtube?.music_id;
+        }
+
+        if (id) {
+            validSongs.push(id);
+        } else {
+            missingSongs.push(song);
+        }
+    });
+
+    const domain = platform === 'music' ? 'music.youtube.com' : 'www.youtube.com';
+    const url = `https://${domain}/watch_videos?video_ids=${validSongs.join(',')}`;
+    
+    // Helper to generate button classes
+    const getBtnClass = (isActive) => isActive ? '' : 'outline secondary';
+
+    // HTML Generation
+    let html = `
+        <label>Destination</label>
+        <div class="grid" style="margin-bottom: var(--pico-spacing);">
+            <button class="${getBtnClass(platform === 'youtube')}" onclick="renderExportUI(${limit}, 'youtube')">
+                YouTube
+            </button>
+            <button class="${getBtnClass(platform === 'music')}" onclick="renderExportUI(${limit}, 'music')">
+                YouTube Music
+            </button>
+        </div>
+
+        <label>Range</label>
+        <div class="grid" style="margin-bottom: var(--pico-spacing);">
+            <button class="${getBtnClass(limit === 10)}" onclick="renderExportUI(10, '${platform}')">Top 10</button>
+            <button class="${getBtnClass(limit === 25)}" onclick="renderExportUI(25, '${platform}')">Top 25</button>
+            <button class="${getBtnClass(limit === 50)}" onclick="renderExportUI(50, '${platform}')">Top 50</button>
+        </div>
+
+        <article style="background-color: var(--pico-card-background-color); margin-bottom: var(--pico-spacing);">
+            <header><strong>Summary</strong></header>
+            <p style="margin-bottom: ${missingSongs.length > 0 ? '0.5rem' : '0'}">
+                Ready to export <strong>${validSongs.length}</strong> songs to a new ${platform === 'music' ? 'YouTube Music' : 'YouTube'} playlist.
+            </p>
+            ${missingSongs.length > 0 ? `
+                <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
+                    <small>⚠️ ${missingSongs.length} songs missing IDs will be skipped:</small>
+                    <ul style="font-size: 0.8em; margin-bottom: 0;">
+                        ${missingSongs.map(s => `<li>#${s.rank} ${escapeHtml(s.name)}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : '<small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'}
+        </article>
+        
+        <p><small>Note: You will be redirected to ${platform === 'music' ? 'YouTube Music' : 'YouTube'} where you can name and save your playlist.</small></p>
+    `;
+
+    // Inject into content
+    if (UI.exportContent) {
+        UI.exportContent.innerHTML = html;
+    }
+
+    // Update Footer
+    const modal = document.getElementById('modal-export');
+    if (modal) {
+        const footer = modal.querySelector('footer');
+        if (footer) {
+            footer.innerHTML = `
+                <button class="secondary" onclick="document.getElementById('modal-export').close()">Cancel</button>
+                <a href="${url}" role="button" target="_blank" ${validSongs.length === 0 ? 'disabled' : ''}>Create Playlist</a>
+            `;
+        }
+    }
+}
+
+// Expose to window
+window.renderExportUI = renderExportUI;
 
 /**
  * SETTINGS UI
