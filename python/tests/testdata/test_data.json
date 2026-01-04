@@ -256,368 +256,143 @@
     },
     "songs": [
         {
-            "id": "USMTD2400372",
-            "artist": "Perfume Genius",
-            "name": "It's a Mirror",
+            "id": "USJ5G2542802",
+            "artist": "Wednesday",
+            "name": "Townies",
             "sources": [
                 {
-                    "name": "Slant",
-                    "rank": 3,
-                    "quote": "a shift from extravagance to a grungy groundedness befitting the song's claustrophobic lyrics"
-                },
-                {
-                    "name": "Consequence",
-                    "rank": 5,
-                    "quote": "transform that heavy pain into something luminous and vital"
-                },
-                {
-                    "name": "NYT (Zoladz)",
-                    "rank": 11,
-                    "quote": "embraces the grain of guitars on this sumptuous, ever-escalating single ... confronting a swirling maelstrom of fears with a self-assured swagger"
-                },
-                {
-                    "name": "Quietus",
-                    "rank": 22
+                    "name": "Stereogum",
+                    "rank": 1,
+                    "quote": "a master of writing grimy, evocative scenes of troubled youth that are daringly specific"
                 },
                 {
                     "name": "Pitchfork",
-                    "rank": 30,
-                    "quote": "The song sprawls at a magnificent scale, all crashing drums, rolling guitars, and weighted silences"
+                    "rank": 7
                 },
                 {
-                    "name": "NPR Top 125",
+                    "name": "Consequence",
+                    "rank": 9,
+                    "quote": "the ultimate Wednesday song ... offers up one of the best examples of their countrygaze stylings"
+                },
+                {
+                    "name": "NPR Top 25",
                     "uses_shadow_rank": true,
-                    "quote": "few more intimate depictions of such seclusion: as twinged Americana opens upon a self-lacerating performance"
+                    "quote": "catchy, country-influenced storytelling and the rock-star ability to stretch the word \"died\" into nine syllables"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 21,
+                    "quote": "A mature and masterful missive from one of our greatest working songwriters"
+                },
+                {
+                    "name": "NME",
+                    "rank": 42,
+                    "quote": "excavating the pains of the past helps with closure"
                 }
             ],
             "list_count": 6,
             "media": {
                 "youtube": {
-                    "music_id": "-hqqLEhWq9M",
-                    "video_id": "hx2_NGaDPrk"
+                    "music_id": "mHEiyObNciA",
+                    "video_id": "E8cKoQqdtwA"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/townies/1807870796?i=1807870800"
                 },
                 "spotify": {
-                    "id": "2UYuux157cn498H23UfHQf"
+                    "id": "2deA4WXDrTa7jAZuaIAeqo"
+                },
+                "bandcamp": {
+                    "url": "https://wednesdayband.bandcamp.com/track/townies"
                 }
             },
-            "genres": "Art Pop"
+            "genres": "Alt Country"
         },
         {
-            "id": "USUG12500209",
-            "artist": "JT",
-            "name": "Ran Out",
+            "id": "OTHER:https://youonlydie1nce.com/products/you-only-die-once-cd-album",
+            "artist": "Freddie Gibbs",
+            "name": "It's Your Anniversary",
             "sources": [
                 {
                     "name": "FADER",
-                    "rank": 7,
-                    "quote": "\"Ran Out\" is the soundtrack to a money heist pulled off by bad bitches"
+                    "rank": 40,
+                    "quote": "a two minute and 20 second rollercoaster of failed romances, professional fallouts, and personal frustrations"
                 }
             ],
             "list_count": 1,
             "media": {
-                "youtube": {
-                    "music_id": "asnVsJf4esU",
-                    "video_id": "asnVsJf4esU"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/ran-out/1802764142?i=1802764144"
-                },
-                "spotify": {
-                    "id": "6gR9K14ED3UuhVIu4t9LTk"
+                "other": {
+                    "url": "https://youonlydie1nce.com/products/you-only-die-once-cd-album"
                 }
             },
-            "genres": "Hip-Hop/Rap"
+            "genres": "Jazz Rap"
         },
         {
-            "id": "QM6MZ2547404",
-            "artist": "CMAT",
-            "name": "EURO-COUNTRY",
+            "id": "QMFME2535037",
+            "artist": "RAYE",
+            "name": "WHERE IS MY HUSBAND!",
             "sources": [
                 {
-                    "name": "Paste",
-                    "rank": 4,
-                    "quote": "open letter to Ireland, as she pleads for the culture she identifies with so deeply to preserve itself"
-                },
-                {
-                    "name": "Crack",
-                    "rank": 22,
-                    "quote": "a powerful, offbeat spellbinder ... grieves an earlier time"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 85,
-                    "quote": "fragments herself, linguistically and musically"
-                }
-            ],
-            "list_count": 3,
-            "media": {
-                "youtube": {
-                    "music_id": "nksi6gLKpoE",
-                    "video_id": "_SVNTv44C4g"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/euro-country/1802736479?i=1802736653"
-                },
-                "spotify": {
-                    "id": "22vRKcdPjVW7Q6ydLNcYBV"
-                }
-            },
-            "genres": "Indie Pop"
-        },
-        {
-            "id": "USUG12506174",
-            "artist": "Justin Bieber",
-            "name": "YUKON",
-            "sources": [
-                {
-                    "name": "Complex",
-                    "rank": 1,
-                    "quote": "\"Yukon,\" an intimate and hypnotic acoustic showcase ... the best song to drop this year, but perhaps the best in his catalogue"
-                },
-                {
-                    "name": "LA Times",
-                    "rank": 4,
-                    "quote": "Bieber will never escape the power of his high-pitched voice"
-                },
-                {
-                    "name": "Slant",
-                    "rank": 16,
-                    "quote": "sway gently in the breeze, set only to sparingly strummed guitar"
-                },
-                {
-                    "name": "Billboard Staff",
-                    "rank": 18,
-                    "quote": "a slow-burning soul groove ... proves he's no longer the innocent dreamer, becoming an R&B radio hit in the process"
-                },
-                {
-                    "name": "FADER",
-                    "rank": 44,
-                    "quote": "The original track is slinky, sly and easy on the ears ... Bieber's agile falsetto is still manna from pop heaven"
-                }
-            ],
-            "list_count": 5,
-            "media": {
-                "youtube": {
-                    "music_id": "-R-rqf-w2MY",
-                    "video_id": "fXivMSJm_kA"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/yukon/1839605744?i=1839605914"
-                },
-                "spotify": {
-                    "id": "29iva9idM6rFCPUlu7Rhxl"
-                }
-            },
-            "genres": "Pop"
-        },
-        {
-            "id": "USAT22508691",
-            "artist": "Charli xcx & John Cale",
-            "name": "House featuring John Cale",
-            "sources": [
-                {
-                    "name": "Quietus",
+                    "name": "Buzzfeed",
                     "rank": 3,
-                    "quote": "the track is swallowed by infernal goth noise lunges and a distorted Charli sing/screaming \"I think I'm gonna die in this house.\""
+                    "quote": "RAYE sounds even better live than in the studio"
+                },
+                {
+                    "name": "Independent",
+                    "uses_shadow_rank": true,
+                    "quote": "an electrifying masterclass in vocal delivery"
+                },
+                {
+                    "name": "NPR Top 25",
+                    "uses_shadow_rank": true,
+                    "quote": "combines 20th century girl group elegance with early aughts Amy Winehouse realness to empathize with the modern yearner jaded by dating and waiting for their person"
                 },
                 {
                     "name": "Billboard Staff",
-                    "rank": 37,
-                    "quote": "a spooky, gothic ballad ... so chilling you can feel the icy gales stinging your neck with each string stab and feedback echo"
+                    "rank": 16,
+                    "quote": "blending the universal quest for eternal love with big band jazz and Motown aesthetics"
                 },
-                {
-                    "name": "Consequence",
-                    "rank": 105,
-                    "quote": "The poem and the gothic soundscape build to a jump-scare of a climax, as more and more terror seeps into the refrain"
-                }
-            ],
-            "list_count": 3,
-            "media": {
-                "youtube": {
-                    "music_id": "-AHhZTCDnsg",
-                    "video_id": "Xgp7wlBfASA"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/house-featuring-john-cale/1851605885?i=1851605886"
-                },
-                "spotify": {
-                    "id": "6lYUgmE829m06SMC6tG3qD"
-                }
-            },
-            "genres": "Hyperpop"
-        },
-        {
-            "id": "GBBKS2500311",
-            "artist": "Jim Legxacy",
-            "name": "'06 wayne rooney",
-            "sources": [
-                {
-                    "name": "GvsB",
-                    "rank": 9
-                },
-                {
-                    "name": "Quietus",
-                    "rank": 19,
-                    "quote": "a painful and refreshingly open insight into the effects of the chaos that life throws at us"
-                },
-                {
-                    "name": "Stereogum",
-                    "rank": 30,
-                    "quote": "Converting inner-city turmoil into pillowy singalong hooks is something that comes natural for Jim Legxacy"
-                },
-                {
-                    "name": "Rough Trade",
-                    "uses_shadow_rank": true,
-                    "quote": "the perfect example of Jim's power in evoking an era, producing nostalgia and reflecting on real life shit"
-                },
-                {
-                    "name": "Paste",
-                    "rank": 59,
-                    "quote": "[A] poignant reminder that \"making it\" isn't always a salve for old wounds"
-                },
-                {
-                    "name": "Consequence",
-                    "rank": 191,
-                    "quote": "Channeling the spirit of mid-aughts landfill indie and a myriad of bangers from FIFA soundtracks"
-                }
-            ],
-            "list_count": 6,
-            "media": {
-                "youtube": {
-                    "music_id": "Yq8EXOJbsCE",
-                    "video_id": "RhjZgIk9oCs"
-                },
-                "spotify": {
-                    "id": "7p6LdEcYnSbw68yJDbUjxD"
-                }
-            }
-        },
-        {
-            "id": "OTHER:https://chuquimamani-condori.bandcamp.com/track/breathe-kullawada-caporal-e-dj-edit",
-            "artist": "Chuquimamani-Condori",
-            "name": "Breathe Kullawada Caporal E DJ edit",
-            "sources": [
-                {
-                    "name": "Paste",
-                    "rank": 18,
-                    "quote": "a noisy pop racket that sounds like four or five radio stations blasting at once, which is exactly why I love it so much"
-                },
-                {
-                    "name": "Pitchfork",
-                    "rank": 19,
-                    "quote": "adding entire new layers to them ... Faith's sweeping vocals go from the kind that would fit the climax of a Lifetime Christmas romance to being about a connection so deep it's like sparks ripple when their hands clasp"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "bandcamp": {
-                    "url": "https://chuquimamani-condori.bandcamp.com/track/breathe-kullawada-caporal-e-dj-edit"
-                }
-            }
-        },
-        {
-            "id": "USSM12504034",
-            "artist": "ROSAL\u00cdA, Bj\u00f6rk, & Yves Tumor",
-            "name": "Berghain",
-            "sources": [
                 {
                     "name": "Guardian",
-                    "rank": 1,
-                    "quote": "The towering, gothic Berghain subsumes the listener ... being overwhelmed by a lover's fear, anger, love and blood"
+                    "rank": 17,
+                    "quote": "delivered so knowingly ... as she gabbles her way through this screwball caper against a backdrop of Ronson-esque horns"
                 },
                 {
-                    "name": "Crack",
-                    "rank": 1,
-                    "quote": "the sheer power of its confident maximalism"
-                },
-                {
-                    "name": "Quietus",
-                    "rank": 1,
-                    "quote": "an all-cylinders blast of booming orchestral baroque and operatic vocals ... redraws the boundaries of what's possible in modern pop music"
-                },
-                {
-                    "name": "FADER",
-                    "rank": 6,
-                    "quote": "belts in anguished German, wielding her airy falsetto with gusto as she unleashes the obsessive distress that dominates her inner dialogue"
+                    "name": "NME",
+                    "rank": 18,
+                    "quote": "jazzy, soul-pop bop ... theatrical and deliriously addictive"
                 },
                 {
                     "name": "Rolling Stone",
-                    "rank": 14,
-                    "quote": "all urgent, frenzied strings and soaring operatic vocals, signaling a dark grandeur few were expecting"
+                    "rank": 24,
+                    "quote": "She skillfully disassembles the traditional pop song structure with gleeful abandon"
                 },
                 {
                     "name": "ELLE",
                     "uses_shadow_rank": true,
-                    "quote": "a beautifully frenzied fever dream ... sensual, gothic, poignant, and slightly unhinged"
-                },
-                {
-                    "name": "Variety",
-                    "uses_shadow_rank": true,
-                    "quote": "a composition that includes a symphony orchestra and choir blasting so loudly you'd think they were soundtracking an especially beautiful \"Omen\" reboot"
+                    "quote": "she turned a song about a desperate search for a spouse into a raucous, joyous jazz fest ... that reveals the depths of her songwriting ability and her vocal prowess"
                 },
                 {
                     "name": "Rough Trade",
                     "uses_shadow_rank": true,
-                    "quote": "Unlike anything else I have heard this year"
+                    "quote": "this track is so upbeat and one to get you off your seat"
                 },
                 {
-                    "name": "Billboard Staff",
-                    "rank": 34,
-                    "quote": "scales her ambition to nothing less than operatic majesty, achieving this aim with a tour de force that feels vastly bigger than its slim three minutes"
+                    "name": "Consequence",
+                    "rank": 129
                 }
             ],
-            "list_count": 9,
+            "list_count": 10,
             "media": {
                 "youtube": {
-                    "music_id": "2dKMNZIK45M",
-                    "video_id": "htQBS2Ikz6c"
+                    "music_id": "V3NbrjVPIHM",
+                    "video_id": "rK5TyISxZ_M"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/berghain/1848167516?i=1848167528"
+                    "url": "https://geo.music.apple.com/us/album/where-is-my-husband/1838737596?i=1838737598"
                 },
                 "spotify": {
-                    "id": "2T8yuUKl1nhmtaIocqWo4i"
-                }
-            },
-            "genres": "Latin"
-        },
-        {
-            "id": "USRC12500621",
-            "artist": "Audrey Hobert",
-            "name": "Sue me",
-            "sources": [
-                {
-                    "name": "Variety",
-                    "uses_shadow_rank": true,
-                    "quote": "a waterfall of lyrics about hooking up with an ex and not feeling guilty ... her witty attention to detail ... and quirky songwriting feels fresh"
-                },
-                {
-                    "name": "Billboard Staff",
-                    "rank": 68,
-                    "quote": "fun, flirty and unapologetically crass ... just as funny as it is catchy"
-                },
-                {
-                    "name": "NPR Top 125",
-                    "uses_shadow_rank": true,
-                    "quote": "a pulsing beat that somehow makes a line like \"sue me I wanna be UH! / sue me I wanna be YEAH!\" hit so hard"
-                },
-                {
-                    "name": "Rolling Stone",
-                    "rank": 83,
-                    "quote": "introduces itself with a swaggering beat and organ-grinder synths, laying the ground for her defiant declaration of her needs"
-                }
-            ],
-            "list_count": 4,
-            "media": {
-                "youtube": {
-                    "music_id": "--CL5uH8-bg",
-                    "video_id": "ZqgKKbg2Ja8"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/sue-me/1826574954?i=1826575254"
-                },
-                "spotify": {
-                    "id": "6ZAuQOgLrNQb9s7BXheuTy"
+                    "id": "55lijDD6OAjLFFUHU9tcDm"
                 }
             },
             "genres": "Pop"
@@ -659,120 +434,504 @@
             "genres": "Hyperpop"
         },
         {
-            "id": "NLA322500061",
-            "artist": "Turnstile",
-            "name": "LIGHT DESIGN",
+            "id": "USJZA2651409",
+            "artist": "Wendy Eisenberg",
+            "name": "Will You Dare",
             "sources": [
                 {
-                    "name": "GvsB",
-                    "rank": 14
+                    "name": "Paste",
+                    "rank": 23,
+                    "quote": "Rubio's pedal steel tone ... scores a vastness of a hair-silvering love and the time passing through it"
                 }
             ],
             "list_count": 1,
             "media": {
                 "youtube": {
-                    "music_id": "gMfkXCqnqns",
-                    "video_id": "gMfkXCqnqns"
-                },
-                "spotify": {
-                    "id": "4UI693m28NeH4uY0mnBV0F"
-                }
-            },
-            "genres": "Hardcore Punk"
-        },
-        {
-            "id": "GBBKS2500077",
-            "artist": "Jim Legxacy",
-            "name": "stick",
-            "sources": [
-                {
-                    "name": "Vulture",
-                    "rank": 4,
-                    "quote": "surveys tough times sweetly"
-                },
-                {
-                    "name": "FADER",
-                    "rank": 8,
-                    "quote": "inexplicably moving and seriously addictive"
-                },
-                {
-                    "name": "NPR Top 25",
-                    "uses_shadow_rank": true,
-                    "quote": "the ascendant U.K. rapper is an aerial dancer here, whirling between half-sung catch phrases on a ribbon of hummed chords"
-                }
-            ],
-            "list_count": 3,
-            "media": {
-                "youtube": {
-                    "music_id": "YrVJE_6Hg6c",
-                    "video_id": "qfDIhj8UIfc"
-                },
-                "spotify": {
-                    "id": "03zypUrD0e5vrFcmc80NJm"
-                }
-            }
-        },
-        {
-            "id": "USSM12500781",
-            "artist": "Nino Paid",
-            "name": "Tomorrow Will Be Better",
-            "sources": [
-                {
-                    "name": "Pitchfork",
-                    "rank": 15,
-                    "quote": "creates a psalm of self-determination from betrayal, struggle, and grief"
-                }
-            ],
-            "list_count": 1,
-            "media": {
-                "youtube": {
-                    "music_id": "lF7PH7hJD9E",
-                    "video_id": "boW8dbVEbQ4"
+                    "music_id": "vF4wrZW8XXE",
+                    "video_id": "vF4wrZW8XXE"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/tomorrow-will-be-better/1796481646?i=1796481647"
+                    "url": "https://geo.music.apple.com/us/album/will-you-dare/1846453533?i=1846453535"
                 },
                 "spotify": {
-                    "id": "3lGjhba2obegIC8Xc8VMK7"
+                    "id": "35nEske60pQJNgUrEgf9xW"
                 }
             },
-            "genres": "Rap"
+            "genres": "Free Jazz"
         },
         {
-            "id": "USAT22501082",
-            "artist": "The Mar\u00edas",
-            "name": "Back To Me",
+            "id": "QM6MZ2511784",
+            "artist": "Liquid Mike",
+            "name": "Groucho Marx",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 76,
+                    "quote": "another power-pop banger from Liquid Mike"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "V8Oa2DNFBsE",
+                    "video_id": "V8Oa2DNFBsE"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/groucho-marks/1825216752?i=1825217157"
+                },
+                "spotify": {
+                    "id": "1td8l5TOZLYUS6znwstHcL"
+                }
+            },
+            "genres": "Power Pop"
+        },
+        {
+            "id": "NL7JW2400003",
+            "artist": "Mood Bored",
+            "name": "Wet Faced & Ugly",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 113,
+                    "quote": "manage to stand out via lyrics that revel in so much codependency and self-pity ... that it's almost charming"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "r8m_JPSWwME",
+                    "video_id": "r8m_JPSWwME"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/wet-faced-ugly/1785627670?i=1785627881"
+                },
+                "spotify": {
+                    "id": "3yAVjo24bbVBElLDlIO4fv"
+                }
+            },
+            "genres": "Indie Rock"
+        },
+        {
+            "id": "USA5W2500030",
+            "artist": "Brandon Lake & Jelly Roll",
+            "name": "Hard Fought Hallelujah (with Jelly Roll)",
+            "sources": [
+                {
+                    "name": "NYT (Caramanica)",
+                    "rank": 5,
+                    "quote": "Imagine salvation were a W.W.E. match."
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "KacI1ZyFJlY",
+                    "video_id": "YJNFAaWJhp0"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/hard-fought-hallelujah/1804395857?i=1804396310"
+                },
+                "spotify": {
+                    "id": "4cLC8gydI0O78g8chZugS4"
+                }
+            },
+            "genres": "Worship"
+        },
+        {
+            "id": "USWEX2400045",
+            "artist": "OHYUNG",
+            "name": "no good",
+            "sources": [
+                {
+                    "name": "Paste",
+                    "rank": 5,
+                    "quote": "an experimental, rave-influenced pop reinvention that ... sits in its own well-paced, blown-out rapture of color"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "a1Qyv4mBl5s",
+                    "video_id": "a1Qyv4mBl5s"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/no-good/1787417045?i=1787417052"
+                },
+                "spotify": {
+                    "id": "5rO4yGfig3G1OeHWXf5uy5"
+                }
+            },
+            "genres": "Experimental Hip Hop"
+        },
+        {
+            "id": "UKQNV2500022",
+            "artist": "Dean Blunt & Elias R\u00f8nnenfelt",
+            "name": "5",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 181,
+                    "quote": "captures the stunning magic of their creative partnership"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "9wIg39LeWfw",
+                    "video_id": "9wIg39LeWfw"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/5/1794764757?i=1794764762"
+                },
+                "spotify": {
+                    "id": "7CK4bpTIiYWYp478jgSlgp"
+                }
+            },
+            "genres": "Art Pop"
+        },
+        {
+            "id": "USRC12502354",
+            "artist": "Eli",
+            "name": "Glitter",
             "sources": [
                 {
                     "name": "ELLE",
                     "uses_shadow_rank": true,
-                    "quote": "sometimes lost loves linger and haunt you"
+                    "quote": "a hook as catchy as any '90s girl-group anthem"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "yU5Y_zMjYnI",
+                    "video_id": "89RWfiwLwh0"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/glitter/1856396987?i=1856397127"
+                },
+                "spotify": {
+                    "id": "0y9S3dw1MBzHqmTpMTTd0M"
+                }
+            },
+            "genres": "Pop"
+        },
+        {
+            "id": "USAT22404700",
+            "artist": "FKA twigs",
+            "name": "Girl Feels Good",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 2,
+                    "quote": "even as the lyrics telegraph catastrophe, she chases bliss anyway"
                 },
                 {
-                    "name": "Variety",
+                    "name": "ELLE",
                     "uses_shadow_rank": true,
-                    "quote": "brimming with longing but also a tentativeness and uncertainty ... builds and swirls, with an elaborate arrangement ... climaxing with triumphant countermelodies"
+                    "quote": "captures FKA Twigs at her most tender and self-possessed"
                 },
                 {
-                    "name": "Rolling Stone",
-                    "rank": 43,
-                    "quote": "achingly pleas for her lover to return ... over menacing reverb"
+                    "name": "Slant",
+                    "rank": 40,
+                    "quote": "[She] synthesize[s] the track's '90s reference points into something sublimely contemporary"
                 }
             ],
             "list_count": 3,
             "media": {
                 "youtube": {
-                    "music_id": "OKCKR_pbHHk",
-                    "video_id": "4kCVGodVS88"
+                    "music_id": "AW8ygaIfWuc",
+                    "video_id": "vssRKoGhD9Y"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/back-to-me/1803199495?i=1803199508"
+                    "url": "https://geo.music.apple.com/us/album/girl-feels-good/1851537334?i=1851537336"
                 },
                 "spotify": {
-                    "id": "4E0P1xs3JNmsNr5c5nFTZJ"
+                    "id": "536rHxlVFXGJBO2xWE7HsV"
                 }
             },
-            "genres": "Bedroom Pop"
+            "genres": "Art Pop"
+        },
+        {
+            "id": "USA2P2551924",
+            "artist": "Dove Ellis",
+            "name": "Pale Song",
+            "sources": [
+                {
+                    "name": "Stereogum",
+                    "rank": 26,
+                    "quote": "[Pale Song is] a showcase for a gifted young singer brimming with gravitas"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "YFF4Hg9Yl6k",
+                    "video_id": "YFF4Hg9Yl6k"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/pale-song/1843645122?i=1843645126"
+                },
+                "spotify": {
+                    "id": "5NbilllIdF8lp4FmdX7OF8"
+                }
+            },
+            "genres": "Singer/Songwriter"
+        },
+        {
+            "id": "QZNWP2575007",
+            "artist": "Hot Mulligan",
+            "name": "Monica Lewinskibidi",
+            "sources": [
+                {
+                    "name": "Variety",
+                    "uses_shadow_rank": true,
+                    "quote": "a collision of beauty and grief, gorgeous chords and screaming, and the result is unforgettable"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "aHq56SKBsO4",
+                    "video_id": "jGcvOP9BB3k"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/monica-lewinskibidi/1812498358?i=1812498366"
+                },
+                "spotify": {
+                    "id": "1iecQAfm1L6eoTnvxLEN61"
+                }
+            },
+            "genres": "Midwest Emo"
+        },
+        {
+            "id": "USHR22514801",
+            "artist": "illuminati hotties",
+            "name": "777",
+            "sources": [
+                {
+                    "name": "Rolling Stone",
+                    "rank": 79,
+                    "quote": "recalls the golden era of college rock"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "7WLLI1nz7uQ",
+                    "video_id": "6luJVmPmzy8"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/777/1802291982?i=1802291983"
+                },
+                "spotify": {
+                    "id": "6UnNEuFWKFJuFSTemEs605"
+                }
+            },
+            "genres": "Riot Grrrl"
+        },
+        {
+            "id": "USRC12500013",
+            "artist": "Sleep Token",
+            "name": "Look To Windward",
+            "sources": [
+                {
+                    "name": "Rough Trade",
+                    "uses_shadow_rank": true,
+                    "quote": "moves effortlessly between soft, melodic passages and powerful, heavy breakdowns, creating a dynamic journey"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "0A0IZFa1cnk",
+                    "video_id": "0A0IZFa1cnk"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/look-to-windward/1800532611?i=1800532870"
+                },
+                "spotify": {
+                    "id": "4Lojbtk7XNMdSKRHSFbdkm"
+                }
+            },
+            "genres": "Progressive Metal"
+        },
+        {
+            "id": "DEG932501778",
+            "artist": "james K",
+            "name": "Play",
+            "sources": [
+                {
+                    "name": "GvsB",
+                    "rank": 3
+                },
+                {
+                    "name": "Pitchfork",
+                    "rank": 9,
+                    "quote": "breakbeats chew up the chiffon of her synthesizer pads in their mechanical teeth"
+                },
+                {
+                    "name": "Stereogum",
+                    "rank": 18,
+                    "quote": "glittering dream-pop clarity, drum 'n' bass euphoria, and grungy anticipation fire like angry pistons"
+                },
+                {
+                    "name": "FADER",
+                    "rank": 19,
+                    "quote": "gossamer banger ... helping me achieve something rare: actual and glorious dematerialization"
+                },
+                {
+                    "name": "Paste",
+                    "rank": 26,
+                    "quote": "combines her greatest shoegaze, trip-hop, and dream-pop ambitions into a marvelous brightness"
+                }
+            ],
+            "list_count": 5,
+            "media": {
+                "youtube": {
+                    "music_id": "kLltEJCYvZk",
+                    "video_id": "2chmQiR8R10"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/play/1807351546?i=1807351547"
+                },
+                "spotify": {
+                    "id": "4EbKAHT7I23BeXQFJ041Ls"
+                },
+                "bandcamp": {
+                    "url": "https://jameskmusic.bandcamp.com/track/play"
+                }
+            },
+            "genres": "Electronic"
+        },
+        {
+            "id": "GBAHS2501280",
+            "artist": "Maisie Peters",
+            "name": "Audrey Hepburn",
+            "sources": [
+                {
+                    "name": "ELLE",
+                    "uses_shadow_rank": true,
+                    "quote": "'Love was a myth, now it's my morning coffee,' she sings"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "ryV6d5du7XU",
+                    "video_id": "pT-x9kGwFXY"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/audrey-hepburn/1854683629?i=1854683990"
+                },
+                "spotify": {
+                    "id": "7hoPbfGuOZe6FKBlwB2d21"
+                }
+            },
+            "genres": "Pop"
+        },
+        {
+            "id": "USTJ22562902",
+            "artist": "Sumac & Moor Mother",
+            "name": "Scene 2: The Run",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 54,
+                    "quote": "harnesses the rage of being bystanders to the atrocities of war, bringing out the best in both post-punk supergroup Sumac and poet/musician Moor Mother"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "t3KtKHmGFwU",
+                    "video_id": "t3KtKHmGFwU"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/scene-2-the-run/1786720029?i=1786720031"
+                },
+                "spotify": {
+                    "id": "40rE8O0fEkaMjDpEpUDE72"
+                }
+            },
+            "genres": "Sludge Metal"
+        },
+        {
+            "id": "GBARL2501298",
+            "artist": "daydreamers",
+            "name": "Good Intentions",
+            "sources": [
+                {
+                    "name": "Buzzfeed",
+                    "rank": 17,
+                    "quote": "their natural charisma and feel-good sound, especially on new single, \"Good Intentions.\""
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "_szp3ehxssg",
+                    "video_id": "_szp3ehxssg"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/good-intentions/1834954053?i=1834954316"
+                },
+                "spotify": {
+                    "id": "0P5PPuVLKdyHnWdjbOeMxa"
+                }
+            },
+            "genres": "Alternative"
+        },
+        {
+            "id": "SE5JH2401001",
+            "artist": "Joshua Idehen",
+            "name": "Mum Does the Washing",
+            "sources": [
+                {
+                    "name": "Rough Trade",
+                    "uses_shadow_rank": true,
+                    "quote": "An electrifying burst of joy"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "-iBYbLTjJdM",
+                    "video_id": "-iBYbLTjJdM"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/mum-does-the-washing/1831339355?i=1831339359"
+                },
+                "spotify": {
+                    "id": "0b6u5RhZd8H8rVHROCKgsF"
+                }
+            },
+            "genres": "Spoken Word"
+        },
+        {
+            "id": "GBCKK2578910",
+            "artist": "Tropical Fuck Storm",
+            "name": "Moscovium",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 126,
+                    "quote": "pure catharsis done the way only these Aussie psych-rock-freaks can pull off"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "lzoSYOruA1w",
+                    "video_id": "lzoSYOruA1w"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/moscovium/1793336908?i=1793337502"
+                },
+                "spotify": {
+                    "id": "5AYa3CrtYKuGRZqsIVgPlp"
+                }
+            },
+            "genres": "Noise Rock"
         },
         {
             "id": "NLA322500073",
@@ -811,304 +970,317 @@
             "genres": "Hardcore Punk"
         },
         {
-            "id": "QZ2YT2500011",
-            "artist": "S.G. Goodman",
-            "name": "Heaven Song",
+            "id": "USFP13788503",
+            "artist": "Haley Heynderickx & Max Garc\u00eda Conover",
+            "name": "Boars",
             "sources": [
-                {
-                    "name": "Consequence",
-                    "rank": 36,
-                    "quote": "[an] Americana trip to heaven and back"
-                },
-                {
-                    "name": "Slant",
-                    "rank": 39,
-                    "quote": "the song's ecstatic crescendo is exactly what it sounds like when one enters the pearly gates"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "TfzcvmvThQA",
-                    "video_id": "TfzcvmvThQA"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/heaven-song/1799811094?i=1799811377"
-                },
-                "spotify": {
-                    "id": "7Cx6yqhM7WSxrLMW2ZRulF"
-                }
-            },
-            "genres": "Southern Gothic"
-        },
-        {
-            "id": "YT:v6dCTnnoVsI",
-            "artist": "Timoth\u00e9e Chalamet",
-            "name": "Outlaw Blues/Three Angels (Live on \u2018S.N.L.)",
-            "sources": [
-                {
-                    "name": "NYT (Caramanica)",
-                    "rank": 19,
-                    "quote": "demonstrate that you can shred, too \u2014 a bridge between petulance old and new"
-                }
-            ],
-            "list_count": 1,
-            "media": {
-                "youtube": {
-                    "music_id": "v6dCTnnoVsI",
-                    "video_id": "v6dCTnnoVsI"
-                }
-            }
-        },
-        {
-            "id": "USQX92503688",
-            "artist": "ian",
-            "name": "Oh Ok - xxl freestyle",
-            "sources": [
-                {
-                    "name": "NYT (Caramanica)",
-                    "rank": 6,
-                    "quote": "full of stop-start cadences, hyper-referential rhymes and a willingness to be the butt of the joke"
-                }
-            ],
-            "list_count": 1,
-            "media": {
-                "youtube": {
-                    "music_id": "l-81Sh8Thm4",
-                    "video_id": "vshBgfqkxBI"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/oh-ok-xxl-freestyle/1824565451?i=1824565467"
-                },
-                "spotify": {
-                    "id": "555oowE8kujtS6bR2GOOPD"
-                }
-            },
-            "genres": "Pop"
-        },
-        {
-            "id": "QM6MZ2547410",
-            "artist": "CMAT",
-            "name": "Take A Sexy Picture Of Me",
-            "sources": [
-                {
-                    "name": "NME",
-                    "rank": 3,
-                    "quote": "Smooth country-pop, an ear for a killer hook and an arsenal of sarcastic come-ons"
-                },
-                {
-                    "name": "Guardian",
-                    "rank": 11,
-                    "quote": "a multilayered examination of body image"
-                },
                 {
                     "name": "Rough Trade",
                     "uses_shadow_rank": true,
-                    "quote": "glittery, catchy, country-pop ... narrating tender vulnerability"
-                },
-                {
-                    "name": "NPR Top 125",
-                    "uses_shadow_rank": true,
-                    "quote": "campy, vampy indictment of impossible beauty standards"
+                    "quote": "Folk infused cosied by warm guitars and thematically charged lyrics, with a driving rhythm"
                 }
             ],
-            "list_count": 4,
+            "list_count": 1,
             "media": {
                 "youtube": {
-                    "music_id": "EUjUNCDPc70",
-                    "video_id": "EUjUNCDPc70"
+                    "music_id": "cfA_U3Ko7KY",
+                    "video_id": "cfA_U3Ko7KY"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/take-a-sexy-picture-of-me/1802736479?i=1802736661"
+                    "url": "https://geo.music.apple.com/us/album/boars/1837765102?i=1837765109"
                 },
                 "spotify": {
-                    "id": "0XWCzu4SUFz2jusWBPrDvU"
+                    "id": "0PBX8l4P0FPtNLloE8AjDl"
                 }
             },
-            "genres": "Indie Pop"
+            "genres": "Singer/Songwriter"
         },
         {
-            "id": "USAT22504362",
-            "artist": "Disco Lines & Tinashe",
-            "name": "No Broke Boys",
+            "id": "QMRTJ2500310",
+            "artist": "muddy & Xpert Productions",
+            "name": "Payroll",
             "sources": [
                 {
-                    "name": "Complex",
-                    "rank": 38,
-                    "quote": "turns what could have been a harsh, mostly judgmental song ... into a tongue-in-cheek, lighthearted dance record"
+                    "name": "Rolling Stone",
+                    "rank": 85,
+                    "quote": "The absolutely electric song reigned over Grenada's annual Spicemas carnival and became a hit at carnivals all over the world"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "bv__xa7dQk4",
+                    "video_id": "jT76NaBzj1Q"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/payroll-feat-xpert-productions/1814686367?i=1814686369"
+                },
+                "spotify": {
+                    "id": "3XTjtCEfZ34xMua70IK01m"
+                }
+            },
+            "genres": "Soca"
+        },
+        {
+            "id": "USMTD2400377",
+            "artist": "Perfume Genius",
+            "name": "Full On",
+            "sources": [
+                {
+                    "name": "Paste",
+                    "rank": 81,
+                    "quote": "flute part, while gently duetting with Blake Mills' guitar, speaks in paragraphs without stepping up to the microphone"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "DiqadT5gYmc",
+                    "video_id": "DiqadT5gYmc"
+                },
+                "spotify": {
+                    "id": "6BEgnEWwpTm6AJ4mphJwsZ"
+                }
+            },
+            "genres": "Art Pop"
+        },
+        {
+            "id": "GBARL2500424",
+            "artist": "Sasha Keable",
+            "name": "act right",
+            "sources": [
+                {
+                    "name": "Variety",
+                    "uses_shadow_rank": true,
+                    "quote": "her vocal runs cascading like a waterfall"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "f1GvxTdYHLY",
+                    "video_id": "e2u39ZRT59U"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/act-right/1830535998?i=1830536352"
+                },
+                "spotify": {
+                    "id": "1z0gNe6DiusPKN55RBAvRO"
+                }
+            },
+            "genres": "UK R&B"
+        },
+        {
+            "id": "US5022500035",
+            "artist": "CA7RIEL & Paco Amoroso",
+            "name": "EL D\u00cdA DEL AMIGO",
+            "sources": [
                 {
                     "name": "Billboard Staff",
-                    "rank": 58,
-                    "quote": "gave internet and IRL culture its catchphrase of the summer \u2014 and arguably its song of the summer too"
+                    "rank": 80,
+                    "quote": "The funk-infused, feel-good pop tune with catchy hooks and clever lyrics speaks about the Argentine duo's real-life camaraderie"
                 }
             ],
-            "list_count": 2,
+            "list_count": 1,
             "media": {
                 "youtube": {
-                    "music_id": "l6Fx2nyU52w",
-                    "video_id": "nS-fOh1CfhQ"
+                    "music_id": "j-LUkPsONbE",
+                    "video_id": "Cq0jaj-eocI"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/no-broke-boys/1830260160?i=1830260717"
+                    "url": "https://geo.music.apple.com/us/album/el-d%C3%ADa-del-amigo/1797880735?i=1797880741"
                 },
                 "spotify": {
-                    "id": "3cZajhyr8LmtPfHZ9296tj"
-                }
-            },
-            "genres": "Stutter House"
-        },
-        {
-            "id": "USSM12504044",
-            "artist": "ROSAL\u00cdA, Estrella Morente, & S\u00edlvia P\u00e9rez Cruz",
-            "name": "La Rumba Del Perd\u00f3n",
-            "sources": [
-                {
-                    "name": "Vulture",
-                    "rank": 3,
-                    "quote": "coming to grips with betrayal amid the gravitas of a rumba flamenca tune"
-                },
-                {
-                    "name": "LA Times",
-                    "rank": 8,
-                    "quote": "[A] woman possessed of celestial talents fights it out with the god who abandoned her"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "whWGBVowiHE",
-                    "video_id": "aobwPVZfuSQ"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/la-rumba-del-perd%C3%B3n/1848167516?i=1848167785"
-                },
-                "spotify": {
-                    "id": "7o76sIawH9bRWsltcWfQfd"
+                    "id": "74eICpWmMuVmBtaOr3YqPN"
                 }
             },
             "genres": "Latin"
         },
         {
-            "id": "QZZ4J2500216",
-            "artist": "fakemink, Ecco2k, & Mechatok",
-            "name": "MAKKA",
+            "id": "QZHNA2539332",
+            "artist": "509 BMG",
+            "name": "Special Request to All Nice and Decent Real Niggaz (Stop Hatin)",
             "sources": [
                 {
-                    "name": "Crack",
-                    "rank": 3,
-                    "quote": "Swerving between indie euphoria and cloud-rap mystique, the track lands with a hook from Drain Gang's Ecco2k, his voice drifting through the mix like smoke"
-                },
-                {
-                    "name": "Dazed",
-                    "rank": 14,
-                    "quote": "it all works together beautifully"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "bISqu49_5_8",
-                    "video_id": "jC0pjkRpC6s"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/makka/1814082388?i=1814082389"
-                },
-                "spotify": {
-                    "id": "4JxgNwic9PMF1c87TKWZOr"
-                }
-            },
-            "genres": "Cloud Rap"
-        },
-        {
-            "id": "USBQU2500086",
-            "artist": "Geese",
-            "name": "Long Island City Here I Come",
-            "sources": [
-                {
-                    "name": "Paste",
-                    "rank": 25,
-                    "quote": "pulses with gripping anxiety, mirroring an impatient foot tapping when the train gets delayed"
-                },
-                {
-                    "name": "Rough Trade",
-                    "uses_shadow_rank": true,
-                    "quote": "will stop you in your tracks and absolutely grab your attention"
-                }
-            ],
-            "list_count": 2,
-            "media": {
-                "youtube": {
-                    "music_id": "oRogOHhyG1M",
-                    "video_id": "oRogOHhyG1M"
-                },
-                "apple": {
-                    "url": "https://geo.music.apple.com/us/album/long-island-city-here-i-come/1818548779?i=1818549171"
-                },
-                "spotify": {
-                    "id": "1oevydxCBM8J6aGHKymgl1"
-                }
-            },
-            "genres": "Art Rock"
-        },
-        {
-            "id": "NL3U12500034",
-            "artist": "Kinlaw & Franco Franco",
-            "name": "Pitstop 2024",
-            "sources": [
-                {
-                    "name": "Crack",
-                    "rank": 5,
-                    "quote": "plainspoken turns of phrases ... hauntingly show how normalised it's all become"
+                    "name": "Pitchfork",
+                    "rank": 92,
+                    "quote": "Eleven-and-a-half minutes of Orlando trash-talker 509 BMG sliding through shape-shifting dancehall beats"
                 }
             ],
             "list_count": 1,
             "media": {
                 "youtube": {
-                    "music_id": "1uFhxnN_bTY",
-                    "video_id": "1uFhxnN_bTY"
+                    "music_id": "HJimA76vg3k",
+                    "video_id": "HJimA76vg3k"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/pitstop-2024/1832560491?i=1832560753"
+                    "url": "https://geo.music.apple.com/us/album/special-request-to-all-nice-and-decent-real-n-z-stop-hatin/1800910305?i=1800910306"
                 },
                 "spotify": {
-                    "id": "7ocARHwG3dk089ujfdowzJ"
+                    "id": "0V8TG3xjxM9IrBK2EMrCny"
+                },
+                "other": {
+                    "url": "https://soundcloud.com/bmgmusix/stophatin"
                 }
             },
-            "genres": "Experimental"
+            "genres": "Cloud Rap"
         },
         {
-            "id": "QM6MZ2547406",
-            "artist": "CMAT",
-            "name": "The Jamie Oliver Petrol Station",
+            "id": "GBCEL2400267",
+            "artist": "Panda Bear",
+            "name": "Elegy for Noah Lou",
             "sources": [
                 {
-                    "name": "Guardian",
-                    "rank": 11,
-                    "quote": "like a light entertainer who appeals to kids and grandparents alike while hymning the horrors of confronting one's self-worth"
-                },
-                {
-                    "name": "Stereogum",
-                    "rank": 12,
-                    "quote": "a spine-tingling marvel"
-                },
-                {
-                    "name": "Consequence",
-                    "rank": 192,
-                    "quote": "why did she have to make spite sound so goddamn fun (and funny)?"
+                    "name": "GvsB",
+                    "rank": 17
                 }
             ],
-            "list_count": 3,
+            "list_count": 1,
             "media": {
                 "youtube": {
-                    "music_id": "YoH81p_A4j8",
-                    "video_id": "YoH81p_A4j8"
+                    "music_id": "8lYtTbPpkvI",
+                    "video_id": "BnT8oVP-umc"
                 },
                 "apple": {
-                    "url": "https://geo.music.apple.com/us/album/the-jamie-oliver-petrol-station/1802736479?i=1802736657"
+                    "url": "https://geo.music.apple.com/us/album/elegy-for-noah-lou/1761198973?i=1761199168"
                 },
                 "spotify": {
-                    "id": "3zTqj90l1JdCzBBhxk5Z7U"
+                    "id": "5kCWzxtf36Zooj51yL66Bt"
+                }
+            },
+            "genres": "Neo-Psychedelic"
+        },
+        {
+            "id": "TCAJU2526815",
+            "artist": "Shallowater",
+            "name": "Highway",
+            "sources": [
+                {
+                    "name": "Consequence",
+                    "rank": 155,
+                    "quote": "prime driving music"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "NsSHyhhpOII",
+                    "video_id": "NsSHyhhpOII"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/highway/1835209001?i=1835209256"
+                },
+                "spotify": {
+                    "id": "59pTfHqnksL9JHGbusHUiA"
+                }
+            },
+            "genres": "Slowcore"
+        },
+        {
+            "id": "USEP42515001",
+            "artist": "Neko Case",
+            "name": "Destination",
+            "sources": [
+                {
+                    "name": "Paste",
+                    "rank": 96,
+                    "quote": "It's Neko Case at her most mythic and human at once\u2014part invocation, part barroom monologue, sung through a cigarette haze and a halo of strings."
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "AIk4EoNcGvE",
+                    "video_id": "AIk4EoNcGvE"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/destination/1820224734?i=1820224735"
+                },
+                "spotify": {
+                    "id": "5BlGwkHjJHXa7ssaElVmYt"
+                }
+            },
+            "genres": "Alt Country"
+        },
+        {
+            "id": "USC4R2552978",
+            "artist": "Taj Mahal, Keb' Mo', & Ruby Amanfu",
+            "name": "Room On The Porch [Feat. Ruby Amanfu]",
+            "sources": [
+                {
+                    "name": "NPR Top 125",
+                    "uses_shadow_rank": true,
+                    "quote": "a bold yet laid-back statement on inclusivity, delivered with a warm, playful melody"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "3uM-VekTlL8",
+                    "video_id": "3uM-VekTlL8"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/room-on-the-porch-feat-ruby-amanfu/1792305379?i=1792305386"
+                },
+                "spotify": {
+                    "id": "0H1wDrRjC8VBO0mQNwQM9l"
+                }
+            },
+            "genres": "Blues"
+        },
+        {
+            "id": "USA2P2514520",
+            "artist": "Freddie Gibbs, The Alchemist, & Anderson .Paak",
+            "name": "Ensalada (feat. Anderson .Paak)",
+            "sources": [
+                {
+                    "name": "Complex",
+                    "rank": 41,
+                    "quote": "the beat incorporating multiple rhythms ... pushes Gibbs into his best performance on the record"
+                },
+                {
+                    "name": "NPR Top 125",
+                    "uses_shadow_rank": true,
+                    "quote": "milks a sublime Alchemist loop to survey the ills of hustling"
+                }
+            ],
+            "list_count": 2,
+            "media": {
+                "youtube": {
+                    "music_id": "TbilQzKlYaU",
+                    "video_id": "H8XPg7qqYIg"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/ensalada/1824019687?i=1824019699"
+                },
+                "spotify": {
+                    "id": "06ZX08uRQDK02emdw9mN28"
+                }
+            },
+            "genres": "Jazz Rap"
+        },
+        {
+            "id": "UKQY82500001",
+            "artist": "Chloe Qisha",
+            "name": "21st Century Cool Girl",
+            "sources": [
+                {
+                    "name": "NME",
+                    "rank": 49,
+                    "quote": "painfully relatable lyrics of 2025"
+                }
+            ],
+            "list_count": 1,
+            "media": {
+                "youtube": {
+                    "music_id": "PVltfDeGzWs",
+                    "video_id": "PVltfDeGzWs"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/21st-century-cool-girl/1809108642?i=1809108645"
+                },
+                "spotify": {
+                    "id": "3292GQO43rGyNlKmZvY0Es"
                 }
             },
             "genres": "Indie Pop"

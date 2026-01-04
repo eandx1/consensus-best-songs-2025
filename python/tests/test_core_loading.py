@@ -15,12 +15,9 @@ def test_initial_song_list(page: Page, server_url):
     expect(song_cards.first).to_be_visible()
     
     # Check default progressive loading count (25)
-    # Note: data.json might have fewer than 25 songs in test data, 
-    # but our test data has 18 songs based on the file read earlier.
-    # So we expect 18 songs (all of them) if the limit is 25.
     count = song_cards.count()
-    assert count > 0
-    assert count <= 25
+    
+    assert count == 25
 
 def test_specific_song_content(page: Page, server_url):
     """Test that a specific song from test_data.json is rendered correctly."""
