@@ -1,7 +1,29 @@
+# Don't check in original scrape files from the web.
+python/notebooks/scrapes/
+
+# Don't check in the browser cookie file used by ytmusicapi.
+python/notebooks/browser.json
+
+# Don't check in the various resulting artifacts and temp analysis files.
+python/notebooks/outputs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
+
+# --- Project Specifics ---
+# Vercel local config
+.vercel/
+
+# Keep the config IN (ensure these are NOT ignored)
+!pyproject.toml
+!uv.lock
+
+# Playwright Testing Artifacts
+python/test-results/
+python/playwright-report/
+python/.playwright/
 
 # OS Metadata
 .DS_Store

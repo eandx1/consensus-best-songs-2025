@@ -659,6 +659,7 @@
           <li><strong>Consensus Best Songs 2025</strong></li>
         </ul>
         <ul>
+          <li><a href="#" id="open-export">Export</a></li>
           <li><a href="#" id="open-settings">Settings</a></li>
           <li><a href="#" id="open-about">About</a></li>
         </ul>
@@ -704,6 +705,21 @@
           <h3>Reviews</h3>
         </header>
         <div id="reviews-content"></div>
+      </article>
+    </dialog>
+
+    <dialog id="modal-export">
+      <article>
+        <header>
+          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <h3>Export</h3>
+        </header>
+        <div id="export-content">
+            <!-- Dynamic content will be injected here -->
+        </div>
+        <footer>
+            <!-- Footer content will be managed by renderExportUI to update the link -->
+        </footer>
       </article>
     </dialog>
 

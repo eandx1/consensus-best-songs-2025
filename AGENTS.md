@@ -391,3 +391,42 @@ The engine applies three specialized multipliers to the raw scores:
 - **Feature 7: Visual Polish**
   - Finalize "Dark Mode" aesthetic (IntelliJ/Solarized theme).
   - Refine `lite-youtube` play button transparency and hover effects.
+
+# Testing
+
+We use [Playwright](https://playwright.dev/python/) with `pytest` for end-to-end testing of the application. This ensures that the UI renders correctly, the ranking logic behaves as expected, and user interactions (like adjusting sliders) properly update the URL state.
+
+## Setup
+
+The testing infrastructure is located in the `python/` directory.
+
+- **Infrastructure**: `python/tests/conftest.py`
+  - Starts a local static file server for the project root.
+  - Intercepts requests to `data.json` and mocks them with deterministic data from `python/tests/testdata/test_data.json`.
+  - This ensures tests run in isolation without modifying production data.
+
+## Running Tests
+
+To run the full test suite:
+
+1. Navigate to the python directory: `cd python`
+2. Run pytest: `uv run pytest`
+
+To run specific tests:
+
+```bash
+uv run pytest tests/test_ranking_logic.py
+```
+
+## Test Scope
+
+The test suite covers:
+
+- **Core Loading**: Verifies page title, initial song list, and data loading.
+- **Song Rendering**: Checks correct display of song details, ranks, and dynamic media links (YouTube, Spotify, Bandcamp, etc.).
+- **Ranking Logic**: Validates that URL parameters drive the configuration and that UI interactions (sliders) update the URL.
+- **Modals**: Verifies correct rendering and behavior of:
+  - Settings Modal (Ranking Params, Source Weights, Shadow Ranks)
+  - Reviews Modal (Quotes, Source lists, Ghost emojis for shadow ranks)
+  - Ranking Stats Modal (Score breakdown tables)
+  - About Modal (Dynamic content)

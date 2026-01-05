@@ -262,3 +262,17 @@ The site defaults to Consensus mode, but you can choose to use a power law decay
 ## 👤 Contact
 
 You can find me over at [LinkedIn](https://www.linkedin.com/in/everett-anderson-swe/).
+
+## 🧪 Testing
+
+This project uses [Playwright](https://playwright.dev/python/) with `pytest` for end-to-end testing of the application. The test suite covers:
+
+- **Core Rendering**: Verifies the song list, titles, and dynamic media links (YouTube, Spotify, etc.)
+- **Interactive Logic**: Ensures user interactions like adjusting sliders update the URL state correctly
+- **Modals**: Checks that detailed views (Reviews, Stats, About, Settings) render properly
+
+### Running the Tests
+
+1. Navigate to the python directory: `cd python`
+2. Install dependencies: `uv sync` (if not already installed)
+3. Run the full suite: `uv run pytest`

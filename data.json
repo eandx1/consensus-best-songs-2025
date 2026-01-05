@@ -438,6 +438,9 @@
                     "music_id": "XuKq7zT_0nM",
                     "video_id": "TFWXqLSr4ZM"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/illegal/1806614239?i=1806614466"
+                },
                 "spotify": {
                     "id": "1WmBVbFmLt0w6zPP37TeCG"
                 }
@@ -1616,6 +1619,9 @@
                     "music_id": "-hqqLEhWq9M",
                     "video_id": "hx2_NGaDPrk"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/its-a-mirror/1786362148?i=1786362150"
+                },
                 "spotify": {
                     "id": "2UYuux157cn498H23UfHQf"
                 }
@@ -2030,6 +2036,9 @@
                     "music_id": "DAeuKVWSm8w",
                     "video_id": "-27a1ugJX8U"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/spike-island/1801988655?i=1801988656"
+                },
                 "spotify": {
                     "id": "1c66APUihMSvbniRdka1Er"
                 },
@@ -2231,10 +2240,14 @@
                     "music_id": "3O07e-QNhgo",
                     "video_id": "klPD-stNou0"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/father/1795690963?i=1795691165"
+                },
                 "spotify": {
                     "id": "2UTCHLFOZxvZUC7EDdYdjZ"
                 }
-            }
+            },
+            "genres": "Hip-Hop/Rap"
         },
         {
             "id": "QMFMF2447055",
@@ -2657,10 +2670,14 @@
                     "music_id": "YrVJE_6Hg6c",
                     "video_id": "qfDIhj8UIfc"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/stick/1805902833?i=1805902839"
+                },
                 "spotify": {
                     "id": "03zypUrD0e5vrFcmc80NJm"
                 }
-            }
+            },
+            "genres": "Hip-Hop/Rap"
         },
         {
             "id": "USUG12506483",
@@ -2826,10 +2843,14 @@
                     "music_id": "IzsguzOtMVM",
                     "video_id": "IzsguzOtMVM"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/max-potential/1807286924?i=1807287302"
+                },
                 "spotify": {
                     "id": "3wCTxgp40YtdPAWWaqPVKI"
                 }
-            }
+            },
+            "genres": "R&B/Soul"
         },
         {
             "id": "QZD442001487",
@@ -3217,10 +3238,14 @@
                     "music_id": "Yq8EXOJbsCE",
                     "video_id": "RhjZgIk9oCs"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/06-wayne-rooney/1822840203?i=1822840215"
+                },
                 "spotify": {
                     "id": "7p6LdEcYnSbw68yJDbUjxD"
                 }
-            }
+            },
+            "genres": "Hip-Hop/Rap"
         },
         {
             "id": "QM6MZ2547410",
@@ -3612,6 +3637,9 @@
                     "music_id": "Fa3-sen3mIo",
                     "video_id": "cwUapT421Xs"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/total-euphoria/1797399426?i=1797399429"
+                },
                 "spotify": {
                     "id": "3yp3Hp8OzYV2IoSjYaoqff"
                 },
@@ -3729,6 +3757,9 @@
                     "music_id": "pwi-LyNgrD8",
                     "video_id": "vitil9qMN6A"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/dopamine/1846069216?i=1846069222"
+                },
                 "spotify": {
                     "id": "168GHxsiJyT9tlJN74ZO11"
                 }
@@ -3839,10 +3870,14 @@
                     "music_id": "O9AWp8bx-PA",
                     "video_id": "B6QUT0Re_8Q"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/playing-classics/1811583108?i=1811583864"
+                },
                 "spotify": {
                     "id": "3Bl4FyRBIaOSvvYI6zHbpq"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "GBCEL2400959",
@@ -4087,10 +4122,14 @@
                     "music_id": "ZJfqx_rxOTc",
                     "video_id": "NEEv8DuqQSY"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/9-2-5/1807286924?i=1807287317"
+                },
                 "spotify": {
                     "id": "6IzuJx4beJwcP9ImbZsKYd"
                 }
-            }
+            },
+            "genres": "R&B/Soul"
         },
         {
             "id": "QMB622500186",
@@ -4312,6 +4351,9 @@
                 "youtube": {
                     "music_id": "-2bDn2USV_4",
                     "video_id": "2sJyviKcJ0s"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/garden/1792324753?i=1792324758"
                 },
                 "spotify": {
                     "id": "5Pr0dZZjoGqnWzlASF1ESU"
@@ -5199,6 +5241,9 @@
                     "music_id": "sjf2I84nRO4",
                     "video_id": "rAg3YuHkMHQ"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/tell-me-i-never-knew-that/1799196128?i=1799196543"
+                },
                 "spotify": {
                     "id": "0p6WXZoqJ3eoV6G9WtL0o3"
                 }
@@ -5236,6 +5281,9 @@
                 "youtube": {
                     "music_id": "iHsObIWkM-s",
                     "video_id": "1O-tCjveBho"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/stateside-with-zara-larsson/1843595790?i=1843595808"
                 },
                 "spotify": {
                     "id": "1DwscornXpj8fmOmYVlqZt"
@@ -6493,6 +6541,9 @@
                     "music_id": "sLxf7EKjVwo",
                     "video_id": "RylVTdo6sMc"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/julias-war/1799046810?i=1799046817"
+                },
                 "bandcamp": {
                     "url": "https://hotlinetnt.bandcamp.com/track/julias-war"
                 }
@@ -7150,6 +7201,9 @@
                 "youtube": {
                     "music_id": "uZ4yjE4t2Ps",
                     "video_id": "7anvFAEmavQ"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/stateside-with-bladee/1843595790?i=1843595807"
                 },
                 "spotify": {
                     "id": "6EUjksHprxyLw7dbNZtACA"
@@ -8510,6 +8564,9 @@
                     "music_id": "EU8UIDC9q68",
                     "video_id": "EU8UIDC9q68"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/its-amazing-to-be-young/1790630127?i=1790630132"
+                },
                 "spotify": {
                     "id": "1NQn6ovexeHuKcEMVfvb30"
                 }
@@ -8859,6 +8916,9 @@
                     "music_id": "gMfkXCqnqns",
                     "video_id": "gMfkXCqnqns"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/light-design/1805820903?i=1805821324"
+                },
                 "spotify": {
                     "id": "4UI693m28NeH4uY0mnBV0F"
                 }
@@ -8995,6 +9055,9 @@
                 "youtube": {
                     "music_id": "pthvSQ2Efu0",
                     "video_id": "pthvSQ2Efu0"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/nos/1827977106?i=1827977109"
                 },
                 "spotify": {
                     "id": "5z46Jo6PQMz2kDmJuKknhV"
@@ -9494,10 +9557,14 @@
                     "music_id": "BjTTXtrhaFw",
                     "video_id": "BjTTXtrhaFw"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/superscar/1771808772?i=1771808773"
+                },
                 "spotify": {
                     "id": "3OXswcKSaO6mNiNyeEbnAS"
                 }
-            }
+            },
+            "genres": "Pop"
         },
         {
             "id": "GBCEL2400267",
@@ -9658,13 +9725,17 @@
                     "music_id": "8IUs2BCgfPE",
                     "video_id": "8IUs2BCgfPE"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/life-signs/1811583108?i=1811583284"
+                },
                 "spotify": {
                     "id": "63JK811l2UcpiyDvYFCQX5"
                 },
                 "bandcamp": {
                     "url": "https://waterfromyoureyes.bandcamp.com/track/life-signs"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "UK8262501529",
@@ -9804,6 +9875,9 @@
                 "youtube": {
                     "music_id": "DhqeyLvqTU4",
                     "video_id": "V4kYwPXrD0o"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/sugar-in-the-tank/1789543295?i=1789543301"
                 },
                 "spotify": {
                     "id": "27Xxf6AtaSpXE47Xzvua9r"
@@ -10015,10 +10089,14 @@
                     "music_id": "Hx3VeAsrpyM",
                     "video_id": "AqIeKeQY8G4"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/grandmother-feat-laraaji/1813848690?i=1813849191"
+                },
                 "spotify": {
                     "id": "6ZKhQHAyi0eRwQgYNO08AI"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "QMDA62500815",
@@ -10271,10 +10349,14 @@
                     "music_id": "t-jX5UbrREY",
                     "video_id": "t-jX5UbrREY"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/los-angeles/1813848690?i=1813848957"
+                },
                 "spotify": {
                     "id": "5TSj6ySt4WqDuljv61Q4D5"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "US2S72513005",
@@ -10437,10 +10519,14 @@
                     "music_id": "0ZZOukZoQ1g",
                     "video_id": "0ZZOukZoQ1g"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/on-a-grassy-knoll/1827978201?i=1827978202"
+                },
                 "bandcamp": {
                     "url": "https://somewherepress.bandcamp.com/track/on-a-grassy-knoll"
                 }
-            }
+            },
+            "genres": "Ambient"
         },
         {
             "id": "USAT22505814",
@@ -10458,6 +10544,9 @@
                 "youtube": {
                     "music_id": "_e4PEPqPxXQ",
                     "video_id": "3b4lo3lV4bg"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/wgft-feat-burna-boy/1831834622?i=1831834814"
                 },
                 "spotify": {
                     "id": "0WsC4ETIXyiHDMXRaPMvKe"
@@ -11044,6 +11133,9 @@
                     "music_id": "Y4zgaORq-AI",
                     "video_id": "MhS-0Lg9lR4"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/coldplay-cover/1799196128?i=1799196671"
+                },
                 "spotify": {
                     "id": "2Ht1gsebaD2W5LWAZvYoPG"
                 }
@@ -11620,10 +11712,14 @@
                     "music_id": "6rpA2g_qwfQ",
                     "video_id": "ZjqLmCpPyKM"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/double-infinity/1813848690?i=1813848971"
+                },
                 "spotify": {
                     "id": "4jdNbCXGGciAOLwAShbJ9Z"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "USUYG1741102",
@@ -11788,10 +11884,14 @@
                     "music_id": "vlb5paMc8rU",
                     "video_id": "nSqYsmmfbCI"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/incomprehensible/1813848690?i=1813848696"
+                },
                 "spotify": {
                     "id": "5GTRE7cnySeaYBanwM5FIt"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "USYBL2500823",
@@ -13557,6 +13657,9 @@
                     "music_id": "qHG847tLFwU",
                     "video_id": "qHG847tLFwU"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/sobe-sobe/1807121913?i=1807121921"
+                },
                 "spotify": {
                     "id": "2SWIGZAAIpDVXk13FrJBzM"
                 }
@@ -13682,6 +13785,9 @@
                 "youtube": {
                     "music_id": "En1aA0Xi4p8",
                     "video_id": "En1aA0Xi4p8"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/candle/1799046810?i=1799047071"
                 },
                 "bandcamp": {
                     "url": "https://hotlinetnt.bandcamp.com/track/candle"
@@ -14099,6 +14205,9 @@
                 "youtube": {
                     "music_id": "K550NF8wIeU",
                     "video_id": "K550NF8wIeU"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/no-room-for-a-saint-from-f1-the-movie/1813889806?i=1813889807"
                 },
                 "spotify": {
                     "id": "5xalbHoIf0F0AmuTKlm2Ct"
@@ -14618,10 +14727,14 @@
                     "music_id": "D046JC-FNaU",
                     "video_id": "D046JC-FNaU"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/nights-in-armor-fka-love-song/1852243212?i=1852243214"
+                },
                 "spotify": {
                     "id": "43T7iuLZob3xMY9g0ayLXT"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "QT2VB2455347",
@@ -15237,6 +15350,9 @@
                     "music_id": "ndWgolhKkq0",
                     "video_id": "6E5918QP394"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/to-be-a-rose/1794783301?i=1794783315"
+                },
                 "spotify": {
                     "id": "1EkxfGivWsIwCJTdz359xl"
                 }
@@ -15362,6 +15478,9 @@
                 "youtube": {
                     "music_id": "GiafLnELqLU",
                     "video_id": "GiafLnELqLU"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/it-will-get-worse/1802039467?i=1802039475"
                 },
                 "spotify": {
                     "id": "6BHZGzza22cxWzNj4zbrh3"
@@ -16488,6 +16607,9 @@
                     "music_id": "6ot2vV6eOvc",
                     "video_id": "6ot2vV6eOvc"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/i-believe-in-love/1834736717?i=1834736724"
+                },
                 "spotify": {
                     "id": "5Jsks3IWyaeFVEjmVtw2H3"
                 }
@@ -16666,6 +16788,9 @@
                 "youtube": {
                     "music_id": "xNr1tvvZo18",
                     "video_id": "xNr1tvvZo18"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/wtf/1827977106?i=1827977125"
                 },
                 "spotify": {
                     "id": "78ZmrRcMYPYg3Vdbiq9wG1"
@@ -19183,10 +19308,14 @@
                     "music_id": "sq5q0NzidMU",
                     "video_id": "sq5q0NzidMU"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/never-felt-better/1794109769?i=1794109771"
+                },
                 "spotify": {
                     "id": "6ruQl1mxzuh1vabWXGj0ow"
                 }
-            }
+            },
+            "genres": "Electronic"
         },
         {
             "id": "QZ5FN2579488",
@@ -20036,10 +20165,14 @@
                     "music_id": "bcJFvKKaaA0",
                     "video_id": "bcJFvKKaaA0"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/tossed-away/1807286924?i=1807287602"
+                },
                 "spotify": {
                     "id": "7vNMpCeU4hQSU94pdcmdr0"
                 }
-            }
+            },
+            "genres": "R&B/Soul"
         },
         {
             "id": "USSUB2570007",
@@ -20135,6 +20268,9 @@
                 "youtube": {
                     "music_id": "RWlS3Ee6k4I",
                     "video_id": "RWlS3Ee6k4I"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/cruise-ship-designer/1839040855?i=1839040859"
                 },
                 "spotify": {
                     "id": "70XPjbjd54jY4YbTOo1SVY"
@@ -20418,6 +20554,9 @@
                     "music_id": "b26VPOWwVfo",
                     "video_id": "OWIuyW0Kq0M"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/cowbella/1814836127?i=1814836129"
+                },
                 "spotify": {
                     "id": "6YFrPFpWtluSdbafipRxiS"
                 }
@@ -20492,6 +20631,9 @@
                 "youtube": {
                     "music_id": "808UphIqbyI",
                     "video_id": "2iry0ssksZg"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/sole/1805820903?i=1805820914"
                 },
                 "spotify": {
                     "id": "6PaSOin7Y9GnXRZ5U5sMsv"
@@ -21322,10 +21464,14 @@
                     "music_id": "TeGZQoWOL3c",
                     "video_id": "TeGZQoWOL3c"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/backseat-banton/1767608790?i=1767609950"
+                },
                 "spotify": {
                     "id": "4thz5RjPS2PuONIaK4u2TQ"
                 }
-            }
+            },
+            "genres": "Alternative"
         },
         {
             "id": "USRC12500481",
@@ -21395,6 +21541,9 @@
                 "youtube": {
                     "music_id": "F3PGNh4RewU",
                     "video_id": "FIaT68SgnPs"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/bookends/1808391519?i=1808391774"
                 },
                 "spotify": {
                     "id": "5dlT0N2w7u89V3CTWLf5x0"
@@ -22123,6 +22272,9 @@
                     "music_id": "QCquV3A7kdY",
                     "video_id": "XfHuuMgWxu4"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/into-dust-still-falling/1814421477?i=1814421480"
+                },
                 "spotify": {
                     "id": "4kd3HIkMbwO4sVgkYkrBGo"
                 }
@@ -22301,6 +22453,9 @@
                 "youtube": {
                     "music_id": "a8uVzswFkZE",
                     "video_id": "a8uVzswFkZE"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/stereo-boy/1842161727?i=1842161751"
                 },
                 "spotify": {
                     "id": "1nRWADK5ctY6x7zXg4eW8F"
@@ -22559,10 +22714,14 @@
                     "music_id": "abdg3mmrye4",
                     "video_id": "abdg3mmrye4"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/baby-baby/1807286924?i=1807287599"
+                },
                 "spotify": {
                     "id": "2XNJpkPIlVGSdr38mhb2HJ"
                 }
-            }
+            },
+            "genres": "R&B/Soul"
         },
         {
             "id": "USAT22504480",
@@ -22684,6 +22843,9 @@
                 "youtube": {
                     "music_id": "FFueO9mQdfk",
                     "video_id": "FFueO9mQdfk"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/gethsemane/1796212327?i=1796212585"
                 },
                 "spotify": {
                     "id": "1T6jzRht9aXUFukdOgZgIL"
@@ -22994,6 +23156,9 @@
                     "music_id": "DiqadT5gYmc",
                     "video_id": "DiqadT5gYmc"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/full-on/1786362148?i=1786362160"
+                },
                 "spotify": {
                     "id": "6BEgnEWwpTm6AJ4mphJwsZ"
                 }
@@ -23042,6 +23207,9 @@
                 "youtube": {
                     "music_id": "yoWsQL_Gb84",
                     "video_id": "yoWsQL_Gb84"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/s-n-c/1779751016?i=1779751021"
                 },
                 "spotify": {
                     "id": "5P5qbnKKR4wHhbnWncXsTt"
@@ -23222,6 +23390,9 @@
                     "music_id": "orYW-O432ik",
                     "video_id": "orYW-O432ik"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/the-avant-garde/1816027264?i=1816027395"
+                },
                 "spotify": {
                     "id": "1SMdm0arRn2bXy1Uspa4OJ"
                 }
@@ -23270,6 +23441,9 @@
                 "youtube": {
                     "music_id": "_xC_QAApjXM",
                     "video_id": "H_ltK1cvDUw"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/canopy-of-eden/1788018254?i=1788018258"
                 },
                 "spotify": {
                     "id": "6gyHCgEVoldMjf2n3mEGj0"
@@ -23660,6 +23834,9 @@
                 "youtube": {
                     "music_id": "ZIAPJrqPfTg",
                     "video_id": "ZIAPJrqPfTg"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/take-it/1834907065?i=1834907069"
                 },
                 "spotify": {
                     "id": "5ZkjTRSa7Ha2cf29okELYh"
@@ -25347,6 +25524,9 @@
                     "music_id": "wEipZQxFWnY",
                     "video_id": "wEipZQxFWnY"
                 },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/switch-over/1775962947?i=1775962997"
+                },
                 "spotify": {
                     "id": "1SFVei3ZUf3EuJdvKqmGKv"
                 }
@@ -25369,6 +25549,9 @@
                 "youtube": {
                     "music_id": "nNyqVN2wp9Q",
                     "video_id": "nNyqVN2wp9Q"
+                },
+                "apple": {
+                    "url": "https://geo.music.apple.com/us/album/bottom-of-a-bottle/1789543295?i=1789543302"
                 },
                 "spotify": {
                     "id": "27fkRoVhHpHBKsDLZnC9my"
