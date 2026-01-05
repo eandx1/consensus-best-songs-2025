@@ -146,9 +146,11 @@ Counting NPR as one source:
 
 #### Media Links
 
-- Songs with Spotify ID: `869` (`98.64%`)
-- Songs with YouTube ID: `407` (`46.20%`)
-- Songs with YouTube Music ID: `873` (`99.09%`)
+- Total songs: `881`
+- Songs with Spotify URL: `869` (`98.64%`)
+- Songs with YouTube URL: `407` (`46.20%`)
+- Songs with YouTube Music URL: `873` (`99.09%`)
+- Songs with Apple Music URL: `873` (`99.09%`)
 
 #### Most Frequently Listed Songs
 
