@@ -1,0 +1,82 @@
+import pytest
+from playwright.sync_api import Page, expect
+import re
+
+def test_theme_switcher_dropdown(page: Page, server_url):
+    """Verify theme switcher dropdown updates theme and URL."""
+    # Load page
+    page.goto(server_url)
+    
+    # Open settings
+    page.get_by_role("link", name="Settings").click()
+    
+    # Wait for settings modal to be visible
+    expect(page.locator("#modal-settings")).to_be_visible()
+    
+    # Get the theme selector (last select in settings)
+    theme_select = page.locator("#settings-content select").last
+    
+    # Test Studio 808 (studio808)
+    theme_select.select_option("studio808")
+    
+    # Verify URL updated
+    expect(page).to_have_url(re.compile(r".*theme=studio808"))
+    
+    # Verify html attributes updated
+    html = page.locator("html")
+    expect(html).to_have_attribute("data-theme", "dark")
+    expect(html).to_have_attribute("data-style", "808")
+    
+    # Test Light theme
+    theme_select.select_option("light1")
+    
+    # Verify URL updated
+    expect(page).to_have_url(re.compile(r".*theme=light1"))
+    
+    # Verify html attributes updated (light mode)
+    expect(html).to_have_attribute("data-theme", "light")
+    expect(html).to_have_attribute("data-style", "light1")
+
+def test_theme_switcher_shortcut(page: Page, server_url):
+    """Verify Ctrl+T shortcut cycles themes when tskbd flag is enabled."""
+    # Load page with tskbd flag to enable keyboard shortcuts
+    page.goto(f"{server_url}?tskbd")
+    
+    # Default state (Original)
+    html = page.locator("html")
+    expect(html).to_have_attribute("data-style", "original")
+    
+    # Press Ctrl+T (cycles to Light)
+    page.keyboard.press("Control+t")
+    expect(page).to_have_url(re.compile(r".*theme=light1"))
+    expect(html).to_have_attribute("data-style", "light1")
+    
+    # Press Ctrl+T (cycles to Studio 808)
+    page.keyboard.press("Control+t")
+    expect(page).to_have_url(re.compile(r".*theme=studio808"))
+    expect(html).to_have_attribute("data-style", "808")
+    
+    # Press Ctrl+T (cycles back to Original)
+    page.keyboard.press("Control+t")
+    # Original is the default theme, so it may not appear in URL or may be explicit
+    # Check the data-style attribute which is the source of truth
+    expect(html).to_have_attribute("data-style", "original")
+    # URL should either not have theme param or have theme=original
+    current_url = page.url
+    assert "theme=original" in current_url or "theme=" not in current_url or current_url.endswith("?tskbd=")
+
+def test_theme_url_persistence(page: Page, server_url):
+    """Verify loading page with theme param applies correct theme."""
+    # Load page with Studio 808 theme
+    page.goto(f"{server_url}?theme=studio808")
+    
+    html = page.locator("html")
+    expect(html).to_have_attribute("data-style", "808")
+    expect(html).to_have_attribute("data-theme", "dark")
+    
+    # Verify settings dropdown matches
+    page.get_by_role("link", name="Settings").click()
+    expect(page.locator("#modal-settings")).to_be_visible()
+    
+    theme_select = page.locator("#settings-content select").last
+    expect(theme_select).to_have_value("studio808")

@@ -62,8 +62,9 @@ def test_export_modal_default_state(page: Page, server_url):
     
     # Check footer buttons
     footer = modal.locator("footer")
-    expect(footer.get_by_role("button", name="Cancel")).to_be_visible()
+    expect(footer.get_by_role("button", name="Top")).to_be_visible()
     expect(footer.get_by_role("button", name="Create Playlist")).to_be_visible()
+    expect(footer.get_by_role("button", name="Close")).to_be_visible()
 
 def test_export_videos_preference_url(page: Page, server_url):
     """Test that Videos preference uses video_id with music_id fallback."""
@@ -73,7 +74,7 @@ def test_export_videos_preference_url(page: Page, server_url):
     modal = page.locator("#modal-export")
     
     # Videos is default, so just check the URL
-    create_btn = modal.locator("footer a[role='button']")
+    create_btn = modal.get_by_role("button", name="Create Playlist")
     expect(create_btn).to_be_visible()
     
     # Get the href attribute
@@ -111,7 +112,7 @@ def test_export_songs_preference_url(page: Page, server_url):
     expect(content).to_contain_text("Ready to export 24 songs to a new YouTube playlist")
     
     # Get the Create Playlist link
-    create_btn = modal.locator("footer a[role='button']")
+    create_btn = modal.get_by_role("button", name="Create Playlist")
     playlist_url = create_btn.get_attribute("href")
     
     # Should still be YouTube URL (music.youtube.com doesn't support this feature)
@@ -201,7 +202,7 @@ def test_export_id_fallback_logic(page: Page, server_url):
     content = modal.locator("#export-content")
     
     # Get URL with Videos preference (video_id > music_id)
-    create_btn = modal.locator("footer a[role='button']")
+    create_btn = modal.get_by_role("button", name="Create Playlist")
     videos_url = create_btn.get_attribute("href")
     videos_ids = videos_url.split("video_ids=")[1].split(",")
     
@@ -285,16 +286,16 @@ def test_export_works_with_other_params(page: Page, server_url):
     expect(modal).to_be_visible()
 
 def test_export_modal_cancel_button(page: Page, server_url):
-    """Test that Cancel button closes the modal."""
+    """Test that Close button closes the modal."""
     page.goto(f"{server_url}?unlisted_youtube_export")
     page.locator("#open-export").click()
     
     modal = page.locator("#modal-export")
     expect(modal).to_be_visible()
     
-    # Click Cancel
-    cancel_btn = modal.locator("footer button", has_text="Cancel")
-    cancel_btn.click()
+    # Click Close button in footer (by text since there are multiple "Close" buttons)
+    close_btn = modal.locator("footer button", has_text="Close")
+    close_btn.click()
     
     # Modal should be closed
     expect(modal).not_to_be_visible()
