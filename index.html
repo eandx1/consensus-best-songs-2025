@@ -73,15 +73,15 @@
       }
 
       /* Original Theme: Steady Azure Focus */
-      [data-style="original"] a:focus,
-      [data-style="original"] button:focus,
-      [data-style="original"] input:focus {
+      [data-style="original"] a:focus-visible,
+      [data-style="original"] button:focus-visible,
+      [data-style="original"] input:focus-visible {
           outline: none !important;
           box-shadow: 0 0 0 2px var(--pico-primary-underline) !important;
           border-color: var(--pico-primary) !important;
           /* Prevent the text from lightening; keep it the rich blue */
           color: var(--pico-primary) !important;
-      }      
+      } 
 
       /* THEME: Studio 808 (High-Contrast Refined) */
       [data-style="808"] {
@@ -182,11 +182,11 @@
       }
 
       /* 808 Theme: Hardware-style Focus State */
-      [data-style="808"] a:focus,
-      [data-style="808"] button:focus,
-      [data-style="808"] input:focus,
-      [data-style="808"] [role="button"]:focus,
-      [data-style="808"] summary:focus {
+      [data-style="808"] a:focus-visible,
+      [data-style="808"] button:focus-visible,
+      [data-style="808"] input:focus-visible,
+      [data-style="808"] [role="button"]:focus-visible,
+      [data-style="808"] summary:focus-visible {
           /* Remove the default blue glow */
           outline: none !important;
           box-shadow: 0 0 0 2px var(--pico-primary) !important;
@@ -196,7 +196,7 @@
       }
 
       /* Ensure the focus ring is square to match the theme aesthetic */
-      [data-style="808"] :focus {
+      [data-style="808"] :focus-visible {
           border-radius: 0 !important;
       }      
 
@@ -232,9 +232,9 @@
       }
 
       /* Light Theme: Purple Focus Ring */
-      [data-style="light1"] a:focus,
-      [data-style="light1"] button:focus,
-      [data-style="light1"] input:focus {
+      [data-style="light1"] a:focus-visible,
+      [data-style="light1"] button:focus-visible,
+      [data-style="light1"] input:focus-visible {
           outline: none !important;
           box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.3) !important;
           border-color: var(--pico-primary) !important;
@@ -251,6 +251,12 @@
                --pico-font-family: "Georgia", "Times New Roman", serif; 
            }
         */
+
+      /* Accessibility: Only show focus rings when using a keyboard */
+      :focus:not(:focus-visible) {
+        box-shadow: none !important;
+        outline: none !important;
+      }        
 
       /* Enable word-wrapping for Pico CSS tooltips */
       [data-tooltip]::before {
@@ -311,10 +317,19 @@
         margin: 0; /* Override Pico CSS's horizontal button margins */
       }
 
-      button:active {
-        /* Subtle shrink effect makes it feel like a real mechanical button */
-        transform: scale(0.97);
-        transition: transform 0.05s ease-in-out;
+      /* Enhanced Global Button Depress */
+      button:active, 
+      [role="button"]:active {
+        /* Use !important to ensure this high-priority visual feedback wins */
+        transform: scale(0.96) !important; 
+        transition: transform 0.05s ease-in-out !important;
+        /* Optional: slightly dim the button to make the "push" more obvious */
+        filter: brightness(0.9);
+      }
+
+      /* Ensure the transform doesn't linger after the click */
+      button, [role="button"] {
+        transition: transform 0.1s ease-in-out, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
       }
 
       /* Desktop: Allow container to be wider for more breathing room */
@@ -541,7 +556,7 @@
       }
 
       /* Custom Focus for the Sources text area */
-      [data-sources]:focus {
+      [data-sources]:focus-visible {
         outline: none;
         /* Adds a subtle underline or glow using your theme's primary color */
         box-shadow: 0 0 0 1px var(--pico-primary) !important;
@@ -550,7 +565,7 @@
       }
 
       /* 808 Theme: High-contrast technical focus */
-      [data-style="808"] [data-sources]:focus {
+      [data-style="808"] [data-sources]:focus-visible {
         /* A sharp, 2px bottom border for the console look */
         box-shadow: 0 0 0 2px var(--pico-primary) !important;
         background-color: #0a0a0a; /* Very subtle lift */
