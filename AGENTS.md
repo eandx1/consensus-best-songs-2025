@@ -83,16 +83,16 @@ Modal header shows "Settings". Contains three sections:
 
 **Ranking Parameters** (appears first):
 
-- Decay Mode, 2 button choice defaulting to "consensus" with the other option being "conviction", default from `data["config"]["ranking"]["decay_mode"]`, url parameter parameter `decay_mode`
-- Rank Decay (K), slider, integer range 0-50 in 1 increments, only shown when Decay Mode is "consensus", default from `data["config"]["ranking"]["k_value"]`, url parameter `k_value`
-- Power-Law Decay (P), slider, float range 0.0 to 1.1 in 0.01 increments, default from `data["config"]["ranking"]["p_exponent"]`, url parameter `p_exponent`
-- Consensus Boost, slider, percentage range from 0% to 10% in 1% increments, default from `data["config"]["ranking"]["consensus_boost"]`, url parameter `consensus_boost`
-- Provocation Boost, slider, percentage range from 0% to 25% in 1% increments, default from `data["config"]["ranking"]["provocation_boost"]`, url parameter `provocation_boost`
-- Cluster Boost, slider, percentage range from 0% to 10% in 1% increments, default from `data["config"]["ranking"]["cluster_boost"]`, url parameter `cluster_boost`
+- Decay Mode, 2 button choice defaulting to "consensus" with the other option being "conviction", default from `data["config"]["ranking"]["decay_mode"]`, url parameter `decay_mode`
+- Smoothing Factor (K), slider, integer range 0-50 in 1 increments, only shown when Decay Mode is "consensus", default from `data["config"]["ranking"]["k_value"]`, url parameter `k_value`
+- Power-Law Decay (P), slider, float range 0.0 to 1.1 in 0.01 increments, only shown when Decay Mode is "conviction", default from `data["config"]["ranking"]["p_exponent"]`, url parameter `p_exponent`
+- Consensus Boost, slider, percentage range from 0% to 20% in 1% increments, default from `data["config"]["ranking"]["consensus_boost"]`, url parameter `consensus_boost`
+- Provocation Boost, slider, percentage range from 0% to 20% in 1% increments, default from `data["config"]["ranking"]["provocation_boost"]`, url parameter `provocation_boost`
+- Cluster Boost, slider, percentage range from 0% to 20% in 1% increments, default from `data["config"]["ranking"]["cluster_boost"]`, url parameter `cluster_boost`
 - Cluster Threshold, slider, integer range 0 to 100 in 1 increments, default from `data["config"]["ranking"]["cluster_threshold"]`, url parameter `cluster_threshold`
-- Rank 1 Bonus, slider, percentage range 0% to 20% in 1% increments, default from `data["config"]["ranking"]["rank1_bonus"]`, url parameter `rank1_bonus`
-- Rank 2 Bonus, slider, percentage range 0% to 20% in 1% increments, default from `data["config"]["ranking"]["rank2_bonus"]`, url parameter `rank2_bonus`
-- Rank 3 Bonus, slider, percentage range 0% to 20% in 1% increments, default from `data["config"]["ranking"]["rank3_bonus"]`, url parameter `rank3_bonus`
+- Rank 1 Bonus, slider, percentage range 0% to 20% in 0.5% increments, stored as multiplier (1.0-1.2), default from `data["config"]["ranking"]["rank1_bonus"]`, url parameter `rank1_bonus`
+- Rank 2 Bonus, slider, percentage range 0% to 20% in 0.5% increments, stored as multiplier (1.0-1.2), default from `data["config"]["ranking"]["rank2_bonus"]`, url parameter `rank2_bonus`
+- Rank 3 Bonus, slider, percentage range 0% to 20% in 0.5% increments, stored as multiplier (1.0-1.2), default from `data["config"]["ranking"]["rank3_bonus"]`, url parameter `rank3_bonus`
 
 When a value differs from default, the label text is highlighted indicate customization.
 
@@ -141,12 +141,13 @@ Modal header shows "Ranking".
 Displays scoring details in order:
 
 1. Normalized Score (the final 0-1 score)
-2. Review List Count (number of lists citing the song)
-3. Consensus Multiplier (the bonus applied)
-4. Provcation Multiplier (the bonus applied)
-5. Cluster Multiplier (the bonus applied)
-6. Raw Score (base score before normalization)
-7. Source Contributions section:
+2. Raw Score (score after multipliers applied)
+3. Base Score (sum of source contributions before multipliers)
+4. List Count (number of lists citing the song)
+5. Consensus Boost (the multiplier applied)
+6. Provocation Boost (the multiplier applied)
+7. Cluster Boost (the multiplier applied)
+8. Source Contributions section:
    - Each source listed with rank (or shadow rank) and its calculated contribution
    - Format: "Source Name #Rank: 0.xxxx"
    - Sorted by contribution value (highest first)
@@ -156,35 +157,24 @@ Displays scoring details in order:
 
 Modal header shows "About".
 
-Contains four main sections:
+Contains three main sections:
 
 **Behind the project:**
 
 - Personal statement about the site
 - Dynamic display of total song count from `data.json` using `<kbd>` element
-- Link to GitHub repository
+- Links to GitHub repository and LinkedIn
 
 **How it works:**
 
 - Explanation of the aggregation methodology
 - Bullet list of customization options (source weights, decay functions, boosts)
 
-**Ranking methodology:**
+**Sources:**
 
-- Description of the Weighted Decay Model
-- Two-column grid showing Consensus Mode (🤝) and Conviction Mode (🔥) descriptions
-- **Mode Comparison Table**: Dynamic table comparing decay values at ranks 1, 5, 10, 25, 50, 100
-  - Shows current K value for Consensus mode
-  - Shows current P value for Conviction mode
-  - Percentages calculated relative to rank #1
-  - Updates based on user's configuration
-  - Uses formulas: Consensus = `(1 + K) / (rank + K)`, Conviction = `1 / rank^P`
-
-**Decoding the UI:**
-
-- Explanation of cluster emojis and categories
-- Shadow ranks explanation with ghost emoji (👻)
-- Boost types (Provocation ⚡ and Consensus 🤝)
+- Two tables showing all sources with song counts
+- Ranked sources table (sources with explicit rankings)
+- Unranked sources table (sources using shadow ranks)
 
 # Data Layout
 
@@ -237,8 +227,12 @@ root (object)
             ├── youtube (object, optional)
             │   ├── music_id (string, optional)
             │   └── video_id (string, optional)
-            └── spotify (object, optional)
-                └── id (string, optional)
+            ├── spotify (object, optional)
+            │   └── id (string, optional)
+            ├── bandcamp (object, optional)
+            │   └── url (string)
+            └── other (object, optional)
+                └── url (string)
 ```
 
 # Samples
@@ -302,10 +296,10 @@ Always use `escapeHtml()` helper function when inserting user-generated or data-
 ## Progressive Loading
 
 - Initial: 25 songs
-- Button shows: "Show Top 100 (75 more)"
-- Then: "Show Top 200 (100 more)"
-- Then: "Show Top 500 (300 more)"
-- Finally: "Show All (X more)"
+- Button shows: "Show More (75)" to load up to 100
+- Then: "Show More (100)" to load up to 200
+- Then: "Show More (300)" to load up to 500
+- Finally: "Show All (N)" where N is remaining count
 - Button hidden when all songs displayed
 
 # Workflow Guidelines
