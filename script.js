@@ -1027,7 +1027,7 @@ function renderExportUI(limit = 25, preference = "videos") {
     const footer = modal.querySelector("footer");
     if (footer) {
       footer.innerHTML = `
-                <button class="secondary btt-trigger">Top</button>
+                <button class="secondary outline btt-trigger">Back to top</button>
                 <a href="${url}" role="button" target="_blank" ${
         validSongs.length === 0 ? "disabled" : ""
       }>Create Playlist</a>

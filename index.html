@@ -55,190 +55,233 @@
         --pico-font-size: 115%;
       }
 
-      /* THEME: Original (Blue Accent) */
-      [data-style="original"] {
-        /* High-vibrancy Azure */
-        --pico-primary: #60a5fa;
-        --pico-primary-background: #3b82f6;
-        --pico-primary-hover: #93c5fd;
-        --pico-primary-underline: rgba(96, 165, 250, 0.5);
 
-        /* Brighten secondary text for better reading */
-        --pico-muted-color: #94a3b8;
+/* 1. Modal 'X' Icons: Inherit Pico Defaults */
+.close-modal[aria-label="Close"] {
+    /* Only apply transitions; let Pico handle the rest */
+    transition: transform 0.1s ease, opacity 0.1s ease;
+}
 
-        --pico-muted-border-color: #475569;
-        --pico-range-border-color: #334155;
+/* 2. Simple 'Presence' Feedback for Defaults */
+.close-modal[aria-label="Close"]:hover {
+    transform: scale(1.1);
+    /* Pico usually handles the color/opacity change automatically */
+}
 
-        --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
-      }
+/* Unify Modal Prose with the technical UI style */
+#modal-about .modal-body-content p {
+    /* Dim the color to match your song cards and settings metadata */
+    color: var(--pico-muted-color);
+    
+    /* Reduce size slightly to match the technical 'data' look */
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
 
-      /* Original Theme: Steady Azure Focus */
-      [data-style="original"] a:focus-visible,
-      [data-style="original"] button:focus-visible,
-      [data-style="original"] input:focus-visible {
-          outline: none !important;
-          box-shadow: 0 0 0 2px var(--pico-primary-underline) !important;
-          border-color: var(--pico-primary) !important;
-          /* Prevent the text from lightening; keep it the rich blue */
-          color: var(--pico-primary) !important;
-      } 
+/* THEME: Original (Blue Accent) */
+[data-style="original"] {
+  --pico-primary: #60a5fa;
+  --pico-primary-background: #3b82f6;
 
-      /* THEME: Studio 808 (High-Contrast Refined) */
-      [data-style="808"] {
-        /* Unify background and card colors to solid black */
-        --pico-background-color: #000000;
-        --pico-card-background-color: #000000;
-        --pico-card-sectioning-background-color: #0a0a0a; /* Subtle lift for headers */
-        
-        --pico-primary: #ff5f00; 
-        --pico-primary-background: #ff5f00;
-        --pico-color: #e0e0e0;
-        --pico-muted-color: #757575;
-        --pico-font-family: "JetBrains Mono", monospace;
-        --pico-border-radius: 2px;
-        --pico-muted-border-color: #222222; /* Darker, technical borders */
-        --pico-range-border-color: #3d3d3d;
-        --pico-table-row-stripped-background-color: #111111;
-      }
+  /* 1. Core Hover Logic (used for links/icons) */
+  --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 10%);
 
-      /* Modal and Article UI Overrides */
-      [data-style="808"] #modal-reviews article.review-entry {
-        background-color: transparent !important;
-        border: none !important;
-        /* border-bottom: 1px solid #222 !important; /* Clean separator line */ 
-        border-bottom: 2px solid #1a1a1a !important; /* A slightly thicker, darker technical divider */
-        margin-bottom: 0;
-        /* padding: var(--pico-spacing) 0; */
-        padding: 2rem 0; /* Heavy vertical padding for a clear 'channel' separation */
-        box-shadow: none;
-      }
+  /* 2. SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
+  --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
+  --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
 
-      /* The Blockquote as the "Inset" Element */
-      [data-style="808"] article.review-entry blockquote {
-        background-color: #1a1a1a; /* Dark gray for the review text area */
-        border-left: 3px solid var(--pico-primary); /* Use the orange as a vertical accent */
-        color: var(--pico-color);
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 0;
-      }
+  /* 3. Focus & Underline Logic */
+  --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 65%);
+  --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
 
-      /* 808 Theme: Recessed 'LCD' kbd Display */
-      [data-style="808"] kbd {
-        /* Use a very deep gray instead of bright white */
-        background-color: #111111; 
-        
-        /* Use the primary orange for the 'glowing' text */
-        color: var(--pico-primary);
-        
-        /* Add a subtle technical border to give it 'depth' */
-        border: 1px solid #222;
-        
-        /* Maintain the square brutalist look */
-        border-radius: 0;
-        
-        /* Ensure it doesn't pop out too much */
-        box-shadow: none;
-        font-weight: 700;
-      }
+  /* 4. Structural Colors */
+  --pico-muted-color: #94a3b8;
+  --pico-muted-border-color: #475569;
+  --pico-range-border-color: #334155;
+  --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
 
-      [data-style="808"] .review-entry a[role="button"] {
-          border-radius: 0;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          font-size: 0.8rem;
-      }
-
-      /* 808 Theme: Simplified Hardware Buttons */
-      [data-style="808"] dialog footer button,
-      [data-style="808"] dialog footer [role="button"],
-      [data-style="808"] .review-entry [role="button"] {
-          border-radius: 0 !important;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          font-weight: 700;
-          font-size: 0.75rem;
-          transition: all 0.1s ease-in-out;
-      }
-
-      /* Optional: Make kbd in tables or stats even more subtle */
-      [data-style="808"] table kbd {
-          border-color: #333;
-      }    
-
-      /* Secondary Buttons for the 808 aesthetic */
-      [data-style="808"] button.outline {
-        --pico-background-color: transparent;
-        --pico-color: var(--pico-primary);
-        border: 1px solid var(--pico-primary);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-      }
-
-      [data-style="808"] input[type="range"]::-webkit-slider-thumb {
-            background: var(--pico-primary);
-            border-radius: 0; /* Square sliders for that drum machine look */
-      }
-
-      /* 808 Theme: Hardware-style Focus State */
-      [data-style="808"] a:focus-visible,
-      [data-style="808"] button:focus-visible,
-      [data-style="808"] input:focus-visible,
-      [data-style="808"] [role="button"]:focus-visible,
-      [data-style="808"] summary:focus-visible {
-          /* Remove the default blue glow */
-          outline: none !important;
-          box-shadow: 0 0 0 2px var(--pico-primary) !important;
-          border-color: var(--pico-primary) !important;
-          /* Keep the text color orange to prevent "drifting" to blue/white */
-          color: var(--pico-primary) !important;
-      }
-
-      /* Ensure the focus ring is square to match the theme aesthetic */
-      [data-style="808"] :focus-visible {
-          border-radius: 0 !important;
-      }      
-
-      /* THEME: Light (Clean Light Mode) */
-      [data-style="light1"] {
-        --pico-primary: #7c4dff;
-        --pico-background-color: #f8f9ff; /* Soft blue-white */
-        --pico-color: #1a237e; /* Deep navy text */
-        --pico-muted-color: #5c6bc0;
-        
-        --pico-card-background-color: #ffffff;
-        --pico-card-sectioning-background-color: #f0f2ff; /* The header bar color */
-        
-        --pico-font-family: "Lexend", sans-serif;
-
-        --pico-muted-border-color: #d1d5db;
-        --pico-range-border-color: #e0e4ff;
-        --pico-table-row-stripped-background-color: #f5f7ff;
-      }
-
-      [data-style="light1"] article,
-      [data-style="light1"] dialog article {
-        box-shadow: 0 4px 12px rgba(26, 35, 126, 0.05);
-      }
-
-      [data-style="light1"] article header {
-        border-bottom: 1px solid #e0e4ff;
-      }
+/* 7. Secondary Button Logic (Back to top) */
+  --pico-secondary: #94a3b8;
+  --pico-secondary-background: #475569;
   
-      [data-style="light1"] .mode-card.active {
-        background-color: #f5f6ff;
-        border-color: var(--pico-primary);
-      }
+  /* Use color-mix for a clean, consistent hover */
+  --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), white 15%);
+  --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
+  --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), white 15%);
 
-      /* Light Theme: Purple Focus Ring */
-      [data-style="light1"] a:focus-visible,
-      [data-style="light1"] button:focus-visible,
-      [data-style="light1"] input:focus-visible {
-          outline: none !important;
-          box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.3) !important;
-          border-color: var(--pico-primary) !important;
-      }      
+  /* 8. Secondary Focus Ring */
+  --pico-secondary-focus: color-mix(in srgb, var(--pico-secondary), transparent 70%);  
+}
+
+
+
+
+/* THEME: Light (Clean Light Mode) */
+[data-style="light1"] {
+  /* 1. Core Palette */
+  --pico-primary: #7c4dff;
+  --pico-background-color: #f8f9ff;
+  --pico-color: #1a237e;
+  --pico-muted-color: #5c6bc0;
+  --pico-card-background-color: #ffffff;
+  --pico-card-sectioning-background-color: #f0f2ff;
+
+  /* 2. Primary Interaction (Links/Icons) */
+  --pico-primary-hover: color-mix(in srgb, var(--pico-primary), black 10%);
+  --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+  --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 70%);
+
+  /* 3. Solid Button Hover Logic (Pico-Compliant) */
+  --pico-primary-background: #7c4dff;
+  --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary), black 10%);
+  --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary), black 15%);
+
+  /* 4. Secondary Button Logic (Back to top) */
+  --pico-secondary: #5c6bc0;
+  --pico-secondary-background: #e0e4ff;
+  --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), black 10%);
+  --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), black 5%);
+  --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), black 10%);
+
+  /* 5. Structural & UI Colors */
+  --pico-muted-border-color: #d1d5db;
+  --pico-range-border-color: #e0e4ff;
+  --pico-table-row-stripped-background-color: #f5f7ff;
+}      
+
+/* Revamped Light1 Overrides using Pico variables */
+[data-style="light1"] article,
+[data-style="light1"] dialog article {
+  /* Using a mix of your primary purple for the shadow instead of hardcoded navy */
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--pico-primary), transparent 92%);
+}
+
+[data-style="light1"] article header {
+  /* Matching the border to your theme's structural periwinkle */
+  border-bottom: 1px solid var(--pico-range-border-color);
+}
+  
+[data-style="light1"] .mode-card.active {
+    /* Use 94% transparent primary for a soft 'wash' of purple */
+    background-color: color-mix(in srgb, var(--pico-primary), transparent 94%);
+    border-color: var(--pico-primary);
+    
+    /* Optional: Soften the text color to match the primary theme */
+    color: var(--pico-primary);
+}
+
+/* THEME: Studio 808 (Hardware Refined) */
+[data-style="808"] {
+  /* 1. Core Hardware Palette */
+  --pico-background-color: #000000;
+  --pico-card-background-color: #000000;
+  --pico-card-sectioning-background-color: #0a0a0a;
+  --pico-primary: #ff5f00; /* Signature Orange */
+  --pico-color: #e0e0e0;
+  --pico-muted-color: #757575;
+  
+  /* 2. Hardware Aesthetics (Universal Square Corners) */
+  --pico-font-family: "JetBrains Mono", monospace;
+  --pico-border-radius: 0; 
+  --pico-muted-border-color: #222222;
+  --pico-range-border-color: #3d3d3d;
+  --pico-table-row-stripped-background-color: #111111;
+
+  /* 3. Link & Interaction (Orange Glow Logic) */
+  --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 15%);
+  --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+  --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 60%);
+
+  /* 4. Solid Button Hover Logic */
+  --pico-primary-background: var(--pico-primary);
+  --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
+  --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
+
+  /* 5. Secondary Button Logic (Back to top) */
+  --pico-secondary: #757575;
+  --pico-secondary-background: #222222;
+  --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
+}
+
+/* --- Technical 808 Component Overrides --- */
+
+/* Recessed LCD Links with Backlit Plastic Effect */
+[data-style="808"] a:not([role="button"]) {
+    text-decoration: none;
+    position: relative;
+    background-color: #1a1a1a; 
+    color: var(--pico-primary);
+    padding: 0.1rem 0.4rem;
+    margin: 0 -0.1rem;
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    transition: all 0.05s steps(2); /* Mechanical switch feel */
+}
+
+[data-style="808"] a:not([role="button"]):hover {
+    background-color: var(--pico-primary) !important;
+    /* Translucent text effect using your 80% black mix */
+    color: color-mix(in srgb, var(--pico-primary), black 80%) !important;
+    
+    /* Invert borders to simulate 'pressed' button */
+    border-top-color: color-mix(in srgb, var(--pico-primary), black 40%);
+    border-left-color: color-mix(in srgb, var(--pico-primary), black 40%);
+    border-right-color: color-mix(in srgb, var(--pico-primary), white 20%);
+    border-bottom-color: color-mix(in srgb, var(--pico-primary), white 20%);
+}
+
+/* Square Slider Knobs */
+[data-style="808"] input[type="range"]::-webkit-slider-thumb {
+  background: var(--pico-primary);
+  border-radius: 0; 
+}
+
+/* Recessed 'LCD' Display for KBD and Mode Cards */
+[data-style="808"] kbd,
+[data-style="808"] .mode-card.active {
+  background-color: #111111;
+  color: var(--pico-primary);
+  border: 1px solid #222;
+  box-shadow: none;
+}
+
+/* Technical Hardware Focus Rings */
+[data-style="808"] a:focus-visible,
+[data-style="808"] button:focus-visible,
+[data-style="808"] [role="button"]:focus-visible,
+[data-style="808"] [data-sources]:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px var(--pico-primary) !important;
+  border-color: var(--pico-primary) !important;
+}
+
+/* Hardware Divider for Reviews */
+[data-style="808"] #modal-reviews article.review-entry {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid #1a1a1a !important;
+  padding: 2rem 0;
+}
+
+[data-style="808"] article.review-entry blockquote {
+  background-color: #1a1a1a;
+  border-left: 3px solid var(--pico-primary);
+  color: var(--pico-color);
+  padding: 1.5rem;
+}
+
+/* 808 Theme Specific: Match the LCD readout intensity */
+[data-style="808"] #modal-about .modal-body-content p {
+    color: var(--pico-color); /* Slightly higher contrast for monospace readability */
+    opacity: 0.8; /* Subtle dimming for long text blocks */
+    font-family: var(--pico-font-family);
+}
+
+
+
 
       /* 
            FUTURE THEME EXAMPLES:
@@ -292,13 +335,7 @@
         max-width: 400px; /* Keeps the buttons from being too wide on huge monitors */
         margin: 0 auto;   /* Centers the grid container */
         gap: 1rem;
-      }
-
-      /* Match your new visual hierarchy: Primary accent for Load More, subtle for BTT */
-      #main-btt {
-        --pico-color: var(--pico-muted-color);
-        --pico-border-color: var(--pico-muted-border-color);
-      }      
+      }  
 
       dialog article footer.modal-controls {
         display: flex;
@@ -324,7 +361,7 @@
         transform: scale(0.96) !important; 
         transition: transform 0.05s ease-in-out !important;
         /* Optional: slightly dim the button to make the "push" more obvious */
-        filter: brightness(0.9);
+        filter: brightness(0.95);
       }
 
       /* Ensure the transform doesn't linger after the click */
@@ -491,10 +528,7 @@
         transition: box-shadow 0.2s ease-in-out;
       }
 
-      /* For the 808 theme, keep the focus ring square */
-      [data-style="808"] article.song-card figure lite-youtube:focus-within {
-        border-radius: 0;
-      }      
+
 
       /* Customize lite-youtube play button - Mobile Default (visible) */
       lite-youtube::part(playButton) {
@@ -564,13 +598,7 @@
         cursor: pointer;
       }
 
-      /* 808 Theme: High-contrast technical focus */
-      [data-style="808"] [data-sources]:focus-visible {
-        /* A sharp, 2px bottom border for the console look */
-        box-shadow: 0 0 0 2px var(--pico-primary) !important;
-        background-color: #0a0a0a; /* Very subtle lift */
-        border-radius: 0;
-      }  
+
 
       /* Sources section styling - Mobile optimized */
       article.song-card [data-sources] {
@@ -915,7 +943,7 @@
 
       <section class="page-controls">
         <div class="grid">
-          <button id="main-btt" class="outline btt-trigger">Back to top</button>
+          <button id="main-btt" class="secondary outline btt-trigger">Back to top</button>
           <button id="load-more" class="outline">Show More</button>          
         </div>
       </section>      
@@ -930,7 +958,7 @@
         <div id="settings-content"></div>
         <footer class="modal-controls">
           <button class="secondary outline btt-trigger">Back to top</button>
-          <button class="contrast" id="reset-defaults">Reset</button>
+          <button type="reset" id="reset-defaults">Reset</button>
           <button class="close-modal">Close</button>
         </footer>
       </article>
@@ -1076,7 +1104,7 @@
           </section>
         </div>
         <footer class="modal-controls">
-          <button class="secondary btt-trigger">Back to top</button>
+          <button class="secondary outline btt-trigger">Back to top</button>
           <button class="close-modal">Close</button>
         </footer>        
       </article>
