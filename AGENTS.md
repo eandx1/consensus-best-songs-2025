@@ -85,7 +85,7 @@ Modal header shows "Settings". Contains three sections:
 
 - Decay Mode, 2 button choice defaulting to "consensus" with the other option being "conviction", default from `data["config"]["ranking"]["decay_mode"]`, url parameter `decay_mode`
 - Smoothing Factor (K), slider, integer range 0-50 in 1 increments, only shown when Decay Mode is "consensus", default from `data["config"]["ranking"]["k_value"]`, url parameter `k_value`
-- Power-Law Decay (P), slider, float range 0.0 to 1.1 in 0.01 increments, only shown when Decay Mode is "conviction", default from `data["config"]["ranking"]["p_exponent"]`, url parameter `p_exponent`
+- Power Law Steepness (P), slider, float range 0.0 to 1.1 in 0.01 increments, only shown when Decay Mode is "conviction", default from `data["config"]["ranking"]["p_exponent"]`, url parameter `p_exponent`
 - Consensus Boost, slider, percentage range from 0% to 20% in 1% increments, default from `data["config"]["ranking"]["consensus_boost"]`, url parameter `consensus_boost`
 - Provocation Boost, slider, percentage range from 0% to 20% in 1% increments, default from `data["config"]["ranking"]["provocation_boost"]`, url parameter `provocation_boost`
 - Cluster Boost, slider, percentage range from 0% to 20% in 1% increments, default from `data["config"]["ranking"]["cluster_boost"]`, url parameter `cluster_boost`
