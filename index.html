@@ -8,25 +8,40 @@
       name="description"
       content="An aggregate ranking of the Best Songs of 2025 with a model you can customize."
     />
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bestsongs2025.com/">
-    <meta property="og:title" content="Consensus Best Songs 2025">
-    <meta property="og:image" content="https://bestsongs2025.com/og-image.png"> 
-    <meta property="og:description" content="Discover the top songs of 2025 from an aggregate review list then tweak the ranking yourself!">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bestsongs2025.com/" />
+    <meta property="og:title" content="Consensus Best Songs 2025" />
+    <meta
+      property="og:image"
+      content="https://bestsongs2025.com/og-image.png"
+    />
+    <meta
+      property="og:description"
+      content="Discover the top songs of 2025 from an aggregate review list then tweak the ranking yourself!"
+    />
 
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://bestsongs2025.com/">
-    <meta property="twitter:title" content="Consensus Best Songs 2025">
-    <meta property="twitter:description" content="Discover the top songs of 2025 from an aggregate review list then tweak the ranking yourself!">
-    <meta property="twitter:image" content="https://bestsongs2025.com/og-image.png">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://bestsongs2025.com/" />
+    <meta property="twitter:title" content="Consensus Best Songs 2025" />
+    <meta
+      property="twitter:description"
+      content="Discover the top songs of 2025 from an aggregate review list then tweak the ranking yourself!"
+    />
+    <meta
+      property="twitter:image"
+      content="https://bestsongs2025.com/og-image.png"
+    />
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
 
-    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.ico" sizes="any" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Lexend:wght@300..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Lexend:wght@300..900&display=swap"
+      rel="stylesheet"
+    />
 
     <link
       rel="stylesheet"
@@ -55,233 +70,325 @@
         --pico-font-size: 115%;
       }
 
+      /* 1. Modal 'X' Icons: Inherit Pico Defaults */
+      .close-modal[aria-label="Close"] {
+        /* Only apply transitions; let Pico handle the rest */
+        transition: transform 0.1s ease, opacity 0.1s ease;
+      }
 
-/* 1. Modal 'X' Icons: Inherit Pico Defaults */
-.close-modal[aria-label="Close"] {
-    /* Only apply transitions; let Pico handle the rest */
-    transition: transform 0.1s ease, opacity 0.1s ease;
-}
+      /* 2. Simple 'Presence' Feedback for Defaults */
+      .close-modal[aria-label="Close"]:hover {
+        transform: scale(1.1);
+        /* Pico usually handles the color/opacity change automatically */
+      }
 
-/* 2. Simple 'Presence' Feedback for Defaults */
-.close-modal[aria-label="Close"]:hover {
-    transform: scale(1.1);
-    /* Pico usually handles the color/opacity change automatically */
-}
+      /* Unify Modal Prose with the technical UI style */
+      #modal-about .modal-body-content p {
+        /* Dim the color to match your song cards and settings metadata */
+        color: var(--pico-muted-color);
 
-/* Unify Modal Prose with the technical UI style */
-#modal-about .modal-body-content p {
-    /* Dim the color to match your song cards and settings metadata */
-    color: var(--pico-muted-color);
-    
-    /* Reduce size slightly to match the technical 'data' look */
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
-}
+        /* Reduce size slightly to match the technical 'data' look */
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.25rem;
+      }
 
-/* THEME: Original (Blue Accent) */
-[data-style="original"] {
-  --pico-primary: #60a5fa;
-  --pico-primary-background: #3b82f6;
+      /* THEME: Original (Blue Accent) */
+      [data-style="original"] {
+        --pico-primary: #60a5fa;
+        --pico-primary-background: #3b82f6;
 
-  /* 1. Core Hover Logic (used for links/icons) */
-  --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 10%);
+        /* 1. Core Hover Logic (used for links/icons) */
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          white 10%
+        );
 
-  /* 2. SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
-  --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
-  --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
+        /* 2. SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 10%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 15%
+        );
 
-  /* 3. Focus & Underline Logic */
-  --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 65%);
-  --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+        /* 3. Focus & Underline Logic */
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 65%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
 
-  /* 4. Structural Colors */
-  --pico-muted-color: #94a3b8;
-  --pico-muted-border-color: #475569;
-  --pico-range-border-color: #334155;
-  --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
+        /* 4. Structural Colors */
+        --pico-muted-color: #94a3b8;
+        --pico-muted-border-color: #475569;
+        --pico-range-border-color: #334155;
+        --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
 
-/* 7. Secondary Button Logic (Back to top) */
-  --pico-secondary: #94a3b8;
-  --pico-secondary-background: #475569;
-  
-  /* Use color-mix for a clean, consistent hover */
-  --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), white 15%);
-  --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
-  --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), white 15%);
+        /* 7. Secondary Button Logic (Back to top) */
+        --pico-secondary: #94a3b8;
+        --pico-secondary-background: #475569;
 
-  /* 8. Secondary Focus Ring */
-  --pico-secondary-focus: color-mix(in srgb, var(--pico-secondary), transparent 70%);  
-}
+        /* Use color-mix for a clean, consistent hover */
+        --pico-secondary-hover: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          white 15%
+        );
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 10%
+        );
+        --pico-secondary-hover-border: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 15%
+        );
 
+        /* 8. Secondary Focus Ring */
+        --pico-secondary-focus: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          transparent 70%
+        );
+      }
 
+      /* THEME: Light (Clean Light Mode) */
+      [data-style="light1"] {
+        /* 1. Core Palette */
+        --pico-primary: #7c4dff;
+        --pico-background-color: #f8f9ff;
+        --pico-color: #1a237e;
+        --pico-muted-color: #5c6bc0;
+        --pico-card-background-color: #ffffff;
+        --pico-card-sectioning-background-color: #f0f2ff;
 
+        /* 2. Primary Interaction (Links/Icons) */
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 10%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 70%
+        );
 
-/* THEME: Light (Clean Light Mode) */
-[data-style="light1"] {
-  /* 1. Core Palette */
-  --pico-primary: #7c4dff;
-  --pico-background-color: #f8f9ff;
-  --pico-color: #1a237e;
-  --pico-muted-color: #5c6bc0;
-  --pico-card-background-color: #ffffff;
-  --pico-card-sectioning-background-color: #f0f2ff;
+        /* 3. Solid Button Hover Logic (Pico-Compliant) */
+        --pico-primary-background: #7c4dff;
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 10%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 15%
+        );
 
-  /* 2. Primary Interaction (Links/Icons) */
-  --pico-primary-hover: color-mix(in srgb, var(--pico-primary), black 10%);
-  --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
-  --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 70%);
+        /* 4. Secondary Button Logic (Back to top) */
+        --pico-secondary: #5c6bc0;
+        --pico-secondary-background: #e0e4ff;
+        --pico-secondary-hover: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          black 10%
+        );
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          black 5%
+        );
+        --pico-secondary-hover-border: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          black 10%
+        );
 
-  /* 3. Solid Button Hover Logic (Pico-Compliant) */
-  --pico-primary-background: #7c4dff;
-  --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary), black 10%);
-  --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary), black 15%);
+        /* 5. Structural & UI Colors */
+        --pico-muted-border-color: #d1d5db;
+        --pico-range-border-color: #e0e4ff;
+        --pico-table-row-stripped-background-color: #f5f7ff;
+      }
 
-  /* 4. Secondary Button Logic (Back to top) */
-  --pico-secondary: #5c6bc0;
-  --pico-secondary-background: #e0e4ff;
-  --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), black 10%);
-  --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), black 5%);
-  --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), black 10%);
+      /* Revamped Light1 Overrides using Pico variables */
+      [data-style="light1"] article,
+      [data-style="light1"] dialog article {
+        /* Using a mix of your primary purple for the shadow instead of hardcoded navy */
+        box-shadow: 0 4px 12px
+          color-mix(in srgb, var(--pico-primary), transparent 92%);
+      }
 
-  /* 5. Structural & UI Colors */
-  --pico-muted-border-color: #d1d5db;
-  --pico-range-border-color: #e0e4ff;
-  --pico-table-row-stripped-background-color: #f5f7ff;
-}      
+      [data-style="light1"] article header {
+        /* Matching the border to your theme's structural periwinkle */
+        border-bottom: 1px solid var(--pico-range-border-color);
+      }
 
-/* Revamped Light1 Overrides using Pico variables */
-[data-style="light1"] article,
-[data-style="light1"] dialog article {
-  /* Using a mix of your primary purple for the shadow instead of hardcoded navy */
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--pico-primary), transparent 92%);
-}
+      [data-style="light1"] .mode-card.active {
+        /* Use 94% transparent primary for a soft 'wash' of purple */
+        background-color: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 94%
+        );
+        border-color: var(--pico-primary);
 
-[data-style="light1"] article header {
-  /* Matching the border to your theme's structural periwinkle */
-  border-bottom: 1px solid var(--pico-range-border-color);
-}
-  
-[data-style="light1"] .mode-card.active {
-    /* Use 94% transparent primary for a soft 'wash' of purple */
-    background-color: color-mix(in srgb, var(--pico-primary), transparent 94%);
-    border-color: var(--pico-primary);
-    
-    /* Optional: Soften the text color to match the primary theme */
-    color: var(--pico-primary);
-}
+        /* Optional: Soften the text color to match the primary theme */
+        color: var(--pico-primary);
+      }
 
-/* THEME: Studio 808 (Hardware Refined) */
-[data-style="808"] {
-  /* 1. Core Hardware Palette */
-  --pico-background-color: #000000;
-  --pico-card-background-color: #000000;
-  --pico-card-sectioning-background-color: #0a0a0a;
-  --pico-primary: #ff5f00; /* Signature Orange */
-  --pico-color: #e0e0e0;
-  --pico-muted-color: #757575;
-  
-  /* 2. Hardware Aesthetics (Universal Square Corners) */
-  --pico-font-family: "JetBrains Mono", monospace;
-  --pico-border-radius: 0; 
-  --pico-muted-border-color: #222222;
-  --pico-range-border-color: #3d3d3d;
-  --pico-table-row-stripped-background-color: #111111;
+      /* THEME: Studio 808 (Hardware Refined) */
+      [data-style="808"] {
+        /* 1. Core Hardware Palette */
+        --pico-background-color: #000000;
+        --pico-card-background-color: #000000;
+        --pico-card-sectioning-background-color: #0a0a0a;
+        --pico-primary: #ff5f00; /* Signature Orange */
+        --pico-color: #e0e0e0;
+        --pico-muted-color: #757575;
 
-  /* 3. Link & Interaction (Orange Glow Logic) */
-  --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 15%);
-  --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
-  --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 60%);
+        /* 2. Hardware Aesthetics (Universal Square Corners) */
+        --pico-font-family: "JetBrains Mono", monospace;
+        --pico-border-radius: 0;
+        --pico-muted-border-color: #222222;
+        --pico-range-border-color: #3d3d3d;
+        --pico-table-row-stripped-background-color: #111111;
 
-  /* 4. Solid Button Hover Logic */
-  --pico-primary-background: var(--pico-primary);
-  --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
-  --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
+        /* 3. Link & Interaction (Orange Glow Logic) */
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          white 15%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 60%
+        );
 
-  /* 5. Secondary Button Logic (Back to top) */
-  --pico-secondary: #757575;
-  --pico-secondary-background: #222222;
-  --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
-}
+        /* 4. Solid Button Hover Logic */
+        --pico-primary-background: var(--pico-primary);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 10%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 15%
+        );
 
-/* --- Technical 808 Component Overrides --- */
+        /* 5. Secondary Button Logic (Back to top) */
+        --pico-secondary: #757575;
+        --pico-secondary-background: #222222;
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 10%
+        );
+      }
 
-/* Recessed LCD Links with Backlit Plastic Effect */
-[data-style="808"] a:not([role="button"]) {
-    text-decoration: none;
-    position: relative;
-    background-color: #1a1a1a; 
-    color: var(--pico-primary);
-    padding: 0.1rem 0.4rem;
-    margin: 0 -0.1rem;
-    border-top: 1px solid #000;
-    border-left: 1px solid #000;
-    border-right: 1px solid #333;
-    border-bottom: 1px solid #333;
-    transition: all 0.05s steps(2); /* Mechanical switch feel */
-}
+      /* --- Technical 808 Component Overrides --- */
 
-[data-style="808"] a:not([role="button"]):hover {
-    background-color: var(--pico-primary) !important;
-    /* Translucent text effect using your 80% black mix */
-    color: color-mix(in srgb, var(--pico-primary), black 80%) !important;
-    
-    /* Invert borders to simulate 'pressed' button */
-    border-top-color: color-mix(in srgb, var(--pico-primary), black 40%);
-    border-left-color: color-mix(in srgb, var(--pico-primary), black 40%);
-    border-right-color: color-mix(in srgb, var(--pico-primary), white 20%);
-    border-bottom-color: color-mix(in srgb, var(--pico-primary), white 20%);
-}
+      /* Recessed LCD Links with Backlit Plastic Effect */
+      [data-style="808"] a:not([role="button"]) {
+        text-decoration: none;
+        position: relative;
+        background-color: #1a1a1a;
+        color: var(--pico-primary);
+        padding: 0.1rem 0.4rem;
+        margin: 0 -0.1rem;
+        border-top: 1px solid #000;
+        border-left: 1px solid #000;
+        border-right: 1px solid #333;
+        border-bottom: 1px solid #333;
+        transition: all 0.05s steps(2); /* Mechanical switch feel */
+      }
 
-/* Square Slider Knobs */
-[data-style="808"] input[type="range"]::-webkit-slider-thumb {
-  background: var(--pico-primary);
-  border-radius: 0; 
-}
+      [data-style="808"] a:not([role="button"]):hover {
+        background-color: var(--pico-primary) !important;
+        /* Translucent text effect using your 80% black mix */
+        color: color-mix(in srgb, var(--pico-primary), black 80%) !important;
 
-/* Recessed 'LCD' Display for KBD and Mode Cards */
-[data-style="808"] kbd,
-[data-style="808"] .mode-card.active {
-  background-color: #111111;
-  color: var(--pico-primary);
-  border: 1px solid #222;
-  box-shadow: none;
-}
+        /* Invert borders to simulate 'pressed' button */
+        border-top-color: color-mix(in srgb, var(--pico-primary), black 40%);
+        border-left-color: color-mix(in srgb, var(--pico-primary), black 40%);
+        border-right-color: color-mix(in srgb, var(--pico-primary), white 20%);
+        border-bottom-color: color-mix(in srgb, var(--pico-primary), white 20%);
+      }
 
-/* Technical Hardware Focus Rings */
-[data-style="808"] a:focus-visible,
-[data-style="808"] button:focus-visible,
-[data-style="808"] [role="button"]:focus-visible,
-[data-style="808"] [data-sources]:focus-visible {
-  outline: none !important;
-  box-shadow: 0 0 0 2px var(--pico-primary) !important;
-  border-color: var(--pico-primary) !important;
-}
+      /* Square Slider Knobs */
+      [data-style="808"] input[type="range"]::-webkit-slider-thumb {
+        background: var(--pico-primary);
+        border-radius: 0;
+      }
 
-/* Hardware Divider for Reviews */
-[data-style="808"] #modal-reviews article.review-entry {
-  background-color: transparent !important;
-  border: none !important;
-  border-bottom: 2px solid #1a1a1a !important;
-  padding: 2rem 0;
-}
+      /* Recessed 'LCD' Display for KBD and Mode Cards */
+      [data-style="808"] kbd,
+      [data-style="808"] .mode-card.active {
+        background-color: #111111;
+        color: var(--pico-primary);
+        border: 1px solid #222;
+        box-shadow: none;
+      }
 
-[data-style="808"] article.review-entry blockquote {
-  background-color: #1a1a1a;
-  border-left: 3px solid var(--pico-primary);
-  color: var(--pico-color);
-  padding: 1.5rem;
-}
+      /* Technical Hardware Focus Rings */
+      [data-style="808"] a:focus-visible,
+      [data-style="808"] button:focus-visible,
+      [data-style="808"] [role="button"]:focus-visible,
+      [data-style="808"] [data-sources]:focus-visible {
+        outline: none !important;
+        box-shadow: 0 0 0 2px var(--pico-primary) !important;
+        border-color: var(--pico-primary) !important;
+      }
 
-/* 808 Theme Specific: Match the LCD readout intensity */
-[data-style="808"] #modal-about .modal-body-content p {
-    color: var(--pico-color); /* Slightly higher contrast for monospace readability */
-    opacity: 0.8; /* Subtle dimming for long text blocks */
-    font-family: var(--pico-font-family);
-}
+      /* Hardware Divider for Reviews */
+      [data-style="808"] #modal-reviews article.review-entry {
+        background-color: transparent !important;
+        border: none !important;
+        border-bottom: 2px solid #1a1a1a !important;
+        padding: 2rem 0;
+      }
 
+      [data-style="808"] article.review-entry blockquote {
+        background-color: #1a1a1a;
+        border-left: 3px solid var(--pico-primary);
+        color: var(--pico-color);
+        padding: 1.5rem;
+      }
 
-
+      /* 808 Theme Specific: Match the LCD readout intensity */
+      [data-style="808"] #modal-about .modal-body-content p {
+        color: var(
+          --pico-color
+        ); /* Slightly higher contrast for monospace readability */
+        opacity: 0.8; /* Subtle dimming for long text blocks */
+        font-family: var(--pico-font-family);
+      }
 
       /* 
            FUTURE THEME EXAMPLES:
@@ -299,7 +406,7 @@
       :focus:not(:focus-visible) {
         box-shadow: none !important;
         outline: none !important;
-      }        
+      }
 
       /* Enable word-wrapping for Pico CSS tooltips */
       [data-tooltip]::before {
@@ -333,9 +440,9 @@
       /* On mobile, keep the buttons full-width or side-by-side */
       .page-controls .grid {
         max-width: 400px; /* Keeps the buttons from being too wide on huge monitors */
-        margin: 0 auto;   /* Centers the grid container */
+        margin: 0 auto; /* Centers the grid container */
         gap: 1rem;
-      }  
+      }
 
       dialog article footer.modal-controls {
         display: flex;
@@ -345,28 +452,30 @@
       }
 
       dialog article footer.modal-controls button {
-        width: 100%;        /* Full width for a large thumb target */
-        margin: 0;          /* Removes any default side margins causing offset */
+        width: 100%; /* Full width for a large thumb target */
+        margin: 0; /* Removes any default side margins causing offset */
         text-align: center; /* Ensures text is perfectly centered */
       }
 
-      dialog article footer.modal-controls button:not(:first-of-type) {        
+      dialog article footer.modal-controls button:not(:first-of-type) {
         margin: 0; /* Override Pico CSS's horizontal button margins */
       }
 
       /* Enhanced Global Button Depress */
-      button:active, 
+      button:active,
       [role="button"]:active {
         /* Use !important to ensure this high-priority visual feedback wins */
-        transform: scale(0.96) !important; 
+        transform: scale(0.96) !important;
         transition: transform 0.05s ease-in-out !important;
         /* Optional: slightly dim the button to make the "push" more obvious */
         filter: brightness(0.95);
       }
 
       /* Ensure the transform doesn't linger after the click */
-      button, [role="button"] {
-        transition: transform 0.1s ease-in-out, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      button,
+      [role="button"] {
+        transition: transform 0.1s ease-in-out, background-color 0.2s,
+          border-color 0.2s, box-shadow 0.2s;
       }
 
       /* Desktop: Allow container to be wider for more breathing room */
@@ -460,11 +569,11 @@
       }
 
       /* Remove the border from the last item so it doesn't double up with the footer */
-      #modal-reviews  article.review-entry:last-of-type {
+      #modal-reviews article.review-entry:last-of-type {
         border-bottom: none;
       }
 
-      #modal-reviews  article.review-entry hgroup h5 {
+      #modal-reviews article.review-entry hgroup h5 {
         font-size: 0.8rem;
         color: color-mix(in srgb, var(--pico-color) 80%, transparent);
         font-weight: 300; /* Lighter weight creates a sophisticated look */
@@ -481,7 +590,7 @@
       /* Define the width of the Source Name column */
       .source-stats-table th:first-child,
       .source-stats-table td:first-child {
-        width: 70%; 
+        width: 70%;
         /* Allow tooltips to overflow - no clipping */
         text-overflow: ellipsis;
       }
@@ -498,7 +607,7 @@
       .source-stats-table tbody td {
         overflow: visible;
       }
-      
+
       /* Ensure tooltips in source tables wrap text properly */
       .source-stats-table abbr[data-tooltip]::before,
       .source-stats-table abbr[data-tooltip]::after {
@@ -527,8 +636,6 @@
         border-radius: var(--pico-border-radius);
         transition: box-shadow 0.2s ease-in-out;
       }
-
-
 
       /* Customize lite-youtube play button - Mobile Default (visible) */
       lite-youtube::part(playButton) {
@@ -571,7 +678,7 @@
       article.song-card hgroup h4 {
         color: var(--pico-muted-color);
         font-weight: normal;
-        margin-bottom: 0.25rem
+        margin-bottom: 0.25rem;
       }
 
       /* Info icon - now inside header, aligned to baseline */
@@ -597,8 +704,6 @@
         color: var(--pico-color) !important;
         cursor: pointer;
       }
-
-
 
       /* Sources section styling - Mobile optimized */
       article.song-card [data-sources] {
@@ -776,7 +881,8 @@
         cursor: pointer;
         border: 2px solid transparent;
         border-color: var(--pico-muted-border-color);
-        transition: border-color 0.2s, transform 0.1s ease, background-color 0.2s;
+        transition: border-color 0.2s, transform 0.1s ease,
+          background-color 0.2s;
         margin-bottom: 0;
       }
 
@@ -872,7 +978,7 @@
         math-formula svg {
           max-width: 100%;
         }
-        
+
         /* Hide mode names in comparison table on mobile to save space */
         .mode-name {
           display: none;
@@ -880,9 +986,8 @@
 
         /* Reduce the gap between the Consensus and Conviction boxes */
         #about-ranking .grid {
-            gap: var(--pico-spacing); 
+          gap: var(--pico-spacing);
         }
-
       }
 
       @media (min-width: 1025px) {
@@ -890,7 +995,7 @@
           column-count: 2;
           column-gap: 2rem;
         }
-        
+
         /* Show mode names on desktop */
         .mode-name {
           display: inline;
@@ -900,27 +1005,37 @@
 
     <!-- Lite YouTube -->
     <script
-    type="module"
-    src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
     ></script>
 
     <!-- Vercel Analytics -->
     <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
 
       // 1. Check if the domain is correct
-      const isProd = window.location.hostname.endsWith('bestsongs2025.com');
-      
+      const isProd = window.location.hostname.endsWith("bestsongs2025.com");
+
       // 2. Check if YOU have "opted out" on this specific browser
-      const isMe = localStorage.getItem('va-disable') === 'true';
+      const isMe = localStorage.getItem("va-disable") === "true";
 
       if (isProd && !isMe) {
-        const script = document.createElement('script');
-        script.src = '/_vercel/insights/script.js';
+        const script = document.createElement("script");
+        script.src = "/_vercel/insights/script.js";
         script.defer = true;
         document.head.appendChild(script);
       } else {
-        console.log("Vercel Analytics: Off (Env: " + window.location.hostname + ", Opt-out: " + isMe + ")");
+        console.log(
+          "Vercel Analytics: Off (Env: " +
+            window.location.hostname +
+            ", Opt-out: " +
+            isMe +
+            ")"
+        );
       }
     </script>
   </head>
@@ -931,7 +1046,7 @@
           <li><strong>Consensus Best Songs 2025</strong></li>
         </ul>
         <ul>
-          <li><a href="#" id="open-export" style="display: none;">Export</a></li>
+          <li><a href="#" id="open-export" style="display: none">Export</a></li>
           <li><a href="#" id="open-settings">Settings</a></li>
           <li><a href="#" id="open-about">About</a></li>
         </ul>
@@ -943,16 +1058,23 @@
 
       <section class="page-controls">
         <div class="grid">
-          <button id="main-btt" class="secondary outline btt-trigger">Back to top</button>
-          <button id="load-more" class="outline">Show More</button>          
+          <button id="main-btt" class="secondary outline btt-trigger">
+            Back to top
+          </button>
+          <button id="load-more" class="outline">Show More</button>
         </div>
-      </section>      
+      </section>
     </main>
 
     <dialog id="modal-settings">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
+          <button
+            aria-label="Close"
+            rel="prev"
+            class="close-modal"
+            autofocus
+          ></button>
           <h3>Settings</h3>
         </header>
         <div id="settings-content"></div>
@@ -967,50 +1089,70 @@
     <dialog id="modal-stats">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
+          <button
+            aria-label="Close"
+            rel="prev"
+            class="close-modal"
+            autofocus
+          ></button>
           <h3 id="stats-title">Ranking Stats</h3>
         </header>
         <div id="stats-content"></div>
         <footer class="modal-controls">
           <button class="secondary outline btt-trigger">Back to top</button>
           <button class="close-modal">Close</button>
-        </footer>  
+        </footer>
       </article>
     </dialog>
 
     <dialog id="modal-reviews">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
+          <button
+            aria-label="Close"
+            rel="prev"
+            class="close-modal"
+            autofocus
+          ></button>
           <h3>Reviews</h3>
         </header>
         <div id="reviews-content"></div>
         <footer class="modal-controls">
           <button class="secondary outline btt-trigger">Back to top</button>
           <button class="close-modal">Close</button>
-        </footer>          
+        </footer>
       </article>
     </dialog>
 
     <dialog id="modal-export">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
+          <button
+            aria-label="Close"
+            rel="prev"
+            class="close-modal"
+            autofocus
+          ></button>
           <h3>Export</h3>
         </header>
         <div id="export-content">
-            <!-- Dynamic content will be injected here -->
+          <!-- Dynamic content will be injected here -->
         </div>
         <footer>
-            <!-- Footer content will be managed by renderExportUI to update the link -->
-        </footer>  
+          <!-- Footer content will be managed by renderExportUI to update the link -->
+        </footer>
       </article>
     </dialog>
 
     <dialog id="modal-about">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
+          <button
+            aria-label="Close"
+            rel="prev"
+            class="close-modal"
+            autofocus
+          ></button>
           <h3>About</h3>
         </header>
         <div class="modal-body-content">
@@ -1023,10 +1165,13 @@
               I'm Everett. I love music, data, and technology. Each year, I look
               through the many
               <strong>"Best Songs of the Year"</strong> lists to find new music
-              I might have missed. There are so many songs (<kbd id="total-songs-count">...</kbd> so far this year)! I often prioritize
-              my listening order with a ranking. This site is a result of
-              that obsession and an excuse to try using AI for frontend
-              development.
+              I might have missed. There are so many songs (<kbd
+                id="total-songs-count"
+                >...</kbd
+              >
+              so far this year)! I often prioritize my listening order with a
+              ranking. This site is a result of that obsession and an excuse to
+              try using AI for frontend development.
             </p>
             <p>
               <a href="https://github.com/eandx1/consensus-best-songs-2025"
@@ -1035,11 +1180,12 @@
             </p>
             <p>
               <a href="https://www.linkedin.com/in/everett-anderson-swe/"
-                >Contact me on LinkedIn</a>              
-            </p>            
+                >Contact me on LinkedIn</a
+              >
+            </p>
           </section>
 
-          <hr /> 
+          <hr />
           <section id="about-methodology">
             <hgroup>
               <h4>How it works</h4>
@@ -1055,14 +1201,23 @@
                 biases.</strong
               >
             </p>
-            <p>
+            <div>
               Make it your own!
               <ul>
-                <li><strong>Weight sources</strong>: Boost your favorite publications</li>
-                <li><strong>Choose a rank decay function</strong>: Prioritize #1 spots over general consensus</li>
-                <li><strong>Boost song types</strong>: Prefer niche sounds over the mainstream</li>
+                <li>
+                  <strong>Weight sources</strong>: Boost your favorite
+                  publications
+                </li>
+                <li>
+                  <strong>Choose a rank decay function</strong>: Prioritize #1
+                  spots over general consensus
+                </li>
+                <li>
+                  <strong>Boost song types</strong>: Prefer niche sounds over
+                  the mainstream
+                </li>
               </ul>
-            </p>
+            </div>
           </section>
 
           <hr />
@@ -1071,7 +1226,7 @@
               <h4>Sources</h4>
               <p>All the song and ranking sources</p>
             </hgroup>
-            
+
             <h5>Ranked</h5>
             <figure>
               <table id="ranked-sources-table" class="source-stats-table">
@@ -1082,11 +1237,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td colspan="2">Loading...</td></tr>
+                  <tr>
+                    <td colspan="2">Loading...</td>
+                  </tr>
                 </tbody>
               </table>
             </figure>
-            
+
             <h5>Unranked</h5>
             <figure>
               <table id="unranked-sources-table" class="source-stats-table">
@@ -1097,7 +1254,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td colspan="2">Loading...</td></tr>
+                  <tr>
+                    <td colspan="2">Loading...</td>
+                  </tr>
                 </tbody>
               </table>
             </figure>
@@ -1106,7 +1265,7 @@
         <footer class="modal-controls">
           <button class="secondary outline btt-trigger">Back to top</button>
           <button class="close-modal">Close</button>
-        </footer>        
+        </footer>
       </article>
     </dialog>
 
