@@ -53,3 +53,46 @@ def test_shadow_rank_display(page: Page, server_url):
     expect(npr).to_be_visible()
     expect(npr).to_contain_text("👻")
 
+def test_reviews_modal_top_button(page: Page, server_url):
+    """Test that Top button scrolls to top of modal."""
+    page.goto(server_url)
+    
+    # Find a song with many reviews to make the modal scrollable
+    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
+    card.locator("[data-sources]").click()
+    
+    modal = page.locator("#modal-reviews")
+    expect(modal).to_be_visible()
+    
+    # Scroll to bottom of modal
+    page.evaluate("document.querySelector('#modal-reviews article').scrollTop = document.querySelector('#modal-reviews article').scrollHeight")
+    
+    # Click Top button
+    top_button = modal.get_by_role("button", name="Top")
+    expect(top_button).to_be_visible()
+    top_button.click()
+    
+    # Wait for smooth scroll animation
+    page.wait_for_timeout(1000)
+    
+    # Modal should be scrolled back to top
+    scroll_top = page.evaluate("document.querySelector('#modal-reviews article').scrollTop")
+    assert scroll_top < 50, f"Modal should be scrolled to top, but scrollTop is {scroll_top}"
+
+def test_reviews_modal_close_button(page: Page, server_url):
+    """Test that Close button closes the modal."""
+    page.goto(server_url)
+    
+    card = page.locator(".song-card").first
+    card.locator("[data-sources]").click()
+    
+    modal = page.locator("#modal-reviews")
+    expect(modal).to_be_visible()
+    
+    # Click Close button
+    close_button = modal.locator("footer button.close-modal")
+    close_button.click()
+    
+    # Modal should be closed
+    expect(modal).not_to_be_visible()
+

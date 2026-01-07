@@ -24,15 +24,14 @@
 
     <link rel="icon" href="/favicon.ico" sizes="any">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Lexend:wght@300..900&display=swap" rel="stylesheet">
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
-
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
-    ></script>
 
     <style>
       /* 
@@ -66,7 +65,180 @@
 
         /* Brighten secondary text for better reading */
         --pico-muted-color: #94a3b8;
+
+        --pico-muted-border-color: #475569;
+        --pico-range-border-color: #334155;
+
+        --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
       }
+
+      /* Original Theme: Steady Azure Focus */
+      [data-style="original"] a:focus,
+      [data-style="original"] button:focus,
+      [data-style="original"] input:focus {
+          outline: none !important;
+          box-shadow: 0 0 0 2px var(--pico-primary-underline) !important;
+          border-color: var(--pico-primary) !important;
+          /* Prevent the text from lightening; keep it the rich blue */
+          color: var(--pico-primary) !important;
+      }      
+
+      /* THEME: Studio 808 (High-Contrast Refined) */
+      [data-style="808"] {
+        /* Unify background and card colors to solid black */
+        --pico-background-color: #000000;
+        --pico-card-background-color: #000000;
+        --pico-card-sectioning-background-color: #0a0a0a; /* Subtle lift for headers */
+        
+        --pico-primary: #ff5f00; 
+        --pico-primary-background: #ff5f00;
+        --pico-color: #e0e0e0;
+        --pico-muted-color: #757575;
+        --pico-font-family: "JetBrains Mono", monospace;
+        --pico-border-radius: 2px;
+        --pico-muted-border-color: #222222; /* Darker, technical borders */
+        --pico-range-border-color: #3d3d3d;
+        --pico-table-row-stripped-background-color: #111111;
+      }
+
+      /* Modal and Article UI Overrides */
+      [data-style="808"] #modal-reviews article.review-entry {
+        background-color: transparent !important;
+        border: none !important;
+        /* border-bottom: 1px solid #222 !important; /* Clean separator line */ 
+        border-bottom: 2px solid #1a1a1a !important; /* A slightly thicker, darker technical divider */
+        margin-bottom: 0;
+        /* padding: var(--pico-spacing) 0; */
+        padding: 2rem 0; /* Heavy vertical padding for a clear 'channel' separation */
+        box-shadow: none;
+      }
+
+      /* The Blockquote as the "Inset" Element */
+      [data-style="808"] article.review-entry blockquote {
+        background-color: #1a1a1a; /* Dark gray for the review text area */
+        border-left: 3px solid var(--pico-primary); /* Use the orange as a vertical accent */
+        color: var(--pico-color);
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0;
+      }
+
+      /* 808 Theme: Recessed 'LCD' kbd Display */
+      [data-style="808"] kbd {
+        /* Use a very deep gray instead of bright white */
+        background-color: #111111; 
+        
+        /* Use the primary orange for the 'glowing' text */
+        color: var(--pico-primary);
+        
+        /* Add a subtle technical border to give it 'depth' */
+        border: 1px solid #222;
+        
+        /* Maintain the square brutalist look */
+        border-radius: 0;
+        
+        /* Ensure it doesn't pop out too much */
+        box-shadow: none;
+        font-weight: 700;
+      }
+
+      [data-style="808"] .review-entry a[role="button"] {
+          border-radius: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-size: 0.8rem;
+      }
+
+      /* 808 Theme: Simplified Hardware Buttons */
+      [data-style="808"] dialog footer button,
+      [data-style="808"] dialog footer [role="button"],
+      [data-style="808"] .review-entry [role="button"] {
+          border-radius: 0 !important;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-weight: 700;
+          font-size: 0.75rem;
+          transition: all 0.1s ease-in-out;
+      }
+
+      /* Optional: Make kbd in tables or stats even more subtle */
+      [data-style="808"] table kbd {
+          border-color: #333;
+      }    
+
+      /* Secondary Buttons for the 808 aesthetic */
+      [data-style="808"] button.outline {
+        --pico-background-color: transparent;
+        --pico-color: var(--pico-primary);
+        border: 1px solid var(--pico-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+      }
+
+      [data-style="808"] input[type="range"]::-webkit-slider-thumb {
+            background: var(--pico-primary);
+            border-radius: 0; /* Square sliders for that drum machine look */
+      }
+
+      /* 808 Theme: Hardware-style Focus State */
+      [data-style="808"] a:focus,
+      [data-style="808"] button:focus,
+      [data-style="808"] input:focus,
+      [data-style="808"] [role="button"]:focus,
+      [data-style="808"] summary:focus {
+          /* Remove the default blue glow */
+          outline: none !important;
+          box-shadow: 0 0 0 2px var(--pico-primary) !important;
+          border-color: var(--pico-primary) !important;
+          /* Keep the text color orange to prevent "drifting" to blue/white */
+          color: var(--pico-primary) !important;
+      }
+
+      /* Ensure the focus ring is square to match the theme aesthetic */
+      [data-style="808"] :focus {
+          border-radius: 0 !important;
+      }      
+
+      /* THEME: Light (Clean Light Mode) */
+      [data-style="light1"] {
+        --pico-primary: #7c4dff;
+        --pico-background-color: #f8f9ff; /* Soft blue-white */
+        --pico-color: #1a237e; /* Deep navy text */
+        --pico-muted-color: #5c6bc0;
+        
+        --pico-card-background-color: #ffffff;
+        --pico-card-sectioning-background-color: #f0f2ff; /* The header bar color */
+        
+        --pico-font-family: "Lexend", sans-serif;
+
+        --pico-muted-border-color: #d1d5db;
+        --pico-range-border-color: #e0e4ff;
+        --pico-table-row-stripped-background-color: #f5f7ff;
+      }
+
+      [data-style="light1"] article,
+      [data-style="light1"] dialog article {
+        box-shadow: 0 4px 12px rgba(26, 35, 126, 0.05);
+      }
+
+      [data-style="light1"] article header {
+        border-bottom: 1px solid #e0e4ff;
+      }
+  
+      [data-style="light1"] .mode-card.active {
+        background-color: #f5f6ff;
+        border-color: var(--pico-primary);
+      }
+
+      /* Light Theme: Purple Focus Ring */
+      [data-style="light1"] a:focus,
+      [data-style="light1"] button:focus,
+      [data-style="light1"] input:focus {
+          outline: none !important;
+          box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.3) !important;
+          border-color: var(--pico-primary) !important;
+      }      
 
       /* 
            FUTURE THEME EXAMPLES:
@@ -82,12 +254,9 @@
 
       /* Enable word-wrapping for Pico CSS tooltips */
       [data-tooltip]::before {
-        display: block;
         white-space: normal; /* Allows text to wrap to the next line */
-        width: 280px; /* Sets a maximum width for the box */
         max-width: 80vw; /* Ensures it doesn't exceed the viewport on mobile */
         line-height: 1.4; /* Improves readability for multi-line text */
-        padding: 0.5rem 0.75rem;
       }
 
       /* Fix for mobile modal scrolling clipping */
@@ -104,6 +273,48 @@
         /* Mobile: Reduce side padding so cards are wider */
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+      }
+
+      /* Center the bottom controls and add breathing room */
+      .page-controls {
+        padding: 2rem 0;
+        text-align: center;
+      }
+
+      /* On mobile, keep the buttons full-width or side-by-side */
+      .page-controls .grid {
+        max-width: 400px; /* Keeps the buttons from being too wide on huge monitors */
+        margin: 0 auto;   /* Centers the grid container */
+        gap: 1rem;
+      }
+
+      /* Match your new visual hierarchy: Primary accent for Load More, subtle for BTT */
+      #main-btt {
+        --pico-color: var(--pico-muted-color);
+        --pico-border-color: var(--pico-muted-border-color);
+      }      
+
+      dialog article footer.modal-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem; /* Generous vertical spacing for thumbs */
+        padding: var(--pico-spacing);
+      }
+
+      dialog article footer.modal-controls button {
+        width: 100%;        /* Full width for a large thumb target */
+        margin: 0;          /* Removes any default side margins causing offset */
+        text-align: center; /* Ensures text is perfectly centered */
+      }
+
+      dialog article footer.modal-controls button:not(:first-of-type) {        
+        margin: 0; /* Override Pico CSS's horizontal button margins */
+      }
+
+      button:active {
+        /* Subtle shrink effect makes it feel like a real mechanical button */
+        transform: scale(0.97);
+        transition: transform 0.05s ease-in-out;
       }
 
       /* Desktop: Allow container to be wider for more breathing room */
@@ -173,18 +384,39 @@
       }
 
       /* Genre display styling - use specific selector to override Pico's h5 styles */
-      article.song-card hgroup h5.song-genres {
+      #modal-reviews article.song-card hgroup h5.song-genres {
         font-size: 0.8rem;
         opacity: 80%;
         font-weight: 300; /* Lighter weight creates a sophisticated look */
         margin-bottom: 0;
       }
 
-      .about-methodology-box {
-        background: var(--pico-card-background-color);
-        padding: var(--pico-spacing);
-        border-radius: var(--pico-border-radius);
-        border: 1px solid var(--pico-muted-border-color);
+      /* Global Review Spacing (Applies to all themes) */
+      #modal-reviews article.review-entry {
+        padding: 2.5rem 0; /* Increased from the tight default */
+        border-bottom: 1px solid var(--pico-muted-border-color);
+        margin-bottom: 0;
+      }
+
+      /* Ensure the header and blockquote don't feel disconnected */
+      #modal-reviews article.review-entry hgroup {
+        margin-bottom: 1rem;
+      }
+
+      #modal-reviews article.review-entry blockquote {
+        margin-bottom: 1rem;
+      }
+
+      /* Remove the border from the last item so it doesn't double up with the footer */
+      #modal-reviews  article.review-entry:last-of-type {
+        border-bottom: none;
+      }
+
+      #modal-reviews  article.review-entry hgroup h5 {
+        font-size: 0.8rem;
+        color: color-mix(in srgb, var(--pico-color) 80%, transparent);
+        font-weight: 300; /* Lighter weight creates a sophisticated look */
+        margin-bottom: 0;
       }
 
       /* Apply a shared class to both tables */
@@ -218,7 +450,7 @@
       /* Ensure tooltips in source tables wrap text properly */
       .source-stats-table abbr[data-tooltip]::before,
       .source-stats-table abbr[data-tooltip]::after {
-        white-space: normal !important;
+        white-space: normal;
       }
 
       /* Video player wrapper using semantic <figure> */
@@ -232,8 +464,22 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         border-radius: var(--pico-border-radius);
-        border: 1px solid var(--pico-muted-border-color);
       }
+
+      /* Accessibility: Visual focus indicator for video players */
+      article.song-card figure lite-youtube:focus-within {
+        /* Use a box-shadow instead of a border to avoid "jumping" layout */
+        box-shadow: 0 0 0 3px var(--pico-primary) !important;
+        outline: none;
+        /* Ensure the shadow follows the component's corners */
+        border-radius: var(--pico-border-radius);
+        transition: box-shadow 0.2s ease-in-out;
+      }
+
+      /* For the 808 theme, keep the focus ring square */
+      [data-style="808"] article.song-card figure lite-youtube:focus-within {
+        border-radius: 0;
+      }      
 
       /* Customize lite-youtube play button - Mobile Default (visible) */
       lite-youtube::part(playButton) {
@@ -293,6 +539,23 @@
       article.song-card header > a[aria-label]:hover {
         opacity: 1;
       }
+
+      /* Custom Focus for the Sources text area */
+      [data-sources]:focus {
+        outline: none;
+        /* Adds a subtle underline or glow using your theme's primary color */
+        box-shadow: 0 0 0 1px var(--pico-primary) !important;
+        color: var(--pico-color) !important;
+        cursor: pointer;
+      }
+
+      /* 808 Theme: High-contrast technical focus */
+      [data-style="808"] [data-sources]:focus {
+        /* A sharp, 2px bottom border for the console look */
+        box-shadow: 0 0 0 2px var(--pico-primary) !important;
+        background-color: #0a0a0a; /* Very subtle lift */
+        border-radius: 0;
+      }  
 
       /* Sources section styling - Mobile optimized */
       article.song-card [data-sources] {
@@ -459,19 +722,33 @@
         font-weight: bold;
       }
 
-      .mode-card {
+      article.mode-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: var(--pico-spacing);
+
         cursor: pointer;
         border: 2px solid transparent;
-        transition: border-color 0.2s, transform 0.1s ease;
+        border-color: var(--pico-muted-border-color);
+        transition: border-color 0.2s, transform 0.1s ease, background-color 0.2s;
         margin-bottom: 0;
       }
 
-      .mode-card:hover {
-        border-color: var(--pico-muted-border-color);
+      article.mode-card header {
+        background-color: transparent;
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      article.mode-card:hover {
+        border-color: var(--pico-secondary);
         transform: scale(1.02);
       }
 
-      .mode-card.active {
+      article.mode-card.active {
         border-color: var(--pico-primary);
       }
 
@@ -480,98 +757,52 @@
         column-count: 1;
       }
 
-      /* 
-           RESPONSIVE CONTRIBUTIONS TABLE 
-           Replaces standard table for better mobile display
-        */
-      .contributions-table {
-        width: 100%;
-        font-size: 0.9rem;
+      /* Stats Modal: Reduce cell padding to expand text closer to row boundaries */
+      #modal-stats table td,
+      #modal-stats table th {
+        padding-left: calc(var(--pico-spacing) * 0.25);
+        padding-right: calc(var(--pico-spacing) * 0.25);
       }
 
-      .contribution-row {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-          "source score"
-          "rank score";
-        gap: 0.25rem 1rem;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid var(--pico-muted-border-color);
+      /* Stats Modal: Add spacing between sections */
+      #stats-content > section {
+        margin-bottom: calc(var(--pico-spacing) * 1.5);
       }
 
-      .contributions-header {
-        display: none; /* Hidden on mobile */
+      #stats-content > section:last-child {
+        margin-bottom: 0;
       }
 
-      .col-source {
-        grid-area: source;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        min-width: 0; /* Enables truncation if needed */
+      /* Stats Modal: Ensure tooltips wrap properly and stay within modal bounds */
+      #modal-stats abbr[data-tooltip]::before,
+      #modal-stats abbr[data-tooltip]::after {
+        white-space: normal;
+        max-width: 280px;
       }
 
-      .col-source span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      /* Stats Modal: Shadow rank tooltips (top placement) should be narrower */
+      #modal-stats abbr[data-tooltip][data-placement="top"]::before {
+        max-width: 220px;
       }
 
-      .col-rank {
-        grid-area: rank;
-        font-family: var(--pico-font-family-monospace);
-        color: var(--pico-muted-color);
-        font-size: 0.85em;
-      }
-
-      .col-score {
-        grid-area: score;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-
-      /* Desktop/Tablet: Switch to Table-like Grid */
-      @media (min-width: 1025px) {
-        .contributions-header {
-          display: grid;
-          grid-template-columns: 1fr 100px 120px;
-          padding: 0.5rem 1rem;
-          gap: 1rem;
-          font-weight: bold;
-          border-bottom: 2px solid var(--pico-muted-border-color);
-        }
-
-        /* Center the rank header specifically */
-        .contributions-header > div:nth-child(2) {
-          text-align: center;
-        }
-
-        .contribution-row {
-          grid-template-columns: 1fr 100px 120px;
-          grid-template-areas: "source rank score";
-          align-items: center;
-          padding: 0.5rem 1rem;
-          gap: 1rem;
-          border-bottom: 1px solid var(--pico-table-border-color);
-        }
-
-        .col-rank {
-          font-size: 1em;
-          color: var(--pico-color);
-          text-align: center; /* Center the rank numbers */
-        }
-
-        /* Striping */
-        .contribution-row:nth-child(even) {
-          background-color: var(--pico-table-row-stripped-background-color);
-        }
+      /* Reviews Modal: Ensure shadow rank tooltips wrap properly */
+      #modal-reviews abbr[data-tooltip]::before,
+      #modal-reviews abbr[data-tooltip]::after {
+        white-space: normal;
       }
 
       /* Mobile Modal Fixes: Flatten nested structure to maximize width */
       @media (max-width: 1024px) {
+        /* Make tooltips narrower on mobile to stay within modal bounds */
+        #modal-stats table abbr[data-tooltip]::before {
+          max-width: 180px;
+        }
+
+        /* Shadow rank tooltips on mobile should be even narrower */
+        #modal-stats table abbr[data-tooltip][data-placement="top"]::before {
+          max-width: 160px;
+        }
+
         /* Remove extra padding from container inside dialog */
         dialog .container {
           padding-left: 0;
@@ -609,14 +840,6 @@
             gap: var(--pico-spacing); 
         }
 
-        /* Reduce the bottom margin of the boxes so they sit closer to each other/table */
-        #about-ranking .about-methodology-box {
-            margin-bottom: 0;
-        }
-        
-        #about-ranking table {
-        margin-top: var(--pico-block-spacing-vertical);
-        }                
       }
 
       @media (min-width: 1025px) {
@@ -631,6 +854,12 @@
         }
       }
     </style>
+
+    <!-- Lite YouTube -->
+    <script
+    type="module"
+    src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
+    ></script>
 
     <!-- Vercel Analytics -->
     <script>
@@ -659,7 +888,7 @@
           <li><strong>Consensus Best Songs 2025</strong></li>
         </ul>
         <ul>
-          <li><a href="#" id="open-export">Export</a></li>
+          <li><a href="#" id="open-export" style="display: none;">Export</a></li>
           <li><a href="#" id="open-settings">Settings</a></li>
           <li><a href="#" id="open-about">About</a></li>
         </ul>
@@ -669,20 +898,24 @@
     <main class="container" id="app">
       <div id="song-list"></div>
 
-      <div style="padding: 2rem 0; text-align: center">
-        <button id="load-more" class="outline">Show More</button>
-      </div>
+      <section class="page-controls">
+        <div class="grid">
+          <button id="main-btt" class="outline btt-trigger">Back to top</button>
+          <button id="load-more" class="outline">Show More</button>          
+        </div>
+      </section>      
     </main>
 
     <dialog id="modal-settings">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
           <h3>Settings</h3>
         </header>
         <div id="settings-content"></div>
-        <footer>
-          <button class="secondary" id="reset-defaults">Defaults</button>
+        <footer class="modal-controls">
+          <button class="secondary outline btt-trigger">Back to top</button>
+          <button class="contrast" id="reset-defaults">Reset</button>
           <button class="close-modal">Close</button>
         </footer>
       </article>
@@ -691,27 +924,35 @@
     <dialog id="modal-stats">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
           <h3 id="stats-title">Ranking Stats</h3>
         </header>
         <div id="stats-content"></div>
+        <footer class="modal-controls">
+          <button class="secondary outline btt-trigger">Back to top</button>
+          <button class="close-modal">Close</button>
+        </footer>  
       </article>
     </dialog>
 
     <dialog id="modal-reviews">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
           <h3>Reviews</h3>
         </header>
         <div id="reviews-content"></div>
+        <footer class="modal-controls">
+          <button class="secondary outline btt-trigger">Back to top</button>
+          <button class="close-modal">Close</button>
+        </footer>          
       </article>
     </dialog>
 
     <dialog id="modal-export">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal"></button>
+          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
           <h3>Export</h3>
         </header>
         <div id="export-content">
@@ -719,20 +960,20 @@
         </div>
         <footer>
             <!-- Footer content will be managed by renderExportUI to update the link -->
-        </footer>
+        </footer>  
       </article>
     </dialog>
 
     <dialog id="modal-about">
       <article>
         <header>
-          <button aria-label="Close" rel="prev" class="close-modal"></button>
-          <h2>About</h2>
+          <button aria-label="Close" rel="prev" class="close-modal" autofocus></button>
+          <h3>About</h3>
         </header>
-        <main class="container">
-          <article id="about-general">
+        <div class="modal-body-content">
+          <section id="about-general">
             <hgroup>
-              <h2>Behind the project</h2>
+              <h4>Behind the project</h4>
               <p>A labor of love for music and data</p>
             </hgroup>
             <p>
@@ -753,11 +994,12 @@
               <a href="https://www.linkedin.com/in/everett-anderson-swe/"
                 >Contact me on LinkedIn</a>              
             </p>            
-          </article>
+          </section>
 
-          <article id="about-methodology">
+          <hr /> 
+          <section id="about-methodology">
             <hgroup>
-              <h2>How it works</h2>
+              <h4>How it works</h4>
               <p>Build your own 2025 definitive ranking</p>
             </hgroup>
             <p>
@@ -778,87 +1020,12 @@
                 <li><strong>Boost song types</strong>: Prefer niche sounds over the mainstream</li>
               </ul>
             </p>
-          </article>
+          </section>
 
-          <article id="about-ranking">
+          <hr />
+          <section id="about-sources">
             <hgroup>
-              <h2>Ranking methodology</h2>
-              <p>Key settings</p>
-            </hgroup>
-            <p>
-              The algorithm uses a
-              <strong>Weighted Decay Model</strong> to assign value to each critic's chosen rank. A #1 is worth more than a
-              #10, but <em>how much more</em> depends on the formula and parameter used.
-            </p>
-            <div class="grid">
-              <article class="about-methodology-box">
-                <hgroup>
-                  <h6>🤝 Consensus Mode</h6>
-                  <p>
-                    <small
-                      >Prioritizes the "Cultural Record" songs appearing on the
-                      highest volume of lists rather than the differences
-                      between a song being #1 versus #10 on different
-                      ones.</small
-                    >
-                  </p>
-                </hgroup>
-              </article>
-              <article class="about-methodology-box">
-                <hgroup>
-                  <h6>🔥 Conviction Mode</h6>
-                  <p>
-                    <small
-                      >Rewards critical obsession with a steep power law decay,
-                      making a #1 worth dramatically more than a #10.</small
-                    >
-                  </p>
-                </hgroup>
-              </article>
-            </div>
-              
-              <table id="mode-comparison-table">
-                <thead>
-                  <tr>
-                    <th>Rank</th>
-                    <th>Consensus</th>
-                    <th>Conviction</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td colspan="3">Loading...</td></tr>
-                </tbody>
-              </table>
-        </article>
-
-            <article id="about-ui">
-            <hgroup>
-                <h2>Decoding the UI</h2>
-              <p>Understanding the icons and abbreviations</p>
-            </hgroup>
-            <ul>
-              <li>
-                <strong>Categories</strong>: Indicators like 🏛️ (Critical Authority) or 🧪
-                (Specialists) show which category or "cluster" of critics championed a track.
-                You can give a boost to songs that were on lists from multiple
-                categories.
-              </li>
-              <li>
-                <strong>Shadow Ranks (👻)</strong>: For unranked lists, I
-                calculated a projected rank based on list length to ensure fair
-                weighting. You can change these if you like.
-              </li>
-              <li>
-                <strong>Other Boosts</strong>: You can add extra boosts for ⚡
-                Provocation (critic disagreement or polarization) and 🤝
-                Consensus (the number of different reviews a song appeared in).
-              </li>
-            </ul>
-          </article>
-          
-          <article id="about-sources">
-            <hgroup>
-              <h2>Sources</h2>
+              <h4>Sources</h4>
               <p>All the song and ranking sources</p>
             </hgroup>
             
@@ -891,8 +1058,12 @@
                 </tbody>
               </table>
             </figure>
-          </article>
-        </main>
+          </section>
+        </div>
+        <footer class="modal-controls">
+          <button class="secondary btt-trigger">Back to top</button>
+          <button class="close-modal">Close</button>
+        </footer>        
       </article>
     </dialog>
 

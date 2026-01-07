@@ -112,3 +112,42 @@ def test_show_more_functionality(page: Page, server_url):
     # Button should now be hidden since all songs are shown
     expect(show_more_btn).to_be_hidden()
 
+def test_back_to_top_button(page: Page, server_url):
+    """Test that the Back to Top button scrolls to the top of the page."""
+    page.goto(server_url)
+    
+    # Wait for page to load
+    page.locator(".song-card").first.wait_for()
+    
+    # Click Show More to load all songs and make page scrollable
+    show_more_btn = page.locator("#load-more")
+    show_more_btn.click()
+    page.wait_for_timeout(100)
+    
+    # Back to Top button should be visible
+    btt_button = page.locator("#main-btt")
+    expect(btt_button).to_be_visible()
+    expect(btt_button).to_contain_text("Back to top")
+    
+    # Scroll down the page
+    page.evaluate("window.scrollTo({ top: 2000, behavior: 'instant' })")
+    page.wait_for_timeout(100)
+    
+    # Verify we scrolled
+    scroll_position = page.evaluate("window.scrollY")
+    assert scroll_position > 500, f"Page should be scrolled down, but scrollY is {scroll_position}"
+    
+    # Scroll button into view first
+    btt_button.scroll_into_view_if_needed()
+    page.wait_for_timeout(100)
+    
+    # Click Back to Top button
+    btt_button.click()
+    
+    # Wait for smooth scroll animation
+    page.wait_for_timeout(1500)
+    
+    # Verify we scrolled back to top
+    scroll_position = page.evaluate("window.scrollY")
+    assert scroll_position < 100, f"Page should be scrolled to top, but scrollY is {scroll_position}"
+
