@@ -552,11 +552,15 @@ async function init() {
     debouncedReRank();
   };
 
-  // Close modal triggers
-  document.querySelectorAll(".close-modal").forEach((btn) => {
-    btn.onclick = function () {
-      this.closest("dialog").close();
-    };
+  // Close modal triggers (using event delegation to support dynamically added buttons)
+  document.addEventListener("click", (e) => {
+    const closeButton = e.target.closest(".close-modal");
+    if (closeButton) {
+      const dialog = closeButton.closest("dialog");
+      if (dialog) {
+        dialog.close();
+      }
+    }
   });
 
   // Back to top button handler
@@ -1027,11 +1031,10 @@ function renderExportUI(limit = 25, preference = "videos") {
     const footer = modal.querySelector("footer");
     if (footer) {
       footer.innerHTML = `
-                <button class="secondary outline btt-trigger">Back to top</button>
                 <a href="${url}" role="button" target="_blank" ${
         validSongs.length === 0 ? "disabled" : ""
       }>Create Playlist</a>
-                <button class="secondary" onclick="document.getElementById('modal-export').close()">Close</button>
+                <button class="secondary close-modal">Close</button>
             `;
     }
   }
