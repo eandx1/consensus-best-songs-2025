@@ -381,23 +381,23 @@ function render() {
       const links = [];
       if (song.media?.youtube?.video_id)
         links.push(
-          `<li><a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank">YouTube</a></li>`
+          `<li><a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank"><svg><use href="#icon-youtube"></use></svg> YouTube</a></li>`
         );
       if (song.media?.youtube?.music_id)
         links.push(
-          `<li><a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank">YTM</a></li>`
+          `<li><a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank"><svg><use href="#icon-ytmusic"></use></svg> YTM</a></li>`
         );
       if (song.media?.spotify?.id)
         links.push(
-          `<li><a href="https://open.spotify.com/track/${song.media.spotify.id}" target="_blank">Spotify</a></li>`
+          `<li><a href="https://open.spotify.com/track/${song.media.spotify.id}" target="_blank"><svg><use href="#icon-spotify"></use></svg> Spotify</a></li>`
         );
       if (song.media?.apple?.url)
         links.push(
-          `<li><a href="${song.media.apple.url}" target="_blank">Apple</a></li>`
+          `<li><a href="${song.media.apple.url}" target="_blank"><svg><use href="#icon-apple"></use></svg> Apple</a></li>`
         );
       if (song.media?.bandcamp?.url)
         links.push(
-          `<li><a href="${song.media.bandcamp.url}" target="_blank">Bandcamp</a></li>`
+          `<li><a href="${song.media.bandcamp.url}" target="_blank"><svg><use href="#icon-bandcamp"></use></svg> Bandcamp</a></li>`
         );
       if (song.media?.other?.url)
         links.push(
