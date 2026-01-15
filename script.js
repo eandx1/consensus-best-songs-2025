@@ -126,10 +126,11 @@ const RankingEngine = {
     }
 
     // Apply Top Rank Bonuses (for integer ranks only)
+    // Note: rank bonuses are stored as multipliers (1.0-1.2) in config, not percentages
     const intRank = Math.floor(rank);
-    if (intRank === 1) val *= 1 + config.rank1_bonus;
-    else if (intRank === 2) val *= 1 + config.rank2_bonus;
-    else if (intRank === 3) val *= 1 + config.rank3_bonus;
+    if (intRank === 1) val *= config.rank1_bonus;
+    else if (intRank === 2) val *= config.rank2_bonus;
+    else if (intRank === 3) val *= config.rank3_bonus;
 
     return val;
   },
