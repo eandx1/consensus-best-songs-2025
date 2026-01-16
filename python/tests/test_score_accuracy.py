@@ -165,9 +165,11 @@ def expected_scores(test_data):
         top_bonuses=top_bonuses,
     )
 
-    # Extract expected scores for ranks 1, 10, and 20
+    # Extract expected scores for ranks 1, 10, and 15
+    # Note: We use rank 15 instead of 20 because ranks 16+ have tied scores
+    # which can sort differently across platforms
     expected = {}
-    for target_rank in [1, 10, 20]:
+    for target_rank in [1, 10, 15]:
         if target_rank <= len(ranked_df):
             row = ranked_df.iloc[target_rank - 1]
             song_name = row["name"]
@@ -363,27 +365,31 @@ def test_rank10_scoring_accuracy(page: Page, server_url, expected_scores):
     modal.locator(".close-modal").first.click()
 
 
-def test_rank20_scoring_accuracy(page: Page, server_url, expected_scores):
-    """Verify scoring accuracy for the #20 ranked song."""
+def test_rank15_scoring_accuracy(page: Page, server_url, expected_scores):
+    """Verify scoring accuracy for the #15 ranked song.
+
+    Note: We test rank 15 instead of 20 because ranks 16+ in the test data
+    have tied scores which can sort differently across platforms.
+    """
     page.goto(server_url)
     page.wait_for_load_state("networkidle")
 
-    # Get expected values for rank 20
-    rank20_song = None
+    # Get expected values for rank 15
+    rank15_song = None
     for song_name, data in expected_scores.items():
-        if data["rank"] == 20:
-            rank20_song = song_name
+        if data["rank"] == 15:
+            rank15_song = song_name
             expected = data
             break
 
-    assert rank20_song is not None, "No rank 20 song found in expected scores"
+    assert rank15_song is not None, "No rank 15 song found in expected scores"
 
-    # Find the 20th song card
-    song_card = page.locator(".song-card").nth(19)
+    # Find the 15th song card
+    song_card = page.locator(".song-card").nth(14)
 
     # Verify the song name matches
     song_title = song_card.locator("h3").inner_text()
-    assert song_title == rank20_song, f"Expected rank 20 to be '{rank20_song}', got '{song_title}'"
+    assert song_title == rank15_song, f"Expected rank 15 to be '{rank15_song}', got '{song_title}'"
 
     # Click the info button to open stats modal
     song_card.locator('a[aria-label="View ranking details"]').click()
