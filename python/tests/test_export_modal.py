@@ -21,12 +21,12 @@ def test_export_modal_visible_with_flag(page: Page, server_url):
 def test_export_modal_opens(page: Page, server_url):
     """Test that clicking export link opens the modal."""
     page.goto(f"{server_url}?unlisted_youtube_export")
-    
+
     page.locator("#open-export").click()
-    
+
     modal = page.locator("#modal-export")
     expect(modal).to_be_visible()
-    expect(modal.locator("h3")).to_have_text("Export")
+    expect(modal.locator("h3")).to_have_text("Export to YouTube")
 
 def test_export_modal_default_state(page: Page, server_url):
     """Test the default state of the export modal."""
@@ -59,10 +59,9 @@ def test_export_modal_default_state(page: Page, server_url):
     
     # Check summary text - test data has 24 videos with YouTube IDs out of top 25
     expect(content).to_contain_text("Ready to export 24 videos to a new YouTube playlist")
-    
-    # Check footer buttons
+
+    # Check footer buttons (export modal only has Create Playlist and Close)
     footer = modal.locator("footer")
-    expect(footer.get_by_role("button", name="Top")).to_be_visible()
     expect(footer.get_by_role("button", name="Create Playlist")).to_be_visible()
     expect(footer.get_by_role("button", name="Close")).to_be_visible()
 
