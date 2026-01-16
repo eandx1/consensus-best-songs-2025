@@ -501,7 +501,7 @@ function render() {
                                     // Only show rank for sources with actual ranks, not shadow ranks
                                     const rankDisplay = usesShadowRank
                                       ? ""
-                                      : `#${Math.floor(s.rank)}`;
+                                      : `#${s.rank}`;
 
                                     return `<span>${displayName}${rankDisplay}</span>`;
                                   })
