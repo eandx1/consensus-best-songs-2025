@@ -180,7 +180,7 @@ const RankingEngine = {
         // Population Standard Deviation (like np.std)
         const stdDev = Math.sqrt(
           ranks.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) /
-            ranks.length
+            ranks.length,
         );
         p_mul = 1 + config.ranking.provocation_boost * (stdDev / 100);
       }
@@ -199,7 +199,7 @@ const RankingEngine = {
         ...song,
         finalScore,
         sourceDetails: sourceDetails.sort(
-          (a, b) => b.contribution - a.contribution
+          (a, b) => b.contribution - a.contribution,
         ),
         stats: {
           totalScore,
@@ -330,7 +330,7 @@ function syncStateFromURL(defaultConfig) {
       config.sources[srcKey].weight = clamp(
         value,
         CONFIG_BOUNDS.source_weight.min,
-        CONFIG_BOUNDS.source_weight.max
+        CONFIG_BOUNDS.source_weight.max,
       );
     }
 
@@ -340,7 +340,7 @@ function syncStateFromURL(defaultConfig) {
       config.sources[srcKey].shadow_rank = clamp(
         value,
         CONFIG_BOUNDS.shadow_rank.min,
-        CONFIG_BOUNDS.shadow_rank.max
+        CONFIG_BOUNDS.shadow_rank.max,
       );
     }
   });
@@ -416,27 +416,27 @@ function render() {
       const links = [];
       if (song.media?.youtube?.video_id)
         links.push(
-          `<li><a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank"><svg><use href="#icon-youtube"></use></svg> YouTube</a></li>`
+          `<li><a href="https://www.youtube.com/watch?v=${song.media.youtube.video_id}" target="_blank"><svg><use href="#icon-youtube"></use></svg> YouTube</a></li>`,
         );
       if (song.media?.youtube?.music_id)
         links.push(
-          `<li><a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank"><svg><use href="#icon-ytmusic"></use></svg> YTM</a></li>`
+          `<li><a href="https://music.youtube.com/watch?v=${song.media.youtube.music_id}" target="_blank"><svg><use href="#icon-ytmusic"></use></svg> YTM</a></li>`,
         );
       if (song.media?.spotify?.id)
         links.push(
-          `<li><a href="https://open.spotify.com/track/${song.media.spotify.id}" target="_blank"><svg><use href="#icon-spotify"></use></svg> Spotify</a></li>`
+          `<li><a href="https://open.spotify.com/track/${song.media.spotify.id}" target="_blank"><svg><use href="#icon-spotify"></use></svg> Spotify</a></li>`,
         );
       if (song.media?.apple?.url)
         links.push(
-          `<li><a href="${song.media.apple.url}" target="_blank"><svg><use href="#icon-apple"></use></svg> Apple</a></li>`
+          `<li><a href="${song.media.apple.url}" target="_blank"><svg><use href="#icon-apple"></use></svg> Apple</a></li>`,
         );
       if (song.media?.bandcamp?.url)
         links.push(
-          `<li><a href="${song.media.bandcamp.url}" target="_blank"><svg><use href="#icon-bandcamp"></use></svg> Bandcamp</a></li>`
+          `<li><a href="${song.media.bandcamp.url}" target="_blank"><svg><use href="#icon-bandcamp"></use></svg> Bandcamp</a></li>`,
         );
       if (song.media?.other?.url)
         links.push(
-          `<li><a href="${song.media.other.url}" target="_blank">Other</a></li>`
+          `<li><a href="${song.media.other.url}" target="_blank">Other</a></li>`,
         );
 
       return `
@@ -446,8 +446,8 @@ function render() {
                     
                     <figure class="video-figure">
                         <lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(
-        song.name
-      )}"></lite-youtube>
+                          song.name,
+                        )}"></lite-youtube>
                     </figure>
                     
                     <div class="song-info">
@@ -458,7 +458,7 @@ function render() {
                                 ${
                                   song.genres
                                     ? `<h5 class="song-genres">${escapeHtml(
-                                        song.genres
+                                        song.genres,
                                       )}</h5>`
                                     : ""
                                 }
@@ -467,8 +467,8 @@ function render() {
                         </header>
                         
                         <div data-sources onclick="showReviews(${idx})" onkeydown="if(event.key === 'Enter') showReviews(${idx})" tabindex="0" aria-label="See reviews for ${escapeHtml(
-        song.name
-      )}" title="Click to see reviews">
+                          song.name,
+                        )}" title="Click to see reviews">
                             <small>
                                 ${song.sources
                                   .map((s) => {
@@ -484,7 +484,7 @@ function render() {
 
                                     // Build the display name
                                     let displayName = escapeHtml(
-                                      srcConfig.full_name || s.name
+                                      srcConfig.full_name || s.name,
                                     );
 
                                     // For shadow rank sources (except NPR lists), show "(Top N)"
@@ -513,7 +513,7 @@ function render() {
                         ${
                           links.length > 0
                             ? `<nav aria-label="Listen links"><ul>${links.join(
-                                ""
+                                "",
                               )}</ul></nav>`
                             : ""
                         }
@@ -622,6 +622,17 @@ async function init() {
     }
   });
 
+  const fixedBtt = document.getElementById("fixed-btt");
+
+  window.addEventListener("scroll", () => {
+    // Reveal after scrolling past approximately 800px
+    if (window.scrollY > 800) {
+      fixedBtt.classList.add("visible");
+    } else {
+      fixedBtt.classList.remove("visible");
+    }
+  });
+
   // About modal
   document.getElementById("open-about").onclick = () => {
     document.getElementById("modal-about").showModal();
@@ -707,12 +718,12 @@ function populateSourcesTables() {
             <tr>
                 <td>
                     <abbr data-tooltip="${escapeHtml(
-                      tooltipText
+                      tooltipText,
                     )}" data-placement="right" style="text-decoration: none; cursor: help;">${escapeHtml(
-          source.clusterEmoji
-        )}</abbr> <a href="${escapeHtml(
-          source.url
-        )}" target="_blank">${escapeHtml(source.name)}</a>
+                      source.clusterEmoji,
+                    )}</abbr> <a href="${escapeHtml(
+                      source.url,
+                    )}" target="_blank">${escapeHtml(source.name)}</a>
                 </td>
                 <td>${source.song_count}</td>
             </tr>
@@ -734,12 +745,12 @@ function populateSourcesTables() {
             <tr>
                 <td>
                     <abbr data-tooltip="${escapeHtml(
-                      tooltipText
+                      tooltipText,
                     )}" data-placement="right" style="text-decoration: none; cursor: help;">${escapeHtml(
-          source.clusterEmoji
-        )}</abbr> <a href="${escapeHtml(
-          source.url
-        )}" target="_blank">${escapeHtml(source.name)}</a>
+                      source.clusterEmoji,
+                    )}</abbr> <a href="${escapeHtml(
+                      source.url,
+                    )}" target="_blank">${escapeHtml(source.name)}</a>
                 </td>
                 <td>${source.song_count}</td>
             </tr>
@@ -776,7 +787,7 @@ window.showReviews = (idx) => {
     // Display rank with shadow rank notation if applicable (full decimal value with ghost emoji)
     const displayRank = src.uses_shadow_rank
       ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="left">👻 ${rankVal.toFixed(
-          1
+          1,
         )}</abbr>`
       : `#${rankVal}`;
 
@@ -785,10 +796,10 @@ window.showReviews = (idx) => {
                 <header style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;">
                     <hgroup style="flex: 1; margin-bottom: 0;">
                         <h4 style="margin-bottom: 0.25rem;">${escapeHtml(
-                          displayName
+                          displayName,
                         )}</h4>
                         <h5 class="secondary">${escapeHtml(
-                          clusterEmoji
+                          clusterEmoji,
                         )} ${escapeHtml(clusterName)}</h5>
                     </hgroup>
                     <kbd style="min-width: 3ch; text-align: center; flex-shrink: 0;">${displayRank}</kbd>
@@ -796,13 +807,13 @@ window.showReviews = (idx) => {
                 ${
                   src.quote
                     ? `<blockquote style="font-style: italic;">"${escapeHtml(
-                        src.quote
+                        src.quote,
                       )}"</blockquote>`
                     : '<p style="font-style: italic;">No quote available</p>'
                 }
                 <footer style="text-align: right;">
                     <a href="${escapeHtml(
-                      srcConfig.url
+                      srcConfig.url,
                     )}" target="_blank" role="button" class="outline">Read Full Review</a>
                 </footer>
             </article>
@@ -925,7 +936,7 @@ window.showStats = (idx) => {
     // Logic for Shadow Rank display (ghost emoji with space and full decimal value)
     const displayRank = usesShadowRank
       ? `<small style="color: var(--pico-muted-color);"><abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="top">👻 ${sd.rank.toFixed(
-          1
+          1,
         )}</abbr></small>`
       : `<small style="color: var(--pico-muted-color);">#${sd.rank}</small>`;
 
@@ -933,8 +944,8 @@ window.showStats = (idx) => {
             <tr>
                 <td>
                     <abbr data-tooltip="${tooltipText}" data-placement="right" style="text-decoration: none; cursor: help;">${clusterEmoji}</abbr> ${escapeHtml(
-      displayName
-    )} ${displayRank}
+                      displayName,
+                    )} ${displayRank}
                 </td>
                 <td style="text-align: right;">
                     <kbd style="font-weight: bold; min-width: 5ch; display: inline-block;">
@@ -983,7 +994,7 @@ function renderExportUI(limit = 25, preference = "videos") {
   });
 
   const url = `https://www.youtube.com/watch_videos?video_ids=${validSongs.join(
-    ","
+    ",",
   )}`;
 
   // Helper to generate button classes
@@ -996,12 +1007,12 @@ function renderExportUI(limit = 25, preference = "videos") {
         <label>Preference</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
             <button class="${getBtnClass(
-              preference === "videos"
+              preference === "videos",
             )}" onclick="renderExportUI(${limit}, 'videos')">
                 Videos
             </button>
             <button class="${getBtnClass(
-              preference === "songs"
+              preference === "songs",
             )}" onclick="renderExportUI(${limit}, 'songs')">
                 Songs
             </button>
@@ -1010,13 +1021,13 @@ function renderExportUI(limit = 25, preference = "videos") {
         <label>Range</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
             <button class="${getBtnClass(
-              limit === 10
+              limit === 10,
             )}" onclick="renderExportUI(10, '${preference}')">Top 10</button>
             <button class="${getBtnClass(
-              limit === 25
+              limit === 25,
             )}" onclick="renderExportUI(25, '${preference}')">Top 25</button>
             <button class="${getBtnClass(
-              limit === 50
+              limit === 50,
             )}" onclick="renderExportUI(50, '${preference}')">Top 50</button>
         </div>
 
@@ -1034,15 +1045,15 @@ function renderExportUI(limit = 25, preference = "videos") {
                 ? `
                 <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
                     <small>⚠️ ${missingSongs.length} ${
-                    missingSongs.length === 1 ? "song" : "songs"
-                  } missing IDs will be skipped:</small>
+                      missingSongs.length === 1 ? "song" : "songs"
+                    } missing IDs will be skipped:</small>
                     <ul style="font-size: 0.8em; margin-bottom: 0;">
                         ${missingSongs
                           .map(
                             (s) =>
                               `<li>#${s.rank} ${escapeHtml(
-                                s.artist
-                              )} - ${escapeHtml(s.name)}</li>`
+                                s.artist,
+                              )} - ${escapeHtml(s.name)}</li>`,
                           )
                           .join("")}
                     </ul>
@@ -1067,8 +1078,8 @@ function renderExportUI(limit = 25, preference = "videos") {
     if (footer) {
       footer.innerHTML = `
                 <a href="${url}" role="button" target="_blank" ${
-        validSongs.length === 0 ? "disabled" : ""
-      }>Create Playlist</a>
+                  validSongs.length === 0 ? "disabled" : ""
+                }>Create Playlist</a>
                 <button class="secondary close-modal">Close</button>
             `;
     }
@@ -1144,7 +1155,7 @@ function renderSettingsUI() {
     isPercent = false,
     isBonus = false,
     helperText = "",
-    sublabel = ""
+    sublabel = "",
   ) => {
     // Get bounds from CONFIG_BOUNDS
     let bounds;
@@ -1162,14 +1173,14 @@ function renderSettingsUI() {
       category === "ranking"
         ? ranking[key]
         : category === "source_weight"
-        ? sources[key].weight
-        : sources[key].shadow_rank;
+          ? sources[key].weight
+          : sources[key].shadow_rank;
     let defaultVal =
       category === "ranking"
         ? defaults.ranking[key]
         : category === "source_weight"
-        ? defaults.sources[key].weight
-        : defaults.sources[key].shadow_rank;
+          ? defaults.sources[key].weight
+          : defaults.sources[key].shadow_rank;
 
     // Approximate equality check for floating point values (within 0.0001)
     const isModified = Math.abs(currentVal - defaultVal) > 0.0001;
@@ -1197,8 +1208,8 @@ function renderSettingsUI() {
     return `
             <div style="margin-bottom: var(--pico-spacing);">
                 <label id="label-${idBase}" class="${
-      isModified ? "customized-label" : ""
-    }" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0;">
+                  isModified ? "customized-label" : ""
+                }" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0;">
                 <span>
                     ${label} 
                     ${
@@ -1226,11 +1237,11 @@ function renderSettingsUI() {
     const val25 = (1 + ranking.k_value) / (25 + ranking.k_value);
     const val50 = (1 + ranking.k_value) / (50 + ranking.k_value);
     const helper = `Rank #10 is worth <strong>${Math.round(
-      val10 * 100
+      val10 * 100,
     )}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(
-      val25 * 100
+      val25 * 100,
     )}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(
-      val50 * 100
+      val50 * 100,
     )}%</strong> of #1`;
     html += createSlider(
       "ranking",
@@ -1238,18 +1249,18 @@ function renderSettingsUI() {
       "Smoothing Factor (K)",
       false,
       false,
-      helper
+      helper,
     );
   } else {
     const val10 = 1.0 / Math.pow(10, ranking.p_exponent);
     const val25 = 1.0 / Math.pow(25, ranking.p_exponent);
     const val50 = 1.0 / Math.pow(50, ranking.p_exponent);
     const helper = `Rank #10 is worth <strong>${Math.round(
-      val10 * 100
+      val10 * 100,
     )}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(
-      val25 * 100
+      val25 * 100,
     )}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(
-      val50 * 100
+      val50 * 100,
     )}%</strong> of #1`;
     html += createSlider(
       "ranking",
@@ -1257,7 +1268,7 @@ function renderSettingsUI() {
       "Power Law Steepness (P)",
       false,
       false,
-      helper
+      helper,
     );
   }
 
@@ -1267,7 +1278,7 @@ function renderSettingsUI() {
     "🤝 Consensus Boost",
     true,
     false,
-    'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.'
+    'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.',
   );
   html += createSlider(
     "ranking",
@@ -1275,7 +1286,7 @@ function renderSettingsUI() {
     "⚡ Provocation Boost",
     true,
     false,
-    'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.'
+    'Rewards "bold" choices. This calculates the standard deviation of a song\'s ranks; songs that critics are divided on (e.g., ranked #1 by some and #80 by others) receive a higher bonus than songs everyone safely ranked in the middle.',
   );
 
   const clusterMetadata = APP_DATA.config.cluster_metadata || {};
@@ -1288,7 +1299,7 @@ function renderSettingsUI() {
     "🌍 Cluster Boost",
     true,
     false,
-    clusterDesc
+    clusterDesc,
   );
 
   html += createSlider(
@@ -1297,7 +1308,7 @@ function renderSettingsUI() {
     "🎯 Cluster Threshold",
     false,
     false,
-    "Defines the rank a song must achieve to count for the Cluster Boost."
+    "Defines the rank a song must achieve to count for the Cluster Boost.",
   );
   html += createSlider(
     "ranking",
@@ -1305,7 +1316,7 @@ function renderSettingsUI() {
     "🥇 Rank 1 Bonus",
     false,
     true,
-    'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.'
+    'Provides a heavy point multiplier for the absolute top pick. This rewards the "Obsession" factor, ensuring a critic\'s singular favorite song carries significantly more weight than their #2.',
   );
   html += createSlider(
     "ranking",
@@ -1313,7 +1324,7 @@ function renderSettingsUI() {
     "🥈 Rank 2 Bonus",
     false,
     true,
-    'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.'
+    'Adds a secondary bonus to the silver medalist. This maintains a distinct gap between the "Elite" top-two picks and the rest of the Top 10.',
   );
   html += createSlider(
     "ranking",
@@ -1321,7 +1332,7 @@ function renderSettingsUI() {
     "🥉 Rank 3 Bonus",
     false,
     true,
-    'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.'
+    'A slight nudge for the third-place track. This completes the "Podium" effect, giving the top three picks a mathematical edge over the "Standard" ranks.',
   );
 
   html += "</article>";
@@ -1366,7 +1377,7 @@ function renderSettingsUI() {
 
   // 3. Shadow Ranks
   const unrankedSources = sortedSources.filter(
-    (k) => sources[k].type === "unranked"
+    (k) => sources[k].type === "unranked",
   );
   if (unrankedSources.length > 0) {
     html += "<article>";
@@ -1384,7 +1395,7 @@ function renderSettingsUI() {
         false,
         false,
         "",
-        (sublabel = `(${songCount} songs)`)
+        (sublabel = `(${songCount} songs)`),
       );
     });
     html += "</article>";
@@ -1405,7 +1416,7 @@ function renderSettingsUI() {
                 ([key, config]) =>
                   `<option value="${key}" ${
                     STATE.config.theme === key ? "selected" : ""
-                  }>${config.name}</option>`
+                  }>${config.name}</option>`,
               )
               .join("")}
         </select>
@@ -1486,11 +1497,11 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
     const helperEl = document.getElementById(`helper-text-${key}`);
     if (helperEl) {
       helperEl.innerHTML = `Rank #10 is worth <strong>${Math.round(
-        v10 * 100
+        v10 * 100,
       )}%</strong> of #1<br>Rank #25 is worth <strong>${Math.round(
-        v25 * 100
+        v25 * 100,
       )}%</strong> of #1<br>Rank #50 is worth <strong>${Math.round(
-        v50 * 100
+        v50 * 100,
       )}%</strong> of #1`;
     }
   }
