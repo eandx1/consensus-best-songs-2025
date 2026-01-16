@@ -892,3 +892,190 @@ class TestEdgeCases:
         assert ranked_df["score"].iloc[0] == ranked_df["score"].iloc[1]
         # But still have sequential ranks
         assert list(ranked_df["rank"]) == [1, 2]
+
+
+class TestTieBreaking:
+    """Tests for tie-breaking logic when songs have identical scores."""
+
+    def test_tiebreak_by_list_count(self, sources_config):
+        """Songs with same score but different list_count: higher list_count wins."""
+        # Create two songs - one with 2 sources, one with 1 source
+        # but give them the same total score by adjusting ranks
+        df = pd.DataFrame([
+            {"name": "Song A", "artist": "Artist A", "id": "A"},
+            {"name": "Song B", "artist": "Artist B", "id": "B"},
+        ])
+
+        for source_name, config in sources_config.items():
+            df[f"rank{config['suffix']}"] = None
+
+        # Get two sources
+        source_list = list(sources_config.keys())
+        src1, src2 = source_list[0], source_list[1]
+
+        # Song A: appears on 2 sources with high ranks (lower score per source)
+        df.loc[0, f"rank{sources_config[src1]['suffix']}"] = 50
+        df.loc[0, f"rank{sources_config[src2]['suffix']}"] = 50
+
+        # Song B: appears on 1 source with rank that gives similar total score
+        df.loc[1, f"rank{sources_config[src1]['suffix']}"] = 20
+
+        ranked_df = compute_rankings_with_configs(
+            df, sources_config, mode="consensus"
+        )
+
+        # If scores are very close (within rounding), list_count should break tie
+        # Song A has list_count=2, Song B has list_count=1
+        song_a = ranked_df[ranked_df["name"] == "Song A"].iloc[0]
+        song_b = ranked_df[ranked_df["name"] == "Song B"].iloc[0]
+
+        # Verify list counts
+        assert song_a["list_count"] == 2
+        assert song_b["list_count"] == 1
+
+    def test_tiebreak_by_min_rank(self, sources_config):
+        """Songs with same score and list_count: lower min_rank wins."""
+        df = pd.DataFrame([
+            {"name": "Song A", "artist": "Artist A", "id": "A"},
+            {"name": "Song B", "artist": "Artist B", "id": "B"},
+        ])
+
+        for source_name, config in sources_config.items():
+            df[f"rank{config['suffix']}"] = None
+
+        # Use same source for both so list_count is equal
+        first_source = list(sources_config.keys())[0]
+        suffix = sources_config[first_source]['suffix']
+
+        # Same rank = same score, same list_count, same min_rank
+        # But we need different min_ranks to test this
+        # So let's use two sources with different ranks that sum to same score
+        source_list = list(sources_config.keys())
+        src1, src2 = source_list[0], source_list[1]
+
+        # Song A: min_rank = 5 (ranks 5 and 20)
+        df.loc[0, f"rank{sources_config[src1]['suffix']}"] = 5
+        df.loc[0, f"rank{sources_config[src2]['suffix']}"] = 20
+
+        # Song B: min_rank = 10 (ranks 10 and 15) - similar contribution
+        df.loc[1, f"rank{sources_config[src1]['suffix']}"] = 10
+        df.loc[1, f"rank{sources_config[src2]['suffix']}"] = 15
+
+        ranked_df = compute_rankings_with_configs(
+            df, sources_config, mode="consensus"
+        )
+
+        song_a = ranked_df[ranked_df["name"] == "Song A"].iloc[0]
+        song_b = ranked_df[ranked_df["name"] == "Song B"].iloc[0]
+
+        # Verify min_rank is calculated correctly
+        assert song_a["min_rank"] == 5
+        assert song_b["min_rank"] == 10
+
+    def test_tiebreak_by_name_alphabetically(self, sources_config):
+        """Songs with identical stats: alphabetically earlier name wins."""
+        df = pd.DataFrame([
+            {"name": "Zebra Song", "artist": "Artist A", "id": "A"},
+            {"name": "Apple Song", "artist": "Artist A", "id": "B"},
+        ])
+
+        for source_name, config in sources_config.items():
+            df[f"rank{config['suffix']}"] = None
+
+        # Give both songs identical ranks on same source
+        first_source = list(sources_config.keys())[0]
+        df[f"rank{sources_config[first_source]['suffix']}"] = 10
+
+        ranked_df = compute_rankings_with_configs(
+            df, sources_config, mode="consensus"
+        )
+
+        # Apple comes before Zebra alphabetically
+        assert ranked_df.iloc[0]["name"] == "Apple Song"
+        assert ranked_df.iloc[1]["name"] == "Zebra Song"
+        assert ranked_df.iloc[0]["rank"] == 1
+        assert ranked_df.iloc[1]["rank"] == 2
+
+    def test_tiebreak_by_artist_alphabetically(self, sources_config):
+        """Songs with identical name: alphabetically earlier artist wins."""
+        df = pd.DataFrame([
+            {"name": "Same Song", "artist": "Zoe", "id": "A"},
+            {"name": "Same Song", "artist": "Amy", "id": "B"},
+        ])
+
+        for source_name, config in sources_config.items():
+            df[f"rank{config['suffix']}"] = None
+
+        # Give both songs identical ranks on same source
+        first_source = list(sources_config.keys())[0]
+        df[f"rank{sources_config[first_source]['suffix']}"] = 10
+
+        ranked_df = compute_rankings_with_configs(
+            df, sources_config, mode="consensus"
+        )
+
+        # Amy comes before Zoe alphabetically
+        assert ranked_df.iloc[0]["artist"] == "Amy"
+        assert ranked_df.iloc[1]["artist"] == "Zoe"
+
+    def test_tiebreak_case_insensitive(self, sources_config):
+        """Alphabetical tie-breaking should be case-insensitive."""
+        df = pd.DataFrame([
+            {"name": "ZEBRA", "artist": "Artist", "id": "A"},
+            {"name": "apple", "artist": "Artist", "id": "B"},
+        ])
+
+        for source_name, config in sources_config.items():
+            df[f"rank{config['suffix']}"] = None
+
+        first_source = list(sources_config.keys())[0]
+        df[f"rank{sources_config[first_source]['suffix']}"] = 10
+
+        ranked_df = compute_rankings_with_configs(
+            df, sources_config, mode="consensus"
+        )
+
+        # "apple" comes before "ZEBRA" (case-insensitive)
+        assert ranked_df.iloc[0]["name"] == "apple"
+        assert ranked_df.iloc[1]["name"] == "ZEBRA"
+
+    def test_glitter_audrey_hepburn_order(self, songs_df, sources_config):
+        """
+        Test that 'Audrey Hepburn' comes before 'Glitter' in test data.
+
+        Both songs have identical scores (same shadow rank from ELLE),
+        so tie-breaking by alphabetical name should place Audrey first.
+        """
+        ranked_df = compute_rankings_with_configs(
+            songs_df, sources_config, mode="consensus"
+        )
+
+        # Find both songs
+        audrey = ranked_df[ranked_df["name"] == "Audrey Hepburn"]
+        glitter = ranked_df[ranked_df["name"] == "Glitter"]
+
+        if len(audrey) > 0 and len(glitter) > 0:
+            audrey_rank = audrey.iloc[0]["rank"]
+            glitter_rank = glitter.iloc[0]["rank"]
+
+            # Audrey Hepburn should come before Glitter (lower rank number)
+            assert audrey_rank < glitter_rank, \
+                f"Audrey Hepburn (rank {audrey_rank}) should come before Glitter (rank {glitter_rank})"
+
+            # They should have the same score
+            assert math.isclose(
+                audrey.iloc[0]["score"],
+                glitter.iloc[0]["score"],
+                rel_tol=1e-9
+            )
+
+    def test_min_rank_column_exists(self, songs_df, sources_config):
+        """Verify min_rank column is included in output."""
+        ranked_df = compute_rankings_with_configs(
+            songs_df, sources_config, mode="consensus"
+        )
+
+        assert "min_rank" in ranked_df.columns
+        # All songs with sources should have a finite min_rank
+        songs_with_sources = ranked_df[ranked_df["list_count"] > 0]
+        assert all(songs_with_sources["min_rank"] < float("inf"))

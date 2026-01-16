@@ -98,6 +98,9 @@ def score_song(
     ]
     all_cluster_counts_list.sort(key=lambda t: t[1], reverse=True)
 
+    # Calculate min_rank for tie-breaking (lower is better)
+    min_rank = min(ranks) if ranks else float("inf")
+
     return (
         total_score * c_mul * p_mul * cl_mul,
         total_score,
@@ -105,6 +108,7 @@ def score_song(
         p_mul,
         cl_mul,
         len(ranks),
+        min_rank,
         len(topn_cluster_counts_list),
         len(all_cluster_counts_list),
         topn_cluster_counts_list[0][0] if topn_cluster_counts_list else None,
@@ -150,18 +154,40 @@ def compute_rankings_with_configs(
     df["provocation_bonus"] = results[3]
     df["diversity_bonus"] = results[4]
     df["list_count"] = results[5]
-    df["topn_unique_clusters_count"] = results[6]
-    df["all_clusters_count"] = results[7]
-    df["topn_best_cluster"] = results[8]
-    df["all_best_cluster"] = results[9]
-    df["topn_clusters"] = results[10]
-    df["all_clusters"] = results[11]
+    df["min_rank"] = results[6]
+    df["topn_unique_clusters_count"] = results[7]
+    df["all_clusters_count"] = results[8]
+    df["topn_best_cluster"] = results[9]
+    df["all_best_cluster"] = results[10]
+    df["topn_clusters"] = results[11]
+    df["all_clusters"] = results[12]
 
     # Normalize final score to 0.0 - 1.0
     df["score"] = df["raw_score"] / df["raw_score"].max()
 
-    # Sort and add final rank
-    df = df.sort_values("score", ascending=False).reset_index(drop=True)
+    # Create tie-breaking columns
+    # Convert score to integer (scaled by 1e8) for stable comparison without floating point issues
+    df["_sort_score"] = (df["score"] * 1e8).round().astype(int)
+    # Convert min_rank to integer (scaled by 100) to handle fractional ranks like 6.7
+    df["_sort_min_rank"] = (df["min_rank"] * 100).round().astype(int)
+    # Lowercase name and artist for alphabetical tie-breaking
+    df["_name_lower"] = df["name"].str.lower()
+    df["_artist_lower"] = df["artist"].str.lower()
+
+    # Sort with tie-breaking:
+    # 1. score (descending, as integer scaled by 1e8)
+    # 2. list_count (descending - more sources is better)
+    # 3. min_rank (ascending - lower rank is better, as integer scaled by 100)
+    # 4. name (ascending - alphabetical)
+    # 5. artist (ascending - alphabetical)
+    df = df.sort_values(
+        by=["_sort_score", "list_count", "_sort_min_rank", "_name_lower", "_artist_lower"],
+        ascending=[False, False, True, True, True],
+    ).reset_index(drop=True)
+
+    # Remove temporary sorting columns
+    df = df.drop(columns=["_sort_score", "_sort_min_rank", "_name_lower", "_artist_lower"])
+
     if "rank" in df.columns:
         df.drop(columns=["rank"], inplace=True)
     df.insert(0, "rank", df.index + 1)

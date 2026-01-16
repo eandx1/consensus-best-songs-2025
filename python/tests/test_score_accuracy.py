@@ -165,11 +165,10 @@ def expected_scores(test_data):
         top_bonuses=top_bonuses,
     )
 
-    # Extract expected scores for ranks 1, 10, and 15
-    # Note: We use rank 15 instead of 20 because ranks 16+ have tied scores
-    # which can sort differently across platforms
+    # Extract expected scores for ranks 1, 10, and 20
+    # Tie-breaking is now deterministic (score, list_count, min_rank, name, artist)
     expected = {}
-    for target_rank in [1, 10, 15]:
+    for target_rank in [1, 10, 20]:
         if target_rank <= len(ranked_df):
             row = ranked_df.iloc[target_rank - 1]
             song_name = row["name"]
@@ -365,31 +364,31 @@ def test_rank10_scoring_accuracy(page: Page, server_url, expected_scores):
     modal.locator(".close-modal").first.click()
 
 
-def test_rank15_scoring_accuracy(page: Page, server_url, expected_scores):
-    """Verify scoring accuracy for the #15 ranked song.
+def test_rank20_scoring_accuracy(page: Page, server_url, expected_scores):
+    """Verify scoring accuracy for the #20 ranked song.
 
-    Note: We test rank 15 instead of 20 because ranks 16+ in the test data
-    have tied scores which can sort differently across platforms.
+    This also tests tie-breaking: 'Glitter' and 'Audrey Hepburn' have identical
+    scores, but 'Glitter' should be at rank 20 (alphabetically after 'Audrey').
     """
     page.goto(server_url)
     page.wait_for_load_state("networkidle")
 
-    # Get expected values for rank 15
-    rank15_song = None
+    # Get expected values for rank 20
+    rank20_song = None
     for song_name, data in expected_scores.items():
-        if data["rank"] == 15:
-            rank15_song = song_name
+        if data["rank"] == 20:
+            rank20_song = song_name
             expected = data
             break
 
-    assert rank15_song is not None, "No rank 15 song found in expected scores"
+    assert rank20_song is not None, "No rank 20 song found in expected scores"
 
-    # Find the 15th song card
-    song_card = page.locator(".song-card").nth(14)
+    # Find the 20th song card
+    song_card = page.locator(".song-card").nth(19)
 
     # Verify the song name matches
     song_title = song_card.locator("h3").inner_text()
-    assert song_title == rank15_song, f"Expected rank 15 to be '{rank15_song}', got '{song_title}'"
+    assert song_title == rank20_song, f"Expected rank 20 to be '{rank20_song}', got '{song_title}'"
 
     # Click the info button to open stats modal
     song_card.locator('a[aria-label="View ranking details"]').click()
@@ -495,3 +494,41 @@ def test_all_source_contributions_match(page: Page, server_url, expected_scores)
             f"got {contribution_value:.2f}"
 
     modal.locator(".close-modal").first.click()
+
+
+def test_tiebreak_audrey_before_glitter(page: Page, server_url):
+    """
+    Test that JavaScript implements tie-breaking correctly.
+
+    'Audrey Hepburn' and 'Glitter' have identical scores (both only appear on
+    ELLE with shadow rank). With tie-breaking by alphabetical name, 'Audrey
+    Hepburn' should come before 'Glitter'.
+    """
+    page.goto(server_url)
+    page.wait_for_load_state("networkidle")
+
+    # Get all song cards
+    song_cards = page.locator(".song-card")
+
+    # Find positions of both songs
+    audrey_rank = None
+    glitter_rank = None
+
+    for i in range(min(25, song_cards.count())):
+        card = song_cards.nth(i)
+        title = card.locator("h3").inner_text()
+        if title == "Audrey Hepburn":
+            audrey_rank = i + 1
+        elif title == "Glitter":
+            glitter_rank = i + 1
+
+    assert audrey_rank is not None, "Audrey Hepburn not found in top 25"
+    assert glitter_rank is not None, "Glitter not found in top 25"
+
+    # Audrey Hepburn should come before Glitter (alphabetically)
+    assert audrey_rank < glitter_rank, \
+        f"Tie-breaking failed: Audrey Hepburn (rank {audrey_rank}) should come before Glitter (rank {glitter_rank})"
+
+    # They should be consecutive (since they have identical scores)
+    assert glitter_rank == audrey_rank + 1, \
+        f"Songs with identical scores should be consecutive: Audrey={audrey_rank}, Glitter={glitter_rank}"

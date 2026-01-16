@@ -192,13 +192,23 @@ const RankingEngine = {
 
       const finalScore = totalScore * c_mul * p_mul * cl_mul;
 
+      // Calculate min_rank for tie-breaking (lower is better)
+      const minRank = ranks.length > 0 ? Math.min(...ranks) : Infinity;
+
       return {
         ...song,
         finalScore,
         sourceDetails: sourceDetails.sort(
           (a, b) => b.contribution - a.contribution
         ),
-        stats: { totalScore, c_mul, p_mul, cl_mul, listCount: ranks.length },
+        stats: {
+          totalScore,
+          c_mul,
+          p_mul,
+          cl_mul,
+          listCount: ranks.length,
+          minRank,
+        },
       };
     });
 
@@ -206,7 +216,31 @@ const RankingEngine = {
     const maxScore = Math.max(...rankedSongs.map((s) => s.finalScore)) || 1; // Prevent div by zero
     return rankedSongs
       .map((s) => ({ ...s, normalizedScore: s.finalScore / maxScore }))
-      .sort((a, b) => b.finalScore - a.finalScore)
+      .sort((a, b) => {
+        // Tie-breaking order:
+        // 1. Normalized score (descending, rounded to 8 decimals as integers)
+        const scoreA = Math.round(a.normalizedScore * 1e8);
+        const scoreB = Math.round(b.normalizedScore * 1e8);
+        if (scoreB !== scoreA) return scoreB - scoreA;
+
+        // 2. List count (descending - more sources is better)
+        if (b.stats.listCount !== a.stats.listCount)
+          return b.stats.listCount - a.stats.listCount;
+
+        // 3. Min rank (ascending - lower rank is better, as integer scaled by 100 for fractional ranks)
+        const minRankA = Math.round(a.stats.minRank * 100);
+        const minRankB = Math.round(b.stats.minRank * 100);
+        if (minRankA !== minRankB) return minRankA - minRankB;
+
+        // 4. Song name (ascending - alphabetical)
+        const nameCompare = a.name
+          .toLowerCase()
+          .localeCompare(b.name.toLowerCase());
+        if (nameCompare !== 0) return nameCompare;
+
+        // 5. Artist name (ascending - alphabetical)
+        return a.artist.toLowerCase().localeCompare(b.artist.toLowerCase());
+      })
       .map((s, i) => ({ ...s, rank: i + 1 }));
   },
 };
