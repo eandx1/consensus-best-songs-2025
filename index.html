@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark" data-style="original">
   <head>
     <meta charset="UTF-8" />
@@ -16,9 +16,9 @@
       property="og:image"
       content="https://bestsongs2025.com/og-image.png"
     />
-    <meta property="og:image:width" content="2400">
-    <meta property="og:image:height" content="1260">
-    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta property="og:image:type" content="image/png" />
     <meta
       property="og:description"
       content="Discover the top songs of 2025 from an aggregate review list then tweak the ranking yourself!"
@@ -77,7 +77,9 @@
       /* 1. Modal 'X' Icons: Inherit Pico Defaults */
       .close-modal[aria-label="Close"] {
         /* Only apply transitions; let Pico handle the rest */
-        transition: transform 0.1s ease, opacity 0.1s ease;
+        transition:
+          transform 0.1s ease,
+          opacity 0.1s ease;
       }
 
       /* 2. Simple 'Presence' Feedback for Defaults */
@@ -439,6 +441,7 @@
       .page-controls {
         padding: 2rem 0;
         text-align: center;
+        padding-bottom: 5rem;
       }
 
       /* On mobile, keep the buttons full-width or side-by-side */
@@ -478,8 +481,80 @@
       /* Ensure the transform doesn't linger after the click */
       button,
       [role="button"] {
-        transition: transform 0.1s ease-in-out, background-color 0.2s,
-          border-color 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.1s ease-in-out,
+          background-color 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      /* Floating Action Button: Mobile-First & Accessible */
+      #fixed-btt {
+        display: flex;
+        position: fixed;
+        /* Positions the button in the bottom right with thumb-friendly spacing */
+        bottom: 1.25rem;
+        right: 1.25rem;
+        z-index: 1000;
+
+        /* Standard mobile touch target (~48px) */
+        width: 3rem;
+        height: 3rem;
+
+        /* Circular Material Design aesthetic */
+        border-radius: 50%;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+
+        /* Visual depth and layer separation */
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4);
+
+        /* Hidden by default; transition handles the fade-in */
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.3s ease,
+          transform 0.2s ease,
+          background-color 0.2s;
+        border: none;
+      }
+
+      #fixed-btt svg {
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+
+      /* Visibility state toggled via JavaScript */
+      #fixed-btt.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Desktop Scale (Matches your site's 1025px breakpoint) */
+      @media (min-width: 1025px) {
+        #fixed-btt {
+          bottom: 2rem;
+          right: 2rem;
+          /* Larger desktop FAB (~56px) */
+          width: 3.5rem;
+          height: 3.5rem;
+        }
+      }
+
+      /* Desktop Hover Effects (Limited to devices with a cursor) */
+      @media (hover: hover) {
+        #fixed-btt:hover {
+          /* Subtle growth to signal interactivity */
+          transform: scale(1.1);
+          /* Inherits your theme's secondary hover state */
+          background-color: var(--pico-secondary-hover-background);
+        }
+      }
+
+      /* Immediate haptic-style feedback on click */
+      #fixed-btt:active {
+        transform: scale(0.95);
       }
 
       /* Desktop: Allow container to be wider for more breathing room */
@@ -648,7 +723,9 @@
         background-color: transparent;
         filter: grayscale(1);
         opacity: 0.15; /* Mobile default - slightly visible */
-        transition: opacity 0.2s, filter 0.2s;
+        transition:
+          opacity 0.2s,
+          filter 0.2s;
       }
 
       /* Header contains hgroup and info icon */
@@ -758,7 +835,9 @@
         text-transform: uppercase;
         font-weight: 700;
         opacity: 0.7;
-        transition: opacity 0.2s, color 0.2s;
+        transition:
+          opacity 0.2s,
+          color 0.2s;
         padding: 0.4rem 0.5rem; /* Larger touch targets */
         text-decoration: none;
       }
@@ -784,7 +863,6 @@
 
       /* 
            DESKTOP / TABLET OVERRIDES 
-           Apply when screen width is >= 577px
         */
       @media (min-width: 1025px) {
         :root {
@@ -905,7 +983,9 @@
         cursor: pointer;
         border: 2px solid transparent;
         border-color: var(--pico-muted-border-color);
-        transition: border-color 0.2s, transform 0.1s ease,
+        transition:
+          border-color 0.2s,
+          transform 0.1s ease,
           background-color 0.2s;
         margin-bottom: 0;
       }
@@ -1058,13 +1138,13 @@
             window.location.hostname +
             ", Opt-out: " +
             isMe +
-            ")"
+            ")",
         );
       }
     </script>
   </head>
   <body>
-    <!-- Icons for the streaming services. -->
+    <!-- Icons for the streaming services and jump to top button. -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
       <symbol id="icon-spotify" viewBox="0 0 24 24">
         <path
@@ -1093,6 +1173,20 @@
       <symbol id="icon-bandcamp" viewBox="0 0 24 24">
         <path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z" />
       </symbol>
+
+      <symbol
+        id="icon-top"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 3h14" />
+        <path d="m18 13-6-6-6 6" />
+        <path d="M12 7v14" />
+      </symbol>
     </svg>
 
     <header class="container">
@@ -1113,9 +1207,6 @@
 
       <section class="page-controls">
         <div class="grid">
-          <button id="main-btt" class="secondary outline btt-trigger">
-            Back to top
-          </button>
           <button id="load-more" class="outline">Show More</button>
         </div>
       </section>
@@ -1319,6 +1410,16 @@
         </footer>
       </article>
     </dialog>
+
+    <button
+      id="fixed-btt"
+      class="secondary btt-trigger"
+      aria-label="Back to top"
+    >
+      <svg>
+        <use href="#icon-top"></use>
+      </svg>
+    </button>
 
     <script src="./script.js"></script>
   </body>

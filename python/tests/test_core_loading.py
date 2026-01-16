@@ -112,42 +112,48 @@ def test_show_more_functionality(page: Page, server_url):
     # Button should now be hidden since all songs are shown
     expect(show_more_btn).to_be_hidden()
 
-def test_back_to_top_button(page: Page, server_url):
-    """Test that the Back to Top button scrolls to the top of the page."""
+def test_floating_action_button_back_to_top(page: Page, server_url):
+    """Test that the floating action button appears after scrolling and scrolls to top."""
     page.goto(server_url)
-    
+
     # Wait for page to load
     page.locator(".song-card").first.wait_for()
-    
+
     # Click Show More to load all songs and make page scrollable
     show_more_btn = page.locator("#load-more")
     show_more_btn.click()
     page.wait_for_timeout(100)
-    
-    # Back to Top button should be visible
-    btt_button = page.locator("#main-btt")
-    expect(btt_button).to_be_visible()
-    expect(btt_button).to_contain_text("Back to top")
-    
-    # Scroll down the page
-    page.evaluate("window.scrollTo({ top: 2000, behavior: 'instant' })")
+
+    # Ensure we start at the top of the page
+    page.evaluate("window.scrollTo({ top: 0, behavior: 'instant' })")
     page.wait_for_timeout(100)
-    
+
+    # Floating action button should exist but not be visible initially (when at top)
+    fab = page.locator("#fixed-btt")
+    expect(fab).to_be_attached()
+    expect(fab).not_to_have_class(re.compile("visible"))
+
+    # Scroll down past the 800px threshold where FAB appears
+    page.evaluate("window.scrollTo({ top: 1000, behavior: 'instant' })")
+    page.wait_for_timeout(100)
+
     # Verify we scrolled
     scroll_position = page.evaluate("window.scrollY")
-    assert scroll_position > 500, f"Page should be scrolled down, but scrollY is {scroll_position}"
-    
-    # Scroll button into view first
-    btt_button.scroll_into_view_if_needed()
-    page.wait_for_timeout(100)
-    
-    # Click Back to Top button
-    btt_button.click()
-    
+    assert scroll_position > 800, f"Page should be scrolled past 800px, but scrollY is {scroll_position}"
+
+    # FAB should now have the 'visible' class
+    expect(fab).to_have_class(re.compile("visible"))
+
+    # Click the FAB
+    fab.click()
+
     # Wait for smooth scroll animation
     page.wait_for_timeout(1500)
-    
+
     # Verify we scrolled back to top
     scroll_position = page.evaluate("window.scrollY")
     assert scroll_position < 100, f"Page should be scrolled to top, but scrollY is {scroll_position}"
+
+    # FAB should no longer be visible (scrollY < 800)
+    expect(fab).not_to_have_class(re.compile("visible"))
 
