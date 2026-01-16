@@ -19,6 +19,7 @@ CLUSTER_BOOST = 0.03  # Bonus for hit in a new cluster (within Top 50)
 TOP_BONUSES_CONSENSUS = {1: 0.1, 2: 0.075, 3: 0.025}
 TOP_BONUSES_CONVICTION = {1: 0.25, 2: 0.15, 3: 0.075}
 
+
 def get_decay_value(rank, mode, k_value: float, p_exponent: float, top_bonuses: dict):
     """Calculates the point value for a specific rank based on chosen mode."""
     if mode == "consensus":
@@ -49,7 +50,7 @@ def score_song(
 
     total_score = 0
     ranks = []
-    top50_clusters_counts = Counter()
+    topn_clusters_counts = Counter()
     all_cluster_counts = Counter()
 
     for _, config in sources.items():
@@ -63,7 +64,7 @@ def score_song(
         ranks.append(rank)
         category = config["cluster"]
         if rank <= CLUSTER_THRESHOLD:
-            top50_clusters_counts[category] += 1
+            topn_clusters_counts[category] += 1
         all_cluster_counts[category] += 1
 
         # DIRECT SCORING (ANCHOR-RANK)
@@ -82,20 +83,23 @@ def score_song(
 
     # C. Cluster Diversity (within Top 50)
     cl_mul = (
-        1 + (cluster_boost * (len(top50_clusters_counts) - 1))
-        if len(top50_clusters_counts) > 0
+        1 + (cluster_boost * (len(topn_clusters_counts) - 1))
+        if len(topn_clusters_counts) > 0
         else 1.0
     )
 
-    top50_cluster_counts_list = [
-        (cluster, count) for cluster, count in top50_clusters_counts.items()
+    topn_cluster_counts_list = [
+        (cluster, count) for cluster, count in topn_clusters_counts.items()
     ]
-    top50_cluster_counts_list.sort(key=lambda t: t[1], reverse=True)
+    topn_cluster_counts_list.sort(key=lambda t: t[1], reverse=True)
 
     all_cluster_counts_list = [
         (cluster, count) for cluster, count in all_cluster_counts.items()
     ]
     all_cluster_counts_list.sort(key=lambda t: t[1], reverse=True)
+
+    # Calculate min_rank for tie-breaking (lower is better)
+    min_rank = min(ranks) if ranks else float("inf")
 
     return (
         total_score * c_mul * p_mul * cl_mul,
@@ -104,12 +108,13 @@ def score_song(
         p_mul,
         cl_mul,
         len(ranks),
-        len(top50_cluster_counts_list),
+        min_rank,
+        len(topn_cluster_counts_list),
         len(all_cluster_counts_list),
-        top50_cluster_counts_list[0][0] if top50_cluster_counts_list else None,
+        topn_cluster_counts_list[0][0] if topn_cluster_counts_list else None,
         all_cluster_counts_list[0][0] if all_cluster_counts_list else None,
         ", ".join(
-            [f"{cluster}:{count}" for cluster, count in top50_cluster_counts_list]
+            [f"{cluster}:{count}" for cluster, count in topn_cluster_counts_list]
         ),
         ", ".join([f"{cluster}:{count}" for cluster, count in all_cluster_counts_list]),
     )
@@ -149,19 +154,41 @@ def compute_rankings_with_configs(
     df["provocation_bonus"] = results[3]
     df["diversity_bonus"] = results[4]
     df["list_count"] = results[5]
-    df["top50_unique_clusters_count"] = results[6]
-    df["all_clusters_count"] = results[7]
-    df["top50_best_cluster"] = results[8]
-    df["all_best_cluster"] = results[9]
-    df["top50_clusters"] = results[10]
-    df["all_clusters"] = results[11]
+    df["min_rank"] = results[6]
+    df["topn_unique_clusters_count"] = results[7]
+    df["all_clusters_count"] = results[8]
+    df["topn_best_cluster"] = results[9]
+    df["all_best_cluster"] = results[10]
+    df["topn_clusters"] = results[11]
+    df["all_clusters"] = results[12]
 
     # Normalize final score to 0.0 - 1.0
     df["score"] = df["raw_score"] / df["raw_score"].max()
 
-    # Sort and add final rank
-    df = df.sort_values("score", ascending=False).reset_index(drop=True)
-    if 'rank' in df.columns:
+    # Create tie-breaking columns
+    # Convert score to integer (scaled by 1e8) for stable comparison without floating point issues
+    df["_sort_score"] = (df["score"] * 1e8).round().astype(int)
+    # Convert min_rank to integer (scaled by 100) to handle fractional ranks like 6.7
+    df["_sort_min_rank"] = (df["min_rank"] * 100).round().astype(int)
+    # Lowercase name and artist for alphabetical tie-breaking
+    df["_name_lower"] = df["name"].str.lower()
+    df["_artist_lower"] = df["artist"].str.lower()
+
+    # Sort with tie-breaking:
+    # 1. score (descending, as integer scaled by 1e8)
+    # 2. list_count (descending - more sources is better)
+    # 3. min_rank (ascending - lower rank is better, as integer scaled by 100)
+    # 4. name (ascending - alphabetical)
+    # 5. artist (ascending - alphabetical)
+    df = df.sort_values(
+        by=["_sort_score", "list_count", "_sort_min_rank", "_name_lower", "_artist_lower"],
+        ascending=[False, False, True, True, True],
+    ).reset_index(drop=True)
+
+    # Remove temporary sorting columns
+    df = df.drop(columns=["_sort_score", "_sort_min_rank", "_name_lower", "_artist_lower"])
+
+    if "rank" in df.columns:
         df.drop(columns=["rank"], inplace=True)
     df.insert(0, "rank", df.index + 1)
 
