@@ -139,8 +139,12 @@ def test_consensus_mode_ranking_changes(page: Page, server_url):
     consensus_boost_pct = float(re.search(r"(\d+\.\d+)%", consensus_mul_text).group(1))
     print(f"Consensus boost: {consensus_boost_pct}%")
     
-    # With 10 lists and 5% boost parameter (increased from 3%), should be ~9-10%
-    assert consensus_boost_pct > 7, f"Expected consensus boost > 7%, got {consensus_boost_pct}%"
+    # With normalized consensus boost, the slider percentage represents the MAX boost
+    # (for the song with the most lists). Songs with fewer lists get proportionally less.
+    # A song on 10 lists with 5% boost slider will get: 5% * ln(10)/ln(max_list_count)
+    # This should be positive and <= 5%
+    assert consensus_boost_pct > 0, f"Expected consensus boost > 0%, got {consensus_boost_pct}%"
+    assert consensus_boost_pct <= 5.1, f"Expected consensus boost <= 5%, got {consensus_boost_pct}%"
     
     # Check that Buzzfeed contribution is 0.0000
     buzzfeed_contrib = modal.locator(".contribution-row", has_text="Buzzfeed")

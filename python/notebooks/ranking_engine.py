@@ -46,6 +46,7 @@ def score_song(
     k_value: float,
     p_exponent: float,
     top_bonuses: dict,
+    ln_max_list_count: float = None,
 ):
 
     total_score = 0
@@ -75,8 +76,12 @@ def score_song(
         total_score += pts
 
     # Multipliers
-    # A. Consensus (Logarithmic)
-    c_mul = 1 + (consensus_boost * np.log(len(ranks)))
+    # A. Consensus (Logarithmic, normalized by max list count)
+    # Normalizing ensures the slider percentage represents the maximum possible boost
+    if len(ranks) > 0 and ln_max_list_count is not None and ln_max_list_count > 0:
+        c_mul = 1 + (consensus_boost * np.log(len(ranks)) / ln_max_list_count)
+    else:
+        c_mul = 1.0
 
     # B. Provocation (Polarization)
     p_mul = 1 + (provocation_boost * (np.std(ranks) / 100)) if len(ranks) > 1 else 1.0
@@ -133,6 +138,13 @@ def compute_rankings_with_configs(
 ):
     df = df.copy()
 
+    # Calculate max_list_count across all songs for consensus boost normalization
+    # This ensures the consensus_boost slider percentage represents the maximum possible boost
+    rank_columns = [f"rank{config['suffix']}" for config in sources.values()]
+    list_counts = df[rank_columns].notna().sum(axis=1)
+    max_list_count = list_counts.max() if len(list_counts) > 0 else 1
+    ln_max_list_count = np.log(max_list_count) if max_list_count > 1 else 0
+
     results = df.apply(
         lambda row: score_song(
             row,
@@ -144,6 +156,7 @@ def compute_rankings_with_configs(
             k_value=k_value,
             p_exponent=p_exponent,
             top_bonuses=top_bonuses,
+            ln_max_list_count=ln_max_list_count,
         ),
         axis=1,
         result_type="expand",
