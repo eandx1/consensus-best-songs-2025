@@ -31,8 +31,6 @@ The project is built as a lightweight, static web application with no build step
   - Source definitions (weights, URLs, categories)
   - Song data (artists, titles, media IDs, and source citations)
 
-_Note: I'll check in the notebook and Python code soon for posterity._
-
 ## 🛠️ Technical Choices
 
 - **Static Data**: Chosen for simplicity and ease of hosting. The entire application runs in the browser in plain Javascript with no backend or build steps
@@ -103,6 +101,10 @@ One of the tasks in the notebook was to extract a decent quote from the normally
 I wanted to be very careful, here, so enforced strict substring matching, either of the full quote or pieces joined by " ... ". I also added a way for the model to report failure since some reviews just weren't appropriate (for example, talking about the artist but not the song).
 
 Ultimately I made a first pass with Haiku and then fell back to Sonnet for cases that didn't work.
+
+### Claude Code
+
+More recently, I've gone back to Claude Code and doing the planning mode -> execute plan -> review routine. Doing this with Opus feels very solid but costly.
 
 ## Analysis
 
@@ -261,10 +263,6 @@ The site defaults to Consensus mode, but you can choose to use a power law decay
 
 <img src="./images/category_crossover_sankey.svg" width="70%" alt="Contributions to the top 10 from the different categories">
 
-## 👤 Contact
-
-You can find me over at [LinkedIn](https://www.linkedin.com/in/everett-anderson-swe/).
-
 ## 🧪 Testing
 
 This project uses [Playwright](https://playwright.dev/python/) with `pytest` for end-to-end testing of the application. The test suite covers:
@@ -278,3 +276,7 @@ This project uses [Playwright](https://playwright.dev/python/) with `pytest` for
 1. Navigate to the python directory: `cd python`
 2. Install dependencies: `uv sync` (if not already installed)
 3. Run the full suite: `uv run pytest`
+
+## 👤 Contact
+
+You can find me over at [LinkedIn](https://www.linkedin.com/in/everett-anderson-swe/).
