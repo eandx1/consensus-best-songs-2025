@@ -340,9 +340,9 @@ Uses a **Power-Law Decay** (Generalized Zipfian distribution) to reward critical
 
 The engine applies three specialized multipliers to the raw scores:
 
-1.  **Consensus Boost:** A logarithmic reward based on the total number of lists a song appears on.
-    - _Formula:_ $1 + (consensus_booost \times \ln(\text{count}))$
-    - `c_mul = 1 + (consensus_boost * np.log(len(ranks)))`
+1.  **Consensus Boost:** A logarithmic reward based on the total number of lists a song appears on, normalized so that the slider percentage represents the maximum possible boost.
+    - _Formula:_ $1 + \frac{consensus\_boost \times \ln(\text{count})}{\ln(\text{max\_count})}$
+    - `c_mul = 1 + (consensus_boost * np.log(len(ranks)) / ln_max_list_count)`
 2.  **Provocation Boost:** Rewards "Polarization." Calculated via the standard deviation of ranks, giving a bonus to songs that critics are divided on (e.g., #1 on some lists, #80 on others) over "safe" middle-of-the-road hits.
     - `p_mul = 1 + (provocation_boost * (np.std(ranks) / 100)) if len(ranks) > 1 else 1.0`
 3.  **Diversity (Crossover) Boost:** A bonus for every additional unique **Cluster** a song reaches in its top `cluster_threshold`. This identifies "Unicorns"—tracks that appeal to Authority, Tastemakers, and Specialists simultaneously.

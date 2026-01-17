@@ -169,9 +169,12 @@ const RankingEngine = {
       });
 
       // Multipliers
+      // Consensus boost normalized by ln(max_list_count) so slider percentage = max boost
       const c_mul =
-        ranks.length > 0
-          ? 1 + config.ranking.consensus_boost * Math.log(ranks.length)
+        ranks.length > 0 && APP_DATA.lnMaxListCount > 0
+          ? 1 +
+            (config.ranking.consensus_boost * Math.log(ranks.length)) /
+              APP_DATA.lnMaxListCount
           : 1.0;
 
       let p_mul = 1.0;
@@ -551,6 +554,12 @@ function updateLoadMoreButton() {
 async function init() {
   const response = await fetch("data.json");
   APP_DATA = await response.json();
+
+  // Calculate ln(max_list_count) once at startup for consensus boost normalization
+  // This ensures the consensus_boost slider percentage represents the maximum possible boost
+  const maxListCount = Math.max(...APP_DATA.songs.map((s) => s.list_count || 0));
+  APP_DATA.lnMaxListCount = maxListCount > 1 ? Math.log(maxListCount) : 0;
+
   STATE.config = syncStateFromURL(APP_DATA.config);
   render();
 
@@ -1278,7 +1287,7 @@ function renderSettingsUI() {
     "🤝 Consensus Boost",
     true,
     false,
-    'Applies a logarithmic bonus based on how many different critics included the song. This acts as a "cultural record" weight, ensuring that a song beloved by 30 critics outpaces a song that hit #1 on only one list.',
+    'Applies a logarithmic bonus based on how many different critics included the song. The slider percentage is the maximum boost (for the song on the most lists). This acts as a "cultural record" weight, ensuring that a song beloved by many critics outpaces a song that hit #1 on only one list.',
   );
   html += createSlider(
     "ranking",
