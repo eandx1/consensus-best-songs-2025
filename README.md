@@ -110,15 +110,30 @@ More recently, I've gone back to Claude Code and doing the planning mode -> exec
 
 ### Overall
 
-Counting NPR as one source:
+Counting NPR as one source with a review count of 125:
 
-- Unique songs: `881`
-- Total song reviews: `1438`
-- Average reviews per source: `49.59`
-- Median reviews per source: `48.0`
-- Total sources: `28`
-- Total ranked sources: `22`
-- Total unranked sources: `6`
+* Unique songs: `881`
+* Total song reviews: `1438`
+* Average reviews per source: `51.36`
+* Median reviews per source: `49.0`
+* Total sources: `28`
+* Total ranked sources: `22`
+* Total unranked sources: `6`
+
+#### Reviews per song
+
+| Top N     | Average reviews per song | Median reviews per song |
+| :-------- | :----------------------- | :---------------------- |
+| Top 5     | 13.00                    | 13.00                   |
+| Top 10    | 11.00                    | 10.00                   |
+| Top 25    | 8.88                     | 9.00                    |
+| Top 50    | 6.92                     | 6.00                    |
+| Top 100   | 5.16                     | 5.00                    |
+| Top 200   | 3.48                     | 3.00                    |
+| Top 500   | 2.11                     | 1.00                    |
+| All (881) | 1.63                     | 1.00                    |
+
+<img src="./images/list_count_histogram.svg" width="80%" alt="Histogram of reviews per song">
 
 #### Unique Artists
 
@@ -144,7 +159,6 @@ Counting NPR as one source:
 | Justin Bieber       | 5          | DAISIES · DEVOTION · FIRST PLACE · GO BABY · YUKON                                                                                                                                                                                  |
 | Wednesday           | 5          | Elderberry Wine · Pick Up That Knife · The Way Love Goes · Townies · Wound Up Here (By Holdin On)                                                                                                                                   |
 | billy woods         | 5          | A Doll Fulla Pins · BLK XMAS · Corinthians · Misery · Waterproof Mascara                                                                                                                                                            |
-
 
 #### Media Links
 
@@ -208,19 +222,11 @@ Counting NPR as one source:
 | [The Independent](https://www.the-independent.com/arts-entertainment/music/features/the-best-songs-of-2025-b2884545.html) | 10    | 0.60           | 5.50        | 📡 Mainstream         |
 | [Variety](https://variety.com/lists/best-songs-2025)                                                                      | 61    | 0.50           | 31.00       | 📡 Mainstream         |
 
+NPR provided two overlapping lists -- their top 25 and their top 125. I split this into two non-overlapping unranked lists, one for the top 25 and the other for the bottom 100.
+
 ### Ranking
 
 Using the default ranking (which uses consensus mode):
-
-#### Average lists per song in the Top N
-
-- Top 5: `13.00`
-- Top 10: `11.00`
-- Top 25: `8.88`
-- Top 50: `6.92`
-- Top 100: `5.16`
-- Top 200: `3.48`
-- Top 500: `2.11`
 
 #### List Count vs Score
 
