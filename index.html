@@ -958,12 +958,87 @@
         }
       }
 
-      /* The Links Block */
-      header.container nav ul:last-of-type {
+      /* Responsive Header Navigation */
+      .nav-desktop {
+        display: none;
+      }
+
+      .nav-mobile {
         display: flex;
-        align-items: center; /* Keep 'Settings' and 'About' perfectly level */
-        height: 2.2rem; /* Matches the height of the first line of text */
+        align-items: center;
+        gap: 0.5rem;
         flex-shrink: 0;
+      }
+
+      .nav-mobile li {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Hamburger button styling */
+      #hamburger-btn {
+        padding: 0.4rem 0.5rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #hamburger-btn svg {
+        display: block;
+      }
+
+      /* Mobile menu dropdown */
+      .mobile-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--pico-card-background-color);
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: var(--pico-border-radius);
+        padding: 0.5rem 0;
+        z-index: 1000;
+        min-width: 180px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .mobile-menu[hidden] {
+        display: none;
+      }
+
+      .mobile-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        text-decoration: none;
+        color: var(--pico-color);
+        transition: background-color 0.2s;
+      }
+
+      .mobile-menu a:hover {
+        background-color: var(--pico-secondary-background);
+      }
+
+      /* Header container needs relative positioning for absolute menu */
+      header.container {
+        position: relative;
+      }
+
+      /* Desktop: Show desktop nav, hide mobile nav */
+      @media (min-width: 1025px) {
+        .nav-desktop {
+          display: flex;
+          align-items: center;
+          height: 2.2rem;
+          flex-shrink: 0;
+        }
+
+        .nav-mobile {
+          display: none;
+        }
+
+        .mobile-menu {
+          display: none !important;
+        }
       }
 
       /* Settings UI Styles */
@@ -1187,6 +1262,42 @@
         <path d="m18 13-6-6-6 6" />
         <path d="M12 7v14" />
       </symbol>
+
+      <!-- Hamburger menu icon (Lucide) -->
+      <symbol
+        id="icon-menu"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M4 5h16" />
+        <path d="M4 12h16" />
+        <path d="M4 19h16" />
+      </symbol>
+
+      <!-- Sliders icon for Tune Ranking (Lucide) -->
+      <symbol
+        id="icon-sliders"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="4" x2="4" y1="21" y2="14" />
+        <line x1="4" x2="4" y1="10" y2="3" />
+        <line x1="12" x2="12" y1="21" y2="12" />
+        <line x1="12" x2="12" y1="8" y2="3" />
+        <line x1="20" x2="20" y1="21" y2="16" />
+        <line x1="20" x2="20" y1="12" y2="3" />
+        <line x1="2" x2="6" y1="14" y2="14" />
+        <line x1="10" x2="14" y1="8" y2="8" />
+        <line x1="18" x2="22" y1="16" y2="16" />
+      </symbol>
     </svg>
 
     <header class="container">
@@ -1194,12 +1305,43 @@
         <ul>
           <li><strong>Consensus Best Songs 2025</strong></li>
         </ul>
-        <ul>
-          <li><a href="#" id="open-export" style="display: none">Export</a></li>
-          <li><a href="#" id="open-settings">Settings</a></li>
+        <!-- Desktop navigation (hidden on mobile) -->
+        <ul class="nav-desktop">
+          <li>
+            <a href="#" id="open-settings">
+              <svg width="16" height="16" style="vertical-align: -2px; margin-right: 4px;"><use href="#icon-sliders"></use></svg>Tune Ranking
+            </a>
+          </li>
+          <li><a href="#" id="open-youtube">Listen on YouTube</a></li>
+          <li><a href="#" id="open-download">Download Playlist</a></li>
           <li><a href="#" id="open-about">About</a></li>
         </ul>
+        <!-- Mobile navigation -->
+        <ul class="nav-mobile">
+          <li>
+            <a href="#" id="open-settings-mobile">
+              <svg width="16" height="16" style="vertical-align: -2px; margin-right: 4px;"><use href="#icon-sliders"></use></svg>Tune
+            </a>
+          </li>
+          <li>
+            <button
+              id="hamburger-btn"
+              class="outline secondary"
+              aria-label="Menu"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
+            >
+              <svg width="20" height="20"><use href="#icon-menu"></use></svg>
+            </button>
+          </li>
+        </ul>
       </nav>
+      <!-- Mobile dropdown menu -->
+      <div id="mobile-menu" class="mobile-menu" hidden>
+        <a href="#" id="open-youtube-mobile">Listen on YouTube</a>
+        <a href="#" id="open-download-mobile">Download Playlist</a>
+        <a href="#" id="open-about-mobile">About</a>
+      </div>
     </header>
 
     <main class="container" id="app">
@@ -1221,7 +1363,7 @@
             class="close-modal"
             autofocus
           ></button>
-          <h3>Settings</h3>
+          <h3>Tune Ranking</h3>
         </header>
         <div id="settings-content"></div>
         <footer class="modal-controls">
@@ -1270,7 +1412,7 @@
       </article>
     </dialog>
 
-    <dialog id="modal-export">
+    <dialog id="modal-youtube">
       <article>
         <header>
           <button
@@ -1279,13 +1421,33 @@
             class="close-modal"
             autofocus
           ></button>
-          <h3>Export to YouTube</h3>
+          <h3>Listen on YouTube</h3>
         </header>
-        <div id="export-content">
+        <div id="youtube-content">
           <!-- Dynamic content will be injected here -->
         </div>
         <footer class="modal-controls">
-          <!-- Footer content will be managed by renderExportUI to update the link -->
+          <!-- Footer content will be managed by renderYouTubeUI -->
+        </footer>
+      </article>
+    </dialog>
+
+    <dialog id="modal-download">
+      <article>
+        <header>
+          <button
+            aria-label="Close"
+            rel="prev"
+            class="close-modal"
+            autofocus
+          ></button>
+          <h3>Download Playlist</h3>
+        </header>
+        <div id="download-content">
+          <!-- Dynamic content will be injected here -->
+        </div>
+        <footer class="modal-controls">
+          <!-- Footer content will be managed by renderDownloadUI -->
         </footer>
       </article>
     </dialog>

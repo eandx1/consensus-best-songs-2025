@@ -6,9 +6,9 @@ def test_theme_switcher_dropdown(page: Page, server_url):
     """Verify theme switcher dropdown updates theme and URL."""
     # Load page
     page.goto(server_url)
-    
-    # Open settings
-    page.get_by_role("link", name="Settings").click()
+
+    # Open settings (renamed to "Tune Ranking")
+    page.locator("#open-settings").click()
     
     # Wait for settings modal to be visible
     expect(page.locator("#modal-settings")).to_be_visible()
@@ -69,13 +69,13 @@ def test_theme_url_persistence(page: Page, server_url):
     """Verify loading page with theme param applies correct theme."""
     # Load page with Studio 808 theme
     page.goto(f"{server_url}?theme=studio808")
-    
+
     html = page.locator("html")
     expect(html).to_have_attribute("data-style", "808")
     expect(html).to_have_attribute("data-theme", "dark")
-    
-    # Verify settings dropdown matches
-    page.get_by_role("link", name="Settings").click()
+
+    # Verify settings dropdown matches (renamed to "Tune Ranking")
+    page.locator("#open-settings").click()
     expect(page.locator("#modal-settings")).to_be_visible()
     
     theme_select = page.locator("#settings-content select").last
