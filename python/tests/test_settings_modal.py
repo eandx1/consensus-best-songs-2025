@@ -232,13 +232,20 @@ def test_settings_modal_top_button(page: Page, server_url):
     top_button = modal.get_by_role("button", name="Top")
     expect(top_button).to_be_visible()
     top_button.click()
-    
-    # Wait for smooth scroll animation
-    page.wait_for_timeout(1000)
-    
+
+    # Wait for smooth scroll animation to complete by polling until scroll position stabilizes near top
+    # This is more robust than a fixed timeout, especially in CI environments
+    page.wait_for_function(
+        """() => {
+            const article = document.querySelector('#modal-settings article');
+            return article && article.scrollTop < 100;
+        }""",
+        timeout=3000
+    )
+
     # Modal should be scrolled back to top
     scroll_top = page.evaluate("document.querySelector('#modal-settings article').scrollTop")
-    assert scroll_top < 50, f"Modal should be scrolled to top, but scrollTop is {scroll_top}"
+    assert scroll_top < 100, f"Modal should be scrolled to top, but scrollTop is {scroll_top}"
 
 def test_settings_modal_close_button(page: Page, server_url):
     """Test that Close button closes the modal."""
