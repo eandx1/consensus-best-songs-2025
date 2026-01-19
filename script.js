@@ -1070,27 +1070,23 @@ function renderYouTubeUI(count = 50, preference = "videos") {
   let html = `
         <fieldset>
             <legend>Media preference</legend>
-            <div class="grid">
-                <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">
-                    Music Videos
-                </button>
-                <button class="${getBtnClass(preference === "audio")}" onclick="renderYouTubeUI(${count}, 'audio')">
-                    Audio Only
-                </button>
+            <div class="chip-group">
+                <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">Music Videos</button>
+                <button class="${getBtnClass(preference === "audio")}" onclick="renderYouTubeUI(${count}, 'audio')">Audio Only</button>
             </div>
         </fieldset>
 
         <fieldset>
-            <legend>Include top N songs</legend>
+            <legend>Songs to include</legend>
             <div class="chip-group">
-                <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">10</button>
-                <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">25</button>
-                <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">50</button>
+                <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">Top 10</button>
+                <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">Top 25</button>
+                <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">Top 50</button>
             </div>
         </fieldset>
 
         <p>
-            Ready to play <strong>${validSongs.length}</strong> songs on YouTube.
+            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube.
             ${
               missingSongs.length > 0
                 ? `
@@ -1147,18 +1143,18 @@ function renderDownloadUI(count = 100) {
   // HTML Generation
   let html = `
         <fieldset>
-            <legend>Include top N songs</legend>
+            <legend>Songs to include</legend>
             <div class="chip-group">
-                <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">25</button>
-                <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">100</button>
-                <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">200</button>
-                <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">500</button>
-                <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All (${totalSongs})</button>
+                <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">Top 25</button>
+                <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">Top 100</button>
+                <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">Top 200</button>
+                <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">Top 500</button>
+                <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All</button>
             </div>
         </fieldset>
 
         <p>
-            Ready to download <strong>${songsToExport.length}</strong> songs as CSV.
+            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV.
             ${
               songsMissingIsrc.length > 0
                 ? `
