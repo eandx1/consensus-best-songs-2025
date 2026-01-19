@@ -1148,12 +1148,10 @@ function renderDownloadUI(count = 100) {
   let html = `
         <fieldset>
             <legend>Include top N songs</legend>
-            <div class="grid">
+            <div class="chip-group">
                 <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">25</button>
                 <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">100</button>
                 <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">200</button>
-            </div>
-            <div class="grid">
                 <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">500</button>
                 <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All (${totalSongs})</button>
             </div>
