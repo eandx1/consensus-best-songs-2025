@@ -117,18 +117,23 @@ def test_youtube_count_selection(page: Page, server_url):
 
 
 def test_youtube_missing_ids_warning(page: Page, server_url):
-    """Test that missing IDs warning displays correctly."""
+    """Test that missing IDs warning displays correctly with song details."""
     page.goto(server_url)
     page.locator("#open-youtube").click()
 
     modal = page.locator("#modal-youtube")
     content = modal.locator("#youtube-content")
 
-    # Select a larger count to get songs without YouTube IDs
-    # Test data has one song without YouTube IDs (50 is default, so no click needed)
-    # Should show warning for song without YouTube ID
+    # Test data has one song without YouTube IDs: "Freddie Gibbs - It's Your Anniversary"
+    # Default is Top 50, which should include this song
+
+    # Should show warning icon and message
     expect(content).to_contain_text("⚠️")
-    expect(content).to_contain_text("missing YouTube IDs will be skipped")
+    expect(content).to_contain_text("1 song missing YouTube IDs will be skipped")
+
+    # Should list the specific song with artist and name
+    expect(content).to_contain_text("Freddie Gibbs")
+    expect(content).to_contain_text("It's Your Anniversary")
 
 
 def test_youtube_url_format(page: Page, server_url):
@@ -220,17 +225,23 @@ def test_download_count_selection(page: Page, server_url):
 
 
 def test_download_isrc_warning(page: Page, server_url):
-    """Test that ISRC warning is shown for songs with : in ID."""
+    """Test that ISRC warning is shown for songs with : in ID, listing song details."""
     page.goto(server_url)
     page.locator("#open-download").click()
 
     modal = page.locator("#modal-download")
     content = modal.locator("#download-content")
 
-    # Check if ISRC warning is displayed (test data may or may not have songs without ISRC)
-    # The warning should appear if any songs have ":" in their ID
-    # This test just verifies the summary section exists
-    expect(content).to_contain_text("Ready to download")
+    # Test data has one song without ISRC (has ":" in ID): "Freddie Gibbs - It's Your Anniversary"
+    # Default is Top 100, which should include this song
+
+    # Should show warning icon and message
+    expect(content).to_contain_text("⚠️")
+    expect(content).to_contain_text("1 song missing ISRC codes")
+
+    # Should list the specific song with artist and name
+    expect(content).to_contain_text("Freddie Gibbs")
+    expect(content).to_contain_text("It's Your Anniversary")
 
 
 def test_download_button_triggers_download(page: Page, server_url):
