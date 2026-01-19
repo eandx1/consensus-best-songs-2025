@@ -112,6 +112,89 @@ const clamp = (value, min, max) => {
 };
 
 /**
+ * Check if any ranking setting differs from defaults
+ * Returns true if ANY parameter is customized
+ */
+function isRankingCustomized() {
+  if (!APP_DATA || !STATE.config) return false;
+
+  const defaults = APP_DATA.config;
+  const current = STATE.config;
+  const TOLERANCE = 0.0001;
+
+  // Check ranking parameters
+  const rankingKeys = [
+    "decay_mode",
+    "k_value",
+    "p_exponent",
+    "consensus_boost",
+    "provocation_boost",
+    "cluster_boost",
+    "cluster_threshold",
+    "rank1_bonus",
+    "rank2_bonus",
+    "rank3_bonus",
+  ];
+
+  for (const key of rankingKeys) {
+    if (key === "decay_mode") {
+      if (current.ranking[key] !== defaults.ranking[key]) return true;
+    } else {
+      if (Math.abs(current.ranking[key] - defaults.ranking[key]) > TOLERANCE)
+        return true;
+    }
+  }
+
+  // Check source weights and shadow ranks
+  for (const srcKey of Object.keys(current.sources)) {
+    const currentSrc = current.sources[srcKey];
+    const defaultSrc = defaults.sources[srcKey];
+
+    // Check weight
+    if (Math.abs(currentSrc.weight - defaultSrc.weight) > TOLERANCE) return true;
+
+    // Check shadow rank for unranked sources
+    if (
+      currentSrc.type === "unranked" &&
+      Math.abs(currentSrc.shadow_rank - defaultSrc.shadow_rank) > TOLERANCE
+    )
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * Update the Tune button to show "Tuned" with sliders icon when customized
+ * Also updates the modal subtitle if the modal is open
+ */
+function updateTuneButton() {
+  const btn = document.getElementById("open-tune");
+  if (!btn) return;
+
+  const isCustomized = isRankingCustomized();
+
+  if (isCustomized) {
+    btn.innerHTML = `<svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg>Tuned`;
+    btn.classList.add("tuned");
+  } else {
+    btn.innerHTML = `<svg class="nav-icon"><use href="#icon-sliders"></use></svg>Tune`;
+    btn.classList.remove("tuned");
+  }
+
+  // Also update the modal subtitle if the modal is open
+  const modalSubtitle = document.getElementById("tune-modal-subtitle");
+  if (modalSubtitle) {
+    if (isCustomized) {
+      modalSubtitle.innerHTML = `<svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> Tuned`;
+      modalSubtitle.style.display = "";
+    } else {
+      modalSubtitle.style.display = "none";
+    }
+  }
+}
+
+/**
  * RANKING ENGINE (Ported from Python)
  * Direct scoring with anchor-rank decay functions.
  */
@@ -529,6 +612,7 @@ function render() {
     .join("");
 
   updateLoadMoreButton();
+  updateTuneButton();
 }
 
 function updateLoadMoreButton() {
@@ -1054,6 +1138,19 @@ window.showStats = (idx) => {
  * YOUTUBE UI - Listen on YouTube modal
  */
 function renderYouTubeUI(count = 50, preference = "videos") {
+  // Update modal subtitle based on customization state
+  const modalSubtitle = document.querySelector(
+    "#modal-youtube > article > header hgroup p",
+  );
+  if (modalSubtitle) {
+    if (isRankingCustomized()) {
+      modalSubtitle.innerHTML = `Play the top songs on YouTube with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> tuned</strong> ranking`;
+    } else {
+      modalSubtitle.textContent =
+        "Play the top songs as an unnamed playlist on YouTube";
+    }
+  }
+
   const songsToExport = STATE.songs.slice(0, count);
   const validSongs = [];
   const missingSongs = [];
@@ -1144,6 +1241,19 @@ window.renderYouTubeUI = renderYouTubeUI;
 let downloadState = { downloaded: false };
 
 function renderDownloadUI(count = 100) {
+  // Update modal subtitle based on customization state
+  const modalSubtitle = document.querySelector(
+    "#modal-download > article > header hgroup p",
+  );
+  if (modalSubtitle) {
+    if (isRankingCustomized()) {
+      modalSubtitle.innerHTML = `Download the top songs with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> tuned</strong> ranking as CSV`;
+    } else {
+      modalSubtitle.textContent =
+        "Download as CSV and import to the streaming service of your choice";
+    }
+  }
+
   const songsToExport = STATE.songs.slice(0, count);
 
   // Find songs missing valid ISRCs (id that contains ":" or is missing)
@@ -1220,8 +1330,8 @@ function renderDownloadUI(count = 100) {
 function escapeCSVField(field) {
   if (field === null || field === undefined) return "";
   const str = String(field);
-  // If the field contains comma, quote, or newline, wrap in quotes and escape quotes
-  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+  // If the field contains comma, quote, newline, or carriage return, wrap in quotes and escape quotes
+  if (str.includes(",") || str.includes('"') || str.includes("\n") || str.includes("\r")) {
     return '"' + str.replace(/"/g, '""') + '"';
   }
   return str;
@@ -1283,6 +1393,9 @@ window.downloadCSV = downloadCSV;
 function renderSettingsUI() {
   const { ranking, sources } = STATE.config;
   const defaults = APP_DATA.config;
+
+  // Update button and modal header based on customization state
+  updateTuneButton();
 
   let html = "";
 

@@ -36,6 +36,8 @@ Think of the Pico CSS website, the IntelliJ Darcula theme, and the Solarized Dar
 
 - Site title: "Consensus Best Songs 2025"
 - "Tune" button to open ranking configuration modal
+  - Shows sliders icon with "Tune" text by default
+  - Changes to "Tuned" with highlighted styling when any ranking parameter differs from defaults (indicates customized ranking)
 - Hamburger menu (☰) containing:
   - "Listen on YouTube" - opens YouTube playlist modal
   - "Download playlist" - opens CSV download modal
@@ -85,7 +87,7 @@ Six semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
 ### Tune Ranking Modal
 
-Modal header shows "Tune Ranking". Contains three sections:
+Modal header shows "Tune Ranking". When settings are customized (differ from defaults), a subtitle appears below the title showing "Tuned" with sliders icon to indicate active customization. Contains three sections:
 
 **Ranking Parameters** (appears first):
 
@@ -162,7 +164,7 @@ Displays scoring details in order:
 
 ### YouTube Modal
 
-Modal header shows "Listen on YouTube" with subtitle "Play the top songs as an unnamed playlist on YouTube".
+Modal header shows "Listen on YouTube" with subtitle "Play the top songs as an unnamed playlist on YouTube". When ranking settings are customized, the subtitle changes to mention "your tuned ranking" with sliders icon.
 
 Allows users to generate a YouTube playlist URL from the current ranking:
 
@@ -184,7 +186,7 @@ Allows users to generate a YouTube playlist URL from the current ranking:
 
 ### Download Modal
 
-Modal header shows "Download playlist" with subtitle "Download as CSV and import to the streaming service of your choice".
+Modal header shows "Download playlist" with subtitle "Download as CSV and import to the streaming service of your choice". When ranking settings are customized, the subtitle changes to mention "your tuned ranking" with sliders icon.
 
 Allows users to export the current ranking as a CSV file:
 
@@ -327,6 +329,17 @@ The `lite-youtube` play button is customized via `::part(playButton)`:
 - Use white on gray
 - Opacity: 0.25 default, 1.0 on hover
 - Slight scale-up on hover for feedback
+
+## Tuned Badge Indicator
+
+The "Tuned" badge appears throughout the UI when ranking settings differ from defaults:
+
+- **Detection**: Compares current URL parameters against default values from `data.json`
+- **Tune button**: Adds `.tuned` class, changes text to "Tuned" with sliders icon
+- **Modal subtitles**: Tune, YouTube, and Download modals show "tuned" indicator with sliders icon
+- **Styling**: Uses `.tuned-text` class with theme-aware highlight color (primary color in dark mode)
+- **Icon**: Uses `#icon-sliders` SVG symbol via `<use>` element
+- **Reset behavior**: Clicking "Reset" in Tune modal clears all customizations and removes tuned state
 
 ## About Modal Styling
 
@@ -506,3 +519,8 @@ The test suite covers:
   - CSV export with proper headers and data
   - Warning messages for missing YouTube IDs or ISRC codes
 - **Theme Switching**: Verifies theme selector in hamburger menu works correctly
+- **Tuned Badge**: Validates tuned state indicators:
+  - Tune button state transitions (default vs tuned)
+  - Modal subtitle visibility and content based on customization
+  - Reset behavior clearing tuned state
+  - Slider and mode changes triggering tuned state
