@@ -16,7 +16,7 @@ def test_youtube_modal_opens_without_feature_flag(page: Page, server_url):
     # Desktop link should be visible
     youtube_link = page.locator("#open-youtube")
     expect(youtube_link).to_be_visible()
-    expect(youtube_link).to_have_text("Listen on YouTube")
+    expect(youtube_link).to_have_text("Listen")
 
 
 def test_youtube_modal_opens(page: Page, server_url):
@@ -136,6 +136,24 @@ def test_youtube_missing_ids_warning(page: Page, server_url):
     expect(content).to_contain_text("It's Your Anniversary")
 
 
+def test_youtube_all_songs_available(page: Page, server_url):
+    """Test that success message shows when all requested songs have YouTube IDs."""
+    page.goto(server_url)
+    page.locator("#open-youtube").click()
+
+    modal = page.locator("#modal-youtube")
+    content = modal.locator("#youtube-content")
+
+    # Select Top 10 - in test data, the song without YouTube IDs (Freddie Gibbs)
+    # ranks lower than 10, so all top 10 should be available
+    content.get_by_role("button", name="Top 10").click()
+    page.wait_for_timeout(100)
+
+    # Should show success message, not warning
+    expect(content).to_contain_text("✓ All requested songs are available")
+    expect(content).not_to_contain_text("⚠️")
+
+
 def test_youtube_url_format(page: Page, server_url):
     """Test that the YouTube URL is correctly formatted."""
     page.goto(server_url)
@@ -181,7 +199,7 @@ def test_download_modal_opens(page: Page, server_url):
 
     modal = page.locator("#modal-download")
     expect(modal).to_be_visible()
-    expect(modal.locator("h3")).to_have_text("Download Playlist")
+    expect(modal.locator("h3")).to_have_text("Download playlist")
 
 
 def test_download_modal_default_state(page: Page, server_url):
@@ -242,6 +260,12 @@ def test_download_isrc_warning(page: Page, server_url):
     # Should list the specific song with artist and name
     expect(content).to_contain_text("Freddie Gibbs")
     expect(content).to_contain_text("It's Your Anniversary")
+
+
+# Note: test_download_all_songs_have_isrc is not included because the Download modal's
+# minimum count option is 25, and the test data has Freddie Gibbs (which lacks ISRC)
+# ranking within the top 25. The YouTube modal "all available" test validates the
+# success message pattern, so this scenario is covered there.
 
 
 def test_download_button_triggers_download(page: Page, server_url):
@@ -316,7 +340,7 @@ def test_download_next_steps_after_download(page: Page, server_url):
 
     # Check for Next Steps
     footer = modal.locator("footer")
-    expect(footer).to_contain_text("Next Steps")
+    expect(footer).to_contain_text("Next step")
     # Links have role="button" due to Pico CSS styling
     expect(footer.locator("a", has_text="Import via Soundiiz")).to_be_visible()
     expect(footer.locator("a", has_text="Import via TuneMyMusic")).to_be_visible()
@@ -513,7 +537,7 @@ def test_tune_ranking_always_visible(page: Page, server_url):
 
     desktop_tune = page.locator("#open-settings")
     expect(desktop_tune).to_be_visible()
-    expect(desktop_tune).to_contain_text("Tune Ranking")
+    expect(desktop_tune).to_contain_text("Tune")
 
     # Mobile
     page.set_viewport_size({"width": 375, "height": 667})

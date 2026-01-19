@@ -1086,7 +1086,7 @@ function renderYouTubeUI(count = 50, preference = "videos") {
         </fieldset>
 
         <p>
-            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube.
+            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube
             ${
               missingSongs.length > 0
                 ? `
@@ -1095,7 +1095,7 @@ function renderYouTubeUI(count = 50, preference = "videos") {
                     ${missingSongs.map((s) => `<li>${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
                 </ul>
             `
-                : '<br><small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'
+                : '<br><small style="color: var(--pico-ins-color);">✓ All requested songs are available</small>'
             }
         </p>
     `;
@@ -1154,7 +1154,7 @@ function renderDownloadUI(count = 100) {
         </fieldset>
 
         <p>
-            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV.
+            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file
             ${
               songsMissingIsrc.length > 0
                 ? `
@@ -1163,7 +1163,7 @@ function renderDownloadUI(count = 100) {
                     ${songsMissingIsrc.map((s) => `<li>${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
                 </ul>
             `
-                : '<br><small style="color: var(--pico-ins-color);">✓ All songs have ISRC codes.</small>'
+                : '<br><small style="color: var(--pico-ins-color);">✓ All songs have ISRC codes</small>'
             }
         </p>
     `;
@@ -1181,7 +1181,7 @@ function renderDownloadUI(count = 100) {
       if (downloadState.downloaded) {
         // Show next steps after download
         footer.innerHTML = `
-                    <p style="margin-bottom: var(--pico-spacing);"><strong>Next Steps:</strong> Import your playlist to a streaming service</p>
+                    <p style="margin-bottom: var(--pico-spacing);"><strong>Next step:</strong> Import your playlist to a streaming service</p>
                     <div class="grid" style="margin-bottom: var(--pico-spacing);">
                         <a href="https://soundiiz.com/transfer-playlist-and-favorites" role="button" class="outline" target="_blank">Import via Soundiiz</a>
                         <a href="https://www.tunemymusic.com/transfer" role="button" class="outline" target="_blank">Import via TuneMyMusic</a>
