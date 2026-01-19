@@ -168,6 +168,13 @@
           var(--pico-secondary),
           transparent 70%
         );
+
+        /* A soft blue-gray wash for the menu row */
+        --pico-nav-link-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 90%
+        );
       }
 
       /* THEME: Light (Clean Light Mode) */
@@ -233,6 +240,13 @@
         --pico-muted-border-color: #d1d5db;
         --pico-range-border-color: #e0e4ff;
         --pico-table-row-stripped-background-color: #f5f7ff;
+
+        /* A soft purple wash for the menu row */
+        --pico-nav-link-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 92%
+        );
       }
 
       /* Revamped Light1 Overrides using Pico variables */
@@ -467,6 +481,37 @@
       dialog article footer.modal-controls button:not(:first-of-type) {
         margin: 0; /* Override Pico CSS's horizontal button margins */
       }
+
+/* Target the wrapper specifically within the modal footer */
+footer.modal-controls .import-services-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack for mobile */
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: var(--pico-spacing);
+}  
+
+/* 1. Ensure the anchor 'buttons' stretch to match the real buttons */
+footer.modal-controls .import-services-wrapper a[role="button"] {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+/* 2. Desktop: Switch to side-by-side row */
+@media (min-width: 1025px) {
+  footer.modal-controls .import-services-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  footer.modal-controls .import-services-wrapper a[role="button"] {
+    width: auto;
+    min-width: 14rem; /* Matches the visual weight of your 'Download Again' button */
+  }
+}
+
 
       /* Enhanced Global Button Depress */
       button:active,
@@ -985,80 +1030,102 @@
 
         /* Inherits the current text color automatically */
         fill: currentColor;
-                
+
         /* Fixes vertical alignment issues in some browsers */
         flex-shrink: 0;
         display: inline-block;
       }
 
-      /* Hamburger menu dropdown */
+      /* Hamburger dropdown menu - Polished & Cohesive */
       .hamburger-menu {
         position: absolute;
         top: 100%;
         right: 0;
+        display: flex;
+        flex-direction: column;
         background: var(--pico-card-background-color);
-        border: 1px solid var(--pico-muted-border-color);
+        border: 0.0625rem solid var(--pico-muted-border-color); /* 1px equivalent */
         border-radius: var(--pico-border-radius);
-        padding: 0.5rem 0;
+        padding: 0;
         z-index: 1000;
-        min-width: 200px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        min-width: 15rem; /* Ensures no awkward text wrapping */
+        box-shadow: var(--pico-card-box-shadow);
+        overflow: hidden; /* Clips any hover highlights from bleeding out */
       }
 
-      .hamburger-menu[hidden] {
-        display: none;
-      }
-
-      /* Ensure the nav list stretches to fill the dropdown width */
       .hamburger-menu nav {
         padding: 0;
         margin: 0;
       }
 
       .hamburger-menu nav ul {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 0;
         margin: 0;
-      }
-
-      .hamburger-menu nav li {
         padding: 0;
       }
 
-      /* Make the links feel like substantial menu items */
+      /* Unified hit areas and distinct hover for links */
       .hamburger-menu nav li a {
-        padding: 0.75rem 1rem;
+        padding: 1rem 1.25rem;
         display: block;
         border-radius: 0;
         color: var(--pico-color);
         text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
       }
 
+      /* Tweak for 808 menu items to feel like individual 'recessed' buttons */
+      [data-style="808"] .hamburger-menu nav li {
+        border-bottom: 1px solid #1a1a1a; /* Dark hardware-style divider */
+      }
+
+      /* Ensure the hover highlight stops exactly at the divider border */
+      .hamburger-menu nav ul li:last-child a {
+        /* This prevents the 'About' highlight from overlapping the border below */
+        border-radius: 0;
+      }
+
+      [data-style="808"] .hamburger-menu nav li:last-child {
+        border-bottom: none; /* Let the main theme section border take over */
+      }
+
+      [data-style="808"] .hamburger-menu nav li a {
+        /* Slightly tighter padding for that recessed hardware button feel */
+        padding: 0.75rem 1.25rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+
+      /* The 'Middle Ground' Hover: Visible row highlight */
       .hamburger-menu nav li a:hover {
+        /* This uses a soft tint of your theme's primary color or gray */
         background-color: var(--pico-nav-link-hover-background);
+        color: var(--pico-primary-hover);
       }
 
-      .hamburger-menu hr {
-        margin: 0.5rem 0;
-        border-color: var(--pico-muted-border-color);
-      }
-
+      /* The divider is now the top border of this section */
       .menu-theme-section {
-        padding: 0.5rem 1rem;
+        padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+        background-color: var(--pico-card-sectioning-background-color);
+        border-top: 0.0625rem solid var(--pico-muted-border-color);
+        margin-top: 0; /* Ensures it sits flush with the nav above it */
       }
 
       .menu-theme-section label {
         display: block;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
         color: var(--pico-muted-color);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
       }
 
       .menu-theme-section select {
-        width: 100%;
         margin-bottom: 0;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
+        height: auto;
+        padding: 0.5rem 2rem 0.5rem 0.75rem;
       }
 
       /* Header container needs relative positioning for absolute menu */
@@ -1328,10 +1395,10 @@
         stroke-linecap="round"
         stroke-linejoin="round"
       >
-        <path d="M14 17H5"/>
-        <path d="M19 7h-9"/>
-        <circle cx="17" cy="17" r="3"/>
-        <circle cx="7" cy="7" r="3"/>
+        <path d="M14 17H5" />
+        <path d="M19 7h-9" />
+        <circle cx="17" cy="17" r="3" />
+        <circle cx="7" cy="7" r="3" />
       </symbol>
     </svg>
 
@@ -1343,10 +1410,7 @@
         <!-- Main navigation (unified for desktop and mobile) -->
         <ul class="nav-main">
           <li>
-            <button
-              id="open-tune"
-              class="outline secondary"
-            >
+            <button id="open-tune" class="outline secondary">
               <svg class="nav-icon"><use href="#icon-sliders"></use></svg>Tune
             </button>
           </li>
@@ -1372,7 +1436,6 @@
             <li><a href="#" id="open-about-menu">About</a></li>
           </ul>
         </nav>
-        <hr>
         <div class="menu-theme-section">
           <label for="menu-theme-select">Theme</label>
           <select id="menu-theme-select">
@@ -1484,7 +1547,9 @@
           ></button>
           <hgroup>
             <h3>Download playlist</h3>
-            <p>Download as CSV and import to the streaming service of your choice</p>
+            <p>
+              Download as CSV and import to the streaming service of your choice
+            </p>
           </hgroup>
         </header>
         <div id="download-content">
