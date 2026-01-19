@@ -529,6 +529,29 @@ def test_hamburger_menu_closes_on_outside_click(page: Page, server_url):
     expect(hamburger_menu).to_be_hidden()
 
 
+def test_hamburger_menu_closes_on_escape_key(page: Page, server_url):
+    """Test that pressing Escape closes the hamburger menu."""
+    page.goto(server_url)
+
+    hamburger = page.locator("#hamburger-btn")
+    hamburger_menu = page.locator("#hamburger-menu")
+
+    # Open menu
+    hamburger.click()
+    expect(hamburger_menu).to_be_visible()
+    expect(hamburger).to_have_attribute("aria-expanded", "true")
+
+    # Press Escape
+    page.keyboard.press("Escape")
+
+    # Menu should close
+    expect(hamburger_menu).to_be_hidden()
+    expect(hamburger).to_have_attribute("aria-expanded", "false")
+
+    # Focus should return to hamburger button
+    expect(hamburger).to_be_focused()
+
+
 def test_tune_opens_modal(page: Page, server_url):
     """Test that Tune button opens the Tune modal."""
     page.goto(server_url)
