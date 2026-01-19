@@ -1066,11 +1066,9 @@ function renderYouTubeUI(count = 50, preference = "videos") {
   // Helper to generate button classes
   const getBtnClass = (isActive) => (isActive ? "" : "outline secondary");
 
-  const preferenceName = preference === "audio" ? "Audio Only" : "Music Videos";
-
   // HTML Generation
   let html = `
-        <label>Preference</label>
+        <label>Media Preference</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
             <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">
                 Music Videos
@@ -1080,17 +1078,17 @@ function renderYouTubeUI(count = 50, preference = "videos") {
             </button>
         </div>
 
-        <label>Count</label>
+        <label>Number of Songs</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">Top 10</button>
-            <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">Top 25</button>
-            <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">Top 50</button>
+            <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">10</button>
+            <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">25</button>
+            <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">50</button>
         </div>
 
         <article style="background-color: var(--pico-card-background-color); margin-bottom: var(--pico-spacing);">
             <header><strong>Summary</strong></header>
             <p style="margin-bottom: ${missingSongs.length > 0 ? "0.5rem" : "0"}">
-                Ready to play <strong>${validSongs.length}</strong> songs (${preferenceName}) on YouTube.
+                Ready to play <strong>${validSongs.length}</strong> songs on YouTube.
             </p>
             ${
               missingSongs.length > 0
@@ -1105,8 +1103,6 @@ function renderYouTubeUI(count = 50, preference = "videos") {
                 : '<small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'
             }
         </article>
-
-        <p><small>Note: You will be redirected to YouTube to listen. You can save as a playlist from there.</small></p>
     `;
 
   // Inject into content
@@ -1152,14 +1148,14 @@ function renderDownloadUI(count = 100) {
 
   // HTML Generation
   let html = `
-        <label>Count</label>
+        <label>Number of Songs</label>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">Top 25</button>
-            <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">Top 100</button>
-            <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">Top 200</button>
+            <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">25</button>
+            <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">100</button>
+            <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">200</button>
         </div>
         <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">Top 500</button>
+            <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">500</button>
             <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All (${totalSongs})</button>
         </div>
 
@@ -1178,8 +1174,6 @@ function renderDownloadUI(count = 100) {
                 : '<small style="color: var(--pico-ins-color);">✓ All songs have ISRC codes.</small>'
             }
         </article>
-
-        <p><small>The CSV includes: title, artist, ISRC, Spotify ID, YouTube IDs, Apple Music URL, and more.</small></p>
     `;
 
   // Inject into content
@@ -1197,8 +1191,8 @@ function renderDownloadUI(count = 100) {
         footer.innerHTML = `
                     <p style="margin-bottom: var(--pico-spacing);"><strong>Next Steps:</strong> Import your playlist to a streaming service</p>
                     <div class="grid" style="margin-bottom: var(--pico-spacing);">
-                        <a href="https://soundiiz.com/tutorial/csv-to-spotify" role="button" class="outline" target="_blank">Import to Soundiiz</a>
-                        <a href="https://www.tunemymusic.com/transfer/file-to-spotify" role="button" class="outline" target="_blank">Import to TuneMyMusic</a>
+                        <a href="https://soundiiz.com/transfer-playlist-and-favorites" role="button" class="outline" target="_blank">Import via Soundiiz</a>
+                        <a href="https://www.tunemymusic.com/transfer" role="button" class="outline" target="_blank">Import via TuneMyMusic</a>
                     </div>
                     <button onclick="downloadCSV(${count}); return false;">Download Again</button>
                     <button class="secondary close-modal">Close</button>

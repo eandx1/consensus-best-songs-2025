@@ -50,17 +50,17 @@ def test_youtube_modal_default_state(page: Page, server_url):
     expect(audio_btn).to_have_class(re.compile("outline"))
     expect(audio_btn).to_have_class(re.compile("secondary"))
 
-    # Check count buttons - Top 50 should be selected by default
-    top10_btn = content.get_by_role("button", name="Top 10")
-    top25_btn = content.get_by_role("button", name="Top 25")
-    top50_btn = content.get_by_role("button", name="Top 50")
+    # Check count buttons - 50 should be selected by default
+    btn_10 = content.get_by_role("button", name="10", exact=True)
+    btn_25 = content.get_by_role("button", name="25", exact=True)
+    btn_50 = content.get_by_role("button", name="50", exact=True)
 
-    expect(top10_btn).to_have_class(re.compile("outline"))
-    expect(top25_btn).to_have_class(re.compile("outline"))
-    expect(top50_btn).not_to_have_class(re.compile("outline"))
+    expect(btn_10).to_have_class(re.compile("outline"))
+    expect(btn_25).to_have_class(re.compile("outline"))
+    expect(btn_50).not_to_have_class(re.compile("outline"))
 
-    # Check that summary shows Music Videos preference
-    expect(content).to_contain_text("Music Videos")
+    # Check that Media Preference label exists
+    expect(content).to_contain_text("Media Preference")
 
 
 def test_youtube_preference_toggle(page: Page, server_url):
@@ -99,17 +99,17 @@ def test_youtube_count_selection(page: Page, server_url):
     modal = page.locator("#modal-youtube")
     content = modal.locator("#youtube-content")
 
-    # Click Top 10
-    top10_btn = content.get_by_role("button", name="Top 10")
-    top10_btn.click()
+    # Click 10
+    btn_10 = content.get_by_role("button", name="10", exact=True)
+    btn_10.click()
     page.wait_for_timeout(100)
 
     # Summary should show 10 songs
     expect(content).to_contain_text("10")
 
-    # Click Top 25
-    top25_btn = content.get_by_role("button", name="Top 25")
-    top25_btn.click()
+    # Click 25
+    btn_25 = content.get_by_role("button", name="25", exact=True)
+    btn_25.click()
     page.wait_for_timeout(100)
 
     # Summary should show 24 or 25 songs (depending on test data)
@@ -125,11 +125,7 @@ def test_youtube_missing_ids_warning(page: Page, server_url):
     content = modal.locator("#youtube-content")
 
     # Select a larger count to get songs without YouTube IDs
-    # Test data has one song without YouTube IDs
-    top50_btn = content.get_by_role("button", name="Top 50")
-    top50_btn.click()
-    page.wait_for_timeout(100)
-
+    # Test data has one song without YouTube IDs (50 is default, so no click needed)
     # Should show warning for song without YouTube ID
     expect(content).to_contain_text("⚠️")
     expect(content).to_contain_text("missing YouTube IDs will be skipped")
@@ -191,14 +187,14 @@ def test_download_modal_default_state(page: Page, server_url):
     modal = page.locator("#modal-download")
     content = modal.locator("#download-content")
 
-    # Check count buttons - Top 100 should be selected by default
-    top25_btn = content.get_by_role("button", name="Top 25")
-    top100_btn = content.get_by_role("button", name="Top 100")
-    top200_btn = content.get_by_role("button", name="Top 200")
+    # Check count buttons - 100 should be selected by default
+    btn_25 = content.get_by_role("button", name="25", exact=True)
+    btn_100 = content.get_by_role("button", name="100", exact=True)
+    btn_200 = content.get_by_role("button", name="200", exact=True)
 
-    expect(top25_btn).to_have_class(re.compile("outline"))
-    expect(top100_btn).not_to_have_class(re.compile("outline"))
-    expect(top200_btn).to_have_class(re.compile("outline"))
+    expect(btn_25).to_have_class(re.compile("outline"))
+    expect(btn_100).not_to_have_class(re.compile("outline"))
+    expect(btn_200).to_have_class(re.compile("outline"))
 
     # Should show download CSV button (not "Download Again")
     footer = modal.locator("footer")
@@ -213,9 +209,9 @@ def test_download_count_selection(page: Page, server_url):
     modal = page.locator("#modal-download")
     content = modal.locator("#download-content")
 
-    # Click Top 25
-    top25_btn = content.get_by_role("button", name="Top 25")
-    top25_btn.click()
+    # Click 25
+    btn_25 = content.get_by_role("button", name="25", exact=True)
+    btn_25.click()
     page.wait_for_timeout(100)
 
     # Summary should show 25 songs
@@ -264,8 +260,8 @@ def test_download_csv_content(page: Page, server_url):
     modal = page.locator("#modal-download")
     content = modal.locator("#download-content")
 
-    # Select Top 25 for smaller download
-    content.get_by_role("button", name="Top 25").click()
+    # Select 25 for smaller download
+    content.get_by_role("button", name="25", exact=True).click()
     page.wait_for_timeout(100)
 
     # Start waiting for download before clicking
@@ -311,8 +307,8 @@ def test_download_next_steps_after_download(page: Page, server_url):
     footer = modal.locator("footer")
     expect(footer).to_contain_text("Next Steps")
     # Links have role="button" due to Pico CSS styling
-    expect(footer.locator("a", has_text="Import to Soundiiz")).to_be_visible()
-    expect(footer.locator("a", has_text="Import to TuneMyMusic")).to_be_visible()
+    expect(footer.locator("a", has_text="Import via Soundiiz")).to_be_visible()
+    expect(footer.locator("a", has_text="Import via TuneMyMusic")).to_be_visible()
     expect(footer.get_by_role("button", name="Download Again")).to_be_visible()
 
 
