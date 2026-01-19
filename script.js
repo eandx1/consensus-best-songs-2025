@@ -1146,35 +1146,32 @@ function renderDownloadUI(count = 100) {
 
   // HTML Generation
   let html = `
-        <label>Number of Songs</label>
-        <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">25</button>
-            <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">100</button>
-            <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">200</button>
-        </div>
-        <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">500</button>
-            <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All (${totalSongs})</button>
-        </div>
+        <fieldset>
+            <legend>Include top N songs</legend>
+            <div class="grid">
+                <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">25</button>
+                <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">100</button>
+                <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">200</button>
+            </div>
+            <div class="grid">
+                <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">500</button>
+                <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All (${totalSongs})</button>
+            </div>
+        </fieldset>
 
-        <article style="background-color: var(--pico-card-background-color); margin-bottom: var(--pico-spacing);">
-            <header><strong>Summary</strong></header>
-            <p style="margin-bottom: ${songsMissingIsrc.length > 0 ? "0.5rem" : "0"}">
-                Ready to download <strong>${songsToExport.length}</strong> songs as CSV.
-            </p>
+        <p>
+            Ready to download <strong>${songsToExport.length}</strong> songs as CSV.
             ${
               songsMissingIsrc.length > 0
                 ? `
-                <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
-                    <small>⚠️ ${songsMissingIsrc.length} ${songsMissingIsrc.length === 1 ? "song" : "songs"} missing ISRC codes (some import services may not find these):</small>
-                    <ul style="font-size: 0.8em; margin-bottom: 0;">
-                        ${songsMissingIsrc.map((s) => `<li>#${s.rank} ${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
-                    </ul>
-                </div>
+                <br><small style="color: var(--pico-del-color);">⚠️ ${songsMissingIsrc.length} ${songsMissingIsrc.length === 1 ? "song" : "songs"} missing ISRC codes (some import services may not find these):</small>
+                <ul style="font-size: 0.8em; margin-bottom: 0; color: var(--pico-del-color);">
+                    ${songsMissingIsrc.map((s) => `<li>${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
+                </ul>
             `
-                : '<small style="color: var(--pico-ins-color);">✓ All songs have ISRC codes.</small>'
+                : '<br><small style="color: var(--pico-ins-color);">✓ All songs have ISRC codes.</small>'
             }
-        </article>
+        </p>
     `;
 
   // Inject into content
