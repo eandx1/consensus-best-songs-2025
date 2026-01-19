@@ -42,7 +42,7 @@ let STATE = {
 const UI = {
   songList: document.getElementById("song-list"),
   loadMoreBtn: document.getElementById("load-more"),
-  settingsContent: document.getElementById("settings-content"),
+  tuneContent: document.getElementById("tune-content"),
   statsContent: document.getElementById("stats-content"),
   reviewsContent: document.getElementById("reviews-content"),
   youtubeContent: document.getElementById("youtube-content"),
@@ -583,18 +583,16 @@ async function init() {
     render();
   };
 
-  // Modal triggers - Settings (desktop and mobile)
-  const openSettingsDesktop = document.getElementById("open-settings");
-  const openSettingsMobile = document.getElementById("open-settings-mobile");
+  // Modal triggers - Tune (unified button for all viewports)
+  const openTuneBtn = document.getElementById("open-tune");
 
-  const openSettings = () => {
+  const openTune = () => {
     renderSettingsUI();
-    document.getElementById("modal-settings").showModal();
-    closeMobileMenu();
+    document.getElementById("modal-tune").showModal();
+    closeHamburgerMenu();
   };
 
-  if (openSettingsDesktop) openSettingsDesktop.onclick = openSettings;
-  if (openSettingsMobile) openSettingsMobile.onclick = openSettings;
+  if (openTuneBtn) openTuneBtn.onclick = openTune;
 
   document.getElementById("reset-defaults").onclick = () => {
     const currentTheme = STATE.config.theme; // Preserve current theme
@@ -650,74 +648,91 @@ async function init() {
     }
   });
 
-  // About modal (desktop and mobile)
-  const openAboutDesktop = document.getElementById("open-about");
-  const openAboutMobile = document.getElementById("open-about-mobile");
+  // About modal (via hamburger menu)
+  const openAboutMenu = document.getElementById("open-about-menu");
 
   const openAbout = () => {
     document.getElementById("modal-about").showModal();
-    closeMobileMenu();
+    closeHamburgerMenu();
   };
 
-  if (openAboutDesktop) openAboutDesktop.onclick = openAbout;
-  if (openAboutMobile) openAboutMobile.onclick = openAbout;
+  if (openAboutMenu) openAboutMenu.onclick = openAbout;
 
-  // YouTube modal (desktop and mobile)
-  const openYouTubeDesktop = document.getElementById("open-youtube");
-  const openYouTubeMobile = document.getElementById("open-youtube-mobile");
+  // YouTube modal (via hamburger menu)
+  const openYouTubeMenu = document.getElementById("open-youtube-menu");
 
   const openYouTube = () => {
     renderYouTubeUI();
     document.getElementById("modal-youtube").showModal();
-    closeMobileMenu();
+    closeHamburgerMenu();
   };
 
-  if (openYouTubeDesktop) openYouTubeDesktop.onclick = openYouTube;
-  if (openYouTubeMobile) openYouTubeMobile.onclick = openYouTube;
+  if (openYouTubeMenu) openYouTubeMenu.onclick = openYouTube;
 
-  // Download modal (desktop and mobile)
-  const openDownloadDesktop = document.getElementById("open-download");
-  const openDownloadMobile = document.getElementById("open-download-mobile");
+  // Download modal (via hamburger menu)
+  const openDownloadMenu = document.getElementById("open-download-menu");
 
   const openDownload = () => {
     downloadState.downloaded = false; // Reset download state each time modal opens
     renderDownloadUI();
     document.getElementById("modal-download").showModal();
-    closeMobileMenu();
+    closeHamburgerMenu();
   };
 
-  if (openDownloadDesktop) openDownloadDesktop.onclick = openDownload;
-  if (openDownloadMobile) openDownloadMobile.onclick = openDownload;
+  if (openDownloadMenu) openDownloadMenu.onclick = openDownload;
 
   // Hamburger menu toggle
   const hamburgerBtn = document.getElementById("hamburger-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
+  const hamburgerMenu = document.getElementById("hamburger-menu");
 
-  if (hamburgerBtn && mobileMenu) {
+  if (hamburgerBtn && hamburgerMenu) {
     hamburgerBtn.onclick = (e) => {
       e.stopPropagation();
-      const isOpen = !mobileMenu.hidden;
-      mobileMenu.hidden = isOpen;
+      const isOpen = !hamburgerMenu.hidden;
+      hamburgerMenu.hidden = isOpen;
       hamburgerBtn.setAttribute("aria-expanded", !isOpen);
     };
 
     // Close menu on outside click
     document.addEventListener("click", (e) => {
-      if (!mobileMenu.hidden && !mobileMenu.contains(e.target) && e.target !== hamburgerBtn) {
-        closeMobileMenu();
+      if (!hamburgerMenu.hidden && !hamburgerMenu.contains(e.target) && e.target !== hamburgerBtn) {
+        closeHamburgerMenu();
       }
     });
   }
+
+  // Initialize theme selector in hamburger menu
+  renderMenuThemeSelector();
 }
 
 /**
- * Helper function to close mobile menu
+ * Helper function to close hamburger menu
  */
-function closeMobileMenu() {
-  const mobileMenu = document.getElementById("mobile-menu");
+function closeHamburgerMenu() {
+  const hamburgerMenu = document.getElementById("hamburger-menu");
   const hamburgerBtn = document.getElementById("hamburger-btn");
-  if (mobileMenu) mobileMenu.hidden = true;
+  if (hamburgerMenu) hamburgerMenu.hidden = true;
   if (hamburgerBtn) hamburgerBtn.setAttribute("aria-expanded", "false");
+}
+
+/**
+ * Render theme selector in hamburger menu
+ */
+function renderMenuThemeSelector() {
+  const select = document.getElementById("menu-theme-select");
+  if (!select) return;
+
+  select.innerHTML = Object.entries(THEME_CONFIG)
+    .map(
+      ([key, config]) =>
+        `<option value="${key}" ${STATE.config.theme === key ? "selected" : ""}>${config.name}</option>`
+    )
+    .join("");
+
+  select.onchange = (e) => {
+    applyTheme(e.target.value);
+    updateURL(STATE.config);
+  };
 }
 
 const debouncedReRank = debounce(() => {
@@ -1574,29 +1589,7 @@ function renderSettingsUI() {
     html += "</article>";
   }
 
-  // 4. Interface Settings
-  html += "<article>";
-  html += "<hgroup>";
-  html += "<h4>Interface</h4>";
-  html += "</hgroup>";
-
-  // Theme Selector
-  html += `
-        <label>Theme</label>
-        <select onchange="updateSetting('theme', 'theme', this.value)" style="margin-bottom: 2rem;">
-            ${Object.entries(THEME_CONFIG)
-              .map(
-                ([key, config]) =>
-                  `<option value="${key}" ${
-                    STATE.config.theme === key ? "selected" : ""
-                  }>${config.name}</option>`,
-              )
-              .join("")}
-        </select>
-    `;
-  html += "</article>";
-
-  UI.settingsContent.innerHTML = html;
+  UI.tuneContent.innerHTML = html;
 }
 
 window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
@@ -1718,14 +1711,10 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
       applyTheme(newTheme);
       updateURL(STATE.config); // STATE.config.theme is updated inside applyTheme
 
-      // Update the theme dropdown if settings modal is open
-      const settingsContent = document.getElementById("settings-content");
-      if (settingsContent) {
-        const selects = settingsContent.querySelectorAll("select");
-        const themeSelect = selects[selects.length - 1]; // Last select is the theme dropdown
-        if (themeSelect) {
-          themeSelect.value = newTheme;
-        }
+      // Update the theme dropdown in hamburger menu
+      const menuThemeSelect = document.getElementById("menu-theme-select");
+      if (menuThemeSelect) {
+        menuThemeSelect.value = newTheme;
       }
 
       // Log to console

@@ -952,32 +952,23 @@
           max-width: none;
           white-space: nowrap;
         }
-
-        /* Hide tune icon on desktop, show only text */
-        .nav-desktop #open-settings svg {
-          display: none;
-        }
       }
 
-      /* Responsive Header Navigation */
-      .nav-desktop {
-        display: none;
-      }
-
-      .nav-mobile {
+      /* Main Navigation (unified for all viewports) */
+      .nav-main {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         flex-shrink: 0;
       }
 
-      .nav-mobile li {
+      .nav-main li {
         margin: 0;
         padding: 0;
       }
 
-      /* Mobile nav button styling (Tune and Hamburger) */
-      .nav-mobile button {
+      /* Nav button styling (Tune and Hamburger) */
+      .nav-main button {
         padding: 0.4rem 0.5rem;
         margin: 0;
         display: flex;
@@ -986,12 +977,12 @@
         height: 2.2rem;
       }
 
-      .nav-mobile button svg {
+      .nav-main button svg {
         display: block;
       }
 
-      /* Mobile menu dropdown */
-      .mobile-menu {
+      /* Hamburger menu dropdown */
+      .hamburger-menu {
         position: absolute;
         top: 100%;
         right: 0;
@@ -1000,15 +991,15 @@
         border-radius: var(--pico-border-radius);
         padding: 0.5rem 0;
         z-index: 1000;
-        min-width: 180px;
+        min-width: 200px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       }
 
-      .mobile-menu[hidden] {
+      .hamburger-menu[hidden] {
         display: none;
       }
 
-      .mobile-menu a {
+      .hamburger-menu a {
         display: block;
         padding: 0.75rem 1rem;
         text-decoration: none;
@@ -1016,31 +1007,35 @@
         transition: background-color 0.2s;
       }
 
-      .mobile-menu a:hover {
+      .hamburger-menu a:hover {
         background-color: var(--pico-secondary-background);
+      }
+
+      .hamburger-menu hr {
+        margin: 0.5rem 0;
+        border-color: var(--pico-muted-border-color);
+      }
+
+      .menu-theme-section {
+        padding: 0.5rem 1rem;
+      }
+
+      .menu-theme-section label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--pico-muted-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .menu-theme-section select {
+        width: 100%;
+        margin-bottom: 0;
+        font-size: 0.9rem;
       }
 
       /* Header container needs relative positioning for absolute menu */
       header.container {
         position: relative;
-      }
-
-      /* Desktop: Show desktop nav, hide mobile nav */
-      @media (min-width: 1025px) {
-        .nav-desktop {
-          display: flex;
-          align-items: center;
-          height: 2.2rem;
-          flex-shrink: 0;
-        }
-
-        .nav-mobile {
-          display: none;
-        }
-
-        .mobile-menu {
-          display: none !important;
-        }
       }
 
       /* Chip/Pill button styles for modal selections */
@@ -1317,22 +1312,11 @@
         <ul>
           <li><strong>Consensus Best Songs 2025</strong></li>
         </ul>
-        <!-- Desktop navigation (hidden on mobile) -->
-        <ul class="nav-desktop">
-          <li>
-            <a href="#" id="open-settings">
-              <svg width="16" height="16" style="vertical-align: -2px; margin-right: 4px;"><use href="#icon-sliders"></use></svg>Tune
-            </a>
-          </li>
-          <li><a href="#" id="open-youtube">Listen</a></li>
-          <li><a href="#" id="open-download">Download</a></li>
-          <li><a href="#" id="open-about">About</a></li>
-        </ul>
-        <!-- Mobile navigation -->
-        <ul class="nav-mobile">
+        <!-- Main navigation (unified for desktop and mobile) -->
+        <ul class="nav-main">
           <li>
             <button
-              id="open-settings-mobile"
+              id="open-tune"
               class="outline secondary"
             >
               <svg width="16" height="16" style="vertical-align: -2px; margin-right: 4px;"><use href="#icon-sliders"></use></svg>Tune
@@ -1344,18 +1328,25 @@
               class="outline secondary"
               aria-label="Menu"
               aria-expanded="false"
-              aria-controls="mobile-menu"
+              aria-controls="hamburger-menu"
             >
               <svg width="20" height="20"><use href="#icon-menu"></use></svg>
             </button>
           </li>
         </ul>
       </nav>
-      <!-- Mobile dropdown menu -->
-      <div id="mobile-menu" class="mobile-menu" hidden>
-        <a href="#" id="open-youtube-mobile">Listen on YouTube</a>
-        <a href="#" id="open-download-mobile">Download Playlist</a>
-        <a href="#" id="open-about-mobile">About</a>
+      <!-- Hamburger dropdown menu -->
+      <div id="hamburger-menu" class="hamburger-menu" hidden>
+        <a href="#" id="open-youtube-menu">Listen on YouTube</a>
+        <a href="#" id="open-download-menu">Download Playlist</a>
+        <a href="#" id="open-about-menu">About</a>
+        <hr>
+        <div class="menu-theme-section">
+          <label for="menu-theme-select">Theme</label>
+          <select id="menu-theme-select">
+            <!-- Options populated by JS -->
+          </select>
+        </div>
       </div>
     </header>
 
@@ -1369,7 +1360,7 @@
       </section>
     </main>
 
-    <dialog id="modal-settings">
+    <dialog id="modal-tune">
       <article>
         <header>
           <button
@@ -1380,7 +1371,7 @@
           ></button>
           <h3>Tune Ranking</h3>
         </header>
-        <div id="settings-content"></div>
+        <div id="tune-content"></div>
         <footer class="modal-controls">
           <button class="secondary outline btt-trigger">Back to top</button>
           <button id="reset-defaults">Reset</button>
