@@ -18,7 +18,7 @@ I scraped around 28 song lists and did the following:
 
 I then developed ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
 
-The resulting site lets you view the result of that ranking, but you can customize the knobs and share your own, instead.
+The resulting site lets you view the result of that ranking, but you can customize the knobs and share your own, instead. You can also export your personalized ranking as a YouTube playlist or download it as a CSV to import into your favorite streaming service.
 
 ## 🏗️ Project Structure
 
@@ -30,8 +30,6 @@ The project is built as a lightweight, static web application with no build step
   - Configuration (ranking parameters, boosters, cluster metadata)
   - Source definitions (weights, URLs, categories)
   - Song data (artists, titles, media IDs, and source citations)
-
-_Note: I'll check in the notebook and Python code soon for posterity._
 
 ## 🛠️ Technical Choices
 
@@ -104,19 +102,38 @@ I wanted to be very careful, here, so enforced strict substring matching, either
 
 Ultimately I made a first pass with Haiku and then fell back to Sonnet for cases that didn't work.
 
+### Claude Code
+
+More recently, I've gone back to Claude Code and doing the planning mode -> execute plan -> review routine. Doing this with Opus feels very solid but costly.
+
 ## Analysis
 
 ### Overall
 
-Counting NPR as one source:
+Counting NPR as one source with a review count of 125:
 
-- Unique songs: `881`
-- Total song reviews: `1438`
-- Average reviews per source: `49.59`
-- Median reviews per source: `48.0`
-- Total sources: `28`
-- Total ranked sources: `22`
-- Total unranked sources: `6`
+* Unique songs: `881`
+* Total song reviews: `1438`
+* Average reviews per source: `51.36`
+* Median reviews per source: `49.0`
+* Total sources: `28`
+* Total ranked sources: `22`
+* Total unranked sources: `6`
+
+#### Reviews per song
+
+| Top N     | Average reviews per song | Median reviews per song |
+| :-------- | :----------------------- | :---------------------- |
+| Top 5     | 13.00                    | 13.00                   |
+| Top 10    | 11.00                    | 10.00                   |
+| Top 25    | 8.88                     | 9.00                    |
+| Top 50    | 6.92                     | 6.00                    |
+| Top 100   | 5.16                     | 5.00                    |
+| Top 200   | 3.48                     | 3.00                    |
+| Top 500   | 2.11                     | 1.00                    |
+| All (881) | 1.63                     | 1.00                    |
+
+<img src="./images/list_count_histogram.svg" width="80%" alt="Histogram of reviews per song">
 
 #### Unique Artists
 
@@ -142,7 +159,6 @@ Counting NPR as one source:
 | Justin Bieber       | 5          | DAISIES · DEVOTION · FIRST PLACE · GO BABY · YUKON                                                                                                                                                                                  |
 | Wednesday           | 5          | Elderberry Wine · Pick Up That Knife · The Way Love Goes · Townies · Wound Up Here (By Holdin On)                                                                                                                                   |
 | billy woods         | 5          | A Doll Fulla Pins · BLK XMAS · Corinthians · Misery · Waterproof Mascara                                                                                                                                                            |
-
 
 #### Media Links
 
@@ -206,19 +222,11 @@ Counting NPR as one source:
 | [The Independent](https://www.the-independent.com/arts-entertainment/music/features/the-best-songs-of-2025-b2884545.html) | 10    | 0.60           | 5.50        | 📡 Mainstream         |
 | [Variety](https://variety.com/lists/best-songs-2025)                                                                      | 61    | 0.50           | 31.00       | 📡 Mainstream         |
 
+NPR provided two overlapping lists -- their top 25 and their top 125. I split this into two non-overlapping unranked lists, one for the top 25 and the other for the bottom 100.
+
 ### Ranking
 
 Using the default ranking (which uses consensus mode):
-
-#### Average lists per song in the Top N
-
-- Top 5: `13.00`
-- Top 10: `11.00`
-- Top 25: `8.88`
-- Top 50: `6.92`
-- Top 100: `5.16`
-- Top 200: `3.48`
-- Top 500: `2.11`
 
 #### List Count vs Score
 
@@ -261,10 +269,6 @@ The site defaults to Consensus mode, but you can choose to use a power law decay
 
 <img src="./images/category_crossover_sankey.svg" width="70%" alt="Contributions to the top 10 from the different categories">
 
-## 👤 Contact
-
-You can find me over at [LinkedIn](https://www.linkedin.com/in/everett-anderson-swe/).
-
 ## 🧪 Testing
 
 This project uses [Playwright](https://playwright.dev/python/) with `pytest` for end-to-end testing of the application. The test suite covers:
@@ -278,3 +282,7 @@ This project uses [Playwright](https://playwright.dev/python/) with `pytest` for
 1. Navigate to the python directory: `cd python`
 2. Install dependencies: `uv sync` (if not already installed)
 3. Run the full suite: `uv run pytest`
+
+## 👤 Contact
+
+You can find me over at [LinkedIn](https://www.linkedin.com/in/everett-anderson-swe/).

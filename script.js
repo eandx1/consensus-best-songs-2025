@@ -42,10 +42,11 @@ let STATE = {
 const UI = {
   songList: document.getElementById("song-list"),
   loadMoreBtn: document.getElementById("load-more"),
-  settingsContent: document.getElementById("settings-content"),
+  tuneContent: document.getElementById("tune-content"),
   statsContent: document.getElementById("stats-content"),
   reviewsContent: document.getElementById("reviews-content"),
-  exportContent: document.getElementById("export-content"),
+  youtubeContent: document.getElementById("youtube-content"),
+  downloadContent: document.getElementById("download-content"),
 };
 
 /**
@@ -109,6 +110,89 @@ const clamp = (value, min, max) => {
   }
   return Math.max(min, Math.min(max, value));
 };
+
+/**
+ * Check if any ranking setting differs from defaults
+ * Returns true if ANY parameter is customized
+ */
+function isRankingCustomized() {
+  if (!APP_DATA || !STATE.config) return false;
+
+  const defaults = APP_DATA.config;
+  const current = STATE.config;
+  const TOLERANCE = 0.0001;
+
+  // Check ranking parameters
+  const rankingKeys = [
+    "decay_mode",
+    "k_value",
+    "p_exponent",
+    "consensus_boost",
+    "provocation_boost",
+    "cluster_boost",
+    "cluster_threshold",
+    "rank1_bonus",
+    "rank2_bonus",
+    "rank3_bonus",
+  ];
+
+  for (const key of rankingKeys) {
+    if (key === "decay_mode") {
+      if (current.ranking[key] !== defaults.ranking[key]) return true;
+    } else {
+      if (Math.abs(current.ranking[key] - defaults.ranking[key]) > TOLERANCE)
+        return true;
+    }
+  }
+
+  // Check source weights and shadow ranks
+  for (const srcKey of Object.keys(current.sources)) {
+    const currentSrc = current.sources[srcKey];
+    const defaultSrc = defaults.sources[srcKey];
+
+    // Check weight
+    if (Math.abs(currentSrc.weight - defaultSrc.weight) > TOLERANCE) return true;
+
+    // Check shadow rank for unranked sources
+    if (
+      currentSrc.type === "unranked" &&
+      Math.abs(currentSrc.shadow_rank - defaultSrc.shadow_rank) > TOLERANCE
+    )
+      return true;
+  }
+
+  return false;
+}
+
+/**
+ * Update the Tune button to show "Tuned" with sliders icon when customized
+ * Also updates the modal subtitle if the modal is open
+ */
+function updateTuneButton() {
+  const btn = document.getElementById("open-tune");
+  if (!btn) return;
+
+  const isCustomized = isRankingCustomized();
+
+  if (isCustomized) {
+    btn.innerHTML = `<svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg>Tuned`;
+    btn.classList.add("tuned");
+  } else {
+    btn.innerHTML = `<svg class="nav-icon"><use href="#icon-sliders"></use></svg>Tune`;
+    btn.classList.remove("tuned");
+  }
+
+  // Also update the modal subtitle if the modal is open
+  const modalSubtitle = document.getElementById("tune-modal-subtitle");
+  if (modalSubtitle) {
+    if (isCustomized) {
+      modalSubtitle.innerHTML = `<svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> Tuned`;
+      modalSubtitle.style.display = "";
+    } else {
+      modalSubtitle.style.display = "none";
+    }
+  }
+}
 
 /**
  * RANKING ENGINE (Ported from Python)
@@ -528,6 +612,7 @@ function render() {
     .join("");
 
   updateLoadMoreButton();
+  updateTuneButton();
 }
 
 function updateLoadMoreButton() {
@@ -582,11 +667,16 @@ async function init() {
     render();
   };
 
-  // Modal triggers
-  document.getElementById("open-settings").onclick = () => {
+  // Modal triggers - Tune (unified button for all viewports)
+  const openTuneBtn = document.getElementById("open-tune");
+
+  const openTune = () => {
     renderSettingsUI();
-    document.getElementById("modal-settings").showModal();
+    document.getElementById("modal-tune").showModal();
+    closeHamburgerMenu();
   };
+
+  if (openTuneBtn) openTuneBtn.onclick = openTune;
 
   document.getElementById("reset-defaults").onclick = () => {
     const currentTheme = STATE.config.theme; // Preserve current theme
@@ -642,23 +732,91 @@ async function init() {
     }
   });
 
-  // About modal
-  document.getElementById("open-about").onclick = () => {
+  // About modal (via hamburger menu)
+  const openAboutMenu = document.getElementById("open-about-menu");
+
+  const openAbout = () => {
     document.getElementById("modal-about").showModal();
+    closeHamburgerMenu();
   };
 
-  // Export modal - only if feature flag is enabled
-  const params = new URLSearchParams(window.location.search);
-  const exportEnabled = params.has("unlisted_youtube_export");
+  if (openAboutMenu) openAboutMenu.onclick = openAbout;
 
-  const exportLink = document.getElementById("open-export");
-  if (exportEnabled && exportLink) {
-    exportLink.style.display = ""; // Show the link by removing inline style
-    exportLink.onclick = () => {
-      renderExportUI();
-      document.getElementById("modal-export").showModal();
+  // YouTube modal (via hamburger menu)
+  const openYouTubeMenu = document.getElementById("open-youtube-menu");
+
+  const openYouTube = () => {
+    renderYouTubeUI();
+    document.getElementById("modal-youtube").showModal();
+    closeHamburgerMenu();
+  };
+
+  if (openYouTubeMenu) openYouTubeMenu.onclick = openYouTube;
+
+  // Download modal (via hamburger menu)
+  const openDownloadMenu = document.getElementById("open-download-menu");
+
+  const openDownload = () => {
+    downloadState.downloaded = false; // Reset download state each time modal opens
+    renderDownloadUI();
+    document.getElementById("modal-download").showModal();
+    closeHamburgerMenu();
+  };
+
+  if (openDownloadMenu) openDownloadMenu.onclick = openDownload;
+
+  // Hamburger menu toggle
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  const hamburgerMenu = document.getElementById("hamburger-menu");
+
+  if (hamburgerBtn && hamburgerMenu) {
+    hamburgerBtn.onclick = (e) => {
+      e.stopPropagation();
+      const isOpen = !hamburgerMenu.hidden;
+      hamburgerMenu.hidden = isOpen;
+      hamburgerBtn.setAttribute("aria-expanded", !isOpen);
     };
+
+    // Close menu on outside click
+    document.addEventListener("click", (e) => {
+      if (!hamburgerMenu.hidden && !hamburgerMenu.contains(e.target) && e.target !== hamburgerBtn) {
+        closeHamburgerMenu();
+      }
+    });
   }
+
+  // Initialize theme selector in hamburger menu
+  renderMenuThemeSelector();
+}
+
+/**
+ * Helper function to close hamburger menu
+ */
+function closeHamburgerMenu() {
+  const hamburgerMenu = document.getElementById("hamburger-menu");
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  if (hamburgerMenu) hamburgerMenu.hidden = true;
+  if (hamburgerBtn) hamburgerBtn.setAttribute("aria-expanded", "false");
+}
+
+/**
+ * Render theme selector in hamburger menu
+ */
+function renderMenuThemeSelector() {
+  const select = document.getElementById("menu-theme-select");
+  if (!select) return;
+
+  select.innerHTML = Object.entries(THEME_CONFIG)
+    .map(
+      ([key, config]) =>
+        `<option value="${key}" ${STATE.config.theme === key ? "selected" : ""}>${config.name}</option>`
+    )
+    .join("");
+
+  select.onchange = (e) => {
+    applyTheme(e.target.value);
+    updateURL(STATE.config);
+  };
 }
 
 const debouncedReRank = debounce(() => {
@@ -977,19 +1135,32 @@ window.showStats = (idx) => {
 };
 
 /**
- * EXPORT UI
+ * YOUTUBE UI - Listen on YouTube modal
  */
-function renderExportUI(limit = 25, preference = "videos") {
-  const songsToExport = STATE.songs.slice(0, limit);
+function renderYouTubeUI(count = 50, preference = "videos") {
+  // Update modal subtitle based on customization state
+  const modalSubtitle = document.querySelector(
+    "#modal-youtube > article > header hgroup p",
+  );
+  if (modalSubtitle) {
+    if (isRankingCustomized()) {
+      modalSubtitle.innerHTML = `Play the top songs on YouTube with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> tuned</strong> ranking`;
+    } else {
+      modalSubtitle.textContent =
+        "Play the top songs as an unnamed playlist on YouTube";
+    }
+  }
+
+  const songsToExport = STATE.songs.slice(0, count);
   const validSongs = [];
   const missingSongs = [];
 
   songsToExport.forEach((song) => {
     // Priority logic:
     // Videos preference: video_id > music_id (prefer official music videos)
-    // Songs preference: music_id > video_id (prefer album audio)
+    // Audio preference: music_id > video_id (prefer album audio)
     let id = null;
-    if (preference === "songs") {
+    if (preference === "audio") {
       id = song.media?.youtube?.music_id || song.media?.youtube?.video_id;
     } else {
       id = song.media?.youtube?.video_id || song.media?.youtube?.music_id;
@@ -1002,93 +1173,57 @@ function renderExportUI(limit = 25, preference = "videos") {
     }
   });
 
-  const url = `https://www.youtube.com/watch_videos?video_ids=${validSongs.join(
-    ",",
-  )}`;
+  const url = `https://www.youtube.com/watch_videos?video_ids=${validSongs.join(",")}`;
 
   // Helper to generate button classes
   const getBtnClass = (isActive) => (isActive ? "" : "outline secondary");
 
-  const preferenceName = preference === "songs" ? "songs" : "videos";
-
   // HTML Generation
   let html = `
-        <label>Preference</label>
-        <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(
-              preference === "videos",
-            )}" onclick="renderExportUI(${limit}, 'videos')">
-                Videos
-            </button>
-            <button class="${getBtnClass(
-              preference === "songs",
-            )}" onclick="renderExportUI(${limit}, 'songs')">
-                Songs
-            </button>
-        </div>
+        <fieldset>
+            <legend>Media preference</legend>
+            <div class="chip-group">
+                <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">Music Videos</button>
+                <button class="${getBtnClass(preference === "audio")}" onclick="renderYouTubeUI(${count}, 'audio')">Audio Only</button>
+            </div>
+        </fieldset>
 
-        <label>Range</label>
-        <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(
-              limit === 10,
-            )}" onclick="renderExportUI(10, '${preference}')">Top 10</button>
-            <button class="${getBtnClass(
-              limit === 25,
-            )}" onclick="renderExportUI(25, '${preference}')">Top 25</button>
-            <button class="${getBtnClass(
-              limit === 50,
-            )}" onclick="renderExportUI(50, '${preference}')">Top 50</button>
-        </div>
+        <fieldset>
+            <legend>Songs to include</legend>
+            <div class="chip-group">
+                <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">Top 10</button>
+                <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">Top 25</button>
+                <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">Top 50</button>
+            </div>
+        </fieldset>
 
-        <article style="background-color: var(--pico-card-background-color); margin-bottom: var(--pico-spacing);">
-            <header><strong>Summary</strong></header>
-            <p style="margin-bottom: ${
-              missingSongs.length > 0 ? "0.5rem" : "0"
-            }">
-                Ready to export <strong>${
-                  validSongs.length
-                }</strong> ${preferenceName} to a new YouTube playlist.
-            </p>
+        <p>
+            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube
             ${
               missingSongs.length > 0
                 ? `
-                <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
-                    <small>⚠️ ${missingSongs.length} ${
-                      missingSongs.length === 1 ? "song" : "songs"
-                    } missing IDs will be skipped:</small>
-                    <ul style="font-size: 0.8em; margin-bottom: 0;">
-                        ${missingSongs
-                          .map(
-                            (s) =>
-                              `<li>#${s.rank} ${escapeHtml(
-                                s.artist,
-                              )} - ${escapeHtml(s.name)}</li>`,
-                          )
-                          .join("")}
-                    </ul>
-                </div>
+                <br><small style="color: var(--pico-del-color);">⚠️ ${missingSongs.length} ${missingSongs.length === 1 ? "song" : "songs"} missing YouTube IDs will be skipped:</small>
+                <ul style="font-size: 0.8em; margin-bottom: 0; color: var(--pico-del-color);">
+                    ${missingSongs.map((s) => `<li>${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
+                </ul>
             `
-                : '<small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'
+                : '<br><small style="color: var(--pico-ins-color);">✓ All requested songs are available</small>'
             }
-        </article>
-        
-        <p><small>Note: You will be redirected to YouTube where you can name and save your playlist.</small></p>
+        </p>
     `;
 
   // Inject into content
-  if (UI.exportContent) {
-    UI.exportContent.innerHTML = html;
+  if (UI.youtubeContent) {
+    UI.youtubeContent.innerHTML = html;
   }
 
   // Update Footer
-  const modal = document.getElementById("modal-export");
+  const modal = document.getElementById("modal-youtube");
   if (modal) {
     const footer = modal.querySelector("footer");
     if (footer) {
       footer.innerHTML = `
-                <a href="${url}" role="button" target="_blank" ${
-                  validSongs.length === 0 ? "disabled" : ""
-                }>Create Playlist</a>
+                <a href="${url}" role="button" target="_blank" ${validSongs.length === 0 ? "disabled" : ""}>Listen on YouTube</a>
                 <button class="secondary close-modal">Close</button>
             `;
     }
@@ -1096,7 +1231,161 @@ function renderExportUI(limit = 25, preference = "videos") {
 }
 
 // Expose to window
-window.renderExportUI = renderExportUI;
+window.renderYouTubeUI = renderYouTubeUI;
+
+/**
+ * DOWNLOAD UI - Download Playlist modal
+ */
+
+// Track download state for showing next steps
+let downloadState = { downloaded: false };
+
+function renderDownloadUI(count = 100) {
+  // Update modal subtitle based on customization state
+  const modalSubtitle = document.querySelector(
+    "#modal-download > article > header hgroup p",
+  );
+  if (modalSubtitle) {
+    if (isRankingCustomized()) {
+      modalSubtitle.innerHTML = `Download the top songs with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> tuned</strong> ranking as CSV`;
+    } else {
+      modalSubtitle.textContent =
+        "Download as CSV and import to the streaming service of your choice";
+    }
+  }
+
+  const songsToExport = STATE.songs.slice(0, count);
+
+  // Find songs missing valid ISRCs (id that contains ":" or is missing)
+  const songsMissingIsrc = songsToExport.filter((s) => !s.id || s.id.includes(":"));
+
+  // Helper to generate button classes
+  const getBtnClass = (isActive) => (isActive ? "" : "outline secondary");
+
+  // Determine available counts based on total songs
+  const totalSongs = STATE.songs.length;
+
+  // HTML Generation
+  let html = `
+        <fieldset>
+            <legend>Songs to include</legend>
+            <div class="chip-group">
+                <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">Top 25</button>
+                <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">Top 100</button>
+                <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">Top 200</button>
+                <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">Top 500</button>
+                <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All</button>
+            </div>
+        </fieldset>
+
+        <p>
+            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file
+            ${
+              songsMissingIsrc.length > 0
+                ? `
+                <br><small style="color: var(--pico-del-color);">⚠️ ${songsMissingIsrc.length} ${songsMissingIsrc.length === 1 ? "song" : "songs"} missing ISRC codes (some import services may not find these):</small>
+                <ul style="font-size: 0.8em; margin-bottom: 0; color: var(--pico-del-color);">
+                    ${songsMissingIsrc.map((s) => `<li>${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
+                </ul>
+            `
+                : '<br><small style="color: var(--pico-ins-color);">✓ All songs have ISRC codes</small>'
+            }
+        </p>
+    `;
+
+  // Inject into content
+  if (UI.downloadContent) {
+    UI.downloadContent.innerHTML = html;
+  }
+
+  // Update Footer based on download state
+  const modal = document.getElementById("modal-download");
+  if (modal) {
+    const footer = modal.querySelector("footer");
+    if (footer) {
+      if (downloadState.downloaded) {
+        // Show next steps after download
+        footer.innerHTML = `
+                    <p style="margin-bottom: var(--pico-spacing);"><strong>Next step:</strong> Import your playlist to a streaming service</p>
+                    <div class="import-services-wrapper">
+                        <a href="https://soundiiz.com/transfer-playlist-and-favorites" role="button" class="outline" target="_blank">Import via Soundiiz</a>
+                        <a href="https://www.tunemymusic.com/transfer" role="button" class="outline" target="_blank">Import via TuneMyMusic</a>
+                    </div>
+                    <button onclick="downloadCSV(${count}); return false;">Download Again</button>
+                    <button class="secondary close-modal">Close</button>
+                `;
+      } else {
+        footer.innerHTML = `
+                    <button onclick="downloadCSV(${count}); return false;">Download CSV</button>
+                    <button class="secondary close-modal">Close</button>
+                `;
+      }
+    }
+  }
+}
+
+/**
+ * Escape a CSV field value
+ */
+function escapeCSVField(field) {
+  if (field === null || field === undefined) return "";
+  const str = String(field);
+  // If the field contains comma, quote, newline, or carriage return, wrap in quotes and escape quotes
+  if (str.includes(",") || str.includes('"') || str.includes("\n") || str.includes("\r")) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+/**
+ * Generate and download CSV file
+ */
+function downloadCSV(count) {
+  const songsToExport = STATE.songs.slice(0, count);
+
+  // CSV header
+  const headers = ["title", "artist", "isrc", "spotify_id", "youtube_id", "youtube_music_id", "apple_music_url", "other_url"];
+
+  // Generate CSV rows
+  const rows = songsToExport.map((song) => {
+    // ISRC: use song.id if it doesn't contain ":", otherwise leave blank
+    const isrc = song.id && !song.id.includes(":") ? song.id : "";
+
+    return [
+      escapeCSVField(song.name),
+      escapeCSVField(song.artist),
+      escapeCSVField(isrc),
+      escapeCSVField(song.media?.spotify?.id || ""),
+      escapeCSVField(song.media?.youtube?.video_id || ""),
+      escapeCSVField(song.media?.youtube?.music_id || ""),
+      escapeCSVField(song.media?.apple?.url || ""),
+      escapeCSVField(song.media?.other?.url || ""),
+    ].join(",");
+  });
+
+  // Combine header and rows
+  const csvContent = [headers.join(","), ...rows].join("\n");
+
+  // Create blob and download
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `consensus-best-songs-2025-top-${count}.csv`);
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  // Update download state and re-render to show next steps
+  downloadState.downloaded = true;
+  renderDownloadUI(count);
+}
+
+// Expose to window
+window.renderDownloadUI = renderDownloadUI;
+window.downloadCSV = downloadCSV;
 
 /**
  * SETTINGS UI
@@ -1104,6 +1393,9 @@ window.renderExportUI = renderExportUI;
 function renderSettingsUI() {
   const { ranking, sources } = STATE.config;
   const defaults = APP_DATA.config;
+
+  // Update button and modal header based on customization state
+  updateTuneButton();
 
   let html = "";
 
@@ -1410,29 +1702,7 @@ function renderSettingsUI() {
     html += "</article>";
   }
 
-  // 4. Interface Settings
-  html += "<article>";
-  html += "<hgroup>";
-  html += "<h4>Interface</h4>";
-  html += "</hgroup>";
-
-  // Theme Selector
-  html += `
-        <label>Theme</label>
-        <select onchange="updateSetting('theme', 'theme', this.value)" style="margin-bottom: 2rem;">
-            ${Object.entries(THEME_CONFIG)
-              .map(
-                ([key, config]) =>
-                  `<option value="${key}" ${
-                    STATE.config.theme === key ? "selected" : ""
-                  }>${config.name}</option>`,
-              )
-              .join("")}
-        </select>
-    `;
-  html += "</article>";
-
-  UI.settingsContent.innerHTML = html;
+  UI.tuneContent.innerHTML = html;
 }
 
 window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
@@ -1554,14 +1824,10 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
       applyTheme(newTheme);
       updateURL(STATE.config); // STATE.config.theme is updated inside applyTheme
 
-      // Update the theme dropdown if settings modal is open
-      const settingsContent = document.getElementById("settings-content");
-      if (settingsContent) {
-        const selects = settingsContent.querySelectorAll("select");
-        const themeSelect = selects[selects.length - 1]; // Last select is the theme dropdown
-        if (themeSelect) {
-          themeSelect.value = newTheme;
-        }
+      // Update the theme dropdown in hamburger menu
+      const menuThemeSelect = document.getElementById("menu-theme-select");
+      if (menuThemeSelect) {
+        menuThemeSelect.value = newTheme;
       }
 
       // Log to console
