@@ -922,7 +922,7 @@
       header.container nav {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start; /* Title starts at top, but links stay level */
+        align-items: center; /* Vertically center title and nav */
         flex-wrap: nowrap;
       }
 
@@ -946,15 +946,16 @@
         max-width: 180px; /* Forces 'Consensus' and 'Best Songs' to stack */
       }
 
-      /* Desktop: Unwrap title and align items vertically */
+      /* Desktop: Unwrap title */
       @media (min-width: 1025px) {
-        header.container nav {
-          align-items: center;
-        }
-
         header.container nav ul:first-of-type li strong {
           max-width: none;
           white-space: nowrap;
+        }
+
+        /* Hide tune icon on desktop, show only text */
+        .nav-desktop #open-settings svg {
+          display: none;
         }
       }
 
@@ -975,16 +976,17 @@
         padding: 0;
       }
 
-      /* Hamburger button styling */
-      #hamburger-btn {
+      /* Mobile nav button styling (Tune and Hamburger) */
+      .nav-mobile button {
         padding: 0.4rem 0.5rem;
         margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        height: 2.2rem;
       }
 
-      #hamburger-btn svg {
+      .nav-mobile button svg {
         display: block;
       }
 
@@ -1314,9 +1316,12 @@
         <!-- Mobile navigation -->
         <ul class="nav-mobile">
           <li>
-            <a href="#" id="open-settings-mobile">
+            <button
+              id="open-settings-mobile"
+              class="outline secondary"
+            >
               <svg width="16" height="16" style="vertical-align: -2px; margin-right: 4px;"><use href="#icon-sliders"></use></svg>Tune
-            </a>
+            </button>
           </li>
           <li>
             <button
