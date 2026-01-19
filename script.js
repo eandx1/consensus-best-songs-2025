@@ -1197,7 +1197,7 @@ function renderDownloadUI(count = 100) {
         // Show next steps after download
         footer.innerHTML = `
                     <p style="margin-bottom: var(--pico-spacing);"><strong>Next step:</strong> Import your playlist to a streaming service</p>
-                    <div class="grid" style="margin-bottom: var(--pico-spacing);">
+                    <div class="import-services-wrapper">
                         <a href="https://soundiiz.com/transfer-playlist-and-favorites" role="button" class="outline" target="_blank">Import via Soundiiz</a>
                         <a href="https://www.tunemymusic.com/transfer" role="button" class="outline" target="_blank">Import via TuneMyMusic</a>
                     </div>
