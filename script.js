@@ -783,6 +783,14 @@ async function init() {
         closeHamburgerMenu();
       }
     });
+
+    // Close menu with Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !hamburgerMenu.hidden) {
+        closeHamburgerMenu();
+        hamburgerBtn.focus();
+      }
+    });
   }
 
   // Initialize theme selector in hamburger menu
