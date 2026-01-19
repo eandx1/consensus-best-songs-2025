@@ -1068,41 +1068,40 @@ function renderYouTubeUI(count = 50, preference = "videos") {
 
   // HTML Generation
   let html = `
-        <label>Media Preference</label>
-        <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">
-                Music Videos
-            </button>
-            <button class="${getBtnClass(preference === "audio")}" onclick="renderYouTubeUI(${count}, 'audio')">
-                Audio Only
-            </button>
-        </div>
+        <fieldset>
+            <legend>Media preference</legend>
+            <div class="grid">
+                <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">
+                    Music Videos
+                </button>
+                <button class="${getBtnClass(preference === "audio")}" onclick="renderYouTubeUI(${count}, 'audio')">
+                    Audio Only
+                </button>
+            </div>
+        </fieldset>
 
-        <label>Number of Songs</label>
-        <div class="grid" style="margin-bottom: var(--pico-spacing);">
-            <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">10</button>
-            <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">25</button>
-            <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">50</button>
-        </div>
+        <fieldset>
+            <legend>Include top N songs</legend>
+            <div class="grid">
+                <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">10</button>
+                <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">25</button>
+                <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">50</button>
+            </div>
+        </fieldset>
 
-        <article style="background-color: var(--pico-card-background-color); margin-bottom: var(--pico-spacing);">
-            <header><strong>Summary</strong></header>
-            <p style="margin-bottom: ${missingSongs.length > 0 ? "0.5rem" : "0"}">
-                Ready to play <strong>${validSongs.length}</strong> songs on YouTube.
-            </p>
+        <p>
+            Ready to play <strong>${validSongs.length}</strong> songs on YouTube.
             ${
               missingSongs.length > 0
                 ? `
-                <div style="color: var(--pico-del-color); border-top: 1px solid var(--pico-muted-border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
-                    <small>⚠️ ${missingSongs.length} ${missingSongs.length === 1 ? "song" : "songs"} missing YouTube IDs will be skipped:</small>
-                    <ul style="font-size: 0.8em; margin-bottom: 0;">
-                        ${missingSongs.map((s) => `<li>#${s.rank} ${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
-                    </ul>
-                </div>
+                <br><small style="color: var(--pico-del-color);">⚠️ ${missingSongs.length} ${missingSongs.length === 1 ? "song" : "songs"} missing YouTube IDs will be skipped:</small>
+                <ul style="font-size: 0.8em; margin-bottom: 0; color: var(--pico-del-color);">
+                    ${missingSongs.map((s) => `<li>${escapeHtml(s.artist)} - ${escapeHtml(s.name)}</li>`).join("")}
+                </ul>
             `
-                : '<small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'
+                : '<br><small style="color: var(--pico-ins-color);">✓ All requested songs are available.</small>'
             }
-        </article>
+        </p>
     `;
 
   // Inject into content

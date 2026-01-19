@@ -59,8 +59,8 @@ def test_youtube_modal_default_state(page: Page, server_url):
     expect(btn_25).to_have_class(re.compile("outline"))
     expect(btn_50).not_to_have_class(re.compile("outline"))
 
-    # Check that Media Preference label exists
-    expect(content).to_contain_text("Media Preference")
+    # Check that Media preference legend exists
+    expect(content).to_contain_text("Media preference")
 
 
 def test_youtube_preference_toggle(page: Page, server_url):
