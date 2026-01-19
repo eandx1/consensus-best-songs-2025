@@ -1009,12 +1009,34 @@
         display: none;
       }
 
+      /* Ensure the nav list stretches to fill the dropdown width */
       .hamburger-menu nav {
+        padding: 0;
         margin: 0;
       }
 
       .hamburger-menu nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
         margin: 0;
+      }
+
+      .hamburger-menu nav li {
+        padding: 0;
+      }
+
+      /* Make the links feel like substantial menu items */
+      .hamburger-menu nav li a {
+        padding: 0.75rem 1rem;
+        display: block;
+        border-radius: 0;
+        color: var(--pico-color);
+        text-decoration: none;
+      }
+
+      .hamburger-menu nav li a:hover {
+        background-color: var(--pico-nav-link-hover-background);
       }
 
       .hamburger-menu hr {
