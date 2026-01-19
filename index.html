@@ -979,6 +979,16 @@
 
       .nav-main button svg {
         display: block;
+
+        width: 1.2em;
+        height: 1.2em;
+
+        /* Inherits the current text color automatically */
+        fill: currentColor;
+                
+        /* Fixes vertical alignment issues in some browsers */
+        flex-shrink: 0;
+        display: inline-block;
       }
 
       /* Hamburger menu dropdown */
@@ -999,13 +1009,12 @@
         display: none;
       }
 
-      .hamburger-menu button {
-        display: block;
-        width: 100%;
-        text-align: left;
-        border-radius: 0;
+      .hamburger-menu nav {
         margin: 0;
-        padding: 0.75rem 1rem;
+      }
+
+      .hamburger-menu nav ul {
+        margin: 0;
       }
 
       .hamburger-menu hr {
@@ -1316,7 +1325,7 @@
               id="open-tune"
               class="outline secondary"
             >
-              <svg width="16" height="16" style="vertical-align: -2px; margin-right: 4px;"><use href="#icon-sliders"></use></svg>Tune
+              <svg class="nav-icon"><use href="#icon-sliders"></use></svg>Tune
             </button>
           </li>
           <li>
@@ -1327,16 +1336,20 @@
               aria-expanded="false"
               aria-controls="hamburger-menu"
             >
-              <svg width="20" height="20"><use href="#icon-menu"></use></svg>
+              <svg class="nav-icon"><use href="#icon-menu"></use></svg>
             </button>
           </li>
         </ul>
       </nav>
       <!-- Hamburger dropdown menu -->
-      <div id="hamburger-menu" class="hamburger-menu" hidden>
-        <button id="open-youtube-menu" class="secondary outline">Listen on YouTube</button>
-        <button id="open-download-menu" class="secondary outline">Download Playlist</button>
-        <button id="open-about-menu" class="secondary outline">About</button>
+      <aside id="hamburger-menu" class="hamburger-menu" hidden>
+        <nav>
+          <ul>
+            <li><a href="#" id="open-youtube-menu">Listen on YouTube</a></li>
+            <li><a href="#" id="open-download-menu">Download Playlist</a></li>
+            <li><a href="#" id="open-about-menu">About</a></li>
+          </ul>
+        </nav>
         <hr>
         <div class="menu-theme-section">
           <label for="menu-theme-select">Theme</label>
@@ -1344,7 +1357,7 @@
             <!-- Options populated by JS -->
           </select>
         </div>
-      </div>
+      </aside>
     </header>
 
     <main class="container" id="app">
