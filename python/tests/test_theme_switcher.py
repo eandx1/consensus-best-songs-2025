@@ -3,36 +3,37 @@ from playwright.sync_api import Page, expect
 import re
 
 def test_theme_switcher_dropdown(page: Page, server_url):
-    """Verify theme switcher dropdown updates theme and URL."""
+    """Verify theme switcher dropdown in hamburger menu updates theme and URL."""
     # Load page
     page.goto(server_url)
-    
-    # Open settings
-    page.get_by_role("link", name="Settings").click()
-    
-    # Wait for settings modal to be visible
-    expect(page.locator("#modal-settings")).to_be_visible()
-    
-    # Get the theme selector (last select in settings)
-    theme_select = page.locator("#settings-content select").last
-    
+
+    # Open hamburger menu
+    page.locator("#hamburger-btn").click()
+
+    # Wait for hamburger menu to be visible
+    hamburger_menu = page.locator("#hamburger-menu")
+    expect(hamburger_menu).to_be_visible()
+
+    # Get the theme selector in the menu
+    theme_select = hamburger_menu.locator("#menu-theme-select")
+
     # Test Studio 808 (studio808)
     theme_select.select_option("studio808")
-    
+
     # Verify URL updated
     expect(page).to_have_url(re.compile(r".*theme=studio808"))
-    
+
     # Verify html attributes updated
     html = page.locator("html")
     expect(html).to_have_attribute("data-theme", "dark")
     expect(html).to_have_attribute("data-style", "808")
-    
+
     # Test Light theme
     theme_select.select_option("light1")
-    
+
     # Verify URL updated
     expect(page).to_have_url(re.compile(r".*theme=light1"))
-    
+
     # Verify html attributes updated (light mode)
     expect(html).to_have_attribute("data-theme", "light")
     expect(html).to_have_attribute("data-style", "light1")
@@ -69,14 +70,15 @@ def test_theme_url_persistence(page: Page, server_url):
     """Verify loading page with theme param applies correct theme."""
     # Load page with Studio 808 theme
     page.goto(f"{server_url}?theme=studio808")
-    
+
     html = page.locator("html")
     expect(html).to_have_attribute("data-style", "808")
     expect(html).to_have_attribute("data-theme", "dark")
-    
-    # Verify settings dropdown matches
-    page.get_by_role("link", name="Settings").click()
-    expect(page.locator("#modal-settings")).to_be_visible()
-    
-    theme_select = page.locator("#settings-content select").last
+
+    # Verify hamburger menu dropdown matches
+    page.locator("#hamburger-btn").click()
+    hamburger_menu = page.locator("#hamburger-menu")
+    expect(hamburger_menu).to_be_visible()
+
+    theme_select = hamburger_menu.locator("#menu-theme-select")
     expect(theme_select).to_have_value("studio808")

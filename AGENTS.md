@@ -35,8 +35,12 @@ Think of the Pico CSS website, the IntelliJ Darcula theme, and the Solarized Dar
 ## Header
 
 - Site title: "Consensus Best Songs 2025"
-- "Settings" button to open configuration modal
-- "About" link that opens an about modal
+- "Tune" button to open ranking configuration modal
+- Hamburger menu (☰) containing:
+  - "Listen on YouTube" - opens YouTube playlist modal
+  - "Download playlist" - opens CSV download modal
+  - "About" - opens about modal
+  - Theme selector dropdown
 
 ## Song Card List
 
@@ -70,16 +74,18 @@ On Slider Change: Update the `URLSearchParams` object and use `history.replaceSt
 
 ### Overlays/Modals
 
-Four semantic HTML `<dialog>` elements are used, styled with Pico CSS:
+Six semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
-1. **Settings Modal**: Title "Settings" - for adjusting ranking parameters and source weights
-2. **Ranking Stats Modal**: Title "Ranking" - shows detailed scoring breakdown for a song
+1. **Tune Ranking Modal**: Title "Tune Ranking" - for adjusting ranking parameters and source weights
+2. **Ranking Stats Modal**: Title "Ranking Stats" - shows detailed scoring breakdown for a song
 3. **Reviews Modal**: Title "Reviews" - shows all source reviews with quotes and links
-4. **About Modal**: Title "About" - shows site description, methodology explanation, and mode comparison table
+4. **YouTube Modal**: Title "Listen on YouTube" - generates YouTube playlist from top songs
+5. **Download Modal**: Title "Download playlist" - exports songs as CSV for streaming service import
+6. **About Modal**: Title "About" - shows site description, methodology explanation, and mode comparison table
 
-### Settings Modal
+### Tune Ranking Modal
 
-Modal header shows "Settings". Contains three sections:
+Modal header shows "Tune Ranking". Contains three sections:
 
 **Ranking Parameters** (appears first):
 
@@ -115,7 +121,8 @@ UI behaviors:
 
 - Values update in real-time (debounced by 250ms)
 - Rankings recalculate automatically as user adjusts sliders
-- "Defaults" button resets all values
+- "Reset" button resets all values to defaults
+- "Back to top" button scrolls modal content to top
 - "Close" button dismisses modal
 - Modal has unified scroll (no sub-scrolling sections)
 
@@ -152,6 +159,55 @@ Displays scoring details in order:
    - Format: "Source Name #Rank: 0.xxxx"
    - Sorted by contribution value (highest first)
    - Scrollable if many sources
+
+### YouTube Modal
+
+Modal header shows "Listen on YouTube" with subtitle "Play the top songs as an unnamed playlist on YouTube".
+
+Allows users to generate a YouTube playlist URL from the current ranking:
+
+**Media preference** (fieldset with pill-shaped chip buttons):
+- "Music Videos" (default) - prefers `video_id` over `music_id`
+- "Audio Only" - prefers `music_id` over `video_id`
+
+**Songs to include** (fieldset with pill-shaped chip buttons):
+- Top 10, Top 25, Top 50 (default is 50)
+
+**Status display:**
+- Shows count of valid songs ready to play
+- Warning message listing specific songs missing YouTube IDs (if any)
+- Success message if all requested songs are available
+
+**Footer:**
+- "Listen on YouTube" button opens YouTube with playlist URL
+- "Close" button dismisses modal
+
+### Download Modal
+
+Modal header shows "Download playlist" with subtitle "Download as CSV and import to the streaming service of your choice".
+
+Allows users to export the current ranking as a CSV file:
+
+**Songs to include** (fieldset with pill-shaped chip buttons):
+- Top 25, Top 100 (default), Top 200, Top 500, All
+
+**Status display:**
+- Shows count of songs ready to download
+- Warning message listing specific songs missing ISRC codes (if any)
+- Success message if all songs have ISRC codes
+
+**Footer (before download):**
+- "Download CSV" button triggers file download
+- "Close" button dismisses modal
+
+**Footer (after download):**
+- "Next step" message with streaming service import links
+- Links to Soundiiz and TuneMyMusic import services
+- "Download Again" button for re-downloading
+- "Close" button dismisses modal
+
+**CSV Format:**
+Columns: `title`, `artist`, `isrc`, `spotify_id`, `youtube_id`, `youtube_music_id`, `apple_music_url`, `other_url`
 
 ### About Modal
 
@@ -366,10 +422,10 @@ The engine applies three specialized multipliers to the raw scores:
 
 ## Phase 3: Dynamic State & Sharing
 
-- **Feature 3: Settings Modal (Configuration)**
+- **Feature 3: Tune Ranking Modal (Configuration)**
   - Implement `renderSettingsUI()` to dynamically generate sliders for Ranking Parameters, Source Weights, and Shadow Ranks.
   - Attach event listeners to sliders to trigger `debouncedReRank()`.
-  - Implement the "Defaults" button.
+  - Implement the "Reset" button.
 - **Feature 4: URL State Synchronization**
   - Refine `updateURL()` to write only _changed_ values to the query string.
   - Ensure `syncStateFromURL()` correctly overrides `data.json` defaults on load.
@@ -385,6 +441,25 @@ The engine applies three specialized multipliers to the raw scores:
 - **Feature 7: Visual Polish**
   - Finalize "Dark Mode" aesthetic (IntelliJ/Solarized theme).
   - Refine `lite-youtube` play button transparency and hover effects.
+  - Theme selector moved to hamburger menu dropdown.
+
+## Phase 5: Playlist Export Features
+
+- **Feature 8: YouTube Playlist Modal**
+  - Implement `renderYouTubeUI()` to generate YouTube playlist URLs.
+  - Media preference toggle (Music Videos vs Audio Only).
+  - Count selection (Top 10, 25, 50).
+  - Warning display for songs missing YouTube IDs.
+- **Feature 9: Download Playlist Modal**
+  - Implement `renderDownloadUI()` for CSV export configuration.
+  - Count selection (Top 25, 100, 200, 500, All).
+  - Implement `downloadCSV()` with proper CSV escaping.
+  - Post-download state showing import service links.
+  - Warning display for songs missing ISRC codes.
+- **Feature 10: Unified Navigation**
+  - Hamburger menu with centralized navigation links.
+  - Theme selector dropdown in hamburger menu.
+  - Responsive header with "Tune" button and hamburger menu.
 
 # Testing
 
@@ -420,7 +495,14 @@ The test suite covers:
 - **Song Rendering**: Checks correct display of song details, ranks, and dynamic media links (YouTube, Spotify, Bandcamp, etc.).
 - **Ranking Logic**: Validates that URL parameters drive the configuration and that UI interactions (sliders) update the URL.
 - **Modals**: Verifies correct rendering and behavior of:
-  - Settings Modal (Ranking Params, Source Weights, Shadow Ranks)
+  - Tune Ranking Modal (Ranking Params, Source Weights, Shadow Ranks)
   - Reviews Modal (Quotes, Source lists, Ghost emojis for shadow ranks)
   - Ranking Stats Modal (Score breakdown tables)
   - About Modal (Dynamic content)
+- **Playlist Features**: Tests for YouTube and Download modals:
+  - YouTube modal count selection and preference toggles
+  - YouTube playlist URL generation with correct video IDs
+  - Download modal count selection
+  - CSV export with proper headers and data
+  - Warning messages for missing YouTube IDs or ISRC codes
+- **Theme Switching**: Verifies theme selector in hamburger menu works correctly

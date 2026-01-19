@@ -8,7 +8,7 @@ def test_url_params_override_config(page: Page, server_url):
     page.goto(f"{server_url}/?k_value=50")
     
     # Check via UI instead of internal state
-    page.locator("#open-settings").click()
+    page.locator("#open-tune").click()
     
     # Check k_value slider
     k_slider = page.locator("#setting-ranking-k_value")
@@ -19,7 +19,7 @@ def test_slider_updates_url(page: Page, server_url):
     page.goto(server_url)
     
     # Open settings
-    page.locator("#open-settings").click()
+    page.locator("#open-tune").click()
     
     # Find Consensus Boost slider (range input)
     # id="setting-ranking-consensus_boost"
@@ -63,7 +63,7 @@ def test_consensus_mode_ranking_changes(page: Page, server_url):
     page.wait_for_timeout(200)
     
     # Now CHANGE settings
-    page.locator("#open-settings").click()
+    page.locator("#open-tune").click()
     page.wait_for_timeout(200)
     
     # Change settings:
@@ -98,7 +98,7 @@ def test_consensus_mode_ranking_changes(page: Page, server_url):
     expect(page).to_have_url(re.compile("independent=0"))
     
     # Close settings modal
-    page.locator("#modal-settings button", has_text="Close").click()
+    page.locator("#modal-tune button", has_text="Close").click()
     page.wait_for_timeout(300)
     
     # Capture NEW state after settings change
@@ -207,7 +207,7 @@ def test_conviction_mode_ranking_changes(page: Page, server_url):
     page.wait_for_timeout(200)
     
     # Now CHANGE to Conviction mode with different settings
-    page.locator("#open-settings").click()
+    page.locator("#open-tune").click()
     page.wait_for_timeout(200)
     
     # Switch to Conviction mode (this will cause a significant ranking change)
@@ -242,7 +242,7 @@ def test_conviction_mode_ranking_changes(page: Page, server_url):
     expect(page).to_have_url(re.compile("provocation_boost=0.05"))
     
     # Close settings modal
-    page.locator("#modal-settings button", has_text="Close").click()
+    page.locator("#modal-tune button", has_text="Close").click()
     page.wait_for_timeout(300)
     
     # Capture NEW state after switching to Conviction mode
