@@ -1082,7 +1082,7 @@ function renderYouTubeUI(count = 50, preference = "videos") {
 
         <fieldset>
             <legend>Include top N songs</legend>
-            <div class="grid">
+            <div class="chip-group">
                 <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">10</button>
                 <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">25</button>
                 <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">50</button>
