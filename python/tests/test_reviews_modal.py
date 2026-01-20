@@ -1,15 +1,16 @@
-from playwright.sync_api import Page, expect
 import re
+
+from playwright.sync_api import Page, expect
+
+from conftest import get_song_card, open_reviews_modal, show_all_songs
+
 
 def test_reviews_modal_content(page: Page, server_url):
     """Test that clicking sources opens reviews modal with correct content."""
     page.goto(server_url)
-    
-    # Find "WHERE IS MY HUSBAND!" by RAYE (appears on many lists including Guardian #17)
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    
-    # Click the sources list
-    card.locator("[data-sources]").click()
+
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_reviews_modal(page, card)
     
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -41,10 +42,9 @@ def test_reviews_modal_content(page: Page, server_url):
 def test_shadow_rank_display(page: Page, server_url):
     """Test that shadow ranks are displayed with the ghost emoji."""
     page.goto(server_url)
-    
-    # Use "Townies" by Wednesday which has "NPR Top 25" (shadow rank)
-    card = page.locator(".song-card", has_text="Townies").first
-    card.locator("[data-sources]").click()
+
+    card = get_song_card(page, "Townies")
+    open_reviews_modal(page, card)
     
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -56,10 +56,9 @@ def test_shadow_rank_display(page: Page, server_url):
 def test_reviews_modal_top_button(page: Page, server_url):
     """Test that Top button scrolls to top of modal."""
     page.goto(server_url)
-    
-    # Find a song with many reviews to make the modal scrollable
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    card.locator("[data-sources]").click()
+
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_reviews_modal(page, card)
     
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -84,7 +83,7 @@ def test_reviews_modal_close_button(page: Page, server_url):
     page.goto(server_url)
 
     card = page.locator(".song-card").first
-    card.locator("[data-sources]").click()
+    open_reviews_modal(page, card)
 
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -101,9 +100,8 @@ def test_reviews_modal_quote_stereogum(page: Page, server_url):
     """Test that quote is displayed in reviews modal for Stereogum."""
     page.goto(server_url)
 
-    # Find "Townies" by Wednesday (Stereogum source has quote)
-    card = page.locator(".song-card", has_text="Townies").first
-    card.locator("[data-sources]").click()
+    card = get_song_card(page, "Townies")
+    open_reviews_modal(page, card)
 
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -119,9 +117,8 @@ def test_reviews_modal_no_quote_available(page: Page, server_url):
     """Test that 'No quote available' text is shown for sources without quotes."""
     page.goto(server_url)
 
-    # Find "Townies" by Wednesday (Pitchfork has no quote in test data)
-    card = page.locator(".song-card", has_text="Townies").first
-    card.locator("[data-sources]").click()
+    card = get_song_card(page, "Townies")
+    open_reviews_modal(page, card)
 
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -136,9 +133,8 @@ def test_reviews_modal_unranked_source_shadow_rank_display(page: Page, server_ur
     """Test that unranked sources show shadow rank with ghost emoji in reviews modal."""
     page.goto(server_url)
 
-    # Find "WHERE IS MY HUSBAND!" by RAYE (Independent and ELLE use shadow rank)
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    card.locator("[data-sources]").click()
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_reviews_modal(page, card)
 
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()
@@ -160,14 +156,11 @@ def test_reviews_modal_npr_top_125(page: Page, server_url):
     """Test that NPR Top 125 source displays correctly with ghost emoji."""
     page.goto(server_url)
 
-    # Show all songs to find the Ensalada song
-    while page.locator("button", has_text="Show").is_visible():
-        page.locator("button", has_text="Show").click()
+    show_all_songs(page)
 
-    # Find "Ensalada" by Freddie Gibbs (has NPR Top 125 source)
-    card = page.locator(".song-card", has_text="Ensalada").first
+    card = get_song_card(page, "Ensalada")
     expect(card).to_be_visible()
-    card.locator("[data-sources]").click()
+    open_reviews_modal(page, card)
 
     modal = page.locator("#modal-reviews")
     expect(modal).to_be_visible()

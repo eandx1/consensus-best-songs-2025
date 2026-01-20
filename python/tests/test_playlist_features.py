@@ -1,24 +1,26 @@
 """
 Tests for Listen on YouTube and Download Playlist features.
 """
-from playwright.sync_api import Page, expect
 import re
+
+from playwright.sync_api import Page, expect
+
+from conftest import open_download_modal, open_hamburger_menu, open_youtube_modal
 
 
 # =============================================================================
 # LISTEN ON YOUTUBE MODAL TESTS
 # =============================================================================
 
+
 def test_youtube_modal_opens_without_feature_flag(page: Page, server_url):
     """Test that YouTube modal is always available (no feature flag needed)."""
     page.goto(server_url)
 
-    # Open hamburger menu
-    page.locator("#hamburger-btn").click()
+    open_hamburger_menu(page)
     hamburger_menu = page.locator("#hamburger-menu")
     expect(hamburger_menu).to_be_visible()
 
-    # YouTube link should be visible in menu
     youtube_link = hamburger_menu.locator("#open-youtube-menu")
     expect(youtube_link).to_be_visible()
     expect(youtube_link).to_have_text("Listen on YouTube")
@@ -28,25 +30,11 @@ def test_youtube_modal_opens(page: Page, server_url):
     """Test that clicking Listen on YouTube opens the modal."""
     page.goto(server_url)
 
-    # Open hamburger menu and click YouTube link
-    page.locator("#hamburger-btn").click()
-    page.locator("#open-youtube-menu").click()
+    open_youtube_modal(page)
 
     modal = page.locator("#modal-youtube")
     expect(modal).to_be_visible()
     expect(modal.locator("h3")).to_have_text("Listen on YouTube")
-
-
-def open_youtube_modal(page):
-    """Helper to open YouTube modal via hamburger menu."""
-    page.locator("#hamburger-btn").click()
-    page.locator("#open-youtube-menu").click()
-
-
-def open_download_modal(page):
-    """Helper to open Download modal via hamburger menu."""
-    page.locator("#hamburger-btn").click()
-    page.locator("#open-download-menu").click()
 
 
 def test_youtube_modal_default_state(page: Page, server_url):
