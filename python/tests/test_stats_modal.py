@@ -145,11 +145,10 @@ def test_stats_modal_cluster_boost_multiple_clusters(page: Page, server_url):
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
 
-    # Check Cluster Boost is > 0% (song has sources from multiple clusters)
-    cluster_boost_row = modal.locator("text=Cluster Boost").locator("..")
-    cluster_boost_text = cluster_boost_row.inner_text()
-    # Extract the percentage value and verify it's greater than 0
-    assert "0%" not in cluster_boost_text or "10%" in cluster_boost_text or "%" in cluster_boost_text
+    # Check Cluster Boost shows expected value for song with 3 clusters within threshold
+    # RAYE has sources from Critical Authority, Tastemakers, and Mainstream clusters
+    # within cluster_threshold=25, giving boost of 1 + (0.03 * 2) = 6%
+    expect(modal.locator("text=Cluster Boost").locator("..")).to_contain_text("6.00%")
 
 
 def test_stats_modal_rank1_bonus_contribution(page: Page, server_url):
@@ -208,10 +207,8 @@ def test_stats_modal_consensus_boost_many_sources(page: Page, server_url):
     # Verify list count is 10
     expect(modal.locator("text=List Count").locator("..")).to_contain_text("10")
 
-    # Consensus Boost should be > 0% for a song with many sources (log(10) > 0)
-    consensus_boost_row = modal.locator("text=Consensus Boost").locator("..")
-    consensus_boost_text = consensus_boost_row.inner_text()
-    # The boost should not be "0%" since log(10) > 0
-    # Default consensus_boost is 0.03 (3%), so with 10 sources we should see a positive boost
-    assert "Consensus Boost" in consensus_boost_text
+    # Consensus Boost should show expected value for song with 10 sources
+    # With consensus_boost=0.03 and 10 sources (max in test data), boost = 3%
+    # Formula: 1 + (consensus_boost * ln(count) / ln(max_count)) = 1 + (0.03 * 1) = 1.03
+    expect(modal.locator("text=Consensus Boost").locator("..")).to_contain_text("3.00%")
 
