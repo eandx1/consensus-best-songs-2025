@@ -532,9 +532,13 @@ function render() {
                     <aside class="rank-display">#${song.rank}</aside>
                     
                     <figure class="video-figure">
-                        <lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(
-                          song.name,
-                        )}"></lite-youtube>
+                        ${youtubeId
+                          ? `<lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(song.name)}"></lite-youtube>`
+                          : `<div class="video-placeholder" aria-label="No video available for ${escapeHtml(song.name)}">
+                               <svg><use href="#icon-disc"></use></svg>
+                               <span>Video unavailable</span>
+                             </div>`
+                        }
                     </figure>
                     
                     <div class="song-info">

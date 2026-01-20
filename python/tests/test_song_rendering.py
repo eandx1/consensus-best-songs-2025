@@ -38,12 +38,63 @@ def test_media_links_bandcamp(page: Page, server_url):
 def test_lite_youtube_player(page: Page, server_url):
     """Test that the lite-youtube component is rendered with correct video ID."""
     page.goto(server_url)
-    
+
     # "WHERE IS MY HUSBAND!" by RAYE has video_id="rK5TyISxZ_M"
     card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    
+
     player = card.locator("lite-youtube")
     expect(player).to_be_visible()
     expect(player).to_have_attribute("videoid", "rK5TyISxZ_M")
     expect(player).to_have_attribute("playlabel", "Play WHERE IS MY HUSBAND!")
+
+
+def test_no_youtube_placeholder(page: Page, server_url):
+    """Test that songs without YouTube IDs render a placeholder instead of lite-youtube."""
+    page.goto(server_url)
+
+    # Show all songs to find Freddie Gibbs song (it ranks lower)
+    while page.locator("button", has_text="Show").is_visible():
+        page.locator("button", has_text="Show").click()
+
+    # "It's Your Anniversary" by Freddie Gibbs has no YouTube IDs in test_data.json
+    card = page.locator(".song-card", has_text="It's Your Anniversary").first
+    expect(card).to_be_visible()
+
+    # Should NOT have lite-youtube
+    expect(card.locator("lite-youtube")).not_to_be_attached()
+
+    # Should have video-placeholder with the disc icon and text
+    placeholder = card.locator(".video-placeholder")
+    expect(placeholder).to_be_visible()
+    expect(placeholder.locator("use")).to_have_attribute("href", "#icon-disc")
+    expect(placeholder.locator("span")).to_have_text("Video unavailable")
+    expect(placeholder).to_have_attribute("aria-label", "No video available for It's Your Anniversary")
+
+
+def test_placeholder_has_correct_dimensions(page: Page, server_url):
+    """Test that the video placeholder has 16:9 aspect ratio like lite-youtube."""
+    page.goto(server_url)
+
+    # Show all songs to find Freddie Gibbs song
+    while page.locator("button", has_text="Show").is_visible():
+        page.locator("button", has_text="Show").click()
+
+    card = page.locator(".song-card", has_text="It's Your Anniversary").first
+    placeholder = card.locator(".video-placeholder")
+
+    # Get computed style to verify aspect ratio is applied
+    aspect_ratio = placeholder.evaluate("el => getComputedStyle(el).aspectRatio")
+    assert aspect_ratio == "16 / 9", f"Expected aspect-ratio '16 / 9', got '{aspect_ratio}'"
+
+
+def test_song_with_youtube_has_player(page: Page, server_url):
+    """Test that songs WITH YouTube IDs still render lite-youtube correctly."""
+    page.goto(server_url)
+
+    # "WHERE IS MY HUSBAND!" has both video_id and music_id
+    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
+
+    # Should have lite-youtube, NOT placeholder
+    expect(card.locator("lite-youtube")).to_be_visible()
+    expect(card.locator(".video-placeholder")).not_to_be_attached()
 
