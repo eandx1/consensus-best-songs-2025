@@ -182,14 +182,16 @@ function updateTuneButton() {
     btn.classList.remove("tuned");
   }
 
-  // Also update the modal subtitle if the modal is open
-  const modalSubtitle = document.getElementById("tune-modal-subtitle");
-  if (modalSubtitle) {
+  // Also update the modal title when customized
+  const modalTitle = document.querySelector("#modal-tune h3");
+  const modalTitleText = document.getElementById("tune-modal-title-text");
+  if (modalTitle && modalTitleText) {
     if (isCustomized) {
-      modalSubtitle.innerHTML = `<svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> Tuned`;
-      modalSubtitle.style.display = "";
+      modalTitle.classList.add("tuned");
+      modalTitleText.textContent = "Tuned Ranking";
     } else {
-      modalSubtitle.style.display = "none";
+      modalTitle.classList.remove("tuned");
+      modalTitleText.textContent = "Tune Ranking";
     }
   }
 }
@@ -1156,7 +1158,7 @@ function renderYouTubeUI(count = 50, preference = "videos") {
   );
   if (modalSubtitle) {
     if (isRankingCustomized()) {
-      modalSubtitle.innerHTML = `Play the top songs on YouTube with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> tuned</strong> ranking`;
+      modalSubtitle.innerHTML = `Play the top songs on YouTube with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg>tuned</strong> ranking`;
     } else {
       modalSubtitle.textContent =
         "Play the top songs as an unnamed playlist on YouTube";
@@ -1259,7 +1261,7 @@ function renderDownloadUI(count = 100) {
   );
   if (modalSubtitle) {
     if (isRankingCustomized()) {
-      modalSubtitle.innerHTML = `Download the top songs with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg> tuned</strong> ranking as CSV`;
+      modalSubtitle.innerHTML = `Download the top songs with your <strong class="tuned-text"><svg class="tuned-badge-icon"><use href="#icon-sliders"></use></svg>tuned</strong> ranking as CSV`;
     } else {
       modalSubtitle.textContent =
         "Download as CSV and import to the streaming service of your choice";
