@@ -98,3 +98,20 @@ def test_song_with_youtube_has_player(page: Page, server_url):
     expect(card.locator("lite-youtube")).to_be_visible()
     expect(card.locator(".video-placeholder")).not_to_be_attached()
 
+
+def test_media_links_other_url(page: Page, server_url):
+    """Test that a song with only an 'Other' URL renders the Other link."""
+    page.goto(server_url)
+
+    # Show all songs to find Freddie Gibbs song (it ranks lower)
+    while page.locator("button", has_text="Show").is_visible():
+        page.locator("button", has_text="Show").click()
+
+    # "It's Your Anniversary" by Freddie Gibbs has only media.other.url
+    card = page.locator(".song-card", has_text="It's Your Anniversary").first
+    expect(card).to_be_visible()
+
+    nav = card.locator("nav")
+    expect(nav.locator("a", has_text="Other")).to_be_visible()
+    expect(nav.locator("a", has_text="Other")).to_have_attribute("href", re.compile("youonlydie1nce.com"))
+
