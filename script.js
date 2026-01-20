@@ -141,7 +141,7 @@ function updateTuneButton() {
   if (!btn) return;
 
   const isCustomized = isRankingCustomized();
-  const iconClass = isCustomized ? "tuned-badge-icon" : "nav-icon";
+  const iconClass = isCustomized ? "tuned-badge-icon" : "tune-icon";
   const label = isCustomized ? "Tuned" : "Tune";
 
   btn.innerHTML = `<svg class="${iconClass}"><use href="#icon-sliders"></use></svg>${label}`;
