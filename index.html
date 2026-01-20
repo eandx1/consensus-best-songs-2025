@@ -1223,6 +1223,11 @@
           color-mix(in srgb, var(--pico-primary), transparent 60%);
       }
 
+      /* Nav button icons */
+      .nav-icon {
+        margin-right: 0.2em;
+      }
+
       /* Precisely align the icon to the text */
       .tuned-text svg.tuned-badge-icon {
         display: inline-block;
@@ -1233,6 +1238,7 @@
         fill: none;
         /* This 'magic number' centers the icon vertically relative to the text lowercase 'x' height */
         vertical-align: -0.22em;
+        margin-right: 0.2em;
       }
 
       /* Specific 808 Hardware Nudge */
@@ -1240,8 +1246,6 @@
         width: 1.2em;
         height: 1.2em;
         vertical-align: -0.25em; /* Nudge slightly more for the blockier font */
-        /* Negative margin to counteract the wide monospace character box */
-        margin-right: -0.2rem;
       }
 
       /* Tune button tuned state */
@@ -1253,6 +1257,29 @@
       #open-tune .tuned-badge-icon {
         width: 1.2em;
         height: 1.2em;
+        margin-right: 0.2em;
+      }
+
+      /* Modal title icon - always visible */
+      .tune-title-icon {
+        display: inline-block;
+        width: 1.1em;
+        height: 1.1em;
+        stroke-width: 2.5;
+        stroke: var(--pico-muted-color);
+        fill: none;
+        vertical-align: -0.22em;
+        margin-right: 0.2em;
+        transition: stroke 0.2s ease;
+      }
+
+      /* Tuned state: match main button's primary color */
+      #modal-tune h3.tuned {
+        color: var(--pico-primary);
+      }
+
+      #modal-tune h3.tuned .tune-title-icon {
+        stroke: currentColor;
       }
 
       article.mode-card {
@@ -1579,12 +1606,9 @@
             autofocus
           ></button>
           <hgroup>
-            <h3>Tune Ranking</h3>
-            <p
-              id="tune-modal-subtitle"
-              class="tuned-text"
-              style="display: none"
-            ></p>
+            <h3>
+              <svg id="tune-modal-icon" class="tune-title-icon"><use href="#icon-sliders"></use></svg><span id="tune-modal-title-text">Tune Ranking</span>
+            </h3>
           </hgroup>
         </header>
         <div id="tune-content"></div>

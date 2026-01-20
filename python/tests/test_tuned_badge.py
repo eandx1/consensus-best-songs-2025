@@ -41,7 +41,7 @@ def test_tune_button_tuned_state_with_url_param(page: Page, server_url):
 
 
 def test_tune_modal_header_default_state(page: Page, server_url):
-    """Test that the Tune modal shows title without subtitle by default."""
+    """Test that the Tune modal title is not highlighted by default."""
     page.goto(server_url)
     page.wait_for_timeout(300)
 
@@ -56,13 +56,12 @@ def test_tune_modal_header_default_state(page: Page, server_url):
     header = modal.locator("article > header h3")
     expect(header).to_contain_text("Tune Ranking")
 
-    # Subtitle should be hidden
-    subtitle = modal.locator("#tune-modal-subtitle")
-    expect(subtitle).not_to_be_visible()
+    # h3 should NOT have tuned class
+    expect(header).not_to_have_class(re.compile(r"\btuned\b"))
 
 
 def test_tune_modal_header_tuned_state(page: Page, server_url):
-    """Test that the Tune modal shows subtitle with 'Tuned' when customized."""
+    """Test that the Tune modal title is highlighted when customized."""
     page.goto(f"{server_url}/?k_value=30")
     page.wait_for_timeout(300)
 
@@ -73,15 +72,10 @@ def test_tune_modal_header_tuned_state(page: Page, server_url):
     modal = page.locator("#modal-tune")
     expect(modal).to_be_visible()
 
-    # Header should still show "Tune Ranking"
+    # Header should show "Tuned Ranking" and have tuned class
     header = modal.locator("article > header h3")
-    expect(header).to_contain_text("Tune Ranking")
-
-    # Subtitle should be visible with "Tuned" and sliders icon
-    subtitle = modal.locator("#tune-modal-subtitle")
-    expect(subtitle).to_be_visible()
-    expect(subtitle).to_contain_text("Tuned")
-    expect(subtitle.locator("use[href='#icon-sliders']")).to_be_visible()
+    expect(header).to_contain_text("Tuned Ranking")
+    expect(header).to_have_class(re.compile(r"\btuned\b"))
 
 
 def test_youtube_modal_subtitle_default_state(page: Page, server_url):
@@ -183,16 +177,18 @@ def test_reset_clears_tuned_state(page: Page, server_url):
     modal = page.locator("#modal-tune")
     expect(modal).to_be_visible()
 
-    # Subtitle should be visible before reset
-    subtitle = modal.locator("#tune-modal-subtitle")
-    expect(subtitle).to_be_visible()
+    # h3 should have tuned class before reset
+    header = modal.locator("article > header h3")
+    expect(header).to_have_class(re.compile(r"\btuned\b"))
+    expect(header).to_contain_text("Tuned Ranking")
 
     reset_btn = modal.locator("button", has_text="Reset")
     reset_btn.click()
     page.wait_for_timeout(500)  # Wait for debounce
 
-    # Subtitle should be hidden after reset
-    expect(subtitle).not_to_be_visible()
+    # h3 should NOT have tuned class after reset
+    expect(header).not_to_have_class(re.compile(r"\btuned\b"))
+    expect(header).to_contain_text("Tune Ranking")
 
     # Close modal
     modal.locator("button", has_text="Close").click()
@@ -220,9 +216,9 @@ def test_slider_change_triggers_tuned_state(page: Page, server_url):
 
     modal = page.locator("#modal-tune")
 
-    # Subtitle should be hidden initially
-    subtitle = modal.locator("#tune-modal-subtitle")
-    expect(subtitle).not_to_be_visible()
+    # h3 should NOT have tuned class initially
+    header = modal.locator("article > header h3")
+    expect(header).not_to_have_class(re.compile(r"\btuned\b"))
 
     # Change K value slider
     slider = page.locator("#setting-ranking-k_value")
@@ -232,9 +228,9 @@ def test_slider_change_triggers_tuned_state(page: Page, server_url):
     # Wait for debounce
     page.wait_for_timeout(500)
 
-    # Subtitle should now be visible with "Tuned"
-    expect(subtitle).to_be_visible()
-    expect(subtitle).to_contain_text("Tuned")
+    # h3 should now have tuned class and show "Tuned Ranking"
+    expect(header).to_have_class(re.compile(r"\btuned\b"))
+    expect(header).to_contain_text("Tuned Ranking")
 
     # Close modal
     modal.locator("button", has_text="Close").click()
@@ -261,9 +257,9 @@ def test_source_weight_change_triggers_tuned_state(page: Page, server_url):
 
     modal = page.locator("#modal-tune")
 
-    # Subtitle should be hidden initially
-    subtitle = modal.locator("#tune-modal-subtitle")
-    expect(subtitle).not_to_be_visible()
+    # h3 should NOT have tuned class initially
+    header = modal.locator("article > header h3")
+    expect(header).not_to_have_class(re.compile(r"\btuned\b"))
 
     # Find and change Buzzfeed weight slider
     slider = page.locator("#setting-source_weight-Buzzfeed")
@@ -273,9 +269,9 @@ def test_source_weight_change_triggers_tuned_state(page: Page, server_url):
     # Wait for debounce
     page.wait_for_timeout(500)
 
-    # Subtitle should now be visible with "Tuned"
-    expect(subtitle).to_be_visible()
-    expect(subtitle).to_contain_text("Tuned")
+    # h3 should now have tuned class and show "Tuned Ranking"
+    expect(header).to_have_class(re.compile(r"\btuned\b"))
+    expect(header).to_contain_text("Tuned Ranking")
 
     # Close modal
     modal.locator("button", has_text="Close").click()
@@ -302,9 +298,9 @@ def test_decay_mode_change_triggers_tuned_state(page: Page, server_url):
 
     modal = page.locator("#modal-tune")
 
-    # Subtitle should be hidden initially
-    subtitle = modal.locator("#tune-modal-subtitle")
-    expect(subtitle).not_to_be_visible()
+    # h3 should NOT have tuned class initially
+    header = modal.locator("article > header h3")
+    expect(header).not_to_have_class(re.compile(r"\btuned\b"))
 
     # Click on Conviction mode card
     conviction_card = page.locator("article.mode-card", has_text="🔥 Conviction")
@@ -313,9 +309,9 @@ def test_decay_mode_change_triggers_tuned_state(page: Page, server_url):
     # Wait for debounce
     page.wait_for_timeout(500)
 
-    # Subtitle should now be visible with "Tuned"
-    expect(subtitle).to_be_visible()
-    expect(subtitle).to_contain_text("Tuned")
+    # h3 should now have tuned class and show "Tuned Ranking"
+    expect(header).to_have_class(re.compile(r"\btuned\b"))
+    expect(header).to_contain_text("Tuned Ranking")
 
     # Close modal
     modal.locator("button", has_text="Close").click()

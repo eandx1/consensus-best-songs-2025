@@ -87,7 +87,7 @@ Six semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
 ### Tune Ranking Modal
 
-Modal header shows "Tune Ranking". When settings are customized (differ from defaults), a subtitle appears below the title showing "Tuned" with sliders icon to indicate active customization. Contains three sections:
+Modal header shows a sliders icon followed by "Tune Ranking". The icon is always visible but uses a muted color by default. When settings are customized (differ from defaults), the icon and title text change to the primary color, and the title changes to "Tuned Ranking" to indicate active customization. Contains three sections:
 
 **Ranking Parameters** (appears first):
 
