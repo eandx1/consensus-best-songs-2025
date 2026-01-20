@@ -961,7 +961,7 @@ window.showReviews = (idx) => {
 
     // Display rank with shadow rank notation if applicable (full decimal value with ghost emoji)
     const displayRank = src.uses_shadow_rank
-      ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="left">👻 ${rankVal.toFixed(
+      ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="top">👻 ${rankVal.toFixed(
           1,
         )}</abbr>`
       : `#${rankVal}`;

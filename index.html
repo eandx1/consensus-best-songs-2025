@@ -1298,10 +1298,11 @@
         max-width: 220px;
       }
 
-      /* Reviews Modal: Ensure shadow rank tooltips wrap properly */
+      /* Reviews Modal: Ensure shadow rank tooltips wrap properly and stay within modal bounds */
       #modal-reviews abbr[data-tooltip]::before,
       #modal-reviews abbr[data-tooltip]::after {
         white-space: normal;
+        max-width: 220px;
       }
 
       /* Mobile Modal Fixes: Flatten nested structure to maximize width */
@@ -1313,6 +1314,11 @@
 
         /* Shadow rank tooltips on mobile should be even narrower */
         #modal-stats table abbr[data-tooltip][data-placement="top"]::before {
+          max-width: 160px;
+        }
+
+        /* Reviews Modal: Make shadow rank tooltips narrower on mobile */
+        #modal-reviews abbr[data-tooltip]::before {
           max-width: 160px;
         }
 
