@@ -532,9 +532,13 @@ function render() {
                     <aside class="rank-display">#${song.rank}</aside>
                     
                     <figure class="video-figure">
-                        <lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(
-                          song.name,
-                        )}"></lite-youtube>
+                        ${youtubeId
+                          ? `<lite-youtube videoid="${youtubeId}" playlabel="Play ${escapeHtml(song.name)}"></lite-youtube>`
+                          : `<div class="video-placeholder" aria-label="No video available for ${escapeHtml(song.name)}">
+                               <svg><use href="#icon-disc"></use></svg>
+                               <span>Video unavailable</span>
+                             </div>`
+                        }
                     </figure>
                     
                     <div class="song-info">
@@ -961,7 +965,7 @@ window.showReviews = (idx) => {
 
     // Display rank with shadow rank notation if applicable (full decimal value with ghost emoji)
     const displayRank = src.uses_shadow_rank
-      ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="left">👻 ${rankVal.toFixed(
+      ? `<abbr data-tooltip="Shadow Rank (from Settings since source is unranked)" data-placement="top">👻 ${rankVal.toFixed(
           1,
         )}</abbr>`
       : `#${rankVal}`;
