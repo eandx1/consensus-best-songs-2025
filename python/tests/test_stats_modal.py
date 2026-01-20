@@ -95,8 +95,15 @@ def test_stats_modal_single_ranked_source(page: Page, server_url):
     expect(modal.locator("text=List Count").locator("..")).to_contain_text("1")
 
     # Check Source Contributions table has 1 row
-    contributions_table = modal.locator("section:has(h5:has-text('Source Contributions')) table tbody tr")
+    contributions_section = modal.locator("section:has(h5:has-text('Source Contributions'))")
+    contributions_table = contributions_section.locator("table tbody tr")
     expect(contributions_table).to_have_count(1)
+
+    # Verify FADER contribution value
+    # Calculation (consensus mode, k=20): W(40) = (1 + 20) / (40 + 20) = 21/60 = 0.35
+    # contribution = 0.35 × 0.9 (FADER weight) = 0.315 → 0.32 (rounded)
+    fader_row = contributions_section.locator("table tbody tr", has_text="FADER")
+    expect(fader_row).to_contain_text("+0.32")
 
     # Check Consensus Boost is 0% (log(1) = 0)
     expect(modal.locator("text=Consensus Boost").locator("..")).to_contain_text("0%")
@@ -125,9 +132,16 @@ def test_stats_modal_single_unranked_source(page: Page, server_url):
     expect(modal.locator("text=List Count").locator("..")).to_contain_text("1")
 
     # Check Source Contributions has 1 row showing Rough Trade
-    contributions_table = modal.locator("section:has(h5:has-text('Source Contributions')) table tbody tr")
+    contributions_section = modal.locator("section:has(h5:has-text('Source Contributions'))")
+    contributions_table = contributions_section.locator("table tbody tr")
     expect(contributions_table).to_have_count(1)
     expect(contributions_table).to_contain_text("Rough Trade")
+
+    # Verify Rough Trade contribution value (uses shadow_rank=32)
+    # Calculation (consensus mode, k=20): W(32) = (1 + 20) / (32 + 20) = 21/52 = 0.4038
+    # contribution = 0.4038 × 0.6 (Rough Trade weight) = 0.2423 → 0.24 (rounded)
+    rough_trade_row = contributions_section.locator("table tbody tr", has_text="Rough Trade")
+    expect(rough_trade_row).to_contain_text("+0.24")
 
     # Check boosts are 0%
     expect(modal.locator("text=Consensus Boost").locator("..")).to_contain_text("0%")
@@ -167,9 +181,13 @@ def test_stats_modal_rank1_bonus_contribution(page: Page, server_url):
     expect(contributions_section).to_contain_text("Stereogum")
     expect(contributions_section).to_contain_text("#1")
 
-    # The contribution value should be positive (rank 1 bonus applies)
+    # Verify Stereogum contribution value with rank1_bonus
+    # Calculation (consensus mode, k=20, rank1_bonus=1.1):
+    # W(1) = (1 + 20) / (1 + 20) = 21/21 = 1.0
+    # After rank1_bonus: 1.0 × 1.1 = 1.1
+    # contribution = 1.1 × 0.7 (Stereogum weight) = 0.77
     stereogum_row = contributions_section.locator("table tbody tr", has_text="Stereogum")
-    expect(stereogum_row).to_be_visible()
+    expect(stereogum_row).to_contain_text("+0.77")
 
 
 def test_stats_modal_rank1_bonus_conviction_mode(page: Page, server_url):
@@ -188,6 +206,15 @@ def test_stats_modal_rank1_bonus_conviction_mode(page: Page, server_url):
     contributions_section = modal.locator("section:has(h5:has-text('Source Contributions'))")
     expect(contributions_section).to_contain_text("Stereogum")
     expect(contributions_section).to_contain_text("#1")
+
+    # Verify Stereogum contribution value with rank1_bonus in conviction mode
+    # Calculation (conviction mode, p=0.55, rank1_bonus=1.1):
+    # W(1) = 1 / 1^0.55 = 1.0
+    # After rank1_bonus: 1.0 × 1.1 = 1.1
+    # contribution = 1.1 × 0.7 (Stereogum weight) = 0.77
+    # Note: Value is same as consensus mode for rank 1 because 1^p = 1 for any p
+    stereogum_row = contributions_section.locator("table tbody tr", has_text="Stereogum")
+    expect(stereogum_row).to_contain_text("+0.77")
 
     # Raw Score should be visible (different calculation in conviction mode)
     expect(modal.locator("text=Raw Score")).to_be_visible()
