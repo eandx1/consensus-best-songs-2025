@@ -1,15 +1,16 @@
-from playwright.sync_api import Page, expect
 import re
+
+from playwright.sync_api import Page, expect
+
+from conftest import get_song_card, open_stats_modal, show_all_songs
+
 
 def test_stats_modal_content(page: Page, server_url):
     """Test that stats modal shows correct scores."""
     page.goto(server_url)
-    
-    # Find "WHERE IS MY HUSBAND!" by RAYE (appears on 10 lists)
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    
-    # Click info icon
-    card.locator("header a[aria-label='View ranking details']").click()
+
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_stats_modal(page, card)
     
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -34,10 +35,9 @@ def test_stats_modal_content(page: Page, server_url):
 def test_stats_modal_top_button(page: Page, server_url):
     """Test that Top button scrolls to top of modal."""
     page.goto(server_url)
-    
-    # Find a song with many sources to make the modal scrollable
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    card.locator("header a[aria-label='View ranking details']").click()
+
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_stats_modal(page, card)
     
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -62,7 +62,7 @@ def test_stats_modal_close_button(page: Page, server_url):
     page.goto(server_url)
 
     card = page.locator(".song-card").first
-    card.locator("header a[aria-label='View ranking details']").click()
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -79,14 +79,11 @@ def test_stats_modal_single_ranked_source(page: Page, server_url):
     """Test stats modal for song with single ranked source."""
     page.goto(server_url)
 
-    # Show all songs to find Freddie Gibbs song
-    while page.locator("button", has_text="Show").is_visible():
-        page.locator("button", has_text="Show").click()
+    show_all_songs(page)
 
-    # "It's Your Anniversary" by Freddie Gibbs has single source: FADER #40
-    card = page.locator(".song-card", has_text="It's Your Anniversary").first
+    card = get_song_card(page, "It's Your Anniversary")
     expect(card).to_be_visible()
-    card.locator("header a[aria-label='View ranking details']").click()
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -116,14 +113,11 @@ def test_stats_modal_single_unranked_source(page: Page, server_url):
     """Test stats modal for song with single unranked source."""
     page.goto(server_url)
 
-    # Show all songs to find Sleep Token song
-    while page.locator("button", has_text="Show").is_visible():
-        page.locator("button", has_text="Show").click()
+    show_all_songs(page)
 
-    # "Look To Windward" by Sleep Token has single source: Rough Trade (unranked)
-    card = page.locator(".song-card", has_text="Look To Windward").first
+    card = get_song_card(page, "Look To Windward")
     expect(card).to_be_visible()
-    card.locator("header a[aria-label='View ranking details']").click()
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -152,9 +146,8 @@ def test_stats_modal_cluster_boost_multiple_clusters(page: Page, server_url):
     """Test cluster boost for songs with multiple source clusters."""
     page.goto(server_url)
 
-    # "WHERE IS MY HUSBAND!" by RAYE has sources from multiple clusters
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    card.locator("header a[aria-label='View ranking details']").click()
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -169,9 +162,8 @@ def test_stats_modal_rank1_bonus_contribution(page: Page, server_url):
     """Test that rank 1 bonus is reflected in source contribution."""
     page.goto(server_url)
 
-    # "Townies" by Wednesday is ranked #1 by Stereogum
-    card = page.locator(".song-card", has_text="Townies").first
-    card.locator("header a[aria-label='View ranking details']").click()
+    card = get_song_card(page, "Townies")
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -192,12 +184,10 @@ def test_stats_modal_rank1_bonus_contribution(page: Page, server_url):
 
 def test_stats_modal_rank1_bonus_conviction_mode(page: Page, server_url):
     """Test rank 1 bonus is applied in conviction mode."""
-    # Load page with conviction mode
     page.goto(f"{server_url}?decay_mode=conviction")
 
-    # "Townies" by Wednesday is ranked #1 by Stereogum
-    card = page.locator(".song-card", has_text="Townies").first
-    card.locator("header a[aria-label='View ranking details']").click()
+    card = get_song_card(page, "Townies")
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()
@@ -224,9 +214,8 @@ def test_stats_modal_consensus_boost_many_sources(page: Page, server_url):
     """Test consensus boost for song with many sources."""
     page.goto(server_url)
 
-    # "WHERE IS MY HUSBAND!" by RAYE has 10 sources
-    card = page.locator(".song-card", has_text="WHERE IS MY HUSBAND!").first
-    card.locator("header a[aria-label='View ranking details']").click()
+    card = get_song_card(page, "WHERE IS MY HUSBAND!")
+    open_stats_modal(page, card)
 
     modal = page.locator("#modal-stats")
     expect(modal).to_be_visible()

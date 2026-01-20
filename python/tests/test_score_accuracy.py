@@ -9,150 +9,43 @@ The Python code (sources.py, ranking_engine.py) is the source of truth for
 expected values. The test_data.json is used for the song data that JavaScript
 receives.
 """
-import pytest
-import json
-import sys
 import os
+import sys
+
+import pandas as pd
+import pytest
 from playwright.sync_api import Page, expect
 
-# Add the notebooks directory to the path to import ranking_engine and sources
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../notebooks"))
 from ranking_engine import (
-    compute_rankings_with_configs,
-    TOP_BONUSES_CONSENSUS,
-    TOP_BONUSES_CONVICTION,
+    CLUSTER_BOOST,
+    CONSENSUS_BOOST,
     K_VALUE,
     P_EXPONENT,
-    CONSENSUS_BOOST,
     PROVOCATION_BOOST,
-    CLUSTER_BOOST,
+    TOP_BONUSES_CONSENSUS,
+    TOP_BONUSES_CONVICTION,
+    compute_rankings_with_configs,
 )
-from sources import SOURCES, SHADOW_RANKS
 
-
-def build_source_name_mapping(test_data):
-    """
-    Build a mapping from test_data.json source names to Python SOURCES keys.
-
-    test_data.json uses short names (e.g., "NYT (Caramanica)") while sources.py
-    uses full names (e.g., "New York Times (Jon Caramanica)").
-
-    Returns a dict: test_data_source_name -> python_source_name
-    """
-    mapping = {}
-    for source_name, source_config in test_data["config"]["sources"].items():
-        # Check if there's a full_name that maps to Python's SOURCES
-        full_name = source_config.get("full_name", source_name)
-
-        # Try to find matching key in Python SOURCES
-        if full_name in SOURCES:
-            mapping[source_name] = full_name
-        elif source_name in SOURCES:
-            mapping[source_name] = source_name
-        else:
-            # Try matching by suffix or other means
-            # For sources like "Guardian" -> "The Guardian"
-            for py_name in SOURCES.keys():
-                if py_name.endswith(source_name) or source_name.endswith(py_name):
-                    mapping[source_name] = py_name
-                    break
-            else:
-                # If still not found, warn but allow (some test sources may not be in production)
-                mapping[source_name] = None
-
-    return mapping
-
-
-def build_python_sources_config(test_data, name_mapping):
-    """
-    Build a sources configuration dict compatible with ranking_engine using
-    Python's SOURCES as the source of truth for weights and clusters.
-
-    The suffixes are generated from the test_data source names for column naming.
-    """
-    sources = {}
-
-    for td_name, py_name in name_mapping.items():
-        if py_name is None or py_name not in SOURCES:
-            continue
-
-        py_config = SOURCES[py_name]
-        td_config = test_data["config"]["sources"].get(td_name, {})
-
-        # Use Python's weight and cluster from sources.py
-        weight = py_config["weight"]
-        cluster = py_config["cluster"]
-        source_type = py_config.get("type", "ranked")
-
-        # Get shadow rank from Python's SHADOW_RANKS if applicable
-        shadow_rank = SHADOW_RANKS.get(py_name)
-
-        # Generate suffix from test_data source name for column naming
-        suffix = f"_{td_name.lower().replace(' ', '_').replace('(', '').replace(')', '')}"
-
-        sources[td_name] = {
-            "suffix": suffix,
-            "weight": weight,
-            "cluster": cluster,
-            "type": source_type,
-            "shadow_rank": shadow_rank,
-        }
-
-    return sources
+from ranking_helpers import build_dataframe, build_python_sources_config, build_source_name_mapping
 
 
 @pytest.fixture(scope="module")
 def expected_scores(test_data):
     """
-    Pre-compute expected scores using the Python ranking engine with
-    Python's sources.py as the source of truth for configuration.
+    Pre-compute expected scores using the Python ranking engine.
 
-    Returns a dict mapping song names to their expected scoring details.
+    Returns a dict mapping song names to their expected scoring details for
+    ranks 1, 10, and 20.
     """
-    import pandas as pd
-
-    # Build mapping from test_data source names to Python source names
     name_mapping = build_source_name_mapping(test_data)
-
-    # Build sources config using Python's SOURCES as source of truth
     sources = build_python_sources_config(test_data, name_mapping)
+    df = build_dataframe(test_data, sources)
 
-    # Convert test data songs to a DataFrame format expected by ranking_engine
-    songs = test_data["songs"]
+    mode = "consensus"
+    top_bonuses = TOP_BONUSES_CONSENSUS
 
-    # Create DataFrame with one row per song
-    rows = []
-    for song in songs:
-        row = {
-            "name": song["name"],
-            "artist": song["artist"],
-            "id": song["id"]
-        }
-
-        # Add rank columns for each source (initialize to None)
-        for source_name in sources.keys():
-            rank_col = f"rank{sources[source_name]['suffix']}"
-            row[rank_col] = None
-
-        # Fill in the ranks from the song's sources
-        for src_entry in song["sources"]:
-            src_name = src_entry["name"]
-            if src_name in sources:
-                rank_col = f"rank{sources[src_name]['suffix']}"
-                if src_entry.get("uses_shadow_rank"):
-                    row[rank_col] = sources[src_name]["shadow_rank"]
-                else:
-                    row[rank_col] = src_entry.get("rank")
-
-        rows.append(row)
-
-    df = pd.DataFrame(rows)
-
-    # Use Python ranking constants from ranking_engine.py
-    mode = "consensus"  # Default mode
-    top_bonuses = TOP_BONUSES_CONSENSUS if mode == "consensus" else TOP_BONUSES_CONVICTION
-
-    # Compute rankings using Python engine with Python constants
     ranked_df = compute_rankings_with_configs(
         df,
         sources,
@@ -165,42 +58,15 @@ def expected_scores(test_data):
         top_bonuses=top_bonuses,
     )
 
-    # Extract expected scores for ranks 1, 10, and 20
-    # Tie-breaking is now deterministic (score, list_count, min_rank, name, artist)
     expected = {}
     for target_rank in [1, 10, 20]:
         if target_rank <= len(ranked_df):
             row = ranked_df.iloc[target_rank - 1]
             song_name = row["name"]
 
-            # Calculate individual source contributions using Python constants
-            source_contributions = []
-            for src_name, src_config in sources.items():
-                rank_col = f"rank{src_config['suffix']}"
-                if pd.notna(row[rank_col]):
-                    rank = float(row[rank_col])
-
-                    # Calculate decay value using Python constants
-                    if mode == "consensus":
-                        decay_val = (1 + K_VALUE) / (rank + K_VALUE)
-                    else:
-                        decay_val = 1.0 / (rank ** P_EXPONENT)
-
-                    # Apply rank bonuses from Python constants
-                    int_rank = int(rank)
-                    if int_rank in top_bonuses:
-                        decay_val *= (1.0 + top_bonuses[int_rank])
-
-                    # Apply weight from Python's SOURCES
-                    contribution = decay_val * src_config["weight"]
-                    source_contributions.append({
-                        "name": src_name,
-                        "rank": rank,
-                        "contribution": contribution
-                    })
-
-            # Sort by contribution (highest first)
-            source_contributions.sort(key=lambda x: x["contribution"], reverse=True)
+            source_contributions = _calculate_source_contributions(
+                row, sources, mode, top_bonuses
+            )
 
             expected[song_name] = {
                 "rank": int(row["rank"]),
@@ -212,10 +78,39 @@ def expected_scores(test_data):
                 "consensusBoost": float(row["consensus_bonus"]),
                 "provocationBoost": float(row["provocation_bonus"]),
                 "clusterBoost": float(row["diversity_bonus"]),
-                "sourceContributions": source_contributions
+                "sourceContributions": source_contributions,
             }
 
     return expected
+
+
+def _calculate_source_contributions(row, sources, mode, top_bonuses):
+    """Calculate individual source contributions for a song row."""
+    contributions = []
+
+    for src_name, src_config in sources.items():
+        rank_col = f"rank{src_config['suffix']}"
+        if pd.notna(row[rank_col]):
+            rank = float(row[rank_col])
+
+            if mode == "consensus":
+                decay_val = (1 + K_VALUE) / (rank + K_VALUE)
+            else:
+                decay_val = 1.0 / (rank**P_EXPONENT)
+
+            int_rank = int(rank)
+            if int_rank in top_bonuses:
+                decay_val *= 1.0 + top_bonuses[int_rank]
+
+            contribution = decay_val * src_config["weight"]
+            contributions.append({
+                "name": src_name,
+                "rank": rank,
+                "contribution": contribution,
+            })
+
+    contributions.sort(key=lambda x: x["contribution"], reverse=True)
+    return contributions
 
 
 def test_rank1_scoring_accuracy(page: Page, server_url, expected_scores):
