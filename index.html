@@ -263,6 +263,19 @@
         outline: none !important;
       }
 
+      /* Fix for iOS Safari: Hide focus outlines on close buttons by default,
+         show only during actual keyboard navigation (Tab key pressed).
+         iOS treats autofocus as keyboard-like, triggering :focus-visible incorrectly. */
+      .close-modal[aria-label="Close"]:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      body.using-keyboard .close-modal[aria-label="Close"]:focus {
+        outline: var(--pico-outline, 2px solid var(--pico-primary-focus)) !important;
+        outline-offset: 2px !important;
+      }
+
       /* Enable word-wrapping for Pico CSS tooltips */
       [data-tooltip]::before {
         white-space: normal;
