@@ -301,6 +301,34 @@
         background: var(--pico-background-color);
       }
 
+      /* High-DPI / Mobile Legibility Optimization */
+      @media (max-width: 1024px) {
+        /* 1. Reduce global scanline opacity to prevent character 'smearing' */
+        [data-style="muthur"]::before {
+          opacity: 0.5 !important;
+          background-size:
+            100% 2px,
+            100% 100% !important; /* Thinner lines for mobile */
+        }
+
+        /* 2. Sharpen headings and modal titles by reducing glow spread */
+        [data-style="muthur"] h1,
+        [data-style="muthur"] h2,
+        [data-style="muthur"] h3,
+        [data-style="muthur"] .song-card hgroup h3,
+        [data-style="muthur"] dialog article h3 {
+          text-shadow: 0 0 3px rgba(82, 255, 202, 0.8) !important;
+          letter-spacing: 0.5px !important; /* Slightly tighter for mobile clarity */
+        }
+
+        /* 3. Disable glow on very small text where it causes 'fuzzing' */
+        [data-style="muthur"] small,
+        [data-style="muthur"] .song-card [data-sources] span,
+        [data-style="muthur"] footer.modal-controls button {
+          text-shadow: none !important;
+        }
+      }
+
       /* THEME: Hyper-Neon 2026 (Refined for High-Res) */
       [data-style="hyperneon"] {
         --pico-background-color: #0a0118;
