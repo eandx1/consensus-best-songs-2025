@@ -269,6 +269,26 @@ The site defaults to Consensus mode, but you can choose to use a power law decay
 
 <img src="./images/category_crossover_sankey.svg" width="70%" alt="Contributions to the top 10 from the different categories">
 
+## 🤖 Claude Code Setup
+
+If you're using [Claude Code](https://claude.ai/claude-code) for development, you can enable the Playwright MCP server to allow Claude to view, screenshot, and interact with the website during development.
+
+### Setup
+
+1. Add the Playwright MCP server:
+   ```bash
+   claude mcp add playwright npx '@playwright/mcp@latest'
+   ```
+
+2. Restart Claude Code to load the new configuration.
+
+3. Start a local HTTP server in a separate terminal:
+   ```bash
+   python -m http.server 8000
+   ```
+
+This enables tools like `browser_navigate`, `browser_take_screenshot`, `browser_click`, and `browser_snapshot` for visual verification during development.
+
 ## 🧪 Testing
 
 This project uses [Playwright](https://playwright.dev/python/) with `pytest` for end-to-end testing of the application. The test suite covers:

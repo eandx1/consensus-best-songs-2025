@@ -53,52 +53,38 @@
     />
 
     <style>
-      /* 
-           THEME CONFIGURATION
-           We use data-theme for Pico's base (light/dark) and data-style for specific color palettes/fonts.
-           
-           To add a new theme:
-           1. Define a new [data-style="theme-name"] block here with your overrides.
-              - --pico-primary: Main accent color
-              - --pico-primary-background: Background for buttons/badges
-              - --pico-primary-hover: Hover state color
-              - --pico-primary-underline: Underline color
-              - --pico-font-family: Optional font override (default is sans-serif)
-           2. Update the `themes` object in script.js `applyTheme()` function.
-           3. Add the option to the Theme Selector in script.js `renderSettingsUI()`.
-        */
+      /*
+         THEME CONFIGURATION
+         We use data-theme for Pico's base (light/dark) and data-style for specific color palettes/fonts.
+
+         To add a new theme:
+         1. Define a new [data-style="theme-name"] block here with your overrides.
+         2. Update the THEME_CONFIG object in script.js.
+         3. The theme will automatically appear in the hamburger menu dropdown.
+      */
 
       /* Base Settings (Global) */
       :root {
-        /* Mobile-first: Increase base size for better legibility by default */
         --pico-font-size: 115%;
       }
 
-      /* 1. Modal 'X' Icons: Inherit Pico Defaults */
+      /* Modal 'X' Icons: Inherit Pico Defaults */
       .close-modal[aria-label="Close"] {
-        /* 1. Reset position to stay within the flex flow */
         flex-shrink: 0;
         order: 2;
-
-        /* 2. Set the 3rem hit area (approx 48px) */
+        /* Set the 3rem hit area (approx 48px) */
         width: 3rem;
         height: 3rem;
-
-        /* 3. Scale the icon and ensure it is centered in the hit area */
         background-size: 1.5rem;
         background-position: center;
-
-        /* 4. Offset the margin so the 3rem button doesn't stretch the header height */
+        /* Offset the margin so the 3rem button doesn't stretch the header height */
         margin: -0.5rem -0.5rem -0.5rem 0;
-
         opacity: 0.7;
-
         transition:
           transform 0.1s ease,
           opacity 0.1s ease;
       }
 
-      /* 2. Simple 'Presence' Feedback for Defaults */
       .close-modal[aria-label="Close"]:hover {
         transform: scale(1.1);
       }
@@ -109,12 +95,8 @@
         margin-bottom: 0; /* Prevents title bottom-margin from throwing off centering */
       }
 
-      /* Unify Modal Prose with the technical UI style */
       #modal-about .modal-body-content p {
-        /* Dim the color to match your song cards and settings metadata */
         color: var(--pico-muted-color);
-
-        /* Reduce size slightly to match the technical 'data' look */
         font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 1.25rem;
@@ -124,236 +106,90 @@
       [data-style="original"] {
         --pico-primary: #60a5fa;
         --pico-primary-background: #3b82f6;
-
-        /* 1. Core Hover Logic (used for links/icons) */
-        --pico-primary-hover: color-mix(
-          in srgb,
-          var(--pico-primary),
-          white 30%
-        );
-
-        /* 2. SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
-        --pico-primary-hover-background: color-mix(
-          in srgb,
-          var(--pico-primary-background),
-          white 25%
-        );
-        --pico-primary-hover-border: color-mix(
-          in srgb,
-          var(--pico-primary-background),
-          white 15%
-        );
-
-        /* 3. Focus & Underline Logic */
-        --pico-primary-focus: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 65%
-        );
-        --pico-primary-underline: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 50%
-        );
-
-        /* 4. Structural Colors */
+        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 30%);
+        /* SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
+        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 25%);
+        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
+        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 65%);
+        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
         --pico-muted-color: #94a3b8;
         --pico-muted-border-color: #475569;
         --pico-range-border-color: #334155;
         --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
-
-        /* 7. Secondary Button Logic (Back to top) */
         --pico-secondary: #94a3b8;
         --pico-secondary-background: #475569;
-
-        /* Use color-mix for a clean, consistent hover */
-        --pico-secondary-hover: color-mix(
-          in srgb,
-          var(--pico-secondary),
-          white 15%
-        );
-        --pico-secondary-hover-background: color-mix(
-          in srgb,
-          var(--pico-secondary-background),
-          white 40%
-        );
-        --pico-secondary-hover-border: color-mix(
-          in srgb,
-          var(--pico-secondary-background),
-          white 20%
-        );
-
-        /* 8. Secondary Focus Ring */
-        --pico-secondary-focus: color-mix(
-          in srgb,
-          var(--pico-secondary),
-          transparent 70%
-        );
-
-        /* A soft blue-gray wash for the menu row */
-        --pico-nav-link-hover-background: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 90%
-        );
+        --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), white 15%);
+        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 40%);
+        --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), white 20%);
+        --pico-secondary-focus: color-mix(in srgb, var(--pico-secondary), transparent 70%);
+        --pico-nav-link-hover-background: color-mix(in srgb, var(--pico-primary), transparent 90%);
       }
 
       /* THEME: Light (Clean Light Mode) */
       [data-style="light1"] {
-        /* 1. Core Palette */
         --pico-primary: #7c4dff;
         --pico-background-color: #f8f9ff;
         --pico-color: #1a237e;
         --pico-muted-color: #5c6bc0;
         --pico-card-background-color: #ffffff;
         --pico-card-sectioning-background-color: #f0f2ff;
-
-        /* 2. Primary Interaction (Links/Icons) */
-        --pico-primary-hover: color-mix(
-          in srgb,
-          var(--pico-primary),
-          black 35%
-        );
-        --pico-primary-underline: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 50%
-        );
-        --pico-primary-focus: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 70%
-        );
-
-        /* 3. Solid Button Hover Logic (Pico-Compliant) */
+        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), black 35%);
+        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 70%);
         --pico-primary-background: #7c4dff;
-        --pico-primary-hover-background: color-mix(
-          in srgb,
-          var(--pico-primary),
-          black 20%
-        );
-        --pico-primary-hover-border: color-mix(
-          in srgb,
-          var(--pico-primary),
-          black 25%
-        );
-
-        /* 4. Secondary Button Logic (Back to top) */
+        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary), black 20%);
+        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary), black 25%);
         --pico-secondary: #5c6bc0;
         --pico-secondary-background: #e0e4ff;
-        --pico-secondary-hover: color-mix(
-          in srgb,
-          var(--pico-secondary),
-          black 40%
-        );
-        --pico-secondary-hover-background: color-mix(
-          in srgb,
-          var(--pico-secondary-background),
-          black 15%
-        );
-        --pico-secondary-hover-border: color-mix(
-          in srgb,
-          var(--pico-secondary-background),
-          black 25%
-        );
-
-        /* 5. Structural & UI Colors */
+        --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), black 40%);
+        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), black 15%);
+        --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), black 25%);
         --pico-muted-border-color: #d1d5db;
         --pico-range-border-color: #e0e4ff;
         --pico-table-row-stripped-background-color: #f5f7ff;
-
-        /* A soft purple wash for the menu row */
-        --pico-nav-link-hover-background: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 92%
-        );
+        --pico-nav-link-hover-background: color-mix(in srgb, var(--pico-primary), transparent 92%);
       }
 
-      /* Revamped Light1 Overrides using Pico variables */
       [data-style="light1"] article,
       [data-style="light1"] dialog article {
-        /* Using a mix of your primary purple for the shadow instead of hardcoded navy */
-        box-shadow: 0 4px 12px
-          color-mix(in srgb, var(--pico-primary), transparent 92%);
+        box-shadow: 0 4px 12px color-mix(in srgb, var(--pico-primary), transparent 92%);
       }
 
       [data-style="light1"] article header {
-        /* Matching the border to your theme's structural periwinkle */
         border-bottom: 1px solid var(--pico-range-border-color);
       }
 
       [data-style="light1"] .mode-card.active {
-        /* Use 94% transparent primary for a soft 'wash' of purple */
-        background-color: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 94%
-        );
+        background-color: color-mix(in srgb, var(--pico-primary), transparent 94%);
         border-color: var(--pico-primary);
-
-        /* Optional: Soften the text color to match the primary theme */
         color: var(--pico-primary);
       }
 
       /* THEME: Studio 808 (Hardware Refined) */
       [data-style="808"] {
-        /* 1. Core Hardware Palette */
+        /* Core Hardware Palette */
         --pico-background-color: #000000;
         --pico-card-background-color: #000000;
         --pico-card-sectioning-background-color: #0a0a0a;
         --pico-primary: #ff5f00; /* Signature Orange */
         --pico-color: #e0e0e0;
         --pico-muted-color: #757575;
-
-        /* 2. Hardware Aesthetics (Universal Square Corners) */
+        /* Hardware Aesthetics (Universal Square Corners) */
         --pico-font-family: "JetBrains Mono", monospace;
         --pico-border-radius: 0;
         --pico-muted-border-color: #222222;
         --pico-range-border-color: #3d3d3d;
         --pico-table-row-stripped-background-color: #111111;
-
-        /* 3. Link & Interaction (Orange Glow Logic) */
-        --pico-primary-hover: color-mix(
-          in srgb,
-          var(--pico-primary),
-          white 15%
-        );
-        --pico-primary-underline: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 50%
-        );
-        --pico-primary-focus: color-mix(
-          in srgb,
-          var(--pico-primary),
-          transparent 60%
-        );
-
-        /* 4. Solid Button Hover Logic */
+        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 15%);
+        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 60%);
         --pico-primary-background: var(--pico-primary);
-        --pico-primary-hover-background: color-mix(
-          in srgb,
-          var(--pico-primary-background),
-          white 10%
-        );
-        --pico-primary-hover-border: color-mix(
-          in srgb,
-          var(--pico-primary-background),
-          white 15%
-        );
-
-        /* 5. Secondary Button Logic (Back to top) */
+        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
+        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
         --pico-secondary: #757575;
         --pico-secondary-background: #222222;
-        --pico-secondary-hover-background: color-mix(
-          in srgb,
-          var(--pico-secondary-background),
-          white 10%
-        );
+        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
       }
-
-      /* --- Technical 808 Component Overrides --- */
 
       /* Recessed LCD Links with Backlit Plastic Effect */
       [data-style="808"] a:not([role="button"]) {
@@ -367,28 +203,23 @@
         border-left: 1px solid #000;
         border-right: 1px solid #333;
         border-bottom: 1px solid #333;
-        transition: all 0.05s steps(2); /* Mechanical switch feel */
+        transition: all 0.05s steps(2);
       }
 
       [data-style="808"] a:not([role="button"]):hover {
         background-color: var(--pico-primary) !important;
-        /* Translucent text effect using your 80% black mix */
         color: color-mix(in srgb, var(--pico-primary), black 80%) !important;
-
-        /* Invert borders to simulate 'pressed' button */
         border-top-color: color-mix(in srgb, var(--pico-primary), black 40%);
         border-left-color: color-mix(in srgb, var(--pico-primary), black 40%);
         border-right-color: color-mix(in srgb, var(--pico-primary), white 20%);
         border-bottom-color: color-mix(in srgb, var(--pico-primary), white 20%);
       }
 
-      /* Square Slider Knobs */
       [data-style="808"] input[type="range"]::-webkit-slider-thumb {
         background: var(--pico-primary);
         border-radius: 0;
       }
 
-      /* Recessed 'LCD' Display for KBD and Mode Cards */
       [data-style="808"] kbd,
       [data-style="808"] .mode-card.active {
         background-color: #111111;
@@ -397,7 +228,6 @@
         box-shadow: none;
       }
 
-      /* Technical Hardware Focus Rings */
       [data-style="808"] a:focus-visible,
       [data-style="808"] button:focus-visible,
       [data-style="808"] [role="button"]:focus-visible,
@@ -407,7 +237,6 @@
         border-color: var(--pico-primary) !important;
       }
 
-      /* Hardware Divider for Reviews */
       [data-style="808"] #modal-reviews article.review-entry {
         background-color: transparent !important;
         border: none !important;
@@ -422,26 +251,11 @@
         padding: 1.5rem;
       }
 
-      /* 808 Theme Specific: Match the LCD readout intensity */
       [data-style="808"] #modal-about .modal-body-content p {
-        color: var(
-          --pico-color
-        ); /* Slightly higher contrast for monospace readability */
-        opacity: 0.8; /* Subtle dimming for long text blocks */
+        color: var(--pico-color);
+        opacity: 0.8;
         font-family: var(--pico-font-family);
       }
-
-      /* 
-           FUTURE THEME EXAMPLES:
-           
-           [data-style="crimson"] {
-               --pico-primary: #c62828;
-               --pico-primary-background: #c62828;
-               --pico-primary-hover: #b71c1c;
-               --pico-primary-underline: rgba(198, 40, 40, 0.5);
-               --pico-font-family: "Georgia", "Times New Roman", serif; 
-           }
-        */
 
       /* Accessibility: Only show focus rings when using a keyboard */
       :focus:not(:focus-visible) {
@@ -451,9 +265,9 @@
 
       /* Enable word-wrapping for Pico CSS tooltips */
       [data-tooltip]::before {
-        white-space: normal; /* Allows text to wrap to the next line */
-        max-width: 80vw; /* Ensures it doesn't exceed the viewport on mobile */
-        line-height: 1.4; /* Improves readability for multi-line text */
+        white-space: normal;
+        max-width: 80vw;
+        line-height: 1.4;
       }
 
       /* Fix for mobile modal scrolling clipping */
@@ -463,74 +277,63 @@
         -webkit-overflow-scrolling: touch; /* Ensures smooth momentum scrolling on iOS */
       }
 
-      /* Add spacing at the top of the main container for rank #1 */
       main.container {
         padding-top: var(--pico-block-spacing-vertical);
-
-        /* Mobile: Reduce side padding so cards are wider */
         padding-left: 0.5rem;
         padding-right: 0.5rem;
       }
 
-      /* Center the bottom controls and add breathing room */
       .page-controls {
         padding: 2rem 0;
         text-align: center;
         padding-bottom: 5rem;
       }
 
-      /* On mobile, keep the buttons full-width or side-by-side */
       .page-controls .grid {
-        max-width: 400px; /* Keeps the buttons from being too wide on huge monitors */
-        margin: 0 auto; /* Centers the grid container */
+        max-width: 400px;
+        margin: 0 auto;
         gap: 1rem;
       }
 
       dialog article > header {
         display: flex;
-        /* This ensures the title stays left and 'X' stays right regardless of HTML order */
         flex-direction: row;
         justify-content: space-between;
-        align-items: center; /* This is the "magic" vertical alignment */
-
-        /* Ensure there's a bit of padding so the large button doesn't hit the edge */
+        align-items: center;
         padding-inline: var(--pico-spacing);
       }
 
       dialog article footer.modal-controls {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem; /* Generous vertical spacing for thumbs */
+        gap: 0.75rem;
         padding: var(--pico-spacing);
       }
 
       dialog article footer.modal-controls button {
-        width: 100%; /* Full width for a large thumb target */
-        margin: 0; /* Removes any default side margins causing offset */
-        text-align: center; /* Ensures text is perfectly centered */
+        width: 100%;
+        margin: 0;
+        text-align: center;
       }
 
       dialog article footer.modal-controls button:not(:first-of-type) {
-        margin: 0; /* Override Pico CSS's horizontal button margins */
+        margin: 0;
       }
 
-      /* Target the wrapper specifically within the modal footer */
       footer.modal-controls .import-services-wrapper {
         display: flex;
-        flex-direction: column; /* Stack for mobile */
+        flex-direction: column;
         gap: 0.75rem;
         width: 100%;
         margin-bottom: var(--pico-spacing);
       }
 
-      /* 1. Ensure the anchor 'buttons' stretch to match the real buttons */
       footer.modal-controls .import-services-wrapper a[role="button"] {
         width: 100%;
         margin: 0;
         text-align: center;
       }
 
-      /* 2. Desktop: Switch to side-by-side row */
       @media (min-width: 1025px) {
         footer.modal-controls .import-services-wrapper {
           flex-direction: row;
@@ -540,21 +343,17 @@
 
         footer.modal-controls .import-services-wrapper a[role="button"] {
           width: auto;
-          min-width: 14rem; /* Matches the visual weight of your 'Download Again' button */
+          min-width: 14rem;
         }
       }
 
-      /* Enhanced Global Button Depress */
       button:active,
       [role="button"]:active {
-        /* Use !important to ensure this high-priority visual feedback wins */
         transform: scale(0.96) !important;
         transition: transform 0.05s ease-in-out !important;
-        /* Optional: slightly dim the button to make the "push" more obvious */
         filter: brightness(0.95);
       }
 
-      /* Ensure the transform doesn't linger after the click */
       button,
       [role="button"] {
         transition:
@@ -564,29 +363,19 @@
           box-shadow 0.2s;
       }
 
-      /* Floating Action Button: Mobile-First & Accessible */
       #fixed-btt {
         display: flex;
         position: fixed;
-        /* Positions the button in the bottom right with thumb-friendly spacing */
         bottom: 1.25rem;
         right: 1.25rem;
         z-index: 1000;
-
-        /* Standard mobile touch target (~48px) */
         width: 3rem;
         height: 3rem;
-
-        /* Circular Material Design aesthetic */
         border-radius: 50%;
         padding: 0;
         align-items: center;
         justify-content: center;
-
-        /* Visual depth and layer separation */
         box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4);
-
-        /* Hidden by default; transition handles the fade-in */
         opacity: 0;
         pointer-events: none;
         transition:
@@ -601,72 +390,57 @@
         height: 1.1rem;
       }
 
-      /* Visibility state toggled via JavaScript */
       #fixed-btt.visible {
         opacity: 1;
         pointer-events: auto;
       }
 
-      /* Desktop Scale (Matches your site's 1025px breakpoint) */
       @media (min-width: 1025px) {
         #fixed-btt {
           bottom: 2rem;
           right: 2rem;
-          /* Larger desktop FAB (~56px) */
           width: 3.5rem;
           height: 3.5rem;
         }
       }
 
-      /* Desktop Hover Effects (Limited to devices with a cursor) */
       @media (hover: hover) {
         #fixed-btt:hover {
-          /* Subtle growth to signal interactivity */
           transform: scale(1.1);
-          /* Inherits your theme's secondary hover state */
           background-color: var(--pico-secondary-hover-background);
         }
       }
 
-      /* Immediate haptic-style feedback on click */
       #fixed-btt:active {
         transform: scale(0.95);
       }
 
-      /* Desktop: Allow container to be wider for more breathing room */
       @media (min-width: 1025px) {
         main.container,
         header.container {
-          max-width: 90vw; /* Use more screen real estate */
+          max-width: 90vw;
         }
       }
 
       @media (min-width: 1400px) {
         main.container,
         header.container {
-          max-width: 1300px; /* Cap it reasonably on huge screens */
+          max-width: 1300px;
         }
       }
 
-      /* Add space for the iPhone's "notch" and address bar on mobile by default */
       main#app {
         padding-top: 2rem;
       }
 
-      /* Song Cards: Minimal custom styling, rely on Pico's article styling */
       article.song-card {
         position: relative;
         margin-bottom: 2rem;
       }
 
-      /* 
-           MOBILE-FIRST LAYOUT 
-           Base styles apply to mobile (and up, unless overridden).
-        */
-
       .song-card-layout {
         display: flex;
-        flex-direction: column; /* Stack vertically on mobile */
+        flex-direction: column;
         align-items: flex-start;
         gap: var(--pico-spacing);
       }
@@ -674,19 +448,19 @@
       .rank-display {
         flex: 0 0 auto;
         text-align: left;
-        font-size: 2.5rem; /* Bigger rank on mobile */
+        font-size: 2.5rem;
         font-weight: 900;
         opacity: 0.6;
         line-height: 1;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        margin-bottom: -1rem; /* Pull video up closer to rank */
+        margin-bottom: -1rem;
       }
 
       .video-figure {
         flex: 0 0 auto;
-        width: 100%; /* Full width on mobile */
+        width: 100%;
         margin: 0;
       }
 
@@ -696,25 +470,22 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        width: 100%; /* Ensure it takes full width in stack */
+        width: 100%;
       }
 
-      /* Genre display styling - use specific selector to override Pico's h5 styles */
       #modal-reviews article.song-card hgroup h5.song-genres {
         font-size: 0.8rem;
         opacity: 80%;
-        font-weight: 300; /* Lighter weight creates a sophisticated look */
+        font-weight: 300;
         margin-bottom: 0;
       }
 
-      /* Global Review Spacing (Applies to all themes) */
       #modal-reviews article.review-entry {
-        padding: 2.5rem 0; /* Increased from the tight default */
+        padding: 2.5rem 0;
         border-bottom: 1px solid var(--pico-muted-border-color);
         margin-bottom: 0;
       }
 
-      /* Ensure the header and blockquote don't feel disconnected */
       #modal-reviews article.review-entry hgroup {
         margin-bottom: 1rem;
       }
@@ -723,7 +494,6 @@
         margin-bottom: 1rem;
       }
 
-      /* Remove the border from the last item so it doesn't double up with the footer */
       #modal-reviews article.review-entry:last-of-type {
         border-bottom: none;
       }
@@ -731,45 +501,38 @@
       #modal-reviews article.review-entry hgroup h5 {
         font-size: 0.8rem;
         color: color-mix(in srgb, var(--pico-color) 80%, transparent);
-        font-weight: 300; /* Lighter weight creates a sophisticated look */
+        font-weight: 300;
         margin-bottom: 0;
       }
 
-      /* Apply a shared class to both tables */
       .source-stats-table {
         table-layout: fixed;
         width: 100%;
         margin-bottom: var(--pico-block-spacing-vertical);
       }
 
-      /* Define the width of the Source Name column */
       .source-stats-table th:first-child,
       .source-stats-table td:first-child {
         width: 70%;
-        /* Allow tooltips to overflow - no clipping */
         text-overflow: ellipsis;
       }
 
-      /* Define the width of the Song Count column */
       .source-stats-table th:last-child,
       .source-stats-table td:last-child {
         width: 30%;
-        text-align: right; /* Keeps numbers neatly aligned on the right */
+        text-align: right;
       }
 
-      /* Ensure table rows and cells don't clip tooltips */
       .source-stats-table tbody tr,
       .source-stats-table tbody td {
         overflow: visible;
       }
 
-      /* Ensure tooltips in source tables wrap text properly */
       .source-stats-table abbr[data-tooltip]::before,
       .source-stats-table abbr[data-tooltip]::after {
         white-space: normal;
       }
 
-      /* Video player wrapper using semantic <figure> */
       article.song-card figure {
         margin: 0;
         display: flex;
@@ -782,7 +545,6 @@
         border-radius: var(--pico-border-radius);
       }
 
-      /* Placeholder for songs without YouTube video */
       .video-placeholder {
         width: 100%;
         aspect-ratio: 16 / 9;
@@ -805,29 +567,24 @@
         font-size: 0.875rem;
       }
 
-      /* Accessibility: Visual focus indicator for video players */
       article.song-card figure lite-youtube:focus-within {
-        /* Use a box-shadow instead of a border to avoid "jumping" layout */
         box-shadow: 0 0 0 3px var(--pico-primary) !important;
         outline: none;
-        /* Ensure the shadow follows the component's corners */
         border-radius: var(--pico-border-radius);
         transition: box-shadow 0.2s ease-in-out;
       }
 
-      /* Customize lite-youtube play button - Mobile Default (visible) */
       lite-youtube::part(playButton) {
         width: 68px;
         height: 48px;
         background-color: transparent;
         filter: grayscale(1);
-        opacity: 0.15; /* Mobile default - slightly visible */
+        opacity: 0.15;
         transition:
           opacity 0.2s,
           filter 0.2s;
       }
 
-      /* Header contains hgroup and info icon */
       article.song-card .song-info > header {
         display: flex;
         justify-content: space-between;
@@ -844,30 +601,25 @@
         flex: 1;
       }
 
-      /* Song Title - Mobile optimized */
       article.song-card hgroup h3 {
-        /* font-size: 1.5rem; /* Larger, clearer title */
         margin-bottom: 0.25rem;
         line-height: 1.2;
         color: var(--pico-color);
-
-        font-weight: 800; /* Extra bold for visibility */
+        font-weight: 800;
       }
 
-      /* Use h4 for artist name in hgroup */
       article.song-card hgroup h4 {
         color: var(--pico-muted-color);
         font-weight: normal;
         margin-bottom: 0.25rem;
       }
 
-      /* Info icon - now inside header, aligned to baseline */
       article.song-card header > a[aria-label] {
         opacity: 0.4;
-        font-size: 1.4rem; /* Slightly larger touch target */
+        font-size: 1.4rem;
         transition: opacity 0.2s;
         padding: 0.25rem;
-        margin: -0.25rem 0 0 0; /* Compensation for padding */
+        margin: -0.25rem 0 0 0;
         text-decoration: none;
         flex-shrink: 0;
       }
@@ -876,20 +628,17 @@
         opacity: 1;
       }
 
-      /* Custom Focus for the Sources text area */
       [data-sources]:focus-visible {
         outline: none;
-        /* Adds a subtle underline or glow using your theme's primary color */
         box-shadow: 0 0 0 1px var(--pico-primary) !important;
         color: var(--pico-color) !important;
         cursor: pointer;
       }
 
-      /* Sources section styling - Mobile optimized */
       article.song-card [data-sources] {
         margin: 0.75rem 0;
-        line-height: 1.6; /* Tightened from 2, but still touch-friendly */
-        font-size: 1rem; /* Increased from 0.95rem */
+        line-height: 1.6;
+        font-size: 1rem;
         cursor: pointer;
       }
 
@@ -904,7 +653,6 @@
         color: var(--pico-color);
       }
 
-      /* Nav for listen links - Pico handles most styling */
       article.song-card nav {
         margin-top: auto;
         padding: 0;
@@ -929,15 +677,14 @@
         align-items: center;
         gap: 0.4em;
         white-space: nowrap;
-
-        font-size: 0.85rem; /* Increased from 0.7rem */
+        font-size: 0.85rem;
         text-transform: uppercase;
         font-weight: 700;
         opacity: 0.7;
         transition:
           opacity 0.2s,
           color 0.2s;
-        padding: 0.4rem 0.5rem; /* Larger touch targets */
+        padding: 0.4rem 0.5rem;
         text-decoration: none;
       }
 
@@ -945,40 +692,31 @@
         opacity: 1;
       }
 
-      /* The SVG Icons */
       article.song-card nav a svg {
-        /* Scale based on the text size (1.1em makes it slightly larger/prominent) */
         width: 1.1em;
         height: 1.1em;
-
-        /* Inherits the current text color automatically */
         fill: currentColor;
-
-        /* Fixes vertical alignment issues in some browsers */
         flex-shrink: 0;
         display: inline-block;
         vertical-align: middle;
       }
 
-      /* 
-           DESKTOP / TABLET OVERRIDES 
-        */
       @media (min-width: 1025px) {
         :root {
-          --pico-font-size: 100%; /* Reset to standard size on desktop */
+          --pico-font-size: 100%;
         }
 
         main#app {
-          padding-top: 0; /* Remove extra top padding */
+          padding-top: 0;
         }
 
         .song-card-layout {
-          flex-direction: row; /* Horizontal layout */
+          flex-direction: row;
           align-items: center;
         }
 
         .rank-display {
-          flex: 0 0 4rem; /* Fixed width */
+          flex: 0 0 4rem;
           text-align: center;
           font-size: clamp(1.75rem, 2.5vw, 2.25rem);
           margin-bottom: 0;
@@ -986,28 +724,25 @@
         }
 
         .video-figure {
-          flex: 0 0 320px; /* Fixed width for video */
+          flex: 0 0 320px;
           width: auto;
         }
 
-        /* Tighter line height for mouse users */
         article.song-card [data-sources] {
           line-height: 1.8;
           font-size: 0.875rem;
         }
       }
 
-      /* Large Desktop Overrides */
       @media (min-width: 1200px) {
         .video-figure {
           flex: 0 0 360px;
         }
       }
 
-      /* Hover effects for devices that support it (mostly desktop) */
       @media (hover: hover) {
         lite-youtube::part(playButton) {
-          opacity: 0; /* Invisible until hover or focus */
+          opacity: 0;
         }
 
         lite-youtube:hover::part(playButton),
@@ -1017,18 +752,16 @@
         }
       }
 
-      /* Responsive Header - Two-Column Flex Layout */
       header.container nav {
         display: flex;
         justify-content: space-between;
-        align-items: center; /* Vertically center title and nav */
+        align-items: center;
         flex-wrap: nowrap;
       }
 
-      /* The Title Block */
       header.container nav ul:first-of-type {
         flex: 1;
-        display: block; /* Allow the <strong> to wrap naturally */
+        display: block;
         padding: 0;
       }
 
@@ -1041,11 +774,10 @@
         display: block;
         line-height: 1.1;
         font-size: clamp(1rem, 4.5vw, 1.3rem);
-        white-space: normal; /* This enables the wrap you want */
-        max-width: 180px; /* Forces 'Consensus' and 'Best Songs' to stack */
+        white-space: normal;
+        max-width: 180px;
       }
 
-      /* Desktop: Unwrap title */
       @media (min-width: 1025px) {
         header.container nav ul:first-of-type li strong {
           max-width: none;
@@ -1053,7 +785,6 @@
         }
       }
 
-      /* Main Navigation (unified for all viewports) */
       .nav-main {
         display: flex;
         align-items: center;
@@ -1066,7 +797,6 @@
         padding: 0;
       }
 
-      /* Nav button styling (Tune and Hamburger) */
       .nav-main button {
         padding: 0.4rem 0.5rem;
         margin: 0;
@@ -1077,20 +807,13 @@
       }
 
       .nav-main button svg {
-        display: block;
-
+        display: inline-block;
         width: 1.2em;
         height: 1.2em;
-
-        /* Inherits the current text color automatically */
         fill: currentColor;
-
-        /* Fixes vertical alignment issues in some browsers */
         flex-shrink: 0;
-        display: inline-block;
       }
 
-      /* Hamburger dropdown menu - Polished & Cohesive */
       .hamburger-menu {
         position: absolute;
         top: 100%;
@@ -1098,13 +821,13 @@
         display: flex;
         flex-direction: column;
         background: var(--pico-card-background-color);
-        border: 0.0625rem solid var(--pico-muted-border-color); /* 1px equivalent */
+        border: 0.0625rem solid var(--pico-muted-border-color);
         border-radius: var(--pico-border-radius);
         padding: 0;
         z-index: 1000;
-        min-width: 15rem; /* Ensures no awkward text wrapping */
+        min-width: 15rem;
         box-shadow: var(--pico-card-box-shadow);
-        overflow: hidden; /* Clips any hover highlights from bleeding out */
+        overflow: hidden;
       }
 
       .hamburger-menu nav {
@@ -1117,7 +840,6 @@
         padding: 0;
       }
 
-      /* Unified hit areas and distinct hover for links */
       .hamburger-menu nav li a {
         padding: 1rem 1.25rem;
         display: block;
@@ -1128,41 +850,34 @@
         transition: background-color 0.2s ease;
       }
 
-      /* Tweak for 808 menu items to feel like individual 'recessed' buttons */
       [data-style="808"] .hamburger-menu nav li {
-        border-bottom: 1px solid #1a1a1a; /* Dark hardware-style divider */
+        border-bottom: 1px solid #1a1a1a;
       }
 
-      /* Ensure the hover highlight stops exactly at the divider border */
       .hamburger-menu nav ul li:last-child a {
-        /* This prevents the 'About' highlight from overlapping the border below */
         border-radius: 0;
       }
 
       [data-style="808"] .hamburger-menu nav li:last-child {
-        border-bottom: none; /* Let the main theme section border take over */
+        border-bottom: none;
       }
 
       [data-style="808"] .hamburger-menu nav li a {
-        /* Slightly tighter padding for that recessed hardware button feel */
         padding: 0.75rem 1.25rem;
         text-transform: uppercase;
         font-size: 0.85rem;
       }
 
-      /* The 'Middle Ground' Hover: Visible row highlight */
       .hamburger-menu nav li a:hover {
-        /* This uses a soft tint of your theme's primary color or gray */
         background-color: var(--pico-nav-link-hover-background);
         color: var(--pico-primary-hover);
       }
 
-      /* The divider is now the top border of this section */
       .menu-theme-section {
         padding: 1.5rem 1.25rem 1.25rem 1.25rem;
         background-color: var(--pico-card-sectioning-background-color);
         border-top: 0.0625rem solid var(--pico-muted-border-color);
-        margin-top: 0; /* Ensures it sits flush with the nav above it */
+        margin-top: 0;
       }
 
       .menu-theme-section label {
@@ -1182,12 +897,10 @@
         padding: 0.5rem 2rem 0.5rem 0.75rem;
       }
 
-      /* Header container needs relative positioning for absolute menu */
       header.container {
         position: relative;
       }
 
-      /* Chip/Pill button styles for modal selections */
       .chip-group {
         display: flex;
         flex-wrap: wrap;
@@ -1202,28 +915,26 @@
         margin: 0;
       }
 
-      /* Settings UI Styles */
       .customized-label {
         color: var(--pico-primary);
         font-weight: bold;
       }
 
-      /* Container for the Tuned state */
-      /* Container for the Tuned state - Baseline Fix */
       .tuned-text {
         color: var(--pico-primary);
         font-weight: 600;
         white-space: nowrap;
-        display: inline; /* Let it flow naturally with the sentence */
+        display: inline;
       }
 
-      /* Backlit Glow for Dark Themes */
       [data-theme="dark"] .tuned-text {
-        text-shadow: 0 0 0.5rem
-          color-mix(in srgb, var(--pico-primary), transparent 60%);
+        text-shadow: 0 0 0.5rem color-mix(in srgb, var(--pico-primary), transparent 60%);
       }
 
-      /* Precisely align the icon to the text */
+      .tune-icon {
+        margin-right: 0.2em;
+      }
+
       .tuned-text svg.tuned-badge-icon {
         display: inline-block;
         width: 1.1em;
@@ -1231,20 +942,16 @@
         stroke-width: 2.5;
         stroke: currentColor;
         fill: none;
-        /* This 'magic number' centers the icon vertically relative to the text lowercase 'x' height */
         vertical-align: -0.22em;
+        margin-right: 0.2em;
       }
 
-      /* Specific 808 Hardware Nudge */
       [data-style="808"] .tuned-text svg.tuned-badge-icon {
         width: 1.2em;
         height: 1.2em;
-        vertical-align: -0.25em; /* Nudge slightly more for the blockier font */
-        /* Negative margin to counteract the wide monospace character box */
-        margin-right: -0.2rem;
+        vertical-align: -0.25em;
       }
 
-      /* Tune button tuned state */
       #open-tune.tuned {
         color: var(--pico-primary);
         border-color: var(--pico-primary);
@@ -1253,6 +960,27 @@
       #open-tune .tuned-badge-icon {
         width: 1.2em;
         height: 1.2em;
+        margin-right: 0.2em;
+      }
+
+      .tune-title-icon {
+        display: inline-block;
+        width: 1.1em;
+        height: 1.1em;
+        stroke-width: 2.5;
+        stroke: var(--pico-muted-color);
+        fill: none;
+        vertical-align: -0.22em;
+        margin-right: 0.2em;
+        transition: stroke 0.2s ease;
+      }
+
+      #modal-tune h3.tuned {
+        color: var(--pico-primary);
+      }
+
+      #modal-tune h3.tuned .tune-title-icon {
+        stroke: currentColor;
       }
 
       article.mode-card {
@@ -1262,7 +990,6 @@
         justify-content: center;
         text-align: center;
         padding: var(--pico-spacing);
-
         cursor: pointer;
         border: 2px solid transparent;
         border-color: var(--pico-muted-border-color);
@@ -1288,19 +1015,16 @@
         border-color: var(--pico-primary);
       }
 
-      /* Column List: Defaults to 1 column (mobile), switches to 2 on larger screens */
       .column-list {
         column-count: 1;
       }
 
-      /* Stats Modal: Reduce cell padding to expand text closer to row boundaries */
       #modal-stats table td,
       #modal-stats table th {
         padding-left: calc(var(--pico-spacing) * 0.25);
         padding-right: calc(var(--pico-spacing) * 0.25);
       }
 
-      /* Stats Modal: Add spacing between sections */
       #stats-content > section {
         margin-bottom: calc(var(--pico-spacing) * 1.5);
       }
@@ -1309,49 +1033,40 @@
         margin-bottom: 0;
       }
 
-      /* Stats Modal: Ensure tooltips wrap properly and stay within modal bounds */
       #modal-stats abbr[data-tooltip]::before,
       #modal-stats abbr[data-tooltip]::after {
         white-space: normal;
         max-width: 280px;
       }
 
-      /* Stats Modal: Shadow rank tooltips (top placement) should be narrower */
       #modal-stats abbr[data-tooltip][data-placement="top"]::before {
         max-width: 220px;
       }
 
-      /* Reviews Modal: Ensure shadow rank tooltips wrap properly and stay within modal bounds */
       #modal-reviews abbr[data-tooltip]::before,
       #modal-reviews abbr[data-tooltip]::after {
         white-space: normal;
         max-width: 220px;
       }
 
-      /* Mobile Modal Fixes: Flatten nested structure to maximize width */
       @media (max-width: 1024px) {
-        /* Make tooltips narrower on mobile to stay within modal bounds */
         #modal-stats table abbr[data-tooltip]::before {
           max-width: 180px;
         }
 
-        /* Shadow rank tooltips on mobile should be even narrower */
         #modal-stats table abbr[data-tooltip][data-placement="top"]::before {
           max-width: 160px;
         }
 
-        /* Reviews Modal: Make shadow rank tooltips narrower on mobile */
         #modal-reviews abbr[data-tooltip]::before {
           max-width: 160px;
         }
 
-        /* Remove extra padding from container inside dialog */
         dialog .container {
           padding-left: 0;
           padding-right: 0;
         }
 
-        /* Remove card styling from nested articles to regain horizontal space */
         dialog article article:not(.mode-card) {
           padding: 0;
           background: transparent;
@@ -1367,17 +1082,14 @@
           padding-bottom: 0;
         }
 
-        /* Tighten up the formula display in settings */
         math-formula svg {
           max-width: 100%;
         }
 
-        /* Hide mode names in comparison table on mobile to save space */
         .mode-name {
           display: none;
         }
 
-        /* Reduce the gap between the Consensus and Conviction boxes */
         #about-ranking .grid {
           gap: var(--pico-spacing);
         }
@@ -1389,7 +1101,6 @@
           column-gap: 2rem;
         }
 
-        /* Show mode names on desktop */
         .mode-name {
           display: inline;
         }
@@ -1402,38 +1113,19 @@
       src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
     ></script>
 
-    <!-- Vercel Analytics -->
     <script>
-      window.va =
-        window.va ||
-        function () {
-          (window.vaq = window.vaq || []).push(arguments);
-        };
-
-      // 1. Check if the domain is correct
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
       const isProd = window.location.hostname.endsWith("bestsongs2025.com");
-
-      // 2. Check if YOU have "opted out" on this specific browser
-      const isMe = localStorage.getItem("va-disable") === "true";
-
-      if (isProd && !isMe) {
+      const isOptedOut = localStorage.getItem("va-disable") === "true";
+      if (isProd && !isOptedOut) {
         const script = document.createElement("script");
         script.src = "/_vercel/insights/script.js";
         script.defer = true;
         document.head.appendChild(script);
-      } else {
-        console.log(
-          "Vercel Analytics: Off (Env: " +
-            window.location.hostname +
-            ", Opt-out: " +
-            isMe +
-            ")",
-        );
       }
     </script>
   </head>
   <body>
-    <!-- Icons for the streaming services and jump to top button. -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
       <symbol id="icon-spotify" viewBox="0 0 24 24">
         <path
@@ -1484,31 +1176,13 @@
         <path d="M12 7v14" />
       </symbol>
 
-      <!-- Hamburger menu icon (Lucide) -->
-      <symbol
-        id="icon-menu"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
+      <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 5h16" />
         <path d="M4 12h16" />
         <path d="M4 19h16" />
       </symbol>
 
-      <!-- Settings icon for Tune Ranking (Lucide settings-2) -->
-      <symbol
-        id="icon-sliders"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
+      <symbol id="icon-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 17H5" />
         <path d="M19 7h-9" />
         <circle cx="17" cy="17" r="3" />
@@ -1521,11 +1195,10 @@
         <ul>
           <li><strong>Consensus Best Songs 2025</strong></li>
         </ul>
-        <!-- Main navigation (unified for desktop and mobile) -->
         <ul class="nav-main">
           <li>
             <button id="open-tune" class="outline secondary">
-              <svg class="nav-icon"><use href="#icon-sliders"></use></svg>Tune
+              <svg class="tune-icon"><use href="#icon-sliders"></use></svg>Tune
             </button>
           </li>
           <li>
@@ -1536,12 +1209,11 @@
               aria-expanded="false"
               aria-controls="hamburger-menu"
             >
-              <svg class="nav-icon"><use href="#icon-menu"></use></svg>
+              <svg><use href="#icon-menu"></use></svg>
             </button>
           </li>
         </ul>
       </nav>
-      <!-- Hamburger dropdown menu -->
       <aside id="hamburger-menu" class="hamburger-menu" hidden>
         <nav>
           <ul>
@@ -1552,9 +1224,7 @@
         </nav>
         <div class="menu-theme-section">
           <label for="menu-theme-select">Theme</label>
-          <select id="menu-theme-select">
-            <!-- Options populated by JS -->
-          </select>
+          <select id="menu-theme-select"></select>
         </div>
       </aside>
     </header>
@@ -1579,12 +1249,9 @@
             autofocus
           ></button>
           <hgroup>
-            <h3>Tune Ranking</h3>
-            <p
-              id="tune-modal-subtitle"
-              class="tuned-text"
-              style="display: none"
-            ></p>
+            <h3>
+              <svg id="tune-modal-icon" class="tune-title-icon"><use href="#icon-sliders"></use></svg><span id="tune-modal-title-text">Tune Ranking</span>
+            </h3>
           </hgroup>
         </header>
         <div id="tune-content"></div>
@@ -1648,12 +1315,8 @@
             <p>Play the top songs as an unnamed playlist on YouTube</p>
           </hgroup>
         </header>
-        <div id="youtube-content">
-          <!-- Dynamic content will be injected here -->
-        </div>
-        <footer class="modal-controls">
-          <!-- Footer content will be managed by renderYouTubeUI -->
-        </footer>
+        <div id="youtube-content"></div>
+        <footer class="modal-controls"></footer>
       </article>
     </dialog>
 
@@ -1673,12 +1336,8 @@
             </p>
           </hgroup>
         </header>
-        <div id="download-content">
-          <!-- Dynamic content will be injected here -->
-        </div>
-        <footer class="modal-controls">
-          <!-- Footer content will be managed by renderDownloadUI -->
-        </footer>
+        <div id="download-content"></div>
+        <footer class="modal-controls"></footer>
       </article>
     </dialog>
 

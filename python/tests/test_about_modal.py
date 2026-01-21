@@ -1,10 +1,6 @@
 from playwright.sync_api import Page, expect
 
-
-def open_about_modal(page):
-    """Helper to open About modal via hamburger menu."""
-    page.locator("#hamburger-btn").click()
-    page.locator("#open-about-menu").click()
+from conftest import open_about_modal
 
 
 def test_about_modal(page: Page, server_url):
