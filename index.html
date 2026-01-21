@@ -36,9 +36,12 @@
       content="https://bestsongs2025.com/og-image.png"
     />
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Best 2025" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -107,23 +110,63 @@
       [data-style="original"] {
         --pico-primary: #60a5fa;
         --pico-primary-background: #3b82f6;
-        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 30%);
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          white 30%
+        );
         /* SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
-        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 25%);
-        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
-        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 65%);
-        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 25%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 15%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 65%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
         --pico-muted-color: #94a3b8;
         --pico-muted-border-color: #475569;
         --pico-range-border-color: #334155;
         --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
         --pico-secondary: #94a3b8;
         --pico-secondary-background: #475569;
-        --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), white 15%);
-        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 40%);
-        --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), white 20%);
-        --pico-secondary-focus: color-mix(in srgb, var(--pico-secondary), transparent 70%);
-        --pico-nav-link-hover-background: color-mix(in srgb, var(--pico-primary), transparent 90%);
+        --pico-secondary-hover: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          white 15%
+        );
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 40%
+        );
+        --pico-secondary-hover-border: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 20%
+        );
+        --pico-secondary-focus: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          transparent 70%
+        );
+        --pico-nav-link-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 90%
+        );
       }
 
       /* THEME: Light (Clean Light Mode) */
@@ -134,26 +177,63 @@
         --pico-muted-color: #5c6bc0;
         --pico-card-background-color: #ffffff;
         --pico-card-sectioning-background-color: #f0f2ff;
-        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), black 35%);
-        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
-        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 70%);
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 35%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 70%
+        );
         --pico-primary-background: #7c4dff;
-        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary), black 20%);
-        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary), black 25%);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 20%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 25%
+        );
         --pico-secondary: #5c6bc0;
         --pico-secondary-background: #e0e4ff;
-        --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), black 40%);
-        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), black 15%);
-        --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), black 25%);
+        --pico-secondary-hover: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          black 40%
+        );
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          black 15%
+        );
+        --pico-secondary-hover-border: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          black 25%
+        );
         --pico-muted-border-color: #d1d5db;
         --pico-range-border-color: #e0e4ff;
         --pico-table-row-stripped-background-color: #f5f7ff;
-        --pico-nav-link-hover-background: color-mix(in srgb, var(--pico-primary), transparent 92%);
+        --pico-nav-link-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 92%
+        );
       }
 
       [data-style="light1"] article,
       [data-style="light1"] dialog article {
-        box-shadow: 0 4px 12px color-mix(in srgb, var(--pico-primary), transparent 92%);
+        box-shadow: 0 4px 12px
+          color-mix(in srgb, var(--pico-primary), transparent 92%);
       }
 
       [data-style="light1"] article header {
@@ -161,7 +241,11 @@
       }
 
       [data-style="light1"] .mode-card.active {
-        background-color: color-mix(in srgb, var(--pico-primary), transparent 94%);
+        background-color: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 94%
+        );
         border-color: var(--pico-primary);
         color: var(--pico-primary);
       }
@@ -181,15 +265,39 @@
         --pico-muted-border-color: #222222;
         --pico-range-border-color: #3d3d3d;
         --pico-table-row-stripped-background-color: #111111;
-        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 15%);
-        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
-        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 60%);
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          white 15%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 60%
+        );
         --pico-primary-background: var(--pico-primary);
-        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
-        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 10%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 15%
+        );
         --pico-secondary: #757575;
         --pico-secondary-background: #222222;
-        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 10%
+        );
       }
 
       /* Recessed LCD Links with Backlit Plastic Effect */
@@ -273,7 +381,10 @@
       }
 
       body.using-keyboard .close-modal[aria-label="Close"]:focus {
-        outline: var(--pico-outline, 2px solid var(--pico-primary-focus)) !important;
+        outline: var(
+          --pico-outline,
+          2px solid var(--pico-primary-focus)
+        ) !important;
         outline-offset: 2px !important;
       }
 
@@ -943,7 +1054,8 @@
       }
 
       [data-theme="dark"] .tuned-text {
-        text-shadow: 0 0 0.5rem color-mix(in srgb, var(--pico-primary), transparent 60%);
+        text-shadow: 0 0 0.5rem
+          color-mix(in srgb, var(--pico-primary), transparent 60%);
       }
 
       .tune-icon {
@@ -1129,7 +1241,11 @@
     ></script>
 
     <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
       const isProd = window.location.hostname.endsWith("bestsongs2025.com");
       const isOptedOut = localStorage.getItem("va-disable") === "true";
       if (isProd && !isOptedOut) {
@@ -1154,11 +1270,19 @@
         />
       </symbol>
 
-      <symbol id="icon-disc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M6 12c0-1.7.7-3.2 1.8-4.2"/>
-        <circle cx="12" cy="12" r="2"/>
-        <path d="M18 12c0 1.7-.7 3.2-1.8 4.2"/>
+      <symbol
+        id="icon-disc"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M6 12c0-1.7.7-3.2 1.8-4.2" />
+        <circle cx="12" cy="12" r="2" />
+        <path d="M18 12c0 1.7-.7 3.2-1.8 4.2" />
       </symbol>
 
       <symbol id="icon-apple" viewBox="0 0 24 24">
@@ -1191,13 +1315,29 @@
         <path d="M12 7v14" />
       </symbol>
 
-      <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <symbol
+        id="icon-menu"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M4 5h16" />
         <path d="M4 12h16" />
         <path d="M4 19h16" />
       </symbol>
 
-      <symbol id="icon-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <symbol
+        id="icon-sliders"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M14 17H5" />
         <path d="M19 7h-9" />
         <circle cx="17" cy="17" r="3" />
@@ -1265,7 +1405,9 @@
           ></button>
           <hgroup>
             <h3>
-              <svg id="tune-modal-icon" class="tune-title-icon"><use href="#icon-sliders"></use></svg><span id="tune-modal-title-text">Tune Ranking</span>
+              <svg id="tune-modal-icon" class="tune-title-icon">
+                <use href="#icon-sliders"></use></svg
+              ><span id="tune-modal-title-text">Tune Ranking</span>
             </h3>
           </hgroup>
         </header>

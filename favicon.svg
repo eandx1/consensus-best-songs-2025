@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <style>
+    /* Default: Black for Light Mode */
+    path, rect, circle { stroke: #000000; } 
+    
+    /* White for Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      path, rect, circle { stroke: #ffffff; stroke-width: 2.2; }
+
+    }
+  </style>
+  <path d="M4 9V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"></path><path d="M8 8v1"></path><path d="M12 8v1"></path><path d="M16 8v1"></path><rect width="20" height="12" x="2" y="9" rx="2"></rect><circle cx="8" cy="15" r="2"></circle><circle cx="16" cy="15" r="2"></circle>
+</svg></svg><style>@media (prefers-color-scheme: light) { :root { filter: contrast(1) brightness(0.1); } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
