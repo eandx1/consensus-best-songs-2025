@@ -24,6 +24,7 @@ __pycache__/
 python/test-results/
 python/playwright-report/
 python/.playwright/
+.playwright-mcp/
 
 # OS Metadata
 .DS_Store

@@ -36,14 +36,18 @@
       content="https://bestsongs2025.com/og-image.png"
     />
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Best 2025" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Lexend:wght@300..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
 
@@ -72,6 +76,7 @@
       .close-modal[aria-label="Close"] {
         flex-shrink: 0;
         order: 2;
+        align-self: flex-start; /* Align to top, not center with subtitle */
         /* Set the 3rem hit area (approx 48px) */
         width: 3rem;
         height: 3rem;
@@ -106,23 +111,247 @@
       [data-style="original"] {
         --pico-primary: #60a5fa;
         --pico-primary-background: #3b82f6;
-        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 30%);
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          white 30%
+        );
         /* SOLID BUTTON HOVER FIX: This stops the shift to rgb(1, 127, 192) */
-        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 25%);
-        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
-        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 65%);
-        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 25%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 15%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 65%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
         --pico-muted-color: #94a3b8;
         --pico-muted-border-color: #475569;
         --pico-range-border-color: #334155;
         --pico-table-row-stripped-background-color: rgba(255, 255, 255, 0.03);
         --pico-secondary: #94a3b8;
         --pico-secondary-background: #475569;
-        --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), white 15%);
-        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 40%);
-        --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), white 20%);
-        --pico-secondary-focus: color-mix(in srgb, var(--pico-secondary), transparent 70%);
-        --pico-nav-link-hover-background: color-mix(in srgb, var(--pico-primary), transparent 90%);
+        --pico-secondary-hover: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          white 15%
+        );
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 40%
+        );
+        --pico-secondary-hover-border: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 20%
+        );
+        --pico-secondary-focus: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          transparent 70%
+        );
+        --pico-nav-link-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 90%
+        );
+      }
+
+      /* THEME: MU/TH/UR 6000 (Hardware Terminal - Final High-Res Build) */
+      [data-style="muthur"] {
+        --pico-background-color: #030a0a;
+        --pico-color: #52ffca; /* Phosphor Teal-Green */
+        --pico-primary: #52ffca;
+        --pico-primary-background: #008f68;
+        --pico-muted-color: rgba(82, 255, 202, 0.6);
+        --pico-muted-border-color: #0d332a;
+        --pico-card-background-color: #051212;
+        --pico-font-family: "Share Tech Mono", monospace;
+        --pico-border-radius: 0;
+        --pico-icon-color: var(--pico-primary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* 1. Global Scanline Overlay: Drawing over everything for distortion */
+      [data-style="muthur"]::before {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background:
+          linear-gradient(rgba(18, 16, 1, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+          radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+        z-index: 10001;
+        background-size:
+          100% 3px,
+          100% 100%;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      /* 2. Global Phosphor Glow (Applied to Text & KBDs) */
+      [data-style="muthur"],
+      [data-style="muthur"] dialog article *:not(.close-modal),
+      [data-style="muthur"] .hamburger-menu *,
+      [data-style="muthur"] kbd {
+        text-shadow: 0 0 8px rgba(82, 255, 202, 0.8) !important;
+      }
+
+      /* 3. Styled KBD Tags (Recessed UI Elements) */
+      [data-style="muthur"] kbd {
+        background-color: #010505 !important;
+        color: var(--pico-primary) !important;
+        border: 1px solid var(--pico-primary) !important;
+        box-shadow: inset 0 0 5px rgba(82, 255, 202, 0.3) !important;
+        border-radius: 0;
+      }
+
+      /* 4. THE OVERDRIVEN X: Bolder Glowing Stencil */
+      [data-style="muthur"] .close-modal[aria-label="Close"] {
+        background-color: var(--pico-primary) !important;
+        /* Thickened stroke (4.5) for high-res visibility */
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='4.5' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='4.5' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-image: none !important;
+        filter: drop-shadow(0 0 8px var(--pico-primary))
+          drop-shadow(0 0 2px var(--pico-primary)) !important;
+        opacity: 1 !important;
+        border-radius: 0;
+      }
+
+      /* 5. Recolor Navigation SVGs (Tune and Hamburger) */
+      [data-style="muthur"] #open-tune,
+      [data-style="muthur"] #open-tune svg,
+      [data-style="muthur"] #hamburger-btn,
+      [data-style="muthur"] #hamburger-btn svg {
+        color: var(--pico-primary) !important;
+        fill: var(--pico-primary) !important;
+        stroke: var(--pico-primary) !important;
+        filter: drop-shadow(0 0 4px rgba(82, 255, 202, 0.6));
+      }
+
+      /* 6. Terminal Sliders: Vertical Centering & Spacing Fix */
+      [data-style="muthur"] input[type="range"] {
+        background-color: #010505 !important;
+        border: none !important;
+        height: 0.5rem;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        margin-bottom: 2rem !important; /* Forces helper text below glowing knobs */
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+      }
+
+      [data-style="muthur"] input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        background: var(--pico-background-color) !important;
+        border: 2px solid var(--pico-primary) !important;
+        border-radius: 0 !important;
+        box-shadow: 0 0 12px var(--pico-primary) !important;
+        height: 1.5rem !important;
+        width: 0.75rem !important;
+        cursor: pointer;
+        /* Centering fix: half track height (0.25rem) minus half thumb height (0.75rem) */
+        margin-top: -0.5rem;
+      }
+
+      /* 7. Terminal Containers: Cards, Buttons, Modals */
+      [data-style="muthur"] article.song-card,
+      [data-style="muthur"] button,
+      [data-style="muthur"] .hamburger-menu,
+      [data-style="muthur"] dialog article {
+        border: 1px solid var(--pico-primary) !important;
+        background: var(--pico-background-color) !important;
+        box-shadow:
+          inset 0 0 30px rgba(82, 255, 202, 0.05),
+          0 0 20px rgba(0, 0, 0, 0.9) !important;
+        color: var(--pico-primary);
+      }
+
+      /* 8. Custom Terminal Scrollbars */
+      [data-style="muthur"] dialog article::-webkit-scrollbar {
+        width: 8px;
+      }
+      [data-style="muthur"] dialog article::-webkit-scrollbar-thumb {
+        background: var(--pico-primary);
+      }
+      [data-style="muthur"] dialog article::-webkit-scrollbar-track {
+        background: var(--pico-background-color);
+      }
+
+      /* THEME: Hyper-Neon 2026 (Refined for High-Res) */
+      [data-style="hyperneon"] {
+        --pico-background-color: #0a0118;
+        --pico-color: #f0f0ff;
+        --pico-primary: #00f5ff;
+        --pico-primary-background: #00f5ff;
+        --pico-primary-hover: #ff00e5;
+        --pico-card-background-color: rgba(25, 12, 60, 0.6);
+        --pico-muted-color: #b0b0ff;
+        --pico-muted-border-color: #31215a;
+        --pico-font-family: "Michroma", sans-serif;
+        --pico-border-radius: 1.25rem;
+        -webkit-font-smoothing: antialiased; /* Smoother rendering on Mac */
+      }
+
+      [data-style="hyperneon"] .nav-main button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        border-width: 1.5px; /* Thicker line for 1440p stability */
+        padding: 0.6rem 1.2rem;
+        height: auto;
+        line-height: 1;
+      }
+
+      [data-style="hyperneon"] .nav-main button svg {
+        width: 1.1em;
+        height: 1.1em;
+        margin: 0; /* Clear existing margins that throw off center */
+      }
+
+      [data-style="hyperneon"] article.song-card {
+        backdrop-filter: blur(12px);
+        border: 1.5px solid rgba(0, 245, 255, 0.15);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      [data-style="hyperneon"] article.song-card:hover {
+        border-color: var(--pico-primary);
+        box-shadow: 0 0 25px rgba(0, 245, 255, 0.25);
+        transform: translateY(-4px);
+      }
+
+      [data-style="hyperneon"] .rank-display {
+        background: linear-gradient(135deg, #00f5ff 0%, #ff00e5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 2px rgba(0, 245, 255, 0.3));
       }
 
       /* THEME: Light (Clean Light Mode) */
@@ -133,26 +362,63 @@
         --pico-muted-color: #5c6bc0;
         --pico-card-background-color: #ffffff;
         --pico-card-sectioning-background-color: #f0f2ff;
-        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), black 35%);
-        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
-        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 70%);
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 35%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 70%
+        );
         --pico-primary-background: #7c4dff;
-        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary), black 20%);
-        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary), black 25%);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 20%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary),
+          black 25%
+        );
         --pico-secondary: #5c6bc0;
         --pico-secondary-background: #e0e4ff;
-        --pico-secondary-hover: color-mix(in srgb, var(--pico-secondary), black 40%);
-        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), black 15%);
-        --pico-secondary-hover-border: color-mix(in srgb, var(--pico-secondary-background), black 25%);
+        --pico-secondary-hover: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          black 40%
+        );
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          black 15%
+        );
+        --pico-secondary-hover-border: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          black 25%
+        );
         --pico-muted-border-color: #d1d5db;
         --pico-range-border-color: #e0e4ff;
         --pico-table-row-stripped-background-color: #f5f7ff;
-        --pico-nav-link-hover-background: color-mix(in srgb, var(--pico-primary), transparent 92%);
+        --pico-nav-link-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 92%
+        );
       }
 
       [data-style="light1"] article,
       [data-style="light1"] dialog article {
-        box-shadow: 0 4px 12px color-mix(in srgb, var(--pico-primary), transparent 92%);
+        box-shadow: 0 4px 12px
+          color-mix(in srgb, var(--pico-primary), transparent 92%);
       }
 
       [data-style="light1"] article header {
@@ -160,7 +426,11 @@
       }
 
       [data-style="light1"] .mode-card.active {
-        background-color: color-mix(in srgb, var(--pico-primary), transparent 94%);
+        background-color: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 94%
+        );
         border-color: var(--pico-primary);
         color: var(--pico-primary);
       }
@@ -180,15 +450,39 @@
         --pico-muted-border-color: #222222;
         --pico-range-border-color: #3d3d3d;
         --pico-table-row-stripped-background-color: #111111;
-        --pico-primary-hover: color-mix(in srgb, var(--pico-primary), white 15%);
-        --pico-primary-underline: color-mix(in srgb, var(--pico-primary), transparent 50%);
-        --pico-primary-focus: color-mix(in srgb, var(--pico-primary), transparent 60%);
+        --pico-primary-hover: color-mix(
+          in srgb,
+          var(--pico-primary),
+          white 15%
+        );
+        --pico-primary-underline: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 50%
+        );
+        --pico-primary-focus: color-mix(
+          in srgb,
+          var(--pico-primary),
+          transparent 60%
+        );
         --pico-primary-background: var(--pico-primary);
-        --pico-primary-hover-background: color-mix(in srgb, var(--pico-primary-background), white 10%);
-        --pico-primary-hover-border: color-mix(in srgb, var(--pico-primary-background), white 15%);
+        --pico-primary-hover-background: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 10%
+        );
+        --pico-primary-hover-border: color-mix(
+          in srgb,
+          var(--pico-primary-background),
+          white 15%
+        );
         --pico-secondary: #757575;
         --pico-secondary-background: #222222;
-        --pico-secondary-hover-background: color-mix(in srgb, var(--pico-secondary-background), white 10%);
+        --pico-secondary-hover-background: color-mix(
+          in srgb,
+          var(--pico-secondary-background),
+          white 10%
+        );
       }
 
       /* Recessed LCD Links with Backlit Plastic Effect */
@@ -261,6 +555,22 @@
       :focus:not(:focus-visible) {
         box-shadow: none !important;
         outline: none !important;
+      }
+
+      /* Fix for iOS Safari: Hide focus outlines on close buttons by default,
+         show only during actual keyboard navigation (Tab key pressed).
+         iOS treats autofocus as keyboard-like, triggering :focus-visible incorrectly. */
+      .close-modal[aria-label="Close"]:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      body.using-keyboard .close-modal[aria-label="Close"]:focus {
+        outline: var(
+          --pico-outline,
+          2px solid var(--pico-primary-focus)
+        ) !important;
+        outline-offset: 2px !important;
       }
 
       /* Enable word-wrapping for Pico CSS tooltips */
@@ -832,6 +1142,7 @@
 
       .hamburger-menu nav {
         padding: 0;
+        padding-bottom: 0.5rem;
         margin: 0;
       }
 
@@ -928,7 +1239,8 @@
       }
 
       [data-theme="dark"] .tuned-text {
-        text-shadow: 0 0 0.5rem color-mix(in srgb, var(--pico-primary), transparent 60%);
+        text-shadow: 0 0 0.5rem
+          color-mix(in srgb, var(--pico-primary), transparent 60%);
       }
 
       .tune-icon {
@@ -1114,7 +1426,11 @@
     ></script>
 
     <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
       const isProd = window.location.hostname.endsWith("bestsongs2025.com");
       const isOptedOut = localStorage.getItem("va-disable") === "true";
       if (isProd && !isOptedOut) {
@@ -1139,11 +1455,19 @@
         />
       </symbol>
 
-      <symbol id="icon-disc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M6 12c0-1.7.7-3.2 1.8-4.2"/>
-        <circle cx="12" cy="12" r="2"/>
-        <path d="M18 12c0 1.7-.7 3.2-1.8 4.2"/>
+      <symbol
+        id="icon-disc"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M6 12c0-1.7.7-3.2 1.8-4.2" />
+        <circle cx="12" cy="12" r="2" />
+        <path d="M18 12c0 1.7-.7 3.2-1.8 4.2" />
       </symbol>
 
       <symbol id="icon-apple" viewBox="0 0 24 24">
@@ -1176,13 +1500,29 @@
         <path d="M12 7v14" />
       </symbol>
 
-      <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <symbol
+        id="icon-menu"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M4 5h16" />
         <path d="M4 12h16" />
         <path d="M4 19h16" />
       </symbol>
 
-      <symbol id="icon-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <symbol
+        id="icon-sliders"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M14 17H5" />
         <path d="M19 7h-9" />
         <circle cx="17" cy="17" r="3" />
@@ -1250,7 +1590,9 @@
           ></button>
           <hgroup>
             <h3>
-              <svg id="tune-modal-icon" class="tune-title-icon"><use href="#icon-sliders"></use></svg><span id="tune-modal-title-text">Tune Ranking</span>
+              <svg id="tune-modal-icon" class="tune-title-icon">
+                <use href="#icon-sliders"></use></svg
+              ><span id="tune-modal-title-text">Tune Ranking</span>
             </h3>
           </hgroup>
         </header>

@@ -21,6 +21,8 @@ const THEME_CONFIG = {
   original: { name: "Original", style: "original", mode: "dark" },
   light1: { name: "Light", style: "light1", mode: "light" },
   studio808: { name: "Studio 808", style: "808", mode: "dark" },
+  muthur: { name: "Deep-Space CRT", style: "muthur", mode: "dark" },
+  hyperneon: { name: "Hyper-Neon 2026", style: "hyperneon", mode: "dark" },  
 };
 
 const VALID_THEMES = Object.keys(THEME_CONFIG);
@@ -1232,3 +1234,18 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
     }
   });
 })();
+
+// Keyboard navigation detection for focus styling
+// Tracks actual keyboard usage to only show focus rings when user has pressed Tab
+// This fixes iOS Safari treating autofocus as keyboard-like, showing unwanted focus rings
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") {
+    document.body.classList.add("using-keyboard");
+  }
+});
+document.addEventListener("mousedown", () => {
+  document.body.classList.remove("using-keyboard");
+});
+document.addEventListener("touchstart", () => {
+  document.body.classList.remove("using-keyboard");
+}, { passive: true });
