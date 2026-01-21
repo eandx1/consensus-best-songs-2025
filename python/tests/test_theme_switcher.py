@@ -42,21 +42,31 @@ def test_theme_switcher_shortcut(page: Page, server_url):
     """Verify Ctrl+T shortcut cycles themes when tskbd flag is enabled."""
     # Load page with tskbd flag to enable keyboard shortcuts
     page.goto(f"{server_url}?tskbd")
-    
+
     # Default state (Original)
     html = page.locator("html")
     expect(html).to_have_attribute("data-style", "original")
-    
+
     # Press Ctrl+T (cycles to Light)
     page.keyboard.press("Control+t")
     expect(page).to_have_url(re.compile(r".*theme=light1"))
     expect(html).to_have_attribute("data-style", "light1")
-    
+
     # Press Ctrl+T (cycles to Studio 808)
     page.keyboard.press("Control+t")
     expect(page).to_have_url(re.compile(r".*theme=studio808"))
     expect(html).to_have_attribute("data-style", "808")
-    
+
+    # Press Ctrl+T (cycles to Deep-Space CRT)
+    page.keyboard.press("Control+t")
+    expect(page).to_have_url(re.compile(r".*theme=muthur"))
+    expect(html).to_have_attribute("data-style", "muthur")
+
+    # Press Ctrl+T (cycles to Hyper-Neon 2026)
+    page.keyboard.press("Control+t")
+    expect(page).to_have_url(re.compile(r".*theme=hyperneon"))
+    expect(html).to_have_attribute("data-style", "hyperneon")
+
     # Press Ctrl+T (cycles back to Original)
     page.keyboard.press("Control+t")
     # Original is the default theme, so it may not appear in URL or may be explicit
