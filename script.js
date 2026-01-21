@@ -21,6 +21,8 @@ const THEME_CONFIG = {
   original: { name: "Original", style: "original", mode: "dark" },
   light1: { name: "Light", style: "light1", mode: "light" },
   studio808: { name: "Studio 808", style: "808", mode: "dark" },
+  muthur: { name: "Deep-Space CRT", style: "muthur", mode: "dark" },
+  hyperneon: { name: "Hyper-Neon 2026", style: "hyperneon", mode: "dark" },  
 };
 
 const VALID_THEMES = Object.keys(THEME_CONFIG);
