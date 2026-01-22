@@ -142,3 +142,31 @@ def wait_for_debounce(page, ms=500):
     """Wait for debounced operations to complete."""
     page.wait_for_timeout(ms)
 
+
+def disable_animations(page):
+    """Disable all CSS animations and transitions for stable visual tests."""
+    page.add_style_tag(
+        content="""
+        *, *::before, *::after {
+            animation: none !important;
+            animation-duration: 0s !important;
+            transition: none !important;
+            transition-duration: 0s !important;
+        }
+    """
+    )
+
+
+def set_theme(page, theme_name):
+    """Set the theme via URL parameter and wait for it to apply."""
+    current_url = page.url
+    separator = "&" if "?" in current_url else "?"
+    # Remove existing theme param if present
+    import re
+
+    base_url = re.sub(r"[?&]theme=[^&]*", "", current_url)
+    separator = "&" if "?" in base_url else "?"
+    new_url = f"{base_url}{separator}theme={theme_name}"
+    page.goto(new_url)
+    page.wait_for_load_state("networkidle")
+
