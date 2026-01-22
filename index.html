@@ -182,6 +182,10 @@
         --pico-font-family: "Share Tech Mono", monospace;
         --pico-border-radius: 0;
         --pico-icon-color: var(--pico-primary);
+        /* Custom glow properties for consistent terminal effect */
+        --muthur-text-glow: 0 0 8px rgba(82, 255, 202, 0.8);
+        --muthur-svg-glow: drop-shadow(0 0 4px rgba(82, 255, 202, 0.6));
+        --muthur-border-glow: 0 0 8px rgba(82, 255, 202, 0.3);
         text-transform: uppercase;
         letter-spacing: 1px;
       }
@@ -206,12 +210,53 @@
         opacity: 0.8;
       }
 
-      /* 2. Global Phosphor Glow (Applied to Text & KBDs) */
-      [data-style="muthur"],
-      [data-style="muthur"] dialog article *:not(.close-modal),
-      [data-style="muthur"] .hamburger-menu *,
-      [data-style="muthur"] kbd {
-        text-shadow: 0 0 8px rgba(82, 255, 202, 0.8) !important;
+      /* 1b. Dialog Scanline Overlay: Dialogs are in the "top layer" above all z-index,
+             so they need their own scanlines pseudo-element */
+      [data-style="muthur"] dialog[open]::before {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background:
+          linear-gradient(rgba(18, 16, 1, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+          radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+        z-index: 10001;
+        background-size:
+          100% 3px,
+          100% 100%;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      /* 2. Global Phosphor Glow (Applied to all text elements) */
+      [data-style="muthur"] h1,
+      [data-style="muthur"] h2,
+      [data-style="muthur"] h3,
+      [data-style="muthur"] h4,
+      [data-style="muthur"] h5,
+      [data-style="muthur"] h6,
+      [data-style="muthur"] p,
+      [data-style="muthur"] span,
+      [data-style="muthur"] label,
+      [data-style="muthur"] legend,
+      [data-style="muthur"] strong,
+      [data-style="muthur"] small,
+      [data-style="muthur"] a,
+      [data-style="muthur"] button,
+      [data-style="muthur"] td,
+      [data-style="muthur"] th,
+      [data-style="muthur"] blockquote,
+      [data-style="muthur"] kbd,
+      [data-style="muthur"] .hamburger-menu * {
+        text-shadow: var(--muthur-text-glow);
+      }
+
+      /* 2b. SVG Phosphor Glow (SVGs need filter, not text-shadow) */
+      [data-style="muthur"] svg {
+        filter: var(--muthur-svg-glow);
       }
 
       /* 3. Styled KBD Tags (Recessed UI Elements) */
@@ -240,15 +285,17 @@
         border-radius: 0;
       }
 
-      /* 5. Recolor Navigation SVGs (Tune and Hamburger) */
+      /* 5. Navigation Buttons (Tune and Hamburger) - ensure text + SVG both glow */
       [data-style="muthur"] #open-tune,
+      [data-style="muthur"] #hamburger-btn {
+        color: var(--pico-primary);
+        text-shadow: var(--muthur-text-glow);
+      }
+
       [data-style="muthur"] #open-tune svg,
-      [data-style="muthur"] #hamburger-btn,
       [data-style="muthur"] #hamburger-btn svg {
-        color: var(--pico-primary) !important;
-        fill: var(--pico-primary) !important;
-        stroke: var(--pico-primary) !important;
-        filter: drop-shadow(0 0 4px rgba(82, 255, 202, 0.6));
+        fill: var(--pico-primary);
+        stroke: var(--pico-primary);
       }
 
       /* 6. Terminal Sliders: Vertical Centering & Spacing Fix */
@@ -277,17 +324,34 @@
         margin-top: -0.5rem;
       }
 
-      /* 7. Terminal Containers: Cards, Buttons, Modals */
+      /* 7. Terminal Containers: Cards, Buttons, Modals - with border glow */
       [data-style="muthur"] article.song-card,
       [data-style="muthur"] button,
       [data-style="muthur"] .hamburger-menu,
       [data-style="muthur"] dialog article {
-        border: 1px solid var(--pico-primary) !important;
+        border: 1px solid var(--pico-primary);
         background: var(--pico-background-color) !important;
         box-shadow:
           inset 0 0 30px rgba(82, 255, 202, 0.05),
+          var(--muthur-border-glow),
           0 0 20px rgba(0, 0, 0, 0.9) !important;
         color: var(--pico-primary);
+      }
+
+      /* 7b. Mode cards in Tune modal - add border glow */
+      [data-style="muthur"] .mode-card {
+        box-shadow:
+          inset 0 0 15px rgba(82, 255, 202, 0.03),
+          var(--muthur-border-glow);
+      }
+
+      [data-style="muthur"] .mode-card.active {
+        background-color: rgba(82, 255, 202, 0.1) !important;
+      }
+
+      [data-style="muthur"] #tune-content article.tune-inner-article {
+        /* These should have probably been divs. Disable extra outline on sub-articles on tune modal. */
+        border: 0px;
       }
 
       /* 8. Custom Terminal Scrollbars */
@@ -301,31 +365,14 @@
         background: var(--pico-background-color);
       }
 
-      /* High-DPI / Mobile Legibility Optimization */
+      /* 9. Mobile Legibility Optimization */
       @media (max-width: 1024px) {
-        /* 1. Reduce global scanline opacity to prevent character 'smearing' */
-        [data-style="muthur"]::before {
-          opacity: 0.5 !important;
-          background-size:
-            100% 2px,
-            100% 100% !important; /* Thinner lines for mobile */
-        }
-
-        /* 2. Sharpen headings and modal titles by reducing glow spread */
         [data-style="muthur"] h1,
         [data-style="muthur"] h2,
         [data-style="muthur"] h3,
         [data-style="muthur"] .song-card hgroup h3,
         [data-style="muthur"] dialog article h3 {
-          text-shadow: 0 0 3px rgba(82, 255, 202, 0.8) !important;
-          letter-spacing: 0.5px !important; /* Slightly tighter for mobile clarity */
-        }
-
-        /* 3. Disable glow on very small text where it causes 'fuzzing' */
-        [data-style="muthur"] small,
-        [data-style="muthur"] .song-card [data-sources] span,
-        [data-style="muthur"] footer.modal-controls button {
-          text-shadow: none !important;
+          letter-spacing: 0.5px; /* Tighter for mobile clarity */
         }
       }
 
@@ -335,7 +382,16 @@
         --pico-color: #f0f0ff;
         --pico-primary: #00f5ff;
         --pico-primary-background: #00f5ff;
+        --pico-primary-inverse: #0a0118; /* Dark text on bright cyan buttons */
         --pico-primary-hover: #ff00e5;
+        --pico-primary-hover-background: #ff00e5; /* Electric magenta on hover */
+        --pico-primary-hover-border: #ff00e5;
+        --pico-secondary: #7a7a9a; /* Muted gray for outline buttons */
+        --pico-secondary-background: #3a3a5a;
+        --pico-secondary-hover: #ff00e5; /* Magenta text/border on hover */
+        --pico-secondary-hover-background: #ff00e5;
+        --pico-secondary-hover-border: #ff00e5;
+        --pico-secondary-inverse: #0a0118; /* Dark text on magenta */
         --pico-card-background-color: rgba(25, 12, 60, 0.6);
         --pico-muted-color: #b0b0ff;
         --pico-muted-border-color: #31215a;
@@ -348,7 +404,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.6rem;
+        gap: 0.35rem;
         border-width: 1.5px; /* Thicker line for 1440p stability */
         padding: 0.6rem 1.2rem;
         height: auto;
@@ -364,15 +420,12 @@
       [data-style="hyperneon"] article.song-card {
         backdrop-filter: blur(12px);
         border: 1.5px solid rgba(0, 245, 255, 0.15);
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
+        transition: box-shadow 0.3s ease;
       }
 
       [data-style="hyperneon"] article.song-card:hover {
         border-color: var(--pico-primary);
         box-shadow: 0 0 25px rgba(0, 245, 255, 0.25);
-        transform: translateY(-4px);
       }
 
       [data-style="hyperneon"] .rank-display {
@@ -1602,7 +1655,7 @@
 
       <section class="page-controls">
         <div class="grid">
-          <button id="load-more" class="outline">Show More</button>
+          <button id="load-more" class="outline secondary">Show More</button>
         </div>
       </section>
     </main>

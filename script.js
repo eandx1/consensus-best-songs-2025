@@ -1003,7 +1003,7 @@ function renderSettingsUI() {
   let html = "";
   const isConsensus = ranking.decay_mode === "consensus";
 
-  html += `<article>
+  html += `<article class="tune-inner-article">
     <hgroup><h4>Ranking Parameters</h4></hgroup>
     <label>Decay Mode</label>
     <div class="grid" style="margin-bottom: 2rem;">
@@ -1110,7 +1110,7 @@ function renderSettingsUI() {
     sourcesByCluster[clusterName].push(srcKey);
   });
 
-  html += `<article>
+  html += `<article class="tune-inner-article">
     <hgroup>
       <h4>Source Weights</h4>
       <p>Fine-tune the individual influence of each publication. These sliders allow you to manually adjust the specific "gravity" a source has within the final consensus.</p>
@@ -1135,7 +1135,7 @@ function renderSettingsUI() {
 
   const unrankedSources = sortedSources.filter((k) => sources[k].type === "unranked");
   if (unrankedSources.length > 0) {
-    html += `<article>
+    html += `<article class="tune-inner-article">
       <hgroup>
         <h4>Shadow Ranks</h4>
         <p>Governs how the engine handles unranked review lists. These lists are assigned a "Shadow Rank" based on their total length. This ensures a song appearing on an unranked "Top 10" list correctly receives more weight than one on an unranked "Top 100" list.</p>
