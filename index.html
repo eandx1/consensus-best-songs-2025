@@ -43,18 +43,30 @@
     <meta name="apple-mobile-web-app-title" content="Best 2025" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <!-- Preconnect hints for external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
-      rel="stylesheet"
-    />
-
+    <!-- Pico CSS - loaded synchronously to prevent FOUC -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
+    <!-- Google Fonts - loaded async since original theme doesn't use custom fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <!-- Fallback for Google Fonts when JS disabled -->
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <style>
       /*
@@ -678,6 +690,8 @@
         padding: 2rem 0;
         text-align: center;
         padding-bottom: 5rem;
+        /* Reserve space to prevent layout shift when button appears */
+        min-height: 8rem;
       }
 
       .page-controls .grid {
@@ -1501,8 +1515,10 @@
     </style>
 
     <!-- Lite YouTube -->
+    <!-- Lite YouTube: type=module is already deferred, async makes it non-blocking -->
     <script
       type="module"
+      async
       src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
     ></script>
 
