@@ -296,12 +296,31 @@ This project uses [Playwright](https://playwright.dev/python/) with `pytest` for
 - **Core Rendering**: Verifies the song list, titles, and dynamic media links (YouTube, Spotify, etc.)
 - **Interactive Logic**: Ensures user interactions like adjusting sliders update the URL state correctly
 - **Modals**: Checks that detailed views (Reviews, Stats, About, Settings) render properly
+- **Visual Regression**: Screenshot comparisons to catch unintended UI changes
 
 ### Running the Tests
 
-1. Navigate to the python directory: `cd python`
-2. Install dependencies: `uv sync` (if not already installed)
-3. Run the full suite: `uv run pytest`
+```bash
+cd python
+uv sync        # Install dependencies (first time)
+uv run pytest  # Run tests
+```
+
+Visual regression tests are automatically skipped when running locally (font rendering differs between macOS and Linux). CI runs all tests including visual regression.
+
+### Visual Regression Tests
+
+To run visual tests locally or update baselines, use the Docker script which matches the CI environment:
+
+```bash
+# Run ALL tests including visual regression (matches CI)
+./scripts/test-docker.sh
+
+# Update visual baselines after intentional UI changes
+./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
+```
+
+The Docker script uses Microsoft's official Playwright container (`mcr.microsoft.com/playwright:v1.57.0-noble`), the same image used in CI.
 
 ## 👤 Contact
 

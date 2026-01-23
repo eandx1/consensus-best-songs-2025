@@ -4,18 +4,20 @@ Visual regression tests for theme styling.
 This module uses pytest-playwright-visual to detect visual regressions in theme
 styling. Screenshots are compared pixel-by-pixel against baseline images.
 
+Visual regression tests are automatically skipped when running `uv run pytest`
+locally because font rendering differs between macOS and Linux. CI runs these
+tests in Docker where rendering matches the baselines.
+
+To run visual tests locally or update baselines, use Docker:
+    ./scripts/test-docker.sh                                      # Run all tests
+    ./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots  # Update baselines
+
 Key components tested:
 1. Original theme - Song card (default theme, most users)
 2. Muthur theme - Tune modal (scanlines, slider styling, text glow)
 3. Hyperneon theme - Song card (gradient text, neon effects)
 4. Studio 808 theme - Reviews modal (3D bevel links, blockquote styling)
 5. Light theme - Stats modal (inverted color scheme)
-
-To update baselines when intentional changes are made:
-    uv run pytest tests/test_theme_visual.py --update-snapshots
-
-Note: All themes use web fonts (Sora, Michroma, etc.) loaded from Google Fonts,
-which ensures consistent rendering across platforms.
 """
 import pytest
 from playwright.sync_api import Page, expect
@@ -49,8 +51,13 @@ def wait_for_fonts(page: Page):
     page.evaluate("() => document.fonts.ready")
 
 
+@pytest.mark.visual
 class TestVisualRegression:
-    """Visual regression tests comparing screenshots against baselines."""
+    """Visual regression tests comparing screenshots against baselines.
+
+    These tests are automatically skipped when running locally. To run them,
+    use Docker: ./scripts/test-docker.sh
+    """
 
     def test_original_theme_song_card(self, page: Page, server_url, assert_snapshot):
         """Original theme song card - the default theme most users see."""

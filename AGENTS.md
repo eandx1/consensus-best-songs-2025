@@ -489,16 +489,33 @@ The testing infrastructure is located in the `python/` directory.
 
 ## Running Tests
 
-To run the full test suite:
+```bash
+cd python
+uv sync        # Install dependencies (first time)
+uv run pytest  # Run tests (visual regression tests auto-skipped)
+```
 
-1. Navigate to the python directory: `cd python`
-2. Run pytest: `uv run pytest`
+Visual regression tests are automatically skipped when running locally because font rendering differs between macOS and Linux. CI runs all tests including visual regression in a Docker container.
 
 To run specific tests:
 
 ```bash
 uv run pytest tests/test_ranking_logic.py
 ```
+
+## Visual Regression Tests
+
+Visual regression tests compare screenshots pixel-by-pixel against baselines. To run them locally or update baselines, use Docker:
+
+```bash
+# Run ALL tests including visual regression (matches CI environment)
+./scripts/test-docker.sh
+
+# Update visual baselines after intentional UI changes
+./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
+```
+
+The Docker script uses Microsoft's official Playwright container (`mcr.microsoft.com/playwright:v1.57.0-noble`), the same image used in CI.
 
 ## Test Scope
 
@@ -519,6 +536,10 @@ The test suite covers:
   - CSV export with proper headers and data
   - Warning messages for missing YouTube IDs or ISRC codes
 - **Theme Switching**: Verifies theme selector in hamburger menu works correctly
+- **Visual Regression**: Screenshot comparisons for theme styling (requires Docker):
+  - Song card rendering across themes
+  - Modal styling (Tune, Reviews, Stats)
+  - Font rendering and visual consistency
 - **Tuned Badge**: Validates tuned state indicators:
   - Tune button state transitions (default vs tuned)
   - Modal subtitle visibility and content based on customization
