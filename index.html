@@ -456,7 +456,7 @@
       [data-style="light1"] {
         --pico-font-family: "Sora", sans-serif;
         --pico-primary: #7c4dff;
-        --pico-background-color: #f8f9ff;
+        --pico-background-color: #e4e7f2;
         --pico-color: #1a237e;
         --pico-muted-color: #5c6bc0;
         --pico-card-background-color: #ffffff;
@@ -514,6 +514,10 @@
         );
       }
 
+      html[data-style="light1"] body {
+        background-color: #eaebef;
+      }
+
       [data-style="light1"] article,
       [data-style="light1"] dialog article {
         box-shadow: 0 4px 12px
@@ -531,6 +535,20 @@
           transparent 94%
         );
         border-color: var(--pico-primary);
+        color: var(--pico-primary);
+      }
+
+      [data-style="light1"] button.outline.secondary:hover,
+      [data-style="light1"] button.secondary.outline:hover,
+      [data-style="light1"] #load-more:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          transparent 90%
+        );
+      }
+
+      [data-style="light1"] [data-sources]:hover {
         color: var(--pico-primary);
       }
 
