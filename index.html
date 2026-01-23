@@ -43,36 +43,44 @@
     <meta name="apple-mobile-web-app-title" content="Best 2025" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preconnect hints for external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="preload"
+      href="data.json"
+      as="fetch"
+      type="application/json"
+    />
+    <link
+      rel="preload"
+      href="/fonts/Sora-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
-    <!-- Pico CSS - loaded synchronously to prevent FOUC -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />    
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
-    <!-- Google Fonts: Sora (default font) loaded sync to prevent FOUT -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=block"
-      rel="stylesheet"
-    />
-    <!-- Theme-specific fonts loaded async (only used when switching themes) -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
+
+    <script src="./script.js" defer></script>
 
     <style>
+      /* Font used for original and light1 themes. */
+      @font-face {
+        font-family: "Sora";
+        src:
+          url("/fonts/Sora-Variable.woff2") format("woff2-variations"),
+          url("/fonts/Sora-Variable.woff2") format("woff2");
+        font-weight: 100 800;
+        font-style: normal;
+        /* 'block' fixes the 0.216 CLS by preventing the font-swap jump */
+        font-display: block;
+      }
+
       /*
          THEME CONFIGURATION
          We use data-theme for Pico's base (light/dark) and data-style for specific color palettes/fonts.
@@ -1538,11 +1546,24 @@
       }
     </style>
 
+    <link
+      id="secondary-fonts"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media = 'all'"
+    />
+
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
     <!-- Lite YouTube -->
-    <!-- Lite YouTube: type=module is already deferred, async makes it non-blocking -->
     <script
       type="module"
-      async
       src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
     ></script>
 
@@ -1934,7 +1955,5 @@
         <use href="#icon-top"></use>
       </svg>
     </button>
-
-    <script src="./script.js"></script>
   </body>
 </html>
