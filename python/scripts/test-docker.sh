@@ -31,4 +31,4 @@ docker run $DOCKER_OPTS \
   -w /app/python \
   -e UV_PROJECT_ENVIRONMENT=/tmp/.venv \
   mcr.microsoft.com/playwright:v1.57.0-noble \
-  bash -c "curl -LsSf https://astral.sh/uv/install.sh | sh && source \$HOME/.local/bin/env && uv sync && uv run pytest --run-visual $*"
+  bash -c "curl -LsSf https://astral.sh/uv/install.sh | sh && source \$HOME/.local/bin/env && uv sync && uv run pytest --run-visual $@"
