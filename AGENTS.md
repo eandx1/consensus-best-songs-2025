@@ -24,6 +24,42 @@ Users can adjust source weights and several ranking function parameters to dynam
 - Design Style: Clean, semantic, and responsive using Pico CSS defaults
 - Ensure font and colors can be easily switched to different themes
 
+# Project Structure
+
+## File Layout
+
+- `index.html` - Single HTML file with all CSS inline (no separate .css files)
+- `script.js` - Single JS file with all application logic (no bundling/build)
+- `data.json` - Song data and configuration (immutable source of truth)
+- `python/` - Testing infrastructure (Playwright + pytest)
+- `samples/` - Reference data and UI samples
+
+## index.html Structure (~1920 lines)
+
+- `<style>` block: All CSS (themes defined via `[data-style="themename"]`)
+- Five themes: `original`, `light1`, `808`, `muthur`, `hyperneon`
+- SVG sprite: Icon symbols (`#icon-spotify`, `#icon-youtube`, `#icon-sliders`, etc.)
+- Header: Nav with title, Tune button, hamburger menu
+- Main: `#song-list` container, load more button
+- Dialogs: Six modals (`modal-tune`, `modal-stats`, `modal-reviews`, `modal-youtube`, `modal-download`, `modal-about`)
+- External: Pico CSS (CDN), lite-youtube (CDN), Google Fonts (Sora + theme fonts)
+
+## script.js Structure (~1250 lines)
+
+- `CONFIG_BOUNDS` - Validation ranges for all slider parameters
+- `THEME_CONFIG` - Theme definitions (name, style, mode)
+- `STATE` - Mutable application state (config, songs, displayLimit)
+- `APP_DATA` - Immutable data loaded from data.json
+- `UI` - Cached DOM element references
+- `RankingEngine` - Core ranking computation (exposed on `window` for debugging)
+- `syncStateFromURL()` / `updateURL()` - URL state persistence
+- `render()` - Main render function, recomputes rankings and updates DOM
+- `init()` - Entry point, loads data, sets up event listeners
+- `showReviews()` / `showStats()` - Modal content renderers
+- `renderSettingsUI()` - Tune modal slider generation
+- `renderYouTubeUI()` / `renderDownloadUI()` / `downloadCSV()` - Playlist export features
+- `isRankingCustomized()` - Detects if settings differ from defaults
+
 # UI Design
 
 "Dark mode" style website with clean, responsive UI for both desktop and mobile.
@@ -416,63 +452,6 @@ The engine applies three specialized multipliers to the raw scores:
     - `p_mul = 1 + (provocation_boost * (np.std(ranks) / 100)) if len(ranks) > 1 else 1.0`
 3.  **Diversity (Crossover) Boost:** A bonus for every additional unique **Cluster** a song reaches in its top `cluster_threshold`. This identifies "Unicorns"—tracks that appeal to Authority, Tastemakers, and Specialists simultaneously.
     - `cl_mul = (1 + (cluster_boost * (len(top50_clusters_counts) - 1)) if len(top50_clusters_counts) > 0 else 1.0`
-
-# Implementation Plan
-
-## Phase 1: Core Engine & Data Foundation
-
-- **Feature 1: Ranking Engine Parity & Robustness**
-  - Verify `RankingEngine.compute` handles all edge cases (e.g., empty lists).
-  - Ensure the standard deviation calculation for `Provocation Boost` matches the Python `np.std` (population vs sample).
-  - Expose the `RankingEngine` globally or structure it for easy debugging.
-
-## Phase 2: Structural UI & Layout
-
-- **Feature 2: Song Card Layout & "Listen" Links**
-  - Implement the responsive 3-column layout (Rank | Video | Info) and dynamic media links.
-  - Update `render()` to generate "Listen" buttons for YouTube, Spotify, Bandcamp, etc.
-  - Format the "Sources" list with middots and proper wrapping.
-
-## Phase 3: Dynamic State & Sharing
-
-- **Feature 3: Tune Ranking Modal (Configuration)**
-  - Implement `renderSettingsUI()` to dynamically generate sliders for Ranking Parameters, Source Weights, and Shadow Ranks.
-  - Attach event listeners to sliders to trigger `debouncedReRank()`.
-  - Implement the "Reset" button.
-- **Feature 4: URL State Synchronization**
-  - Refine `updateURL()` to write only _changed_ values to the query string.
-  - Ensure `syncStateFromURL()` correctly overrides `data.json` defaults on load.
-
-## Phase 4: Detailed Information (Modals)
-
-- **Feature 5: Reviews Modal**
-  - Implement `showReviews(songIndex)` to display detailed source feedback.
-  - Render the list of sources with ranks, quotes, and links.
-- **Feature 6: Ranking Stats Modal**
-  - Implement `showStats(songIndex)` to show scoring breakdown.
-  - Calculate and display Normalized Score, Multipliers, and individual Source Contributions.
-- **Feature 7: Visual Polish**
-  - Finalize "Dark Mode" aesthetic (IntelliJ/Solarized theme).
-  - Refine `lite-youtube` play button transparency and hover effects.
-  - Theme selector moved to hamburger menu dropdown.
-
-## Phase 5: Playlist Export Features
-
-- **Feature 8: YouTube Playlist Modal**
-  - Implement `renderYouTubeUI()` to generate YouTube playlist URLs.
-  - Media preference toggle (Music Videos vs Audio Only).
-  - Count selection (Top 10, 25, 50).
-  - Warning display for songs missing YouTube IDs.
-- **Feature 9: Download Playlist Modal**
-  - Implement `renderDownloadUI()` for CSV export configuration.
-  - Count selection (Top 25, 100, 200, 500, All).
-  - Implement `downloadCSV()` with proper CSV escaping.
-  - Post-download state showing import service links.
-  - Warning display for songs missing ISRC codes.
-- **Feature 10: Unified Navigation**
-  - Hamburger menu with centralized navigation links.
-  - Theme selector dropdown in hamburger menu.
-  - Responsive header with "Tune" button and hamburger menu.
 
 # Testing
 
