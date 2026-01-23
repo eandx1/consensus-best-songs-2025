@@ -17,8 +17,7 @@ const VALID_THEMES = Object.keys(THEME_CONFIG);
 const DEFAULT_THEME = "original";
 
 const urlParams = new URLSearchParams(window.location.search);
-const savedTheme =
-  urlParams.get("theme") || localStorage.getItem("user-theme") || DEFAULT_THEME;
+const savedTheme = urlParams.get("theme") || DEFAULT_THEME;
 
 /**
  * Apply a theme by name. Updates both data-theme (light/dark) and data-style attributes.
@@ -348,7 +347,6 @@ function syncStateFromURL(defaultConfig) {
     applyTheme(config.theme);
   } else {
     config.theme = DEFAULT_THEME;
-    applyTheme(DEFAULT_THEME);
   }
 
   if (params.has("n")) {
