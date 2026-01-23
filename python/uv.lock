@@ -2471,6 +2471,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pixelmatch"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/59/ebc53e64156db78c75c6d7f535e3f80f62c8a8e1545783770f06f528e187/pixelmatch-0.3.0.tar.gz", hash = "sha256:d0fa36a593cfcfa2d4b225da9d72c5b5218aef8b0594bc1a91953533c2676099", size = 9142, upload-time = "2022-03-23T14:51:35.225Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e1/09/766e3cb038be997cef78a29cfd4ec5e9be739b8ea44a09c839a6da8cb55b/pixelmatch-0.3.0-py3-none-any.whl", hash = "sha256:1fe86c50e7d00eb4b4de7b991f8b7ebc12da841ce1e9f7304480ab0f58a2bd81", size = 9155, upload-time = "2022-03-23T14:51:33.271Z" },
+]
+
+[[package]]
 name = "platformdirs"
 version = "4.5.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2907,6 +2916,20 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-playwright-visual"
+version = "2.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pillow" },
+    { name = "pixelmatch" },
+    { name = "pytest-playwright" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/72/04/c16c31e0f466a7274a6933faf90cde85b3d57287350b341ce5befe2a5273/pytest-playwright-visual-2.1.2.tar.gz", hash = "sha256:947e82bf565a347652d1dd0c90531f49e31507273f45e6277dc7413842c12dbf", size = 120137, upload-time = "2022-04-28T02:06:14.427Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ee/64/786a2f83823c91f7e83e6d8a4e4c826639712417ed9442ad23f54b01cd5b/pytest_playwright_visual-2.1.2-py3-none-any.whl", hash = "sha256:75e38eac2fa8e611aecfda48bbc557b948bfec1a9a472a25c3fbd7e418a773e7", size = 3897, upload-time = "2022-04-28T02:06:13.256Z" },
+]
+
+[[package]]
 name = "python"
 version = "0.1.0"
 source = { virtual = "." }
@@ -2932,6 +2955,7 @@ dependencies = [
     { name = "pyjwt" },
     { name = "pytest" },
     { name = "pytest-playwright" },
+    { name = "pytest-playwright-visual" },
     { name = "rapidfuzz" },
     { name = "requests" },
     { name = "seaborn" },
@@ -2963,6 +2987,7 @@ requires-dist = [
     { name = "pyjwt", specifier = ">=2.10.1" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-playwright", specifier = ">=0.7.2" },
+    { name = "pytest-playwright-visual", specifier = ">=2.1.2" },
     { name = "rapidfuzz", specifier = ">=3.14.3" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "seaborn", specifier = ">=0.13.2" },

@@ -53,14 +53,18 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
-    <!-- Google Fonts - loaded async since original theme doesn't use custom fonts -->
+    <!-- Google Fonts: Sora (default font) loaded sync to prevent FOUT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=block"
+      rel="stylesheet"
+    />
+    <!-- Theme-specific fonts loaded async (only used when switching themes) -->
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'"
     />
-    <!-- Fallback for Google Fonts when JS disabled -->
     <noscript>
       <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
@@ -121,6 +125,7 @@
 
       /* THEME: Original (Blue Accent) */
       [data-style="original"] {
+        --pico-font-family: "Sora", sans-serif;
         --pico-primary: #60a5fa;
         --pico-primary-background: #3b82f6;
         --pico-primary-hover: color-mix(
@@ -449,6 +454,7 @@
 
       /* THEME: Light (Clean Light Mode) */
       [data-style="light1"] {
+        --pico-font-family: "Sora", sans-serif;
         --pico-primary: #7c4dff;
         --pico-background-color: #f8f9ff;
         --pico-color: #1a237e;

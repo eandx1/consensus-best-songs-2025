@@ -26,6 +26,7 @@ dependencies = [
     "pyjwt>=2.10.1",
     "pytest>=9.0.2",
     "pytest-playwright>=0.7.2",
+    "pytest-playwright-visual>=2.1.2",
     "rapidfuzz>=3.14.3",
     "requests>=2.32.5",
     "seaborn>=0.13.2",
@@ -35,3 +36,8 @@ dependencies = [
 ]
 [tool.uv]
 constraint-dependencies = ["kaleido!=0.2.1.post1"]
+
+[tool.pytest.ini_options]
+markers = [
+    "visual: visual regression tests that require Docker for consistent rendering",
+]

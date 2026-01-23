@@ -1,24 +1,24 @@
 """
-Selective visual screenshot tests for theme regression detection.
+Visual regression tests for theme styling.
 
-This module captures screenshots for the highest-risk theme/component combinations
-that CSS property tests cannot reliably verify (e.g., complex visual compositions,
-backdrop filters, gradient text, glow effects).
+This module uses pytest-playwright-visual to detect visual regressions in theme
+styling. Screenshots are compared pixel-by-pixel against baseline images.
 
-This is Tier 2 of the tiered hybrid testing approach - selective visual verification.
+Visual regression tests are automatically skipped when running `uv run pytest`
+locally because font rendering differs between macOS and Linux. CI runs these
+tests in Docker where rendering matches the baselines.
 
-Only 5 screenshots are captured:
+To run visual tests locally or update baselines, use Docker:
+    ./scripts/test-docker.sh                                      # Run all tests
+    ./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots  # Update baselines
+
+Key components tested:
 1. Original theme - Song card (default theme, most users)
 2. Muthur theme - Tune modal (scanlines, slider styling, text glow)
-3. Hyperneon theme - Song card (gradient text, hover states)
+3. Hyperneon theme - Song card (gradient text, neon effects)
 4. Studio 808 theme - Reviews modal (3D bevel links, blockquote styling)
 5. Light theme - Stats modal (inverted color scheme)
-
-Note: These tests use pytest-playwright's built-in screenshot comparison.
-To update baselines: pytest --update-snapshots
 """
-import sys
-
 import pytest
 from playwright.sync_api import Page, expect
 
@@ -30,15 +30,9 @@ from conftest import (
     open_tune_modal,
 )
 
-# Skip visual tests on non-Linux platforms to avoid cross-platform rendering differences
-# CI runs on Linux, so visual tests are reliable there
-SKIP_VISUAL_REASON = "Visual tests only run on Linux CI to avoid cross-platform rendering differences"
-
-
-@pytest.fixture
-def stable_page(page: Page):
-    """Prepare page for stable visual testing by disabling animations."""
-    yield page
+# Threshold for pixel comparison (0-1, lower = stricter)
+# 0.1 allows for minor anti-aliasing differences across platforms
+SNAPSHOT_THRESHOLD = 0.1
 
 
 def mask_dynamic_content(page: Page):
@@ -52,96 +46,116 @@ def mask_dynamic_content(page: Page):
     )
 
 
-class TestVisualRegression:
-    """Selective visual regression tests for high-risk theme/component combinations."""
+def wait_for_fonts(page: Page):
+    """Wait for web fonts to be fully loaded."""
+    page.evaluate("() => document.fonts.ready")
 
-    @pytest.mark.skipif(sys.platform != "linux", reason=SKIP_VISUAL_REASON)
-    def test_original_theme_song_card(self, page: Page, server_url):
-        """Capture Original theme song card - the default theme most users see."""
+
+@pytest.mark.visual
+class TestVisualRegression:
+    """Visual regression tests comparing screenshots against baselines.
+
+    These tests are automatically skipped when running locally. To run them,
+    use Docker: ./scripts/test-docker.sh
+    """
+
+    def test_original_theme_song_card(self, page: Page, server_url, assert_snapshot):
+        """Original theme song card - the default theme most users see."""
         page.goto(server_url)
         page.wait_for_load_state("networkidle")
+        wait_for_fonts(page)
         disable_animations(page)
         mask_dynamic_content(page)
 
-        # Get the first song card
         card = page.locator(".song-card").first
         expect(card).to_be_visible()
 
-        # Take screenshot of just the card
-        card.screenshot(path="python/tests/__snapshots__/original_song_card.png")
+        assert_snapshot(
+            card.screenshot(),
+            name="original-song-card.png",
+            threshold=SNAPSHOT_THRESHOLD,
+        )
 
-    @pytest.mark.skipif(sys.platform != "linux", reason=SKIP_VISUAL_REASON)
-    def test_muthur_theme_tune_modal(self, page: Page, server_url):
-        """Capture Muthur theme Tune modal - scanlines, glow effects, slider styling."""
+    def test_muthur_theme_tune_modal(self, page: Page, server_url, assert_snapshot):
+        """Muthur theme Tune modal - scanlines, glow effects, slider styling."""
         page.goto(f"{server_url}?theme=muthur")
         page.wait_for_load_state("networkidle")
+        wait_for_fonts(page)
         disable_animations(page)
 
-        # Open the Tune modal
         open_tune_modal(page)
         modal = page.locator("#modal-tune")
         expect(modal).to_be_visible()
 
-        # Wait for modal to fully render
+        # Wait for modal animations to settle
         page.wait_for_timeout(300)
 
-        # Take screenshot of the modal
-        modal.screenshot(path="python/tests/__snapshots__/muthur_tune_modal.png")
+        assert_snapshot(
+            modal.screenshot(),
+            name="muthur-tune-modal.png",
+            threshold=SNAPSHOT_THRESHOLD,
+        )
 
-    @pytest.mark.skipif(sys.platform != "linux", reason=SKIP_VISUAL_REASON)
-    def test_hyperneon_theme_song_card(self, page: Page, server_url):
-        """Capture Hyperneon theme song card - gradient text, neon effects."""
+    def test_hyperneon_theme_song_card(self, page: Page, server_url, assert_snapshot):
+        """Hyperneon theme song card - gradient text, neon effects."""
         page.goto(f"{server_url}?theme=hyperneon")
         page.wait_for_load_state("networkidle")
+        wait_for_fonts(page)
         disable_animations(page)
         mask_dynamic_content(page)
 
-        # Get the first song card
         card = page.locator(".song-card").first
         expect(card).to_be_visible()
 
-        # Take screenshot of just the card
-        card.screenshot(path="python/tests/__snapshots__/hyperneon_song_card.png")
+        assert_snapshot(
+            card.screenshot(),
+            name="hyperneon-song-card.png",
+            threshold=SNAPSHOT_THRESHOLD,
+        )
 
-    @pytest.mark.skipif(sys.platform != "linux", reason=SKIP_VISUAL_REASON)
-    def test_studio808_theme_reviews_modal(self, page: Page, server_url):
-        """Capture Studio 808 theme Reviews modal - 3D bevel links, blockquote styling."""
+    def test_studio808_theme_reviews_modal(self, page: Page, server_url, assert_snapshot):
+        """Studio 808 theme Reviews modal - 3D bevel links, blockquote styling."""
         page.goto(f"{server_url}?theme=studio808")
         page.wait_for_load_state("networkidle")
+        wait_for_fonts(page)
         disable_animations(page)
 
-        # Open the Reviews modal for the first song
         card = get_song_card(page, "WHERE IS MY HUSBAND!")
         open_reviews_modal(page, card)
 
         modal = page.locator("#modal-reviews")
         expect(modal).to_be_visible()
 
-        # Wait for modal to fully render
+        # Wait for modal animations to settle
         page.wait_for_timeout(300)
 
-        # Take screenshot of the modal
-        modal.screenshot(path="python/tests/__snapshots__/studio808_reviews_modal.png")
+        assert_snapshot(
+            modal.screenshot(),
+            name="studio808-reviews-modal.png",
+            threshold=SNAPSHOT_THRESHOLD,
+        )
 
-    @pytest.mark.skipif(sys.platform != "linux", reason=SKIP_VISUAL_REASON)
-    def test_light_theme_stats_modal(self, page: Page, server_url):
-        """Capture Light theme Stats modal - inverted color scheme verification."""
+    def test_light_theme_stats_modal(self, page: Page, server_url, assert_snapshot):
+        """Light theme Stats modal - inverted color scheme verification."""
         page.goto(f"{server_url}?theme=light1")
         page.wait_for_load_state("networkidle")
+        wait_for_fonts(page)
         disable_animations(page)
 
-        # Open the Stats modal for the first song
         card = get_song_card(page, "WHERE IS MY HUSBAND!")
         open_stats_modal(page, card)
 
         modal = page.locator("#modal-stats")
         expect(modal).to_be_visible()
 
-        # Wait for modal to fully render
+        # Wait for modal animations to settle
         page.wait_for_timeout(300)
 
-        # Take screenshot of the modal
-        modal.screenshot(path="python/tests/__snapshots__/light_stats_modal.png")
+        assert_snapshot(
+            modal.screenshot(),
+            name="light-stats-modal.png",
+            threshold=SNAPSHOT_THRESHOLD,
+        )
 
 
 class TestVisualSanity:
