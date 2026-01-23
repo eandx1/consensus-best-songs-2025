@@ -43,18 +43,34 @@
     <meta name="apple-mobile-web-app-title" content="Best 2025" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <!-- Preconnect hints for external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
-      rel="stylesheet"
-    />
-
+    <!-- Pico CSS - loaded synchronously to prevent FOUC -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
+    <!-- Google Fonts: Sora (default font) loaded sync to prevent FOUT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=block"
+      rel="stylesheet"
+    />
+    <!-- Theme-specific fonts loaded async (only used when switching themes) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300..800&family=Michroma&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <style>
       /*
@@ -109,6 +125,7 @@
 
       /* THEME: Original (Blue Accent) */
       [data-style="original"] {
+        --pico-font-family: "Sora", sans-serif;
         --pico-primary: #60a5fa;
         --pico-primary-background: #3b82f6;
         --pico-primary-hover: color-mix(
@@ -386,8 +403,8 @@
         --pico-primary-hover: #ff00e5;
         --pico-primary-hover-background: #ff00e5; /* Electric magenta on hover */
         --pico-primary-hover-border: #ff00e5;
-        --pico-secondary: #7a7a9a; /* Muted gray for outline buttons */
-        --pico-secondary-background: #3a3a5a;
+        --pico-secondary: #8891a4; /* Slate gray for outline buttons (matches X icon) */
+        --pico-secondary-background: #475569; /* Dark slate gray for solid buttons */
         --pico-secondary-hover: #ff00e5; /* Magenta text/border on hover */
         --pico-secondary-hover-background: #ff00e5;
         --pico-secondary-hover-border: #ff00e5;
@@ -437,8 +454,9 @@
 
       /* THEME: Light (Clean Light Mode) */
       [data-style="light1"] {
+        --pico-font-family: "Sora", sans-serif;
         --pico-primary: #7c4dff;
-        --pico-background-color: #f8f9ff;
+        --pico-background-color: #e4e7f2;
         --pico-color: #1a237e;
         --pico-muted-color: #5c6bc0;
         --pico-card-background-color: #ffffff;
@@ -496,6 +514,10 @@
         );
       }
 
+      html[data-style="light1"] body {
+        background-color: #eaebef;
+      }
+
       [data-style="light1"] article,
       [data-style="light1"] dialog article {
         box-shadow: 0 4px 12px
@@ -513,6 +535,20 @@
           transparent 94%
         );
         border-color: var(--pico-primary);
+        color: var(--pico-primary);
+      }
+
+      [data-style="light1"] button.outline.secondary:hover,
+      [data-style="light1"] button.secondary.outline:hover,
+      [data-style="light1"] #load-more:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--pico-secondary),
+          transparent 90%
+        );
+      }
+
+      [data-style="light1"] [data-sources]:hover {
         color: var(--pico-primary);
       }
 
@@ -678,6 +714,8 @@
         padding: 2rem 0;
         text-align: center;
         padding-bottom: 5rem;
+        /* Reserve space to prevent layout shift when button appears */
+        min-height: 8rem;
       }
 
       .page-controls .grid {
@@ -1501,8 +1539,10 @@
     </style>
 
     <!-- Lite YouTube -->
+    <!-- Lite YouTube: type=module is already deferred, async makes it non-blocking -->
     <script
       type="module"
+      async
       src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"
     ></script>
 

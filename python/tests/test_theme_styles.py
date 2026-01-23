@@ -23,7 +23,7 @@ THEME_EXPECTATIONS = {
         "background": "rgb(17, 24, 39)",  # Pico dark default
         "card_background": "rgb(31, 41, 55)",  # Pico dark card
         "muted_color": "rgb(148, 163, 184)",  # #94a3b8
-        "font_family_contains": "system-ui",
+        "font_family_contains": "Sora",
     },
     "muthur": {
         "data_style": "muthur",
@@ -51,6 +51,7 @@ THEME_EXPECTATIONS = {
         "background": "rgb(248, 249, 255)",  # #f8f9ff
         "text_color": "rgb(26, 35, 126)",  # #1a237e
         "card_background": "rgb(255, 255, 255)",  # #ffffff
+        "font_family_contains": "Sora",
     },
     "studio808": {
         "data_style": "808",
@@ -122,10 +123,10 @@ class TestOriginalTheme:
         assert bg == "rgb(19, 23, 31)", f"Expected dark background, got {bg}"
 
     def test_font_family(self, page: Page, server_url):
-        """Verify system font is used."""
+        """Verify Sora font is used."""
         page.goto(server_url)
         font = get_computed_style(page, "body", "font-family")
-        assert "system-ui" in font, f"Expected system-ui font, got {font}"
+        assert "Sora" in font, f"Expected Sora font, got {font}"
 
 
 class TestMuthurTheme:
@@ -261,6 +262,12 @@ class TestLightTheme:
         page.goto(f"{server_url}?theme=light1")
         bg = get_computed_style(page, ".song-card", "background-color")
         assert bg == "rgb(255, 255, 255)", f"Expected white card, got {bg}"
+
+    def test_font_family(self, page: Page, server_url):
+        """Verify Sora font is used."""
+        page.goto(f"{server_url}?theme=light1")
+        font = get_computed_style(page, "body", "font-family")
+        assert "Sora" in font, f"Expected Sora font, got {font}"
 
 
 class TestStudio808Theme:

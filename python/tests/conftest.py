@@ -5,6 +5,7 @@ This module provides:
 - Server fixtures for running the static site
 - Data fixtures for test data
 - Helper functions for common UI operations (opening modals, etc.)
+- Auto-skip for visual regression tests (use --run-visual to include them)
 """
 import json
 import os
@@ -13,6 +14,29 @@ import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import pytest
+
+
+def pytest_addoption(parser):
+    """Add custom command line options."""
+    parser.addoption(
+        "--run-visual",
+        action="store_true",
+        default=False,
+        help="Run visual regression tests (requires Docker for consistent rendering)",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    """Skip visual tests unless --run-visual is passed."""
+    if config.getoption("--run-visual"):
+        return
+
+    skip_visual = pytest.mark.skip(
+        reason="Visual tests skipped (use --run-visual or run in Docker)"
+    )
+    for item in items:
+        if "visual" in item.keywords:
+            item.add_marker(skip_visual)
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), "testdata/test_data.json")
