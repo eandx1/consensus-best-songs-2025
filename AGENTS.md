@@ -222,6 +222,7 @@ Allows users to generate a YouTube playlist URL from the current ranking:
 
 **Status display:**
 - Shows count of valid songs ready to play
+- Filter limitation note when filters reduce available songs below requested count
 - Warning message listing specific songs missing YouTube IDs (if any)
 - Success message if all requested songs are available
 
@@ -240,6 +241,7 @@ Allows users to export the current ranking as a CSV file:
 
 **Status display:**
 - Shows count of songs ready to download
+- Filter limitation note when filters reduce available songs below requested count (including when "All" is selected with active filters)
 - Warning message listing specific songs missing ISRC codes (if any)
 - Success message if all songs have ISRC codes
 
