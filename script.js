@@ -410,6 +410,9 @@ function syncStateFromURL(defaultConfig) {
     "rank_cutoff",
   ];
 
+  // Integer parameters that should be rounded after parsing from URL
+  const integerKeys = ["k_value", "cluster_threshold", "min_sources", "rank_cutoff"];
+
   rankingKeys.forEach((key) => {
     if (params.has(key)) {
       if (key === "decay_mode") {
@@ -418,9 +421,14 @@ function syncStateFromURL(defaultConfig) {
           ? mode
           : defaultConfig.ranking.decay_mode;
       } else {
-        const value = parseFloat(params.get(key));
+        let value = parseFloat(params.get(key));
         const bounds = CONFIG_BOUNDS.ranking[key];
-        config.ranking[key] = clamp(value, bounds.min, bounds.max);
+        value = clamp(value, bounds.min, bounds.max);
+        // Round integer parameters to avoid display/filter mismatch
+        if (integerKeys.includes(key)) {
+          value = Math.round(value);
+        }
+        config.ranking[key] = value;
       }
     }
   });
