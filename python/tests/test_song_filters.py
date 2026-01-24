@@ -381,3 +381,23 @@ def test_youtube_modal_no_filter_note_when_not_needed(page: Page, server_url):
 
     # Verify filter limitation note does NOT appear
     expect(youtube_modal.locator("text=(limited by your filters)")).not_to_be_visible()
+
+
+def test_download_modal_all_button_shows_filter_note(page: Page, server_url):
+    """Test that Download modal shows filter note when 'All' is selected with active filters."""
+    # Navigate with restrictive filters
+    page.goto(f"{server_url}/?min_sources=2")
+    page.wait_for_timeout(300)
+
+    # Open Download modal via hamburger menu
+    page.locator("#hamburger-btn").click()
+    page.locator("#open-download-menu").click()
+
+    # Click the "All" button
+    download_modal = page.locator("#modal-download")
+    expect(download_modal).to_be_visible()
+    page.locator("button[data-action='dl-count']:has-text('All')").click()
+    page.wait_for_timeout(200)
+
+    # Verify filter limitation note appears even with "All" selected
+    expect(download_modal.locator("text=(limited by your filters)")).to_be_visible()

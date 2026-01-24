@@ -1284,7 +1284,7 @@ function renderDownloadUI(count = 100) {
 
         <p>
             Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file${
-              songsToExport.length < count && STATE.songs.length < STATE.totalSongs
+              STATE.songs.length < STATE.totalSongs && (songsToExport.length < count || count === STATE.songs.length)
                 ? ' <span style="opacity: 0.7;">(limited by your filters)</span>'
                 : ''
             }
