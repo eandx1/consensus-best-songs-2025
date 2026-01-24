@@ -528,12 +528,14 @@ uv run pytest tests/test_ranking_logic.py
 Visual regression tests compare screenshots pixel-by-pixel against baselines. To run them locally or update baselines, use Docker:
 
 ```bash
-# Run ALL tests including visual regression (matches CI environment)
-./scripts/test-docker.sh
+# From project root, run ALL tests including visual regression (matches CI environment)
+python/scripts/test-docker.sh
 
 # Update visual baselines after intentional UI changes
-./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
+python/scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
 ```
+
+Note: The script is located at `python/scripts/test-docker.sh` (not in the project root).
 
 The Docker script uses Microsoft's official Playwright container (`mcr.microsoft.com/playwright:v1.57.0-noble`), the same image used in CI.
 
