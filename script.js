@@ -1678,12 +1678,6 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
     return;
   }
 
-  if (key === "theme") {
-    applyTheme(value);
-    debouncedReRank();
-    return;
-  }
-
   const numVal = parseFloat(value);
   const defaults = APP_DATA.config;
   let defaultVal;
