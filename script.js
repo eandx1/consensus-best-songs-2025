@@ -1195,7 +1195,11 @@ function renderYouTubeUI(count = 50, preference = "videos") {
         </fieldset>
 
         <p>
-            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube
+            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube${
+              songsToExport.length < count && STATE.songs.length < STATE.totalSongs
+                ? ' <span style="opacity: 0.7;">(limited by your filters)</span>'
+                : ''
+            }
             ${
               missingSongs.length > 0
                 ? `
@@ -1279,7 +1283,11 @@ function renderDownloadUI(count = 100) {
         </fieldset>
 
         <p>
-            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file
+            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file${
+              songsToExport.length < count && STATE.songs.length < STATE.totalSongs
+                ? ' <span style="opacity: 0.7;">(limited by your filters)</span>'
+                : ''
+            }
             ${
               songsMissingIsrc.length > 0
                 ? `

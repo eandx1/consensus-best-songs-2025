@@ -321,3 +321,63 @@ def test_eligible_counter_updates_on_filter_change(page: Page, server_url):
     # We can't guarantee the count is less without knowing exact data,
     # but we can verify the counter element exists and has content
     assert "Including" in new_text and "songs" in new_text
+
+
+def test_youtube_modal_shows_filter_limitation_note(page: Page, server_url):
+    """Test that YouTube modal shows filter limitation note when filters reduce available songs."""
+    # Navigate with restrictive filters that reduce song count
+    page.goto(f"{server_url}/?min_sources=3")
+    page.wait_for_timeout(300)
+
+    # Open YouTube modal via hamburger menu
+    page.locator("#hamburger-btn").click()
+    page.locator("#open-youtube-menu").click()
+
+    # Select Top 50 (which is more than available filtered songs)
+    youtube_modal = page.locator("#modal-youtube")
+    expect(youtube_modal).to_be_visible()
+    page.locator("button[data-action='yt-count'][data-count='50']").click()
+    page.wait_for_timeout(200)
+
+    # Verify filter limitation note appears
+    expect(youtube_modal.locator("text=(limited by your filters)")).to_be_visible()
+
+
+def test_download_modal_shows_filter_limitation_note(page: Page, server_url):
+    """Test that Download modal shows filter limitation note when filters reduce available songs."""
+    # Navigate with restrictive filters
+    page.goto(f"{server_url}/?min_sources=3")
+    page.wait_for_timeout(300)
+
+    # Open Download modal via hamburger menu
+    page.locator("#hamburger-btn").click()
+    page.locator("#open-download-menu").click()
+
+    # Select Top 100 (which is more than available filtered songs)
+    download_modal = page.locator("#modal-download")
+    expect(download_modal).to_be_visible()
+    page.locator("button[data-action='dl-count'][data-count='100']").click()
+    page.wait_for_timeout(200)
+
+    # Verify filter limitation note appears
+    expect(download_modal.locator("text=(limited by your filters)")).to_be_visible()
+
+
+def test_youtube_modal_no_filter_note_when_not_needed(page: Page, server_url):
+    """Test that YouTube modal does not show filter note when filters are not limiting results."""
+    # Navigate with default filters (no restriction)
+    page.goto(server_url)
+    page.wait_for_timeout(300)
+
+    # Open YouTube modal via hamburger menu
+    page.locator("#hamburger-btn").click()
+    page.locator("#open-youtube-menu").click()
+
+    # Select Top 10 (should be within available songs)
+    youtube_modal = page.locator("#modal-youtube")
+    expect(youtube_modal).to_be_visible()
+    page.locator("button[data-action='yt-count'][data-count='10']").click()
+    page.wait_for_timeout(200)
+
+    # Verify filter limitation note does NOT appear
+    expect(youtube_modal.locator("text=(limited by your filters)")).not_to_be_visible()
