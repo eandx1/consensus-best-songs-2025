@@ -16,7 +16,7 @@ I scraped around 28 song lists and did the following:
 - **YouTube Matching**: Looked up YouTube Music and YouTube IDs (via ytmusicapi)
 - **Quote Extraction**: Ran reviews through Claude Haiku or Sonnet to distill down to a quote per source
 
-I then developed ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
+I then developed a ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
 
 The resulting site lets you view the result of that ranking, but you can customize the knobs and share your own, instead. You can also export your personalized ranking as a YouTube playlist or download it as a CSV to import into your favorite streaming service.
 
@@ -33,7 +33,7 @@ The project is built as a lightweight, static web application with no build step
 
 ## 🛠️ Technical Choices
 
-- **Static Data**: Chosen for simplicity and ease of hosting. The entire application runs in the browser in plain Javascript with no backend or build steps
+- **Static Data**: Chosen for simplicity and ease of hosting. The entire application runs in the browser in plain JavaScript with no backend or build steps
 - **[Pico CSS](https://picocss.com/)**: A minimal, semantic-first CSS framework that provides a clean "dark mode" aesthetic. I know little of UI or frontend design, so this helped save me from myself
 - **URL State Sync**: All ranking parameters (decay rates, boosters, weights) are synchronized to the URL query string, making specific ranking configurations shareable
 - **Lite YouTube**: Uses the [lite-youtube](https://github.com/justinribeiro/lite-youtube) web component for fast video embeds
@@ -82,7 +82,7 @@ While coding in the notebook, I chatted with [Gemini 3 Pro](https://deepmind.goo
 
 - **Stale information**: Until near the end of the project, I hadn't run into a situation where it really led me astray, but then I asked it about developing a feature to let users export their top N songs to a YouTube playlist. It knew the real heavy weight solution was with OAuth and a supported Google API, but I'd thought one could create an unnamed playlist just by putting some video IDs in a URL for the user. Indeed, you can still sort of do that, but on desktop it appears YouTube has removed the button to save the playlist.
   Gemini was convinced you could click on something to do so or use a variety of other non-working URL format hacks, no matter how much evidence I gave it to the contrary. I wanted it to work, too, Gemini!
-- **Code snippets to save on generation**: I do not know Javascript or CSS well. Gemini would sometimes give me a great starting point but if I asked it to refine something, it would start giving me pieces and I'd have to ask it to regenerate the whole file for me. It'd do so, but other bits would often change in the process.
+- **Code snippets to save on generation**: I do not know JavaScript or CSS well. Gemini would sometimes give me a great starting point but if I asked it to refine something, it would start giving me pieces and I'd have to ask it to regenerate the whole file for me. It'd do so, but other bits would often change in the process.
 - **Inauthentic names**: Gemini frequently gave proper names to the ranking models we discussed. It made me think they were well-known, standard solutions. Then, later, I'd go search for a name and find it apparently wasn't real or at least not widely known.
 
 ### Cursor

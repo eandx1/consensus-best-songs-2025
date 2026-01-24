@@ -34,17 +34,17 @@ Users can adjust source weights and several ranking function parameters to dynam
 - `python/` - Testing infrastructure (Playwright + pytest)
 - `samples/` - Reference data and UI samples
 
-## index.html Structure (~1920 lines)
+## index.html Structure (~1980 lines)
 
 - `<style>` block: All CSS (themes defined via `[data-style="themename"]`)
-- Five themes: `original`, `light1`, `808`, `muthur`, `hyperneon`
+- Five themes: `original`, `light1`, `studio808`, `muthur`, `hyperneon`
 - SVG sprite: Icon symbols (`#icon-spotify`, `#icon-youtube`, `#icon-sliders`, etc.)
 - Header: Nav with title, Tune button, hamburger menu
 - Main: `#song-list` container, load more button
 - Dialogs: Six modals (`modal-tune`, `modal-stats`, `modal-reviews`, `modal-youtube`, `modal-download`, `modal-about`)
 - External: Pico CSS (CDN), lite-youtube (CDN), Google Fonts (Sora + theme fonts)
 
-## script.js Structure (~1250 lines)
+## script.js Structure (~1470 lines)
 
 - `CONFIG_BOUNDS` - Validation ranges for all slider parameters
 - `THEME_CONFIG` - Theme definitions (name, style, mode)
@@ -64,7 +64,7 @@ Users can adjust source weights and several ranking function parameters to dynam
 
 "Dark mode" style website with clean, responsive UI for both desktop and mobile.
 
-## Inspriation
+## Inspiration
 
 Think of the Pico CSS website, the IntelliJ Darcula theme, and the Solarized Dark terminal theme for color and font inspiration.
 
@@ -115,7 +115,7 @@ On Slider Change: Update the `URLSearchParams` object and use `history.replaceSt
 Six semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
 1. **Tune Ranking Modal**: Title "Tune Ranking" - for adjusting ranking parameters and source weights
-2. **Ranking Stats Modal**: Title "Ranking Stats" - shows detailed scoring breakdown for a song
+2. **Ranking Stats Modal**: Title "Ranking Details" - shows detailed scoring breakdown for a song
 3. **Reviews Modal**: Title "Reviews" - shows all source reviews with quotes and links
 4. **YouTube Modal**: Title "Listen on YouTube" - generates YouTube playlist from top songs
 5. **Download Modal**: Title "Download playlist" - exports songs as CSV for streaming service import
@@ -138,20 +138,20 @@ Modal header shows a sliders icon followed by "Tune Ranking". The icon is always
 - Rank 2 Bonus, slider, percentage range 0% to 20% in 0.5% increments, stored as multiplier (1.0-1.2), default from `data["config"]["ranking"]["rank2_bonus"]`, url parameter `rank2_bonus`
 - Rank 3 Bonus, slider, percentage range 0% to 20% in 0.5% increments, stored as multiplier (1.0-1.2), default from `data["config"]["ranking"]["rank3_bonus"]`, url parameter `rank3_bonus`
 
-When a value differs from default, the label text is highlighted indicate customization.
+When a value differs from default, the label text is highlighted to indicate customization.
 
 **Source Weights** (appears second):
 
 - One slider per source: range 0.0-1.5, step 0.01, default from each source's `weight` in `data["config"]["sources"]`
-- Display the source's `full_name` if available, otherwise use the source key name
-- When a value differs from default, the label text is highlighted indicate customization
+- Display the source key name as the slider label
+- When a value differs from default, the label text is highlighted to indicate customization
 
 **Shadow Ranks** (appears third):
 Some sources are unranked lists so use "shadow ranks" instead of real ranks.
 
 If a source has `data["config"]["sources"][source name]["type"]` of `unranked` then its `data["config"]["sources"][source name]["shadow_rank"]` will have its default shadow rank.
 
-For each such source with a shadow rank, provide its name (`full_name` from config if available) and a float slider from 1.0 through 100.0 in 0.1 increments.
+For each such source with a shadow rank, display the source key name and a float slider from 1.0 through 100.0 in 0.1 increments.
 
 The URL parameter should be lowercase source name with spaces or other non-letter characters replaced by underscores.
 
@@ -181,7 +181,7 @@ Displays all sources for a song in order (preserving source array order from dat
 
 ### Ranking Stats Modal
 
-Modal header shows "Ranking".
+Modal header shows "Ranking Details".
 
 Displays scoring details in order:
 
@@ -362,9 +362,9 @@ Generate links dynamically based on available media:
 The `lite-youtube` play button is customized via `::part(playButton)`:
 
 - Size: 68x48px (standard YouTube button size)
-- Use white on gray
-- Opacity: 0.25 default, 1.0 on hover
-- Slight scale-up on hover for feedback
+- Grayscale filter with transparent background
+- Opacity: 0.15 default on touch devices
+- On hover-capable devices: opacity 0 by default, 1.0 on hover
 
 ## Tuned Badge Indicator
 
@@ -393,9 +393,9 @@ Always use `escapeHtml()` helper function when inserting user-generated or data-
 
 ## Responsive Design
 
-- Desktop: Uses CSS Grid with 3 columns (rank, video, info)
-- Video column uses `minmax(200px, 320px)` for responsive scaling
-- Mobile: Stacked layout with flexbox
+- Mobile: Stacked column layout with flexbox
+- Desktop (768px+): Row flexbox layout with fixed widths (rank: 4rem, video: 320px, info: flex-grow)
+- Large screens (1200px+): Video column expands to 360px
 - Sources list wraps with `white-space: nowrap` on individual items
 
 ## Progressive Loading
@@ -450,8 +450,49 @@ The engine applies three specialized multipliers to the raw scores:
     - `c_mul = 1 + (consensus_boost * np.log(len(ranks)) / ln_max_list_count)`
 2.  **Provocation Boost:** Rewards "Polarization." Calculated via the standard deviation of ranks, giving a bonus to songs that critics are divided on (e.g., #1 on some lists, #80 on others) over "safe" middle-of-the-road hits.
     - `p_mul = 1 + (provocation_boost * (np.std(ranks) / 100)) if len(ranks) > 1 else 1.0`
-3.  **Diversity (Crossover) Boost:** A bonus for every additional unique **Cluster** a song reaches in its top `cluster_threshold`. This identifies "Unicorns"—tracks that appeal to Authority, Tastemakers, and Specialists simultaneously.
-    - `cl_mul = (1 + (cluster_boost * (len(top50_clusters_counts) - 1)) if len(top50_clusters_counts) > 0 else 1.0`
+3.  **Diversity (Crossover) Boost:** A bonus for every additional unique **Cluster** a song reaches within the configurable `cluster_threshold` rank. This identifies "Unicorns"—tracks that appeal to Authority, Tastemakers, and Specialists simultaneously.
+    - `cl_mul = clustersSeen.size > 0 ? 1 + cluster_boost * (clustersSeen.size - 1) : 1.0`
+
+---
+
+## ⚙️ Default Configuration Rationale
+
+The default values in `data.json.config.ranking` were chosen through empirical testing to produce rankings that balance multiple objectives:
+
+### Decay Mode Parameters
+
+| Parameter | Default | Rationale |
+|-----------|---------|-----------|
+| `decay_mode` | `"consensus"` | Consensus mode (RRF) is the default because it produces more stable rankings that favor songs with broad critical agreement. Conviction mode is available for users who want to emphasize critics' #1 picks. |
+| `k_value` | `20` | The smoothing constant K=20 was chosen because it creates a balanced decay curve: #10 is worth ~66% of #1, #25 is worth ~47%, #50 is worth ~30%. This prevents a single #1 pick from dominating while still rewarding higher ranks. K=0 would give 100% weight to #1, K=50 would flatten differences too much. |
+| `p_exponent` | `0.55` | The power law exponent P=0.55 creates a moderately steep curve in Conviction mode: #10 is worth ~28% of #1, #25 is worth ~15%, #50 is worth ~9%. This preserves the "winner-take-most" philosophy without completely ignoring lower ranks. P=1.0 would be too extreme (1/rank), P=0.3 would be too flat. |
+
+### Boost Parameters
+
+| Parameter | Default | Rationale |
+|-----------|---------|-----------|
+| `consensus_boost` | `0.03` (3%) | A modest 3% maximum boost for appearing on many lists. Higher values would over-reward songs with broad but shallow support. Set to reward songs on 10+ lists without overwhelming the base ranking. |
+| `provocation_boost` | `0.0` (0%) | Disabled by default because "polarizing" songs (high rank variance) don't necessarily indicate quality. Users can enable this to surface controversial picks. |
+| `cluster_boost` | `0.03` (3%) | A 3% boost per additional cluster rewards crossover appeal. A song appearing in Authority, Tastemaker, and Specialist clusters gets 6% boost total. This identifies "unicorns" that resonate across the music industry. |
+| `cluster_threshold` | `25` | Only ranks 1-25 count toward cluster diversity. This ensures a song must have meaningful support in a cluster (not just a #99 placement) to receive the crossover bonus. |
+
+### Podium Bonuses
+
+| Parameter | Default | Rationale |
+|-----------|---------|-----------|
+| `rank1_bonus` | `1.10` (10%) | A significant 10% multiplier for #1 picks. This rewards critics' absolute favorite songs, recognizing that a #1 ranking represents a strong curatorial statement. |
+| `rank2_bonus` | `1.075` (7.5%) | A 7.5% multiplier for #2 picks maintains a clear hierarchy while acknowledging the difficulty of the #1 choice. The 2.5% gap from #1 is meaningful but not overwhelming. |
+| `rank3_bonus` | `1.025` (2.5%) | A modest 2.5% multiplier for #3 picks completes the "podium effect" while ensuring the bonus curve doesn't extend too far down the list. |
+
+### Design Principles
+
+1. **Conservative Defaults**: All boosts are modest (0-10%) to preserve the core ranking signal from the decay functions.
+
+2. **Transparency**: Every parameter is exposed in the Tune modal, so users can see exactly how rankings are calculated and adjust them to their preferences.
+
+3. **Balance Over Optimization**: The defaults prioritize producing intuitively reasonable rankings over maximizing any single metric. A song that appears on many lists with solid (not spectacular) ranks should compete with a song that has fewer, higher ranks.
+
+4. **Reproducibility**: All parameters are persisted in the URL, making every ranking configuration shareable and reproducible.
 
 # Testing
 
@@ -487,12 +528,14 @@ uv run pytest tests/test_ranking_logic.py
 Visual regression tests compare screenshots pixel-by-pixel against baselines. To run them locally or update baselines, use Docker:
 
 ```bash
-# Run ALL tests including visual regression (matches CI environment)
-./scripts/test-docker.sh
+# From project root, run ALL tests including visual regression (matches CI environment)
+python/scripts/test-docker.sh
 
 # Update visual baselines after intentional UI changes
-./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
+python/scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
 ```
+
+Note: The script is located at `python/scripts/test-docker.sh` (not in the project root).
 
 The Docker script uses Microsoft's official Playwright container (`mcr.microsoft.com/playwright:v1.57.0-noble`), the same image used in CI.
 
