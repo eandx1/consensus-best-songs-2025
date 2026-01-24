@@ -630,6 +630,12 @@ async function init() {
     }
   });
 
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('[data-action="refresh-page"]')) {
+      location.reload();
+    }
+  });
+
   // Event delegation for song list actions (stats, reviews)
   UI.songList.addEventListener("click", (e) => {
     const actionEl = e.target.closest("[data-action]");
@@ -867,7 +873,7 @@ function renderErrorState(title, message) {
         </svg>
         <h3 style="margin-bottom: 0.5rem;">${escapeHtml(title)}</h3>
         <p style="color: var(--pico-muted-color);">${escapeHtml(message)}</p>
-        <button onclick="location.reload()" style="margin-top: 1rem;">
+        <button data-action="refresh-page" style="margin-top: 1rem;">
           Refresh Page
         </button>
       </article>

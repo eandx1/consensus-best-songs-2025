@@ -1477,6 +1477,18 @@
         border-color: var(--pico-primary);
       }
 
+      /* Override Pico button styles when role="button" is used for accessibility */
+      article.mode-card[role="button"] {
+        background-color: var(--pico-card-background-color);
+        border: 2px solid var(--pico-muted-border-color);
+        padding: var(--pico-spacing);
+      }
+
+      article.mode-card[role="button"]:active {
+        transform: scale(1.02);
+        filter: none;
+      }
+
       .column-list {
         column-count: 1;
       }
