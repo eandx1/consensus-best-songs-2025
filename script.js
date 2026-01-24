@@ -1259,12 +1259,12 @@ function renderSettingsUI() {
     <hgroup><h4>Ranking Parameters</h4></hgroup>
     <label>Decay Mode</label>
     <div class="grid" style="margin-bottom: 2rem;">
-      <article class="mode-card ${isConsensus ? "active" : ""}" data-action="set-decay-mode" data-mode="consensus" tabindex="0" role="button">
+      <article class="mode-card ${isConsensus ? "active" : ""}" data-action="set-decay-mode" data-mode="consensus" tabindex="0">
         <header><strong>🤝 Consensus</strong></header>
         <div class="formula-container"><math-formula type="consensus"></math-formula></div>
         <p style="margin-bottom: 0;"><small style="color: var(--pico-muted-color);">Rewards cultural record. Favors songs on more lists.</small></p>
       </article>
-      <article class="mode-card ${!isConsensus ? "active" : ""}" data-action="set-decay-mode" data-mode="conviction" tabindex="0" role="button">
+      <article class="mode-card ${!isConsensus ? "active" : ""}" data-action="set-decay-mode" data-mode="conviction" tabindex="0">
         <header><strong>🔥 Conviction</strong></header>
         <div class="formula-container"><math-formula type="conviction"></math-formula></div>
         <p style="margin-bottom: 0;"><small style="color: var(--pico-muted-color);">Rewards obsession. Top ranks carry massive weight.</small></p>
