@@ -924,7 +924,7 @@ function renderEmptyFilterState() {
   }
 
   const filterList = filterInfo.length > 0
-    ? `<ul style="list-style: none; padding: 0; margin: 1rem 0;">${filterInfo.map(f => `<li style="margin-bottom: 0.25rem;"><kbd>${f}</kbd></li>`).join("")}</ul>`
+    ? `<ul style="list-style: none; padding: 0; margin: 1rem 0;">${filterInfo.map(f => `<li style="list-style: none; margin-bottom: 0.25rem;"><kbd>${f}</kbd></li>`).join("")}</ul>`
     : "";
 
   if (UI.songList) {
