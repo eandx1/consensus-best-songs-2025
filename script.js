@@ -585,9 +585,6 @@ async function init() {
   );
   APP_DATA.lnMaxListCount = maxListCount > 1 ? Math.log(maxListCount) : 0;
 
-  // Validate source names in songs match config
-  validateSourceNames(APP_DATA.songs, APP_DATA.config.sources);
-
   STATE.config = syncStateFromURL(APP_DATA.config);
   render();
 
@@ -832,33 +829,6 @@ const debouncedReRank = debounce(() => {
   updateURL(STATE.config);
   render();
 }, 250);
-
-/**
- * Validate that all source names in songs match the config.
- * Logs warnings for any mismatches to help identify data issues.
- */
-function validateSourceNames(songs, sourcesConfig) {
-  const validSources = new Set(Object.keys(sourcesConfig));
-  const invalidSources = new Map();
-
-  songs.forEach((song) => {
-    song.sources.forEach((src) => {
-      if (!validSources.has(src.name)) {
-        if (!invalidSources.has(src.name)) {
-          invalidSources.set(src.name, []);
-        }
-        invalidSources.get(src.name).push(`${song.artist} - ${song.name}`);
-      }
-    });
-  });
-
-  if (invalidSources.size > 0) {
-    console.warn(
-      "Data validation warning: Found songs referencing unknown sources:",
-      Object.fromEntries(invalidSources)
-    );
-  }
-}
 
 /**
  * Display an error state in the song list area.
