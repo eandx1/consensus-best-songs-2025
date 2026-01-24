@@ -318,15 +318,16 @@ const RankingEngine = {
       };
     });
 
-    // Filter songs by min_sources and exclude songs with no qualifying contributions
-    // (e.g., when rank_cutoff filters out all of a song's sources)
+    // Filter songs by min_sources (original list count) and exclude songs with
+    // no qualifying contributions (when rank_cutoff filters out all sources)
     const eligibleSongs = rankedSongs.filter((song) => {
-      // If rank_cutoff is active and all sources were filtered, exclude the song
-      if (rankCutoff > 0 && song.stats.listCount === 0) {
+      // Apply min_sources filter using original list_count from data
+      // (how many lists the song appears on, independent of rank_cutoff)
+      if (song.list_count < minSources) {
         return false;
       }
-      // Apply min_sources filter (min value is 1, so always check)
-      if (song.stats.listCount < minSources) {
+      // Exclude songs with 0 qualifying contributions when rank_cutoff is active
+      if (rankCutoff > 0 && song.stats.listCount === 0) {
         return false;
       }
       return true;

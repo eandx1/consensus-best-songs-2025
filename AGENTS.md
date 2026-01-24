@@ -162,6 +162,13 @@ Control which songs appear in the ranking based on their source data.
 - Minimum Source Count, slider, integer range 1-10 in 1 increments, default 1, url parameter `min_sources`. Only include songs that appear on at least this many lists.
 - Rank Cutoff, slider, integer range 0-100 in 1 increments, default 0 (meaning no cutoff), url parameter `rank_cutoff`. Ignore contributions from ranks worse than this cutoff. When set to 0, displays "Any".
 
+**Filter Independence:** The two filters operate independently:
+- `min_sources` checks the *original* number of lists a song appears on (not affected by rank_cutoff)
+- `rank_cutoff` filters which source contributions count toward a song's score
+- Songs with 0 qualifying contributions after rank_cutoff filtering are excluded (they would have no score)
+
+Example: A song on 5 lists with only 1 rank ≤ cutoff will pass `min_sources=3` (because it appears on 5 lists) and remain visible (because it has 1 qualifying contribution).
+
 When filters exclude all songs, an empty state is shown with a button to adjust filters.
 
 UI behaviors:

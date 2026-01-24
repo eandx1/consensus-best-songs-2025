@@ -134,7 +134,10 @@ def test_combined_filters(page: Page, server_url):
 def test_empty_state_shown_with_extreme_filters(page: Page, server_url):
     """Test that empty state is shown when all songs are filtered out."""
     # Set very restrictive filters that exclude all songs
-    page.goto(f"{server_url}/?min_sources=5&rank_cutoff=1")
+    # With Option C: min_sources=10 requires songs on 10+ lists (only RAYE qualifies)
+    # rank_cutoff=1 requires a #1 ranking (RAYE's lowest is #3)
+    # Result: no songs pass both criteria
+    page.goto(f"{server_url}/?min_sources=10&rank_cutoff=1")
     page.wait_for_timeout(300)
 
     # Check for empty state
@@ -147,7 +150,7 @@ def test_empty_state_shown_with_extreme_filters(page: Page, server_url):
 
 def test_adjust_filters_button_opens_tune_modal(page: Page, server_url):
     """Test that 'Adjust Filters' button in empty state opens Tune modal."""
-    page.goto(f"{server_url}/?min_sources=5&rank_cutoff=1")
+    page.goto(f"{server_url}/?min_sources=10&rank_cutoff=1")
     page.wait_for_timeout(300)
 
     # Click Adjust Filters button
@@ -162,7 +165,7 @@ def test_adjust_filters_button_opens_tune_modal(page: Page, server_url):
 
 def test_youtube_modal_warning_when_no_songs(page: Page, server_url):
     """Test that YouTube modal shows warning when no songs available."""
-    page.goto(f"{server_url}/?min_sources=5&rank_cutoff=1")
+    page.goto(f"{server_url}/?min_sources=10&rank_cutoff=1")
     page.wait_for_timeout(300)
 
     # Open YouTube modal via hamburger menu
@@ -177,7 +180,7 @@ def test_youtube_modal_warning_when_no_songs(page: Page, server_url):
 
 def test_download_modal_warning_when_no_songs(page: Page, server_url):
     """Test that Download modal shows warning when no songs available."""
-    page.goto(f"{server_url}/?min_sources=5&rank_cutoff=1")
+    page.goto(f"{server_url}/?min_sources=10&rank_cutoff=1")
     page.wait_for_timeout(300)
 
     # Open Download modal via hamburger menu
@@ -401,3 +404,62 @@ def test_download_modal_all_button_shows_filter_note(page: Page, server_url):
 
     # Verify filter limitation note appears even with "All" selected
     expect(download_modal.locator("text=(limited by your filters)")).to_be_visible()
+
+
+def test_min_sources_uses_original_list_count(page: Page, server_url):
+    """Test that min_sources uses original list_count, not post-filter count (Option C behavior).
+
+    This tests that the two filters are independent:
+    - min_sources: checks how many lists a song appears on (original count)
+    - rank_cutoff: filters which contributions count toward score
+
+    A song with 3 sources where only 1 is within rank_cutoff should still pass
+    min_sources=3 because it appears on 3 lists originally.
+    """
+    # Test data has "2hollis - flash" with:
+    # - list_count=3 (appears on 3 lists)
+    # - ranks: 7 (Dazed), 45 (Complex), 90 (Pitchfork)
+    # With rank_cutoff=10, only rank 7 qualifies (1 contribution)
+    # With min_sources=3, the song should PASS because list_count=3 >= 3
+
+    # First verify the song exists without filters
+    page.goto(server_url)
+    page.wait_for_timeout(300)
+    flash_card = page.locator(".song-card", has_text="flash")
+    expect(flash_card.first).to_be_visible()
+
+    # Now apply both filters: min_sources=3, rank_cutoff=10
+    # Under old (dependent) behavior: post-filter count = 1 < 3, would be filtered out
+    # Under Option C (independent): list_count=3 >= 3, passes; 1 qualifying contribution > 0, passes
+    page.goto(f"{server_url}/?min_sources=3&rank_cutoff=10")
+    page.wait_for_timeout(300)
+
+    # The song should still be visible under Option C
+    flash_card = page.locator(".song-card", has_text="flash")
+    expect(flash_card.first).to_be_visible()
+
+
+def test_song_excluded_when_all_contributions_filtered(page: Page, server_url):
+    """Test that songs are excluded when rank_cutoff filters ALL their contributions.
+
+    Even with Option C, a song with 0 qualifying contributions should be excluded
+    because it would have no score.
+    """
+    # Test data has "Freddie Gibbs - It's Your Anniversary" with:
+    # - list_count=1 (appears on 1 list)
+    # - rank: 40 (FADER)
+    # With rank_cutoff=10, this song has 0 qualifying contributions
+
+    # Verify the song exists without filters
+    page.goto(server_url)
+    page.wait_for_timeout(300)
+    gibbs_card = page.locator(".song-card", has_text="Anniversary")
+    expect(gibbs_card.first).to_be_visible()
+
+    # Apply rank_cutoff=10 which should filter out the only contribution
+    page.goto(f"{server_url}/?rank_cutoff=10")
+    page.wait_for_timeout(300)
+
+    # The song should be excluded (0 qualifying contributions)
+    gibbs_card = page.locator(".song-card", has_text="Anniversary")
+    expect(gibbs_card).to_have_count(0)
