@@ -506,6 +506,12 @@ function render() {
   STATE.totalSongs = APP_DATA.songs.length;
   STATE.songs = RankingEngine.compute(APP_DATA.songs, STATE.config);
 
+  // Update eligible songs counter in Tune modal if it exists
+  const counter = document.getElementById("eligible-songs-counter");
+  if (counter) {
+    counter.innerHTML = `Including <strong>${STATE.songs.length}</strong> of <strong>${STATE.totalSongs}</strong> songs`;
+  }
+
   // Handle empty state when filters exclude all songs
   if (STATE.songs.length === 0) {
     renderEmptyFilterState();
@@ -916,7 +922,7 @@ function renderEmptyFilterState() {
   const rankCutoff = STATE.config.ranking.rank_cutoff;
 
   let filterInfo = [];
-  if (minSources > 0) {
+  if (minSources > 1) {
     filterInfo.push(`Minimum Source Count: ${minSources}`);
   }
   if (rankCutoff > 0) {
@@ -1715,16 +1721,6 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
       "customized-label",
       Math.abs(numVal - defaultVal) > 0.0001,
     );
-  }
-
-  // Update eligible songs counter when filter values change
-  if (key === "min_sources" || key === "rank_cutoff") {
-    setTimeout(() => {
-      const counter = document.getElementById("eligible-songs-counter");
-      if (counter) {
-        counter.innerHTML = `Including <strong>${STATE.songs.length}</strong> of <strong>${STATE.totalSongs}</strong> songs`;
-      }
-    }, 300);
   }
 
   if (key === "k_value" || key === "p_exponent") {
