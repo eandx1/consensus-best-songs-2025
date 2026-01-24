@@ -57,8 +57,8 @@ def test_tune_modal_top_button(page: Page, server_url):
     # Scroll to bottom of modal
     page.evaluate("document.querySelector('#modal-tune article').scrollTop = document.querySelector('#modal-tune article').scrollHeight")
     
-    # Click Top button
-    top_button = modal.get_by_role("button", name="Top")
+    # Click Back to top button
+    top_button = modal.get_by_role("button", name="Back to top")
     expect(top_button).to_be_visible()
     top_button.click()
 

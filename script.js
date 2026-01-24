@@ -535,9 +535,9 @@ function render() {
                   <h4>${escapeHtml(song.artist)}</h4>
                   ${genresHtml}
                 </hgroup>
-                <a href="#" onclick="showStats(${idx}); return false;" aria-label="View ranking details">ⓘ</a>
+                <a href="#" data-action="show-stats" data-index="${idx}" aria-label="View ranking details">ⓘ</a>
               </header>
-              <div data-sources onclick="showReviews(${idx})" onkeydown="if(event.key === 'Enter') showReviews(${idx})" tabindex="0" aria-label="See reviews for ${escapeHtml(song.name)}" title="Click to see reviews">
+              <div data-sources data-action="show-reviews" data-index="${idx}" tabindex="0" aria-label="See reviews for ${escapeHtml(song.name)}" title="Click to see reviews">
                 <small>${sourcesHtml}</small>
               </div>
               ${linksHtml}
@@ -572,12 +572,21 @@ function updateLoadMoreButton() {
 
 async function init() {
   APP_DATA = await APP_DATA_PROMISE;
-  if (!APP_DATA) return;
+  if (!APP_DATA) {
+    renderErrorState(
+      "Unable to load song data",
+      "Please refresh the page or try again later."
+    );
+    return;
+  }
 
   const maxListCount = Math.max(
     ...APP_DATA.songs.map((s) => s.list_count || 0),
   );
   APP_DATA.lnMaxListCount = maxListCount > 1 ? Math.log(maxListCount) : 0;
+
+  // Validate source names in songs match config
+  validateSourceNames(APP_DATA.songs, APP_DATA.config.sources);
 
   STATE.config = syncStateFromURL(APP_DATA.config);
   render();
@@ -620,6 +629,101 @@ async function init() {
       if (dialog) dialog.close();
     }
   });
+
+  // Event delegation for song list actions (stats, reviews)
+  UI.songList.addEventListener("click", (e) => {
+    const actionEl = e.target.closest("[data-action]");
+    if (!actionEl) return;
+
+    const action = actionEl.dataset.action;
+    const idx = parseInt(actionEl.dataset.index, 10);
+
+    if (action === "show-stats") {
+      e.preventDefault();
+      showStats(idx);
+    } else if (action === "show-reviews") {
+      showReviews(idx);
+    }
+  });
+
+  UI.songList.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const actionEl = e.target.closest("[data-action='show-reviews']");
+    if (actionEl) {
+      const idx = parseInt(actionEl.dataset.index, 10);
+      showReviews(idx);
+    }
+  });
+
+  // Event delegation for YouTube modal actions
+  const youtubeModal = document.getElementById("modal-youtube");
+  if (youtubeModal) {
+    youtubeModal.addEventListener("click", (e) => {
+      const actionEl = e.target.closest("[data-action]");
+      if (!actionEl) return;
+
+      const action = actionEl.dataset.action;
+      if (action === "yt-preference" || action === "yt-count") {
+        const count = parseInt(actionEl.dataset.count, 10);
+        const preference = actionEl.dataset.preference;
+        renderYouTubeUI(count, preference);
+      }
+    });
+  }
+
+  // Event delegation for Download modal actions
+  const downloadModal = document.getElementById("modal-download");
+  if (downloadModal) {
+    downloadModal.addEventListener("click", (e) => {
+      const actionEl = e.target.closest("[data-action]");
+      if (!actionEl) return;
+
+      const action = actionEl.dataset.action;
+      if (action === "dl-count") {
+        const count = parseInt(actionEl.dataset.count, 10);
+        renderDownloadUI(count);
+      } else if (action === "download-csv") {
+        e.preventDefault();
+        const count = parseInt(actionEl.dataset.count, 10);
+        downloadCSV(count);
+      }
+    });
+  }
+
+  // Event delegation for Tune modal actions (mode cards and sliders)
+  const tuneModal = document.getElementById("modal-tune");
+  if (tuneModal) {
+    tuneModal.addEventListener("click", (e) => {
+      const modeCard = e.target.closest("[data-action='set-decay-mode']");
+      if (modeCard) {
+        const mode = modeCard.dataset.mode;
+        updateSetting("ranking", "decay_mode", mode);
+      }
+    });
+
+    tuneModal.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const modeCard = e.target.closest("[data-action='set-decay-mode']");
+      if (modeCard) {
+        e.preventDefault();
+        const mode = modeCard.dataset.mode;
+        updateSetting("ranking", "decay_mode", mode);
+      }
+    });
+
+    tuneModal.addEventListener("input", (e) => {
+      const slider = e.target.closest("[data-action='update-setting']");
+      if (!slider) return;
+
+      const category = slider.dataset.category;
+      const key = slider.dataset.key;
+      const idBase = slider.dataset.idBase;
+      const isPercent = slider.dataset.isPercent === "true";
+      const isBonus = slider.dataset.isBonus === "true";
+
+      updateSetting(category, key, slider.value, idBase, isPercent, isBonus);
+    });
+  }
 
   document.addEventListener("click", (e) => {
     const trigger = e.target.closest(".btt-trigger");
@@ -722,6 +826,57 @@ const debouncedReRank = debounce(() => {
   updateURL(STATE.config);
   render();
 }, 250);
+
+/**
+ * Validate that all source names in songs match the config.
+ * Logs warnings for any mismatches to help identify data issues.
+ */
+function validateSourceNames(songs, sourcesConfig) {
+  const validSources = new Set(Object.keys(sourcesConfig));
+  const invalidSources = new Map();
+
+  songs.forEach((song) => {
+    song.sources.forEach((src) => {
+      if (!validSources.has(src.name)) {
+        if (!invalidSources.has(src.name)) {
+          invalidSources.set(src.name, []);
+        }
+        invalidSources.get(src.name).push(`${song.artist} - ${song.name}`);
+      }
+    });
+  });
+
+  if (invalidSources.size > 0) {
+    console.warn(
+      "Data validation warning: Found songs referencing unknown sources:",
+      Object.fromEntries(invalidSources)
+    );
+  }
+}
+
+/**
+ * Display an error state in the song list area.
+ * Used when data fails to load or other critical errors occur.
+ */
+function renderErrorState(title, message) {
+  if (UI.songList) {
+    UI.songList.innerHTML = `
+      <article class="error-state" style="text-align: center; padding: 3rem 1rem;">
+        <svg style="width: 4rem; height: 4rem; opacity: 0.5; margin-bottom: 1rem;">
+          <use href="#icon-disc"></use>
+        </svg>
+        <h3 style="margin-bottom: 0.5rem;">${escapeHtml(title)}</h3>
+        <p style="color: var(--pico-muted-color);">${escapeHtml(message)}</p>
+        <button onclick="location.reload()" style="margin-top: 1rem;">
+          Refresh Page
+        </button>
+      </article>
+    `;
+  }
+  if (UI.loadMoreBtn) {
+    UI.loadMoreBtn.style.display = "none";
+  }
+}
 
 function populateSourcesTables() {
   if (!APP_DATA?.config?.sources) return;
@@ -933,17 +1088,17 @@ function renderYouTubeUI(count = 50, preference = "videos") {
         <fieldset>
             <legend>Media preference</legend>
             <div class="chip-group">
-                <button class="${getBtnClass(preference === "videos")}" onclick="renderYouTubeUI(${count}, 'videos')">Music Videos</button>
-                <button class="${getBtnClass(preference === "audio")}" onclick="renderYouTubeUI(${count}, 'audio')">Audio Only</button>
+                <button class="${getBtnClass(preference === "videos")}" data-action="yt-preference" data-preference="videos" data-count="${count}">Music Videos</button>
+                <button class="${getBtnClass(preference === "audio")}" data-action="yt-preference" data-preference="audio" data-count="${count}">Audio Only</button>
             </div>
         </fieldset>
 
         <fieldset>
             <legend>Songs to include</legend>
             <div class="chip-group">
-                <button class="${getBtnClass(count === 10)}" onclick="renderYouTubeUI(10, '${preference}')">Top 10</button>
-                <button class="${getBtnClass(count === 25)}" onclick="renderYouTubeUI(25, '${preference}')">Top 25</button>
-                <button class="${getBtnClass(count === 50)}" onclick="renderYouTubeUI(50, '${preference}')">Top 50</button>
+                <button class="${getBtnClass(count === 10)}" data-action="yt-count" data-count="10" data-preference="${preference}">Top 10</button>
+                <button class="${getBtnClass(count === 25)}" data-action="yt-count" data-count="25" data-preference="${preference}">Top 25</button>
+                <button class="${getBtnClass(count === 50)}" data-action="yt-count" data-count="50" data-preference="${preference}">Top 50</button>
             </div>
         </fieldset>
 
@@ -1003,11 +1158,11 @@ function renderDownloadUI(count = 100) {
         <fieldset>
             <legend>Songs to include</legend>
             <div class="chip-group">
-                <button class="${getBtnClass(count === 25)}" onclick="renderDownloadUI(25)">Top 25</button>
-                <button class="${getBtnClass(count === 100)}" onclick="renderDownloadUI(100)">Top 100</button>
-                <button class="${getBtnClass(count === 200)}" onclick="renderDownloadUI(200)">Top 200</button>
-                <button class="${getBtnClass(count === 500)}" onclick="renderDownloadUI(500)">Top 500</button>
-                <button class="${getBtnClass(count === totalSongs)}" onclick="renderDownloadUI(${totalSongs})">All</button>
+                <button class="${getBtnClass(count === 25)}" data-action="dl-count" data-count="25">Top 25</button>
+                <button class="${getBtnClass(count === 100)}" data-action="dl-count" data-count="100">Top 100</button>
+                <button class="${getBtnClass(count === 200)}" data-action="dl-count" data-count="200">Top 200</button>
+                <button class="${getBtnClass(count === 500)}" data-action="dl-count" data-count="500">Top 500</button>
+                <button class="${getBtnClass(count === totalSongs)}" data-action="dl-count" data-count="${totalSongs}">All</button>
             </div>
         </fieldset>
 
@@ -1041,11 +1196,11 @@ function renderDownloadUI(count = 100) {
             <a href="https://soundiiz.com/transfer-playlist-and-favorites" role="button" class="outline" target="_blank">Import via Soundiiz</a>
             <a href="https://www.tunemymusic.com/transfer" role="button" class="outline" target="_blank">Import via TuneMyMusic</a>
           </div>
-          <button onclick="downloadCSV(${count}); return false;">Download Again</button>
+          <button data-action="download-csv" data-count="${count}">Download Again</button>
           <button class="secondary close-modal">Close</button>`;
       } else {
         footer.innerHTML = `
-          <button onclick="downloadCSV(${count}); return false;">Download CSV</button>
+          <button data-action="download-csv" data-count="${count}">Download CSV</button>
           <button class="secondary close-modal">Close</button>`;
       }
     }
@@ -1128,12 +1283,12 @@ function renderSettingsUI() {
     <hgroup><h4>Ranking Parameters</h4></hgroup>
     <label>Decay Mode</label>
     <div class="grid" style="margin-bottom: 2rem;">
-      <article class="mode-card ${isConsensus ? "active" : ""}" onclick="updateSetting('ranking', 'decay_mode', 'consensus')">
+      <article class="mode-card ${isConsensus ? "active" : ""}" data-action="set-decay-mode" data-mode="consensus" tabindex="0" role="button">
         <header><strong>🤝 Consensus</strong></header>
         <div class="formula-container"><math-formula type="consensus"></math-formula></div>
         <p style="margin-bottom: 0;"><small style="color: var(--pico-muted-color);">Rewards cultural record. Favors songs on more lists.</small></p>
       </article>
-      <article class="mode-card ${!isConsensus ? "active" : ""}" onclick="updateSetting('ranking', 'decay_mode', 'conviction')">
+      <article class="mode-card ${!isConsensus ? "active" : ""}" data-action="set-decay-mode" data-mode="conviction" tabindex="0" role="button">
         <header><strong>🔥 Conviction</strong></header>
         <div class="formula-container"><math-formula type="conviction"></math-formula></div>
         <p style="margin-bottom: 0;"><small style="color: var(--pico-muted-color);">Rewards obsession. Top ranks carry massive weight.</small></p>
@@ -1192,7 +1347,7 @@ function renderSettingsUI() {
       <label id="label-${idBase}" class="${isModified ? "customized-label" : ""}" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0;">
         <span>${label}${sublabel ? `<small style="opacity: 0.6; font-size: 0.85em; margin-left: 0.25rem;">${sublabel}</small>` : ""}</span>
         <kbd id="val-${idBase}" style="font-size: 0.8rem; min-width: ${minWidth}; text-align: center;">${displayVal}</kbd>
-        <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" style="width: 100%; margin-bottom: 0.25rem;" oninput="updateSetting('${category}', '${key}', this.value, '${idBase}', ${isPercent}, ${isBonus})">
+        <input type="range" id="${idBase}" min="${min}" max="${max}" step="${step}" value="${currentVal}" style="width: 100%; margin-bottom: 0.25rem;" data-action="update-setting" data-category="${category}" data-key="${key}" data-id-base="${idBase}" data-is-percent="${isPercent}" data-is-bonus="${isBonus}">
       </label>
       ${helperText ? `<p id="helper-text-${key}" style="color: var(--pico-muted-color); font-size: 0.85em; margin-bottom: 0;">${helperText}</p>` : ""}
     </div>`;

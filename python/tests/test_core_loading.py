@@ -1,5 +1,7 @@
 import re
 from playwright.sync_api import Page, expect
+import pytest
+
 
 def test_page_loads(page: Page, server_url):
     """Test that the page loads and the title is correct."""
@@ -156,4 +158,32 @@ def test_floating_action_button_back_to_top(page: Page, server_url):
 
     # FAB should no longer be visible (scrollY < 800)
     expect(fab).not_to_have_class(re.compile("visible"))
+
+
+def test_error_state_on_data_load_failure(page: Page, server_url):
+    """Test that error state is displayed when data.json fails to load."""
+    # Override the default mock to return a 500 error
+    page.unroute("**/data.json")
+    page.route("**/data.json", lambda route: route.fulfill(status=500, body="Server Error"))
+
+    page.goto(server_url)
+
+    # Wait for error state to render
+    error_state = page.locator(".error-state")
+    expect(error_state).to_be_visible()
+
+    # Check error message content
+    expect(error_state.locator("h3")).to_contain_text("Unable to load song data")
+    expect(error_state.locator("p")).to_contain_text("refresh")
+
+    # Refresh button should be present
+    refresh_btn = error_state.locator("button")
+    expect(refresh_btn).to_be_visible()
+    expect(refresh_btn).to_contain_text("Refresh")
+
+    # Load More button should be hidden
+    expect(page.locator("#load-more")).to_be_hidden()
+
+    # No song cards should be displayed
+    expect(page.locator(".song-card")).to_have_count(0)
 
