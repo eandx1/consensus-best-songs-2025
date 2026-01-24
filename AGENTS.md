@@ -453,6 +453,47 @@ The engine applies three specialized multipliers to the raw scores:
 3.  **Diversity (Crossover) Boost:** A bonus for every additional unique **Cluster** a song reaches within the configurable `cluster_threshold` rank. This identifies "Unicorns"—tracks that appeal to Authority, Tastemakers, and Specialists simultaneously.
     - `cl_mul = clustersSeen.size > 0 ? 1 + cluster_boost * (clustersSeen.size - 1) : 1.0`
 
+---
+
+## ⚙️ Default Configuration Rationale
+
+The default values in `data.json.config.ranking` were chosen through empirical testing to produce rankings that balance multiple objectives:
+
+### Decay Mode Parameters
+
+| Parameter | Default | Rationale |
+|-----------|---------|-----------|
+| `decay_mode` | `"consensus"` | Consensus mode (RRF) is the default because it produces more stable rankings that favor songs with broad critical agreement. Conviction mode is available for users who want to emphasize critics' #1 picks. |
+| `k_value` | `20` | The smoothing constant K=20 was chosen because it creates a balanced decay curve: #10 is worth ~66% of #1, #25 is worth ~47%, #50 is worth ~30%. This prevents a single #1 pick from dominating while still rewarding higher ranks. K=0 would give 100% weight to #1, K=50 would flatten differences too much. |
+| `p_exponent` | `0.55` | The power law exponent P=0.55 creates a moderately steep curve in Conviction mode: #10 is worth ~28% of #1, #25 is worth ~15%, #50 is worth ~9%. This preserves the "winner-take-most" philosophy without completely ignoring lower ranks. P=1.0 would be too extreme (1/rank), P=0.3 would be too flat. |
+
+### Boost Parameters
+
+| Parameter | Default | Rationale |
+|-----------|---------|-----------|
+| `consensus_boost` | `0.03` (3%) | A modest 3% maximum boost for appearing on many lists. Higher values would over-reward songs with broad but shallow support. Set to reward songs on 10+ lists without overwhelming the base ranking. |
+| `provocation_boost` | `0.0` (0%) | Disabled by default because "polarizing" songs (high rank variance) don't necessarily indicate quality. Users can enable this to surface controversial picks. |
+| `cluster_boost` | `0.03` (3%) | A 3% boost per additional cluster rewards crossover appeal. A song appearing in Authority, Tastemaker, and Specialist clusters gets 6% boost total. This identifies "unicorns" that resonate across the music industry. |
+| `cluster_threshold` | `25` | Only ranks 1-25 count toward cluster diversity. This ensures a song must have meaningful support in a cluster (not just a #99 placement) to receive the crossover bonus. |
+
+### Podium Bonuses
+
+| Parameter | Default | Rationale |
+|-----------|---------|-----------|
+| `rank1_bonus` | `1.10` (10%) | A significant 10% multiplier for #1 picks. This rewards critics' absolute favorite songs, recognizing that a #1 ranking represents a strong curatorial statement. |
+| `rank2_bonus` | `1.075` (7.5%) | A 7.5% multiplier for #2 picks maintains a clear hierarchy while acknowledging the difficulty of the #1 choice. The 2.5% gap from #1 is meaningful but not overwhelming. |
+| `rank3_bonus` | `1.025` (2.5%) | A modest 2.5% multiplier for #3 picks completes the "podium effect" while ensuring the bonus curve doesn't extend too far down the list. |
+
+### Design Principles
+
+1. **Conservative Defaults**: All boosts are modest (0-10%) to preserve the core ranking signal from the decay functions.
+
+2. **Transparency**: Every parameter is exposed in the Tune modal, so users can see exactly how rankings are calculated and adjust them to their preferences.
+
+3. **Balance Over Optimization**: The defaults prioritize producing intuitively reasonable rankings over maximizing any single metric. A song that appears on many lists with solid (not spectacular) ranks should compete with a song that has fewer, higher ranks.
+
+4. **Reproducibility**: All parameters are persisted in the URL, making every ranking configuration shareable and reproducible.
+
 # Testing
 
 We use [Playwright](https://playwright.dev/python/) with `pytest` for end-to-end testing of the application. This ensures that the UI renders correctly, the ranking logic behaves as expected, and user interactions (like adjusting sliders) properly update the URL state.
@@ -487,12 +528,14 @@ uv run pytest tests/test_ranking_logic.py
 Visual regression tests compare screenshots pixel-by-pixel against baselines. To run them locally or update baselines, use Docker:
 
 ```bash
-# Run ALL tests including visual regression (matches CI environment)
-./scripts/test-docker.sh
+# From project root, run ALL tests including visual regression (matches CI environment)
+python/scripts/test-docker.sh
 
 # Update visual baselines after intentional UI changes
-./scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
+python/scripts/test-docker.sh tests/test_theme_visual.py --update-snapshots
 ```
+
+Note: The script is located at `python/scripts/test-docker.sh` (not in the project root).
 
 The Docker script uses Microsoft's official Playwright container (`mcr.microsoft.com/playwright:v1.57.0-noble`), the same image used in CI.
 
