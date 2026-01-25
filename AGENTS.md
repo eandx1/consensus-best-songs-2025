@@ -123,7 +123,7 @@ Six semantic HTML `<dialog>` elements are used, styled with Pico CSS:
 
 ### Tune Ranking Modal
 
-Modal header shows a sliders icon followed by "Tune Ranking". The icon is always visible but uses a muted color by default. When settings are customized (differ from defaults), the icon and title text change to the primary color, and the title changes to "Tuned Ranking" to indicate active customization. Contains three sections:
+Modal header shows a sliders icon followed by "Tune Ranking". The icon is always visible but uses a muted color by default. When settings are customized (differ from defaults), the icon and title text change to the primary color, and the title changes to "Tuned Ranking" to indicate active customization. Contains four sections:
 
 **Ranking Parameters** (appears first):
 
@@ -154,6 +154,22 @@ If a source has `data["config"]["sources"][source name]["type"]` of `unranked` t
 For each such source with a shadow rank, display the source key name and a float slider from 1.0 through 100.0 in 0.1 increments.
 
 The URL parameter should be lowercase source name with spaces or other non-letter characters replaced by underscores.
+
+**Song Filters** (appears fourth):
+Control which songs appear in the ranking based on their source data.
+
+- Shows counter: "Including N of M songs"
+- Minimum Source Count, slider, integer range 1-10 in 1 increments, default 1, url parameter `min_sources`. Only include songs that appear on at least this many lists.
+- Rank Cutoff, slider, integer range 0-100 in 1 increments, default 0 (meaning no cutoff), url parameter `rank_cutoff`. Ignore contributions from ranks worse than this cutoff. When set to 0, displays "Any".
+
+**Filter Independence:** The two filters operate independently:
+- `min_sources` checks the *original* number of lists a song appears on (not affected by rank_cutoff)
+- `rank_cutoff` filters which source contributions count toward a song's score
+- Songs with 0 qualifying contributions after rank_cutoff filtering are excluded (they would have no score)
+
+Example: A song on 5 lists with only 1 rank ≤ cutoff will pass `min_sources=3` (because it appears on 5 lists) and remain visible (because it has 1 qualifying contribution).
+
+When filters exclude all songs, an empty state is shown with a button to adjust filters.
 
 UI behaviors:
 
@@ -213,6 +229,7 @@ Allows users to generate a YouTube playlist URL from the current ranking:
 
 **Status display:**
 - Shows count of valid songs ready to play
+- Filter limitation note when filters reduce available songs below requested count
 - Warning message listing specific songs missing YouTube IDs (if any)
 - Success message if all requested songs are available
 
@@ -231,6 +248,7 @@ Allows users to export the current ranking as a CSV file:
 
 **Status display:**
 - Shows count of songs ready to download
+- Filter limitation note when filters reduce available songs below requested count (including when "All" is selected with active filters)
 - Warning message listing specific songs missing ISRC codes (if any)
 - Success message if all songs have ISRC codes
 
@@ -287,7 +305,9 @@ root (object)
 │   │   ├── rank1_bonus (float)
 │   │   ├── rank2_bonus (float)
 │   │   ├── rank3_bonus (float)
-│   │   └── decay_mode (string)
+│   │   ├── decay_mode (string)
+│   │   ├── min_sources (integer)
+│   │   └── rank_cutoff (integer)
 │   ├── cluster_metadata (object: map of cluster to cluster_config)
 │   │   └── [cluster] (object)
 │   │       ├── emoji (string)

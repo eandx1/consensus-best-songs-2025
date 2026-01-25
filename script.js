@@ -3,6 +3,7 @@ let STATE = {
   config: {},
   songs: [],
   displayLimit: 25,
+  totalSongs: 0,
 };
 
 const THEME_CONFIG = {
@@ -59,6 +60,8 @@ const CONFIG_BOUNDS = {
     rank1_bonus: { min: 1.0, max: 1.2, step: 0.005 },
     rank2_bonus: { min: 1.0, max: 1.2, step: 0.005 },
     rank3_bonus: { min: 1.0, max: 1.2, step: 0.005 },
+    min_sources: { min: 1, max: 10, step: 1 },
+    rank_cutoff: { min: 0, max: 100, step: 1 },
   },
   source_weight: { min: 0.0, max: 1.5, step: 0.01 },
   shadow_rank: { min: 1.0, max: 100.0, step: 0.1 },
@@ -147,6 +150,8 @@ function isRankingCustomized() {
     "rank1_bonus",
     "rank2_bonus",
     "rank3_bonus",
+    "min_sources",
+    "rank_cutoff",
   ];
 
   for (const key of rankingKeys) {
@@ -223,6 +228,9 @@ const RankingEngine = {
   },
 
   compute(songs, config) {
+    const rankCutoff = config.ranking.rank_cutoff;
+    const minSources = config.ranking.min_sources;
+
     const rankedSongs = songs.map((song) => {
       let totalScore = 0;
       let ranks = [];
@@ -236,6 +244,19 @@ const RankingEngine = {
         const rank = srcEntry.uses_shadow_rank
           ? srcCfg.shadow_rank
           : srcEntry.rank;
+
+        // Filter by rank_cutoff: if rank exceeds limit, mark as filtered
+        if (rankCutoff > 0 && rank > rankCutoff) {
+          sourceDetails.push({
+            name: srcEntry.name,
+            rank,
+            contribution: 0,
+            full_name: srcCfg.full_name || srcEntry.name,
+            filtered: true,
+          });
+          return;
+        }
+
         ranks.push(rank);
 
         if (rank <= config.ranking.cluster_threshold) {
@@ -297,8 +318,27 @@ const RankingEngine = {
       };
     });
 
-    const maxScore = Math.max(...rankedSongs.map((s) => s.finalScore)) || 1;
-    return rankedSongs
+    // Filter songs by min_sources (original list count) and exclude songs with
+    // no qualifying contributions (when rank_cutoff filters out all sources)
+    const eligibleSongs = rankedSongs.filter((song) => {
+      // Apply min_sources filter using original list_count from data
+      // (how many lists the song appears on, independent of rank_cutoff)
+      if (song.list_count < minSources) {
+        return false;
+      }
+      // Exclude songs with 0 qualifying contributions when rank_cutoff is active
+      if (rankCutoff > 0 && song.stats.listCount === 0) {
+        return false;
+      }
+      return true;
+    });
+
+    if (eligibleSongs.length === 0) {
+      return [];
+    }
+
+    const maxScore = Math.max(...eligibleSongs.map((s) => s.finalScore)) || 1;
+    return eligibleSongs
       .map((s) => ({ ...s, normalizedScore: s.finalScore / maxScore }))
       .sort((a, b) => {
         // Tie-breaking order:
@@ -367,7 +407,12 @@ function syncStateFromURL(defaultConfig) {
     "rank1_bonus",
     "rank2_bonus",
     "rank3_bonus",
+    "min_sources",
+    "rank_cutoff",
   ];
+
+  // Integer parameters that should be rounded after parsing from URL
+  const integerKeys = ["k_value", "cluster_threshold", "min_sources", "rank_cutoff"];
 
   rankingKeys.forEach((key) => {
     if (params.has(key)) {
@@ -377,9 +422,14 @@ function syncStateFromURL(defaultConfig) {
           ? mode
           : defaultConfig.ranking.decay_mode;
       } else {
-        const value = parseFloat(params.get(key));
+        let value = parseFloat(params.get(key));
         const bounds = CONFIG_BOUNDS.ranking[key];
-        config.ranking[key] = clamp(value, bounds.min, bounds.max);
+        value = clamp(value, bounds.min, bounds.max);
+        // Round integer parameters to avoid display/filter mismatch
+        if (integerKeys.includes(key)) {
+          value = Math.round(value);
+        }
+        config.ranking[key] = value;
       }
     }
   });
@@ -462,7 +512,21 @@ function updateURL(config) {
  * Main render function. Recomputes rankings and updates the song list UI.
  */
 function render() {
+  STATE.totalSongs = APP_DATA.songs.length;
   STATE.songs = RankingEngine.compute(APP_DATA.songs, STATE.config);
+
+  // Update eligible songs counter in Tune modal if it exists
+  const counter = document.getElementById("eligible-songs-counter");
+  if (counter) {
+    counter.innerHTML = `Including <strong>${STATE.songs.length}</strong> of <strong>${STATE.totalSongs}</strong> songs`;
+  }
+
+  // Handle empty state when filters exclude all songs
+  if (STATE.songs.length === 0) {
+    renderEmptyFilterState();
+    return;
+  }
+
   const visible = STATE.songs.slice(0, STATE.displayLimit);
 
   UI.songList.innerHTML = visible
@@ -630,6 +694,10 @@ async function init() {
   document.addEventListener("click", (e) => {
     if (e.target.closest('[data-action="refresh-page"]')) {
       location.reload();
+    }
+    if (e.target.closest('[data-action="open-tune-modal"]')) {
+      renderSettingsUI();
+      document.getElementById("modal-tune").showModal();
     }
   });
 
@@ -854,6 +922,49 @@ function renderErrorState(title, message) {
   }
 }
 
+/**
+ * Display an empty state when song filters exclude all songs.
+ * Shows current filter values and offers to open the Tune modal.
+ */
+function renderEmptyFilterState() {
+  const minSources = STATE.config.ranking.min_sources;
+  const rankCutoff = STATE.config.ranking.rank_cutoff;
+
+  let filterInfo = [];
+  if (minSources > 1) {
+    filterInfo.push(`Minimum Source Count: ${minSources}`);
+  }
+  if (rankCutoff > 0) {
+    filterInfo.push(`Rank Cutoff: ${rankCutoff}`);
+  }
+
+  const filterList = filterInfo.length > 0
+    ? `<ul style="list-style: none; padding: 0; margin: 1rem 0;">${filterInfo.map(f => `<li style="list-style: none; margin-bottom: 0.25rem;"><kbd>${f}</kbd></li>`).join("")}</ul>`
+    : "";
+
+  if (UI.songList) {
+    UI.songList.innerHTML = `
+      <article class="empty-filter-state" style="text-align: center; padding: 3rem 1rem;">
+        <svg style="width: 4rem; height: 4rem; opacity: 0.5; margin-bottom: 1rem;">
+          <use href="#icon-sliders"></use>
+        </svg>
+        <h3 style="margin-bottom: 0.5rem;">No songs match your filters</h3>
+        <p style="color: var(--pico-muted-color);">Current filters:</p>
+        ${filterList}
+        <p style="color: var(--pico-muted-color); font-size: 0.9em;">Try lowering the minimum source count or raising the rank cutoff.</p>
+        <button data-action="open-tune-modal" style="margin-top: 1rem;">
+          <svg style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.25em;"><use href="#icon-sliders"></use></svg>
+          Adjust Filters
+        </button>
+      </article>
+    `;
+  }
+  if (UI.loadMoreBtn) {
+    UI.loadMoreBtn.style.display = "none";
+  }
+  updateTuneButton();
+}
+
 function populateSourcesTables() {
   if (!APP_DATA?.config?.sources) return;
 
@@ -1039,6 +1150,26 @@ function renderYouTubeUI(count = 50, preference = "videos") {
       : "Play the top songs as an unnamed playlist on YouTube";
   }
 
+  // Handle empty state when no songs available
+  if (STATE.songs.length === 0) {
+    if (UI.youtubeContent) {
+      UI.youtubeContent.innerHTML = `
+        <p style="text-align: center; color: var(--pico-del-color);">
+          <svg style="width: 3rem; height: 3rem; opacity: 0.5; margin-bottom: 0.5rem; display: block; margin-inline: auto;"><use href="#icon-sliders"></use></svg>
+          No songs match your current filters.<br>
+          <small>Adjust your Song Filters in the Tune modal to see songs.</small>
+        </p>`;
+    }
+    const modal = document.getElementById("modal-youtube");
+    if (modal) {
+      const footer = modal.querySelector("footer");
+      if (footer) {
+        footer.innerHTML = `<button class="secondary close-modal">Close</button>`;
+      }
+    }
+    return;
+  }
+
   const songsToExport = STATE.songs.slice(0, count);
   const validSongs = [];
   const missingSongs = [];
@@ -1079,7 +1210,11 @@ function renderYouTubeUI(count = 50, preference = "videos") {
         </fieldset>
 
         <p>
-            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube
+            Ready to play the top <strong>${validSongs.length}</strong> songs on YouTube${
+              songsToExport.length < count && STATE.songs.length < STATE.totalSongs
+                ? ' <span style="opacity: 0.7;">(limited by your filters)</span>'
+                : ''
+            }
             ${
               missingSongs.length > 0
                 ? `
@@ -1122,6 +1257,26 @@ function renderDownloadUI(count = 100) {
       : "Download as CSV and import to the streaming service of your choice";
   }
 
+  // Handle empty state when no songs available
+  if (STATE.songs.length === 0) {
+    if (UI.downloadContent) {
+      UI.downloadContent.innerHTML = `
+        <p style="text-align: center; color: var(--pico-del-color);">
+          <svg style="width: 3rem; height: 3rem; opacity: 0.5; margin-bottom: 0.5rem; display: block; margin-inline: auto;"><use href="#icon-sliders"></use></svg>
+          No songs match your current filters.<br>
+          <small>Adjust your Song Filters in the Tune modal to see songs.</small>
+        </p>`;
+    }
+    const modal = document.getElementById("modal-download");
+    if (modal) {
+      const footer = modal.querySelector("footer");
+      if (footer) {
+        footer.innerHTML = `<button class="secondary close-modal">Close</button>`;
+      }
+    }
+    return;
+  }
+
   const songsToExport = STATE.songs.slice(0, count);
   const songsMissingIsrc = songsToExport.filter(
     (s) => !s.id || s.id.includes(":"),
@@ -1143,7 +1298,11 @@ function renderDownloadUI(count = 100) {
         </fieldset>
 
         <p>
-            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file
+            Ready to download the top <strong>${songsToExport.length}</strong> songs as CSV file${
+              STATE.songs.length < STATE.totalSongs && (songsToExport.length < count || count === STATE.songs.length)
+                ? ' <span style="opacity: 0.7;">(limited by your filters)</span>'
+                : ''
+            }
             ${
               songsMissingIsrc.length > 0
                 ? `
@@ -1313,6 +1472,12 @@ function renderSettingsUI() {
     } else if (key === "cluster_threshold") {
       displayVal = Math.round(currentVal).toString();
       minWidth = "2.5rem";
+    } else if (key === "min_sources") {
+      displayVal = Math.round(currentVal).toString();
+      minWidth = "2rem";
+    } else if (key === "rank_cutoff") {
+      displayVal = currentVal === 0 ? "Any" : Math.round(currentVal).toString();
+      minWidth = "2.5rem";
     } else {
       displayVal = parseFloat(currentVal).toFixed(2);
     }
@@ -1481,6 +1646,36 @@ function renderSettingsUI() {
     html += "</article>";
   }
 
+  // Song Filters section
+  html += `<article class="tune-inner-article">
+    <hgroup>
+      <h4>Song Filters</h4>
+      <p>Control which songs appear in the ranking.</p>
+    </hgroup>
+    <p id="eligible-songs-counter">
+      Including <strong>${STATE.songs.length}</strong> of <strong>${STATE.totalSongs}</strong> songs
+    </p>`;
+
+  html += createSlider(
+    "ranking",
+    "min_sources",
+    "Minimum Source Count",
+    false,
+    false,
+    "Only include songs that appear on at least this many lists.",
+  );
+
+  html += createSlider(
+    "ranking",
+    "rank_cutoff",
+    "Rank Cutoff",
+    false,
+    false,
+    "Ignore contributions from ranks worse than this cutoff.",
+  );
+
+  html += "</article>";
+
   UI.tuneContent.innerHTML = html;
 }
 
@@ -1492,18 +1687,15 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
     return;
   }
 
-  if (key === "theme") {
-    applyTheme(value);
-    debouncedReRank();
-    return;
-  }
-
   const numVal = parseFloat(value);
   const defaults = APP_DATA.config;
   let defaultVal;
 
+  const integerKeys = ["k_value", "cluster_threshold", "min_sources", "rank_cutoff"];
+
   if (category === "ranking") {
-    STATE.config.ranking[key] = numVal;
+    const storedVal = integerKeys.includes(key) ? Math.round(numVal) : numVal;
+    STATE.config.ranking[key] = storedVal;
     defaultVal = defaults.ranking[key];
   } else if (category === "source_weight") {
     STATE.config.sources[key].weight = numVal;
@@ -1521,6 +1713,10 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
       displayVal = Math.round(numVal * 100) + "%";
     } else if (key === "k_value" || key === "cluster_threshold") {
       displayVal = Math.round(numVal).toString();
+    } else if (key === "min_sources") {
+      displayVal = Math.round(numVal).toString();
+    } else if (key === "rank_cutoff") {
+      displayVal = numVal === 0 ? "Any" : Math.round(numVal).toString();
     } else {
       displayVal = parseFloat(numVal).toFixed(2);
     }
