@@ -136,6 +136,8 @@ Counting NPR as one source with a review count of 125:
 
 <img src="./images/list_count_histogram.svg" width="80%" alt="Histogram of reviews per song">
 
+With NPR back as 2 non-overlapping sources:
+
 | Mentions (list_count) | Number of Songs | % of Total Songs |
 | :-------------------- | :-------------- | :--------------- |
 | 1                     | 661             | 75.03%           |
@@ -156,6 +158,8 @@ Counting NPR as one source with a review count of 125:
 <img src="./images/source_exclusivity_analysis.svg" alt="Number of multiply cited vs single citation songs per source">
 
 Surprisingly, most songs only have 1 source! This is driven mainly by how some sources provided very long lists but it's also interesting to see that some sources like Gorilla vs. Bear had more esoteric picks.
+
+[Full list of exclusive songs per source here.](EXCLUSIVE_SONGS.md)
 
 #### Unique Artists
 
