@@ -10,7 +10,9 @@
             "rank1_bonus": 1.1,
             "rank2_bonus": 1.075,
             "rank3_bonus": 1.025,
-            "decay_mode": "consensus"
+            "decay_mode": "consensus",
+            "min_sources": 1,
+            "rank_cutoff": 0
         },
         "sources": {
             "LA Times": {
