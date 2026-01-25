@@ -1691,8 +1691,11 @@ window.updateSetting = (category, key, value, idBase, isPercent, isBonus) => {
   const defaults = APP_DATA.config;
   let defaultVal;
 
+  const integerKeys = ["k_value", "cluster_threshold", "min_sources", "rank_cutoff"];
+
   if (category === "ranking") {
-    STATE.config.ranking[key] = numVal;
+    const storedVal = integerKeys.includes(key) ? Math.round(numVal) : numVal;
+    STATE.config.ranking[key] = storedVal;
     defaultVal = defaults.ranking[key];
   } else if (category === "source_weight") {
     STATE.config.sources[key].weight = numVal;

@@ -86,6 +86,9 @@ def test_min_sources_url_validation(page: Page, server_url):
 
 def test_rank_cutoff_filters_contributions(page: Page, server_url):
     """Test that rank_cutoff filters out contributions from ranks higher than threshold."""
+    page.goto(server_url)
+    initial_count = page.locator(".song-card").count()
+
     page.goto(f"{server_url}/?rank_cutoff=25")
     page.wait_for_timeout(300)
 
@@ -98,10 +101,10 @@ def test_rank_cutoff_filters_contributions(page: Page, server_url):
     page.keyboard.press("Escape")
     page.wait_for_timeout(200)
 
-    # The ranking should have changed due to filtering contributions
-    # Songs with only high ranks (> 25) may have lower scores or be excluded entirely
+    # Songs with only ranks > 25 should be excluded, reducing count
     song_count = page.locator(".song-card").count()
-    assert song_count >= 0, "Should handle rank_cutoff filter"
+    assert song_count <= initial_count, "rank_cutoff should not increase song count"
+    assert song_count > 0, "Some songs should still be visible with rank_cutoff=25"
 
 
 def test_rank_cutoff_zero_no_limit(page: Page, server_url):
@@ -277,6 +280,7 @@ def test_filter_slider_display_values(page: Page, server_url):
 def test_filter_slider_display_values_when_changed(page: Page, server_url):
     """Test that filter sliders show numeric values when changed from 0."""
     page.goto(f"{server_url}/?min_sources=3&rank_cutoff=50")
+    page.wait_for_timeout(300)
     page.locator("#open-tune").click()
 
     # Check min_sources shows numeric value
@@ -340,7 +344,7 @@ def test_youtube_modal_shows_filter_limitation_note(page: Page, server_url):
     youtube_modal = page.locator("#modal-youtube")
     expect(youtube_modal).to_be_visible()
     page.locator("button[data-action='yt-count'][data-count='50']").click()
-    page.wait_for_timeout(200)
+    page.wait_for_timeout(350)
 
     # Verify filter limitation note appears
     expect(youtube_modal.locator("text=(limited by your filters)")).to_be_visible()
@@ -360,7 +364,7 @@ def test_download_modal_shows_filter_limitation_note(page: Page, server_url):
     download_modal = page.locator("#modal-download")
     expect(download_modal).to_be_visible()
     page.locator("button[data-action='dl-count'][data-count='100']").click()
-    page.wait_for_timeout(200)
+    page.wait_for_timeout(350)
 
     # Verify filter limitation note appears
     expect(download_modal.locator("text=(limited by your filters)")).to_be_visible()
