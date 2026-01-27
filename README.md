@@ -161,6 +161,12 @@ Surprisingly, most songs only have 1 source! This is driven mainly by how some s
 
 [Full list of exclusive songs per source here.](EXCLUSIVE_SONGS.md)
 
+It seems to hold surprisingly true even at the artist level, shown in the image below.
+
+Perhaps these days with the vast availability of music, publications can really deep dive into niches?
+
+<img src="./images/artist_exclusivity_analysis.svg" alt="Number of multiply cited vs single citation artists per source">
+
 #### Unique Artists
 
 - Unique artist (including collaborators) strings: `683`
@@ -185,6 +191,8 @@ Surprisingly, most songs only have 1 source! This is driven mainly by how some s
 | Justin Bieber       | 5          | DAISIES · DEVOTION · FIRST PLACE · GO BABY · YUKON                                                                                                                                                                                  |
 | Wednesday           | 5          | Elderberry Wine · Pick Up That Knife · The Way Love Goes · Townies · Wound Up Here (By Holdin On)                                                                                                                                   |
 | billy woods         | 5          | A Doll Fulla Pins · BLK XMAS · Corinthians · Misery · Waterproof Mascara                                                                                                                                                            |
+
+[Full artist and song lists here.](ARTISTS.md)
 
 #### Media Links
 
@@ -289,7 +297,11 @@ The site defaults to Consensus mode, but you can choose to use a power law decay
 
 ### Publications
 
+Looking at overlap of both songs and artists by publication:
+
 <img src="./images/normalized_overlap_matrix.svg" width="100%" alt="Publication Song Overlap for Top 100">
+
+<img src="./images/artist_overlap_matrix_red_final.svg" width="100%" alt="Publication Song Overlap at Artist Level">
 
 ### Categories
 
