@@ -4,6 +4,18 @@
 
 <a href="https://bestsongs2025.com/"><img src="./og-image.png" width="50%" alt="Image of the site"></a>
 
+## Table of Contents
+
+- [About](#about)
+- [Analysis](#analysis)
+- [🏗️ Project Structure](#-project-structure)
+- [🛠️ Technical Choices](#-technical-choices)
+- [Development Quirks](#development-quirks)
+- [AI Development Journey](#ai-development-journey)
+- [🤖 Claude Code Setup](#-claude-code-setup)
+- [🧪 Testing](#-testing)
+- [👤 Contact](#-contact)
+
 ## About
 
 This project is the result of a yearly personal obsession: figuring out how to prioritize the latest music based on "Best Songs of 2025" lists from a wide variety of publications. I love finding new music that I wouldn't have discovered otherwise.
@@ -19,92 +31,6 @@ I scraped around 28 song lists and did the following:
 I then developed a ranking engine with a variety of knobs -- source weights, how much to value a rank #1 song over a #10, how to give boosts to songs that cross publication types or are mentioned on a large number of lists, and more.
 
 The resulting site lets you view the result of that ranking, but you can customize the knobs and share your own, instead. You can also filter by minimum source count or rank cutoff to focus on consensus picks or deep cuts. Export your personalized ranking as a YouTube playlist or download it as a CSV to import into your favorite streaming service.
-
-## 🏗️ Project Structure
-
-The project is built as a lightweight, static web application with no build steps or complex frameworks.
-
-- **`index.html`**: The main entry point using semantic HTML and Pico CSS
-- **`script.js`**: Handles data loading, the ranking engine logic, state management, and DOM rendering
-- **`data.json`**: The single source of truth containing:
-  - Configuration (ranking parameters, boosters, cluster metadata)
-  - Source definitions (weights, URLs, categories)
-  - Song data (artists, titles, media IDs, and source citations)
-
-## 🛠️ Technical Choices
-
-- **Static Data**: Chosen for simplicity and ease of hosting. The entire application runs in the browser in plain JavaScript with no backend or build steps
-- **[Pico CSS](https://picocss.com/)**: A minimal, semantic-first CSS framework that provides a clean "dark mode" aesthetic. I know little of UI or frontend design, so this helped save me from myself
-- **URL State Sync**: All ranking parameters (decay rates, boosters, weights) are synchronized to the URL query string, making specific ranking configurations shareable
-- **Lite YouTube**: Uses the [lite-youtube](https://github.com/justinribeiro/lite-youtube) web component for fast video embeds
-- **Hosting Solution**: Initially I just used Github Pages but decided to move to Vercel with an actual domain name for fun
-
-## Development Quirks
-
-### Data Cleaning
-
-- **Manual Overrides**: I manually corrected or specified around 30 song/artist names to work around Spotify search failures, including songs simply missing from Spotify
-- **Matching Heuristics**: Spotify, YouTube, and YouTube Music results were vetted with surprisingly good comparison heuristic functions Gemini 3 Pro helped me with, often using [RapidFuzz](https://pypi.org/project/RapidFuzz/). Many of the review sites also linked to official videos or Spotify tracks, which I leveraged
-
-### Shadow Ranks 👻
-
-Not all lists are ranked. For unranked lists, I assigned a **Shadow Rank** based on the list's length to ensure fair weighting. For example, [Variety's The Best Songs of 2025](https://variety.com/lists/best-songs-2025/) has 61 unranked songs so I used the midpoint
-$$(1 + 61) / 2 = 31$$
-
-NPR produced two overlapping lists -- ["The 25 Best Songs of 2025"](https://www.npr.org/2025/12/09/nx-s1-5616663/the-25-best-songs-of-2025) and their full ["The 125 Best Songs of 2025"](https://www.npr.org/nx-s1-5619849). In order to make the shadow ranks more accurate and prevent double counting, I created two non-overlapping sources, one for the top 25 with shadow rank $(1 + 25) / 2 = 13$ and one for the bottom 100 with shadow rank $(26 + 125) / 2 = 75.5$.
-
-### 🏷️ Category Decisions
-
-I wanted to have some notion of crossover hits, letting me boost songs that appeared on multiple types of publications. These are still a work in progress and only used for one boost that can be disabled.
-
-The categories are currently:
-
-- **🏛️ Critical Authority**: Essential critical voices from major institutions known for depth, rigorous standards, and long-standing industry trust.
-- **⚡ Tastemakers**: Digital trendsetters and established indie mainstays driving the current musical conversation.
-- **🧪 Specialists**: Niche expert curators focused on deep cuts, avant-garde discoveries, and specific genre depth.
-- **📡 Mainstream**: High-frequency media outlets and lifestyle sources tracking mass cultural appeal and global broadcasting trends.
-
-### ⚖️ Source Weights
-
-This is really where the subjectivity comes in on top of that of the reviewers! I set the default weights to favor authoritative critical voices while also trying to make sure I didn't completely miss genres and niches. My biases and preferences are certainly in there! The mainstream definitely still comes in heavily, though.
-
-This is where I wanted to give the user full control. They can change the weights and everything is updated in the URL so they can share their own lists.
-
-## AI Development Journey
-
-### Web Chatbots: Gemini 3 Pro
-
-While coding in the notebook, I chatted with [Gemini 3 Pro](https://deepmind.google/models/gemini/pro/) usually in its Thinking mode on the web, getting tips and code for web scraping, parsing, and ranking. All the modern chatbots I've tried are extremely impressive, but there are still problems. Here are the ones I encountered with Gemini 3 Pro:
-
-- **Context changes are hard**: After a long-running chat where we'd discussed and made many decisions, I'd sometimes switch to a new chat to dig into the finer points of one choice, giving it some ramp-up context first. In the new chat, it would essentially tell me how bad the decision I'd made with it in the other chat was, when it had seemed quite satisfied over there!
-
-  If it wasn't a topic I already knew well, it was hard to know if the decision was _actually_ bad -- perhaps because I'd steered it into sycophancy due to my obsession with pros/cons and edge cases -- or the new chat only thought it was bad because I hadn't given it enough context on why the decision was made that way. I suspect this still also happens when tools need to compress the context and lose some detail.
-
-- **Stale information**: Until near the end of the project, I hadn't run into a situation where it really led me astray, but then I asked it about developing a feature to let users export their top N songs to a YouTube playlist. It knew the real heavy weight solution was with OAuth and a supported Google API, but I'd thought one could create an unnamed playlist just by putting some video IDs in a URL for the user. Indeed, you can still sort of do that, but on desktop it appears YouTube has removed the button to save the playlist.
-  Gemini was convinced you could click on something to do so or use a variety of other non-working URL format hacks, no matter how much evidence I gave it to the contrary. I wanted it to work, too, Gemini!
-- **Code snippets to save on generation**: I do not know JavaScript or CSS well. Gemini would sometimes give me a great starting point but if I asked it to refine something, it would start giving me pieces and I'd have to ask it to regenerate the whole file for me. It'd do so, but other bits would often change in the process.
-- **Inauthentic names**: Gemini frequently gave proper names to the ranking models we discussed. It made me think they were well-known, standard solutions. Then, later, I'd go search for a name and find it apparently wasn't real or at least not widely known.
-
-### Cursor
-
-This was my first experience with Cursor. A few thoughts:
-
-- **Enthusiasm**: Much like Claude Code, the Cursor agent chat interface _wants to do stuff_. It doesn't feel like a great place to _discuss_ a solution, which is why I continued to use Gemini on the web. Asking about something in the agent chat tended to result in it going off and building something. I did love that when I asked it to do something, though, it was incredibly enthusiastic. "I'll commit these changes for you!"
-- **Weird review/commit bugs**: I was probably using it wrong, but often even if I clicked Review and accepted changes and even if they were committed, it seemed to think they were still open files.
-- **Sonnet 4.5 integration**: Cursor seemed well-optimized for this model. I didn't notice from the scroll of its "thoughts" that it had to back track much. When I tried Gemini 3 Pro Preview, it occasionally got stuck in a loop or its "thoughts" suggested it had to back track or go another way.
-- **CSS best practices**: The models didn't initially prioritize mobile-first design and sometimes snuck in fixed pixel widths or used CSS that wasn't well aligned with Pico CSS's conventions despite prompting.
-
-### Quote extraction task
-
-One of the tasks in the notebook was to extract a decent quote from the normally paragraph-long review of a song from each source site. LLMs love to summarize or smooth over the grammar broken by the extraction, so this was a challenge.
-
-I wanted to be very careful, here, so enforced strict substring matching, either of the full quote or pieces joined by " ... ". I also added a way for the model to report failure since some reviews just weren't appropriate (for example, talking about the artist but not the song).
-
-Ultimately I made a first pass with Haiku and then fell back to Sonnet for cases that didn't work.
-
-### Claude Code
-
-More recently, I've gone back to Claude Code and doing the planning mode -> execute plan -> review routine. Doing this with Opus feels very solid but costly.
 
 ## Analysis
 
@@ -306,6 +232,92 @@ Looking at overlap of both songs and artists by publication:
 ### Categories
 
 <img src="./images/category_crossover_sankey.svg" width="70%" alt="Contributions to the top 10 from the different categories">
+
+## 🏗️ Project Structure
+
+The project is built as a lightweight, static web application with no build steps or complex frameworks.
+
+- **`index.html`**: The main entry point using semantic HTML and Pico CSS
+- **`script.js`**: Handles data loading, the ranking engine logic, state management, and DOM rendering
+- **`data.json`**: The single source of truth containing:
+  - Configuration (ranking parameters, boosters, cluster metadata)
+  - Source definitions (weights, URLs, categories)
+  - Song data (artists, titles, media IDs, and source citations)
+
+## 🛠️ Technical Choices
+
+- **Static Data**: Chosen for simplicity and ease of hosting. The entire application runs in the browser in plain JavaScript with no backend or build steps
+- **[Pico CSS](https://picocss.com/)**: A minimal, semantic-first CSS framework that provides a clean "dark mode" aesthetic. I know little of UI or frontend design, so this helped save me from myself
+- **URL State Sync**: All ranking parameters (decay rates, boosters, weights) are synchronized to the URL query string, making specific ranking configurations shareable
+- **Lite YouTube**: Uses the [lite-youtube](https://github.com/justinribeiro/lite-youtube) web component for fast video embeds
+- **Hosting Solution**: Initially I just used Github Pages but decided to move to Vercel with an actual domain name for fun
+
+## Development Quirks
+
+### Data Cleaning
+
+- **Manual Overrides**: I manually corrected or specified around 30 song/artist names to work around Spotify search failures, including songs simply missing from Spotify
+- **Matching Heuristics**: Spotify, YouTube, and YouTube Music results were vetted with surprisingly good comparison heuristic functions Gemini 3 Pro helped me with, often using [RapidFuzz](https://pypi.org/project/RapidFuzz/). Many of the review sites also linked to official videos or Spotify tracks, which I leveraged
+
+### Shadow Ranks 👻
+
+Not all lists are ranked. For unranked lists, I assigned a **Shadow Rank** based on the list's length to ensure fair weighting. For example, [Variety's The Best Songs of 2025](https://variety.com/lists/best-songs-2025/) has 61 unranked songs so I used the midpoint
+$$(1 + 61) / 2 = 31$$
+
+NPR produced two overlapping lists -- ["The 25 Best Songs of 2025"](https://www.npr.org/2025/12/09/nx-s1-5616663/the-25-best-songs-of-2025) and their full ["The 125 Best Songs of 2025"](https://www.npr.org/nx-s1-5619849). In order to make the shadow ranks more accurate and prevent double counting, I created two non-overlapping sources, one for the top 25 with shadow rank $(1 + 25) / 2 = 13$ and one for the bottom 100 with shadow rank $(26 + 125) / 2 = 75.5$.
+
+### 🏷️ Category Decisions
+
+I wanted to have some notion of crossover hits, letting me boost songs that appeared on multiple types of publications. These are still a work in progress and only used for one boost that can be disabled.
+
+The categories are currently:
+
+- **🏛️ Critical Authority**: Essential critical voices from major institutions known for depth, rigorous standards, and long-standing industry trust.
+- **⚡ Tastemakers**: Digital trendsetters and established indie mainstays driving the current musical conversation.
+- **🧪 Specialists**: Niche expert curators focused on deep cuts, avant-garde discoveries, and specific genre depth.
+- **📡 Mainstream**: High-frequency media outlets and lifestyle sources tracking mass cultural appeal and global broadcasting trends.
+
+### ⚖️ Source Weights
+
+This is really where the subjectivity comes in on top of that of the reviewers! I set the default weights to favor authoritative critical voices while also trying to make sure I didn't completely miss genres and niches. My biases and preferences are certainly in there! The mainstream definitely still comes in heavily, though.
+
+This is where I wanted to give the user full control. They can change the weights and everything is updated in the URL so they can share their own lists.
+
+## AI Development Journey
+
+### Web Chatbots: Gemini 3 Pro
+
+While coding in the notebook, I chatted with [Gemini 3 Pro](https://deepmind.google/models/gemini/pro/) usually in its Thinking mode on the web, getting tips and code for web scraping, parsing, and ranking. All the modern chatbots I've tried are extremely impressive, but there are still problems. Here are the ones I encountered with Gemini 3 Pro:
+
+- **Context changes are hard**: After a long-running chat where we'd discussed and made many decisions, I'd sometimes switch to a new chat to dig into the finer points of one choice, giving it some ramp-up context first. In the new chat, it would essentially tell me how bad the decision I'd made with it in the other chat was, when it had seemed quite satisfied over there!
+
+  If it wasn't a topic I already knew well, it was hard to know if the decision was _actually_ bad -- perhaps because I'd steered it into sycophancy due to my obsession with pros/cons and edge cases -- or the new chat only thought it was bad because I hadn't given it enough context on why the decision was made that way. I suspect this still also happens when tools need to compress the context and lose some detail.
+
+- **Stale information**: Until near the end of the project, I hadn't run into a situation where it really led me astray, but then I asked it about developing a feature to let users export their top N songs to a YouTube playlist. It knew the real heavy weight solution was with OAuth and a supported Google API, but I'd thought one could create an unnamed playlist just by putting some video IDs in a URL for the user. Indeed, you can still sort of do that, but on desktop it appears YouTube has removed the button to save the playlist.
+  Gemini was convinced you could click on something to do so or use a variety of other non-working URL format hacks, no matter how much evidence I gave it to the contrary. I wanted it to work, too, Gemini!
+- **Code snippets to save on generation**: I do not know JavaScript or CSS well. Gemini would sometimes give me a great starting point but if I asked it to refine something, it would start giving me pieces and I'd have to ask it to regenerate the whole file for me. It'd do so, but other bits would often change in the process.
+- **Inauthentic names**: Gemini frequently gave proper names to the ranking models we discussed. It made me think they were well-known, standard solutions. Then, later, I'd go search for a name and find it apparently wasn't real or at least not widely known.
+
+### Cursor
+
+This was my first experience with Cursor. A few thoughts:
+
+- **Enthusiasm**: Much like Claude Code, the Cursor agent chat interface _wants to do stuff_. It doesn't feel like a great place to _discuss_ a solution, which is why I continued to use Gemini on the web. Asking about something in the agent chat tended to result in it going off and building something. I did love that when I asked it to do something, though, it was incredibly enthusiastic. "I'll commit these changes for you!"
+- **Weird review/commit bugs**: I was probably using it wrong, but often even if I clicked Review and accepted changes and even if they were committed, it seemed to think they were still open files.
+- **Sonnet 4.5 integration**: Cursor seemed well-optimized for this model. I didn't notice from the scroll of its "thoughts" that it had to back track much. When I tried Gemini 3 Pro Preview, it occasionally got stuck in a loop or its "thoughts" suggested it had to back track or go another way.
+- **CSS best practices**: The models didn't initially prioritize mobile-first design and sometimes snuck in fixed pixel widths or used CSS that wasn't well aligned with Pico CSS's conventions despite prompting.
+
+### Quote extraction task
+
+One of the tasks in the notebook was to extract a decent quote from the normally paragraph-long review of a song from each source site. LLMs love to summarize or smooth over the grammar broken by the extraction, so this was a challenge.
+
+I wanted to be very careful, here, so enforced strict substring matching, either of the full quote or pieces joined by " ... ". I also added a way for the model to report failure since some reviews just weren't appropriate (for example, talking about the artist but not the song).
+
+Ultimately I made a first pass with Haiku and then fell back to Sonnet for cases that didn't work.
+
+### Claude Code
+
+More recently, I've gone back to Claude Code and doing the planning mode -> execute plan -> review routine. Doing this with Opus feels very solid but costly.
 
 ## 🤖 Claude Code Setup
 
