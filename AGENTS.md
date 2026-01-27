@@ -37,14 +37,14 @@ Users can adjust source weights and several ranking function parameters to dynam
 ## index.html Structure (~1980 lines)
 
 - `<style>` block: All CSS (themes defined via `[data-style="themename"]`)
-- Five themes: `original`, `light1`, `studio808`, `muthur`, `hyperneon`
+- Five themes: `original`, `light1`, `808`, `muthur`, `hyperneon`
 - SVG sprite: Icon symbols (`#icon-spotify`, `#icon-youtube`, `#icon-sliders`, etc.)
 - Header: Nav with title, Tune button, hamburger menu
 - Main: `#song-list` container, load more button
 - Dialogs: Six modals (`modal-tune`, `modal-stats`, `modal-reviews`, `modal-youtube`, `modal-download`, `modal-about`)
-- External: Pico CSS (CDN), lite-youtube (CDN), Google Fonts (Sora + theme fonts)
+- External: Pico CSS (CDN), lite-youtube (CDN), local Sora font, Google Fonts (JetBrains Mono, Michroma, Share Tech Mono)
 
-## script.js Structure (~1470 lines)
+## script.js Structure (~1795 lines)
 
 - `CONFIG_BOUNDS` - Validation ranges for all slider parameters
 - `THEME_CONFIG` - Theme definitions (name, style, mode)
@@ -59,6 +59,15 @@ Users can adjust source weights and several ranking function parameters to dynam
 - `renderSettingsUI()` - Tune modal slider generation
 - `renderYouTubeUI()` / `renderDownloadUI()` / `downloadCSV()` - Playlist export features
 - `isRankingCustomized()` - Detects if settings differ from defaults
+- `applyTheme()` - Theme application and persistence
+- `updateTuneButton()` - Tune button state management (default vs tuned)
+- `renderErrorState()` - Error display for failed data loading
+- `renderEmptyFilterState()` - Empty state when filters exclude all songs
+- `populateSourcesTables()` - About modal source tables generation
+- `updateSetting()` - Window-exposed settings updater for external access
+- `escapeHtml()` - XSS protection helper for safe HTML insertion
+- `debounce()` - Debouncing utility for input handlers
+- `clamp()` - Value boundary clamping utility
 
 # UI Design
 
