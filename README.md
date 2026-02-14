@@ -376,3 +376,5 @@ The Docker script uses Microsoft's official Playwright container (`mcr.microsoft
 ## 👤 Contact
 
 You can find me over at [LinkedIn](https://www.linkedin.com/in/everett-anderson-swe/).
+
+If you're curious about my personal favorites from 2025, they're roughly here: [Spotify](https://open.spotify.com/playlist/7yLu2nvMjkwFBohlnwoBgJ?si=2POb5gAkQPeirBSQ4xWHkQ) [YouTube Music](https://music.youtube.com/playlist?list=PLp1R3fJI8TQxEPql_ej08V3wW3A1ckG9A&si=gqQ88WLV2zEJp8xl)
